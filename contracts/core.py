@@ -64,6 +64,8 @@ class Post(_Base):
 
 
 class InvariantedClass(object):
+    _disable_patching = False
+
     def _validate(self, *args, **kwargs):
         self._disable_patching = True
         super(InvariantedClass, self)._validate(self)
@@ -78,13 +80,14 @@ class InvariantedClass(object):
     def __getattribute__(self, name):
         attr = super(InvariantedClass, self).__getattribute__(name)
         # disable patching for InvariantedClass methods
-        if name in ('_patched_method', '_validate'):
-            return attr
-        # disable patching for attributes (not methods)
-        if not isinstance(attr, MethodType):
+        if name in ('_patched_method', '_validate', '_disable_patching'):
             return attr
         # disable patching by flag (if validation in progress)
         if self._disable_patching:
+            return attr
+        # disable patching for attributes (not methods)
+        if not isinstance(attr, MethodType):
+            self._validate()
             return attr
         # patch
         patched_method = partial(self._patched_method, attr)
