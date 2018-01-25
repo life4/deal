@@ -20,7 +20,7 @@ class _Base(object):
         self.validator = validator
         self.exception = exception
 
-    def _validate(self, *args, **kwargs):
+    def validate(self, *args, **kwargs):
         # Django Forms validation interface
         if hasattr(self.validator, 'is_valid'):
             validator = self.validator(*args, **kwargs)
@@ -52,23 +52,26 @@ class _Base(object):
 
 class Pre(_Base):
     def patched_function(self, *args, **kwargs):
-        self._validate(*args, **kwargs)
+        self.validate(*args, **kwargs)
         return self.function(*args, **kwargs)
 
 
 class Post(_Base):
     def patched_function(self, *args, **kwargs):
         result = self.function(*args, **kwargs)
-        self._validate(result)
+        self.validate(result)
         return result
 
 
 class InvariantedClass(object):
     _disable_patching = False
 
-    def _validate(self, *args, **kwargs):
+    def _validate(self):
+        # disable methods matching before validation
         self._disable_patching = True
-        super(InvariantedClass, self)._validate(self)
+        # validation by Invariant.validate
+        self._validate_base(self)
+        # enable methods matching after validation
         self._disable_patching = False
 
     def _patched_method(self, method, *args, **kwargs):
@@ -80,23 +83,31 @@ class InvariantedClass(object):
     def __getattribute__(self, name):
         attr = super(InvariantedClass, self).__getattribute__(name)
         # disable patching for InvariantedClass methods
-        if name in ('_patched_method', '_validate', '_disable_patching'):
+        if name in ('_patched_method', '_validate', '_validate_base', '_disable_patching'):
             return attr
         # disable patching by flag (if validation in progress)
         if self._disable_patching:
             return attr
         # disable patching for attributes (not methods)
         if not isinstance(attr, MethodType):
-            self._validate()
             return attr
         # patch
         patched_method = partial(self._patched_method, attr)
         return update_wrapper(patched_method, attr)
 
+    def __setattr__(self, name, value):
+        super(InvariantedClass, self).__setattr__(name, value)
+        if name == '_disable_patching':
+            return
+        self._validate()
+
 
 class Invariant(_Base):
     def __call__(self, _class):
-        name = _class.__name__ + 'Invarianted'
-        patched_class = type(name, (InvariantedClass, _class), {})
+        patched_class = type(
+            _class.__name__ + 'Invarianted',
+            (InvariantedClass, _class),
+            {'_validate_base': self.validate},
+        )
         # return update_wrapper(patched_class, _class)
         return patched_class
