@@ -16,8 +16,10 @@ class ValidationError(Exception):
 
 
 class _Base(object):
-    def __init__(self, validator, exception=ValidationError):
+    def __init__(self, validator, message=None, exception=ValidationError):
         self.validator = validator
+        if message:
+            exception = exception(message)
         self.exception = exception
 
     def validate(self, *args, **kwargs):
