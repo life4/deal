@@ -1,3 +1,3 @@
 
-from .core import ValidationError   # noQA
-from .aliases import *              # noQA
+from .exceptions import *   # noQA
+from .aliases import *      # noQA

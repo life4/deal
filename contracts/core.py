@@ -1,8 +1,9 @@
 from functools import update_wrapper, partial
 from types import MethodType
+from . import exceptions
 
 
-__all__ = ['ValidationError', 'Pre', 'Post', 'Invariant']
+__all__ = ['Pre', 'Post', 'Invariant']
 
 
 try:
@@ -11,16 +12,15 @@ except NameError:
     string_types = (str, )
 
 
-class ValidationError(Exception):
-    pass
-
-
 class _Base(object):
-    def __init__(self, validator, message=None, exception=ValidationError):
+    exception = exceptions.ContractError
+
+    def __init__(self, validator, message=None, exception=None):
         self.validator = validator
+        if exception:
+            self.exception = exception
         if message:
-            exception = exception(message)
-        self.exception = exception
+            self.exception = self.exception(message)
 
     def validate(self, *args, **kwargs):
         # Django Forms validation interface
@@ -53,12 +53,16 @@ class _Base(object):
 
 
 class Pre(_Base):
+    exception = exceptions.PreContractError
+
     def patched_function(self, *args, **kwargs):
         self.validate(*args, **kwargs)
         return self.function(*args, **kwargs)
 
 
 class Post(_Base):
+    exception = exceptions.PostContractError
+
     def patched_function(self, *args, **kwargs):
         result = self.function(*args, **kwargs)
         self.validate(result)
@@ -105,6 +109,8 @@ class InvariantedClass(object):
 
 
 class Invariant(_Base):
+    exception = exceptions.InvContractError
+
     def __call__(self, _class):
         patched_class = type(
             _class.__name__ + 'Invarianted',
