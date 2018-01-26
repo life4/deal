@@ -16,6 +16,9 @@ class _Base(object):
     exception = exceptions.ContractError
 
     def __init__(self, validator, message=None, exception=None):
+        """
+        Step 1. Set contract (validator).
+        """
         self.validator = validator
         if exception:
             self.exception = exception
@@ -23,6 +26,9 @@ class _Base(object):
             self.exception = self.exception(message)
 
     def validate(self, *args, **kwargs):
+        """
+        Step 4 (6 for invariant). Process contract (validator)
+        """
         # Django Forms validation interface
         if hasattr(self.validator, 'is_valid'):
             validator = self.validator(*args, **kwargs)
@@ -47,23 +53,40 @@ class _Base(object):
         raise self.exception
 
     def __call__(self, function):
+        """
+        Step 2. Return wrapped function.
+        """
         self.function = function
         # return update_wrapper(self.patched_function, function)
         return self.patched_function
 
 
 class Pre(_Base):
+    """
+    Check contract (validator) before function processing.
+    Validate input arguments.
+    """
     exception = exceptions.PreContractError
 
     def patched_function(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
         self.validate(*args, **kwargs)
         return self.function(*args, **kwargs)
 
 
 class Post(_Base):
+    """
+    Check contract (validator) after function processing.
+    Validate output result.
+    """
     exception = exceptions.PostContractError
 
     def patched_function(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
         result = self.function(*args, **kwargs)
         self.validate(result)
         return result
@@ -73,6 +96,9 @@ class InvariantedClass(object):
     _disable_patching = False
 
     def _validate(self):
+        """
+        Step 5 (1st flow) or Step 4 (2nd flow). Process contract for object.
+        """
         # disable methods matching before validation
         self._disable_patching = True
         # validation by Invariant.validate
@@ -81,12 +107,18 @@ class InvariantedClass(object):
         self._disable_patching = False
 
     def _patched_method(self, method, *args, **kwargs):
+        """
+        Step 4 (1st flow). Call method
+        """
         self._validate()
         result = method(*args, **kwargs)
         self._validate()
         return result
 
     def __getattribute__(self, name):
+        """
+        Step 3 (1st flow). Get method
+        """
         attr = super(InvariantedClass, self).__getattribute__(name)
         # disable patching for InvariantedClass methods
         if name in ('_patched_method', '_validate', '_validate_base', '_disable_patching'):
@@ -102,9 +134,14 @@ class InvariantedClass(object):
         return update_wrapper(patched_method, attr)
 
     def __setattr__(self, name, value):
+        """
+        Step 3 (2nd flow). Set some attribute
+        """
+        # set
         super(InvariantedClass, self).__setattr__(name, value)
         if name == '_disable_patching':
             return
+        # validation only after set
         self._validate()
 
 
@@ -112,10 +149,22 @@ class Invariant(_Base):
     exception = exceptions.InvContractError
 
     def __call__(self, _class):
+        """
+        Step 2. Return wrapped class.
+        """
+        # change class name
+        if 'Invarianted' in _class.__name__:
+            name = _class.__name__
+        else:
+            name = _class.__name__ + 'Invarianted'
+
+        # patch class parents and add method for validation
         patched_class = type(
-            _class.__name__ + 'Invarianted',
+            name,
             (InvariantedClass, _class),
             {'_validate_base': self.validate},
         )
+        # Magic: _validate_base method use Invariant as self, not _class
+
         # return update_wrapper(patched_class, _class)
         return patched_class
