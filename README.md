@@ -1,5 +1,44 @@
+# Deal
+
+**Deal** -- python library for [design by contract](https://en.wikipedia.org/wiki/Design_by_contract) (DbC) programming.
+
+This library contain 3 main conception from DbC:
+
+* [Precondition](https://en.wikipedia.org/wiki/Precondition) -- condition that must always be true just prior to the execution of function.
+* [Postcondition](https://en.wikipedia.org/wiki/Postcondition) -- condition that must always be true just after the execution of function.
+* [Invariant](https://en.wikipedia.org/wiki/Invariant) -- condition that can be relied upon to be true during execution of a program. In this library invariant condition check in 3 cases:
+    1. Before class method execution.
+    2. After class method execution.
+    3. After some class attribute setting.
 
 
+## Features
+
+* Functional declaration for conditions.
+* Custom exceptions for best usage in try-except block.
+* Ability to set optional error message and (or) exception class.
+* Ability to return error message from contact.
+* Ability to use Django Form styled validators as contracts.
+* Attribute setting validation by invariant.
+* Validation by invariant dinamically setted attributes and methods.
+* Readable source code (all decorators implemented by classes)
+
+
+## TL;DR
+
+* `@pre` -- validate function arguments (pre-validation).
+* `@post` -- validate function result (post-validation).
+* `@inv` -- validate class methods before and after some method calling and after attribute setting.
+
+
+## Exceptions structure:
+
+* ContractError (inherited from built-in AssertionError)
+    * PreContractError
+    * PostContractError
+    * InvContractError
+
+Library decorators doesn't catch any exceptions raised from contracts.
 
 
 ## Usage
@@ -7,7 +46,7 @@
 Pre (`pre`, `require`):
 
 ```python
-In [1]: from contracts import pre, post, inv
+In [1]: from deal import pre, post, inv, ContractError
 
 In [2]: @pre(lambda *args: all(map(lambda x: x > 0, args)))
    ...: def my_sum(*args):

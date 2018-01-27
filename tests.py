@@ -1,4 +1,4 @@
-from contracts import pre, post, inv, ValidationError
+from deal import pre, post, inv, ValidationError
 try:
     import unittest2 as unittest
 except ImportError:
