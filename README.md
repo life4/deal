@@ -24,6 +24,20 @@ This library contain 3 main conception from DbC:
 * Readable source code (all decorators implemented by classes)
 
 
+## Installation
+
+Stable:
+
+```bash
+pip install deal
+```
+
+Dev:
+
+```bash
+pip install -e git+https://github.com/orsinium/deal.git#egg=deal
+```
+
 ## TL;DR
 
 * `@pre` -- validate function arguments (pre-validation).
