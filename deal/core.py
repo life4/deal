@@ -148,22 +148,31 @@ class InvariantedClass(object):
 class Invariant(_Base):
     exception = exceptions.InvContractError
 
+    def validate_chain(self, *args, **kwargs):
+        for validator in self.validators:
+            validator(*args, **kwargs)
+
     def __call__(self, _class):
         """
         Step 2. Return wrapped class.
         """
-        # change class name
-        if 'Invarianted' in _class.__name__:
-            name = _class.__name__
-        else:
-            name = _class.__name__ + 'Invarianted'
-
         # patch class parents and add method for validation
-        patched_class = type(
-            name,
-            (InvariantedClass, _class),
-            {'_validate_base': self.validate},
-        )
+
+        # if already invarianted
+        if hasattr(_class, '_validate_base'):
+            self.validators = (self.validate, _class._validate_base)
+            patched_class = type(
+                _class.__name__,
+                (_class, ),
+                {'_validate_base': self.validate_chain},
+            )
+        # if it's first invariant
+        else:
+            patched_class = type(
+                _class.__name__ + 'Invarianted',
+                (InvariantedClass, _class),
+                {'_validate_base': self.validate},
+            )
         # Magic: _validate_base method use Invariant as self, not _class
 
         # return update_wrapper(patched_class, _class)
