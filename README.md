@@ -20,7 +20,7 @@ This library contain 3 main conception from DbC:
 * Ability to return error message from contact.
 * Ability to use Django Form styled validators as contracts.
 * Attribute setting validation by invariant.
-* Validation by invariant dinamically setted attributes and methods.
+* Validation by invariant dynamically assigned to object attributes and methods.
 * Readable source code (all decorators implemented by classes)
 
 
