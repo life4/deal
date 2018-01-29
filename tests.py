@@ -145,6 +145,40 @@ class InvTest(unittest.TestCase):
             with self.assertRaises(InvContractError):
                 a.f(-2)
 
+    def test_chain(self):
+        @inv(lambda obj: obj.x > 0)
+        @inv(lambda obj: obj.x < 10)
+        class A(object):
+            x = 2
+
+        a = A()
+        with self.subTest(text='good'):
+            a.x = 4
+        with self.subTest(text='error'):
+            with self.assertRaises(InvContractError):
+                a.x = -2
+        with self.subTest(text='error'):
+            with self.assertRaises(InvContractError):
+                a.x = 20
+
+    def test_instance(self):
+        class A(object):
+            x = 2
+        PatchedA = inv(lambda obj: obj.x > 0)(A)  # noQA
+        a = PatchedA()
+        with self.subTest(text='isinstance'):
+            self.assertIsInstance(a, PatchedA)
+            self.assertIsInstance(a, A)
+
+        PatchedA2 = inv(lambda obj: obj.x > 0)(PatchedA)  # noQA
+        a = PatchedA2()
+        with self.subTest(text='isinstance'):
+            self.assertIsInstance(a, PatchedA)
+            self.assertIsInstance(a, PatchedA2)
+            self.assertIsInstance(a, A)
+        with self.subTest(text='class name'):
+            self.assertEqual(a.__class__.__name__.count('Invarianted'), 1)
+
 
 if __name__ == '__main__':
     unittest.main()
