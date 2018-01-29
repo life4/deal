@@ -1,4 +1,7 @@
-from deal import pre, post, inv, ValidationError
+from deal import pre, post, inv
+from deal.core import Pre, Post, Invariant
+from deal.exceptions import ContractError, PreContractError, PostContractError, InvContractError
+
 try:
     import unittest2 as unittest
 except ImportError:
@@ -6,23 +9,23 @@ except ImportError:
 
 
 class PreTest(unittest.TestCase):
-    def test_true_false(self):
+    def test_main(self):
         func = pre(lambda x: x > 0)(lambda x: x)
-        self.assertEqual(func(4), 4)
-        with self.assertRaises(ValidationError):
-            func(-2)
-        with self.assertRaises(ValidationError):
-            func(0)
+        with self.subTest(text='good'):
+            self.assertEqual(func(4), 4)
+        with self.subTest(text='error'):
+            with self.assertRaises(PreContractError):
+                func(-2)
 
 
 class PostTest(unittest.TestCase):
     def test_true_false(self):
         func = post(lambda x: x > 0)(lambda x: x)
-        self.assertEqual(func(4), 4)
-        with self.assertRaises(ValidationError):
-            func(-2)
-        with self.assertRaises(ValidationError):
-            func(0)
+        with self.subTest(text='good'):
+            self.assertEqual(func(4), 4)
+        with self.subTest(text='error'):
+            with self.assertRaises(PostContractError):
+                func(-2)
 
 
 class InvTest(unittest.TestCase):
@@ -32,12 +35,11 @@ class InvTest(unittest.TestCase):
             x = 2
 
         a = A()
-        a.x = 4
-        self.assertEqual(a.x, 4)
-        with self.assertRaises(ValidationError):
-            a.x = -2
-        with self.assertRaises(ValidationError):
-            a.x = 0
+        with self.subTest(text='good'):
+            a.x = 4
+        with self.subTest(text='error'):
+            with self.assertRaises(InvContractError):
+                a.x = -2
 
 
 if __name__ == '__main__':
