@@ -17,6 +17,21 @@ class PreTest(unittest.TestCase):
             with self.assertRaises(PreContractError):
                 func(-2)
 
+    def test_chain(self):
+        func = pre(lambda x: x < 10)(lambda x: x)
+        func = pre(lambda x: x > 0)(func)
+
+        with self.subTest(text='good'):
+            self.assertEqual(func(4), 4)
+
+        with self.subTest(text='error'):
+            with self.assertRaises(PreContractError):
+                func(-2)
+
+        with self.subTest(text='error'):
+            with self.assertRaises(PreContractError):
+                func(20)
+
     def test_init(self):
         with self.subTest(text='init doesn\'t raise any exceptions'):
             func = pre(lambda x: x > 0)
