@@ -149,8 +149,8 @@ class Invariant(_Base):
     exception = exceptions.InvContractError
 
     def validate_chain(self, *args, **kwargs):
-        for validator in self.validators:
-            validator(*args, **kwargs)
+        self.validate(*args, **kwargs)
+        self.child_validator(*args, **kwargs)
 
     def __call__(self, _class):
         """
@@ -160,7 +160,7 @@ class Invariant(_Base):
 
         # if already invarianted
         if hasattr(_class, '_validate_base'):
-            self.validators = (self.validate, _class._validate_base)
+            self.child_validator = _class._validate_base
             patched_class = type(
                 _class.__name__,
                 (_class, ),
