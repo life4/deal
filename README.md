@@ -105,7 +105,7 @@ In [11]: a.x = -10
 InvContractError:
 
 In [12]: A
-Out[12]: contracts.core.AInvarianted
+Out[12]: deal.core.AInvarianted
 
 ```
 
@@ -136,7 +136,7 @@ AssertionError: x must be > 0
 Validators (nearly Django Forms style, except initialization):
 
 ```python
-In [19]: class Validator:
+In [17]: class Validator:
     ...:     def __init__(self, x):
     ...:         self.x = x
     ...:         
@@ -147,26 +147,100 @@ In [19]: class Validator:
     ...:         return True
     ...:     
 
-In [20]: @pre(Validator)
+In [18]: @pre(Validator)
     ...: def f(x):
     ...:     return x * 2
     ...:
 
-In [21]: f(5)
-Out[21]: 10
+In [19]: f(5)
+Out[19]: 10
 
-In [22]: f(-5)
+In [20]: f(-5)
 PreContractError: ['x must be > 0']
 ```
 
 Return error message from contract:
 
 ```python
-In [23]: @pre(lambda x: x > 0 or "x must be > 0")
+In [21]: @pre(lambda x: x > 0 or "x must be > 0")
     ...: def f(x):
     ...:     return x * 2
     ...:
 
-In [24]: f(-5)
+In [22]: f(-5)
 PreContractError: x must be > 0
 ```
+
+Contracts chaining:
+
+```python
+In [23]: @pre(lambda x: x > 0)
+   ...: @pre(lambda x: x < 10)
+   ...: def f(x):
+   ...:     return x * 2
+   ...:
+
+In [24]: f(5)
+Out[24]: 10
+
+In [25]: f(-1)
+PreContractError:
+
+In [26]: f(12)
+PreContractError:
+```
+
+
+## Contracts chaining order
+
+* `@inv`: from top to bottom.
+* `@pre`: from top to bottom.
+* `@post`: from bottom to top.
+
+
+## Perfomance
+
+**NOTICE**: `1 µs == 1000 ns`
+
+`@pre` and `@post`:
+
+```python
+In [27]: f = lambda x: x
+
+In [28]: pre_f = pre(lambda x: True)(f)
+
+In [29]: post_f = post(lambda x: True)(f)
+
+In [30]: %timeit f(10)
+92.3 ns ± 3.62 ns per loop (mean ± std. dev. of 7 runs, 10000000 loops each)
+
+In [31]: %timeit pre_f(10)
+2.07 µs ± 92.5 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+
+In [32]: %timeit post_f(10)
+2.03 µs ± 18.6 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+```
+
++1 µs
+
+`@inv`:
+
+```python
+In [33]: class A:
+    ...:     x = 4
+    ...:     
+
+In [34]: InvA = inv(lambda obj: True)(A)
+
+In [35]: a = A()
+
+In [36]: inv_a = InvA()
+
+In [37]: %timeit a.x = 10
+76.4 ns ± 1.36 ns per loop (mean ± std. dev. of 7 runs, 10000000 loops each)
+
+In [38]: %timeit inv_a.x = 10
+6.89 µs ± 408 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+```
+
++6 µs
