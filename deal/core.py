@@ -1,5 +1,6 @@
-from functools import update_wrapper, partial
+from functools import partial, update_wrapper
 from types import MethodType
+
 from . import exceptions
 
 
@@ -57,8 +58,8 @@ class _Base(object):
         Step 2. Return wrapped function.
         """
         self.function = function
-        # return update_wrapper(self.patched_function, function)
-        return self.patched_function
+        new_function = partial(self.patched_function, self)
+        return update_wrapper(new_function, function)
 
 
 class Pre(_Base):
@@ -68,6 +69,7 @@ class Pre(_Base):
     """
     exception = exceptions.PreContractError
 
+    @staticmethod
     def patched_function(self, *args, **kwargs):
         """
         Step 3. Wrapped function calling.
@@ -83,6 +85,7 @@ class Post(_Base):
     """
     exception = exceptions.PostContractError
 
+    @staticmethod
     def patched_function(self, *args, **kwargs):
         """
         Step 3. Wrapped function calling.

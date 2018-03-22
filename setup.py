@@ -5,26 +5,27 @@ from setuptools import setup
 
 
 setup(
-    name     = 'deal',
-    version  = '1.1.0',
+    name='deal',
+    version='1.2.0',
 
-    author       = 'orsinium',
-    author_email = 'master_fess@mail.ru',
+    author='orsinium',
+    author_email='master_fess@mail.ru',
 
-    description  = 'Programming by contract library.',
-    long_description = open('README.rst').read(),
-    keywords     = ('python contracts pre post inv invariant '
-                    'contracts-programming decorators functional-programming '
-                    'design-by-contract'),
+    description='Programming by contract library.',
+    long_description=open('README.rst').read(),
+    keywords=(
+        'python contracts pre post inv invariant '
+        'contracts-programming decorators functional-programming '
+        'design-by-contract'),
 
-    packages = ['deal'],
-    requires = [],
+    packages=['deal'],
+    requires=[],
 
-    url          = 'https://github.com/orsinium/deal',
-    download_url = 'https://github.com/orsinium/deal/tarball/master',
+    url='https://github.com/orsinium/deal',
+    download_url='https://github.com/orsinium/deal/tarball/master',
 
-    license      = 'GNU Lesser General Public License v3.0',
-    classifiers  = [
+    license='GNU Lesser General Public License v3.0',
+    classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Plugins',
         'Intended Audience :: Developers',

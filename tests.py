@@ -75,12 +75,6 @@ class PreTest(unittest.TestCase):
                 except NameError as e:
                     self.assertEqual(e.args[0], 'TEST')
 
-    def test_call(self):
-        with self.subTest(text='call return patched function'):
-            deco = pre(lambda x: x > 0)
-            func = deco(lambda x: x)
-            self.assertIsInstance(func, type(deco.patched_function))
-
     def test_django_style(self):
         class Validator(object):
             def __init__(self, x):
@@ -120,6 +114,13 @@ class PreTest(unittest.TestCase):
                 func(-2)
             except PreContractError as e:
                 self.assertEqual(e.args[0], 'TEST')
+
+    def test_wrapping(self):
+        @pre(lambda x: x > 0)
+        def some_function(x):
+            return x
+        with self.subTest(text='good'):
+            self.assertEqual(some_function.__name__, 'some_function')
 
 
 class PostTest(unittest.TestCase):
