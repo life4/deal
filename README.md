@@ -1,4 +1,4 @@
-# Deal
+# Deal ![Travis CI](https://travis-ci.org/orsinium/deal.svg?branch=master)
 
 **Deal** -- python library for [design by contract](https://en.wikipedia.org/wiki/Design_by_contract) (DbC) programming.
 
