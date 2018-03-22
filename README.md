@@ -1,4 +1,8 @@
-# Deal  [![Build Status](https://travis-ci.org/orsinium/deal.svg?branch=master)](https://travis-ci.org/orsinium/deal) [![PyPI version](https://img.shields.io/pypi/v/deal.svg)](https://pypi.python.org/pypi/deal) [![Status](https://img.shields.io/pypi/status/deal.svg)](https://pypi.python.org/pypi/deal) [![Code size](https://img.shields.io/github/languages/code-size/orsinium/deal.svg)](https://github.com/orsinium/deal) [![License](https://img.shields.io/pypi/l/deal.svg)](LICENSE)
+# Deal
+
+![Deal Logo](logo.png)
+
+[![Build Status](https://travis-ci.org/orsinium/deal.svg?branch=master)](https://travis-ci.org/orsinium/deal) [![PyPI version](https://img.shields.io/pypi/v/deal.svg)](https://pypi.python.org/pypi/deal) [![Status](https://img.shields.io/pypi/status/deal.svg)](https://pypi.python.org/pypi/deal) [![Code size](https://img.shields.io/github/languages/code-size/orsinium/deal.svg)](https://github.com/orsinium/deal) [![License](https://img.shields.io/pypi/l/deal.svg)](LICENSE)
 
 **Deal** -- python library for [design by contract](https://en.wikipedia.org/wiki/Design_by_contract) (DbC) programming.
 
