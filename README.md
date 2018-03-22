@@ -8,8 +8,8 @@
 
 This library contain 3 main conception from DbC:
 
-* [Precondition](https://en.wikipedia.org/wiki/Precondition) -- condition that must always be true just prior to the execution of function.
-* [Postcondition](https://en.wikipedia.org/wiki/Postcondition) -- condition that must always be true just after the execution of function.
+* [Precondition](https://en.wikipedia.org/wiki/Precondition) -- condition that must be true before function is executed.
+* [Postcondition](https://en.wikipedia.org/wiki/Postcondition) -- condition that must be true after function executed.
 * [Invariant](https://en.wikipedia.org/wiki/Invariant) -- condition that can be relied upon to be true during execution of a program. In this library invariant condition check in 3 cases:
     1. Before class method execution.
     2. After class method execution.
@@ -18,14 +18,12 @@ This library contain 3 main conception from DbC:
 
 ## Features
 
-* Functional declaration for conditions.
-* Custom exceptions for best usage in try-except block.
-* Ability to set optional error message and (or) exception class.
-* Ability to return error message from contact.
-* Ability to use Django Form styled validators as contracts.
-* Attribute setting validation by invariant.
-* Validation by invariant dynamically assigned to object attributes and methods.
-* Readable source code (all decorators implemented by classes)
+* Functional declaration.
+* Custom exceptions.
+* Raising exceptions from contract.
+* Django Forms integration.
+* Attribute setting invariant validation.
+* Dynamically assigned attributes and methods invariant validation.
 
 
 ## Installation
