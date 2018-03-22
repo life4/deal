@@ -248,6 +248,12 @@ In [38]: %timeit inv_a.x = 10
 +6 µs
 
 
+## Contributors
+
+* [orsinium](https://github.com/orsinium/)
+* [Inokenty90](https://github.com/Inokenty90)
+
+
 ## TODO
 
 * Django Forms native support
