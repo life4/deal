@@ -21,7 +21,7 @@ This library contain 3 main conception from DbC:
 * Functional declaration.
 * Custom exceptions.
 * Raising exceptions from contract.
-* Django Forms integration.
+* Django Forms styled validators.
 * Attribute setting invariant validation.
 * Dynamically assigned attributes and methods invariant validation.
 
@@ -246,3 +246,10 @@ In [38]: %timeit inv_a.x = 10
 ```
 
 +6 µs
+
+
+## TODO
+
+* Django Forms native support
+* Marshmallow native support
+
