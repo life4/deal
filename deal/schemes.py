@@ -1,14 +1,19 @@
 
 
 class Scheme(object):
-    pass
+    def __init__(self, data, request=None):
+        self.data = data
+
+    def is_valid(self):
+        raise NotImplementedError
 
 
 def is_scheme(obj):
-    if isinstance(obj, Scheme):
+    if not hasattr(obj, 'mro'):
+        return False
+    if Scheme in obj.mro():
         return True
-    if hasattr(obj, 'mro'):
-        for parent in obj.mro():
-            if parent.__module__.startswith('djburger.'):
-                return True
+    for parent in obj.mro():
+        if parent.__module__.startswith('djburger.'):
+            return True
     return False

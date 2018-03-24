@@ -35,6 +35,7 @@ class _Base(object):
         # Schemes validation interface
         if is_scheme(self.validator):
             params = getcallargs(self.function, *args, **kwargs)
+            params.update(kwargs)
             validator = self.validator(data=params, request=None)
             if validator.is_valid():
                 return
