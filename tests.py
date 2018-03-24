@@ -1,4 +1,8 @@
+import djburger
+import marshmallow
+
 from deal import pre, post, inv, PreContractError, PostContractError, InvContractError
+from deal.schemes import is_scheme
 
 try:
     import unittest2 as unittest
@@ -194,6 +198,64 @@ class InvTest(unittest.TestCase):
             self.assertIsInstance(a, A)
         with self.subTest(text='class name'):
             self.assertEqual(a.__class__.__name__.count('Invarianted'), 1)
+
+
+class SchemeTests(unittest.TestCase):
+    def setUp(self):
+        class Scheme(djburger.v.b.Marshmallow):
+            name = marshmallow.fields.Str()
+        self.Scheme = Scheme
+
+    def test_detecting(self):
+        with self.subTest('is scheme'):
+            self.assertTrue(is_scheme(self.Scheme))
+        with self.subTest('is func'):
+            self.assertFalse(is_scheme(pre))
+        with self.subTest('is class'):
+            self.assertFalse(is_scheme(InvContractError))
+
+    def test_validation(self):
+        @pre(self.Scheme)
+        def func(name):
+            return name * 2
+
+        with self.subTest('simple call'):
+            self.assertEqual(func('Chris'), 'ChrisChris')
+
+        with self.subTest('not passed validation'):
+            with self.assertRaises(PreContractError):
+                func(123)
+
+        with self.subTest('error message'):
+            try:
+                func(123)
+            except PreContractError as e:
+                self.assertEqual(e.args[0], {'name': ['Not a valid string.']})
+
+    def test_arg_passing(self):
+        @pre(self.Scheme)
+        def func(name):
+            return name * 2
+
+        with self.subTest('arg'):
+            self.assertEqual(func('Chris'), 'ChrisChris')
+
+        with self.subTest('kwarg'):
+            self.assertEqual(func(name='Chris'), 'ChrisChris')
+
+        @pre(self.Scheme)
+        def func(**kwargs):
+            return kwargs['name'] * 3
+
+        with self.subTest('kwargs'):
+            self.assertEqual(func(name='Chris'), 'ChrisChrisChris')
+
+        @pre(self.Scheme)
+        def func(name='Max'):
+            return name * 2
+
+        with self.subTest('default'):
+            self.assertEqual(func(), 'MaxMax')
 
 
 if __name__ == '__main__':
