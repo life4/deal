@@ -142,12 +142,12 @@ AssertionError: x must be > 0
 Return error message from contract:
 
 ```python
-In [21]: @pre(lambda x: x > 0 or "x must be > 0")
+In [17]: @pre(lambda x: x > 0 or "x must be > 0")
     ...: def f(x):
     ...:     return x * 2
     ...:
 
-In [22]: f(-5)
+In [18]: f(-5)
 PreContractError: x must be > 0
 ```
 
@@ -156,7 +156,7 @@ PreContractError: x must be > 0
 Simple validator (nearly Django Forms style, except initialization):
 
 ```python
-In [17]: class Validator:
+In [19]: class Validator:
     ...:     def __init__(self, x):
     ...:         self.x = x
     ...:         
@@ -167,17 +167,42 @@ In [17]: class Validator:
     ...:         return True
     ...:     
 
-In [18]: @pre(Validator)
+In [20]: @pre(Validator)
     ...: def f(x):
     ...:     return x * 2
     ...:
 
-In [19]: f(5)
-Out[19]: 10
+In [21]: f(5)
+Out[21]: 10
 
-In [20]: f(-5)
+In [22]: f(-5)
 PreContractError: ['x must be > 0']
 ```
+
+You can use any validators from [djburger](https://github.com/orsinium/djburger). See [validators documentation](https://djburger.readthedocs.io/en/latest/validators.html) and [list of supported external libraries](https://github.com/orsinium/djburger#external-libraries-support).
+
+For example, deal + djburger + [marshmallow](https://marshmallow.readthedocs.io/en/latest/):
+
+```python
+In [23]: import djburger, marshmallow
+
+In [24]: class Scheme(djburger.v.b.Marshmallow):
+   ...:     name = marshmallow.fields.Str()
+   ...:
+
+In [25]: @pre(Scheme)
+   ...: def func(name):
+   ...:     return name * 2
+   ...:
+
+In [26]: func('Chris')
+Out[26]: 'ChrisChris'
+
+In [27]: func(123)
+PreContractError: {'name': ['Not a valid string.']}
+```
+
+INFO: djburger is django independent. You can use it in any python projects.
 
 ### Contracts chaining
 
