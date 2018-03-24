@@ -206,7 +206,7 @@ INFO: djburger is django independent. You can use it in any python projects.
 
 ### Contracts chaining
 
-Contracts chaining:
+You can chain any contracts:
 
 ```python
 In [23]: @pre(lambda x: x > 0)

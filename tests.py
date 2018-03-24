@@ -1,7 +1,7 @@
 import djburger
 import marshmallow
 
-from deal import pre, post, inv, PreContractError, PostContractError, InvContractError
+from deal import pre, post, inv, PreContractError, PostContractError, InvContractError, Scheme
 from deal.schemes import is_scheme
 
 try:
@@ -200,11 +200,11 @@ class InvTest(unittest.TestCase):
             self.assertEqual(a.__class__.__name__.count('Invarianted'), 1)
 
 
-class SchemeTests(unittest.TestCase):
+class MarshmallowSchemeTests(unittest.TestCase):
     def setUp(self):
-        class Scheme(djburger.v.b.Marshmallow):
+        class _Scheme(djburger.v.b.Marshmallow):
             name = marshmallow.fields.Str()
-        self.Scheme = Scheme
+        self.Scheme = _Scheme
 
     def test_detecting(self):
         with self.subTest('is scheme'):
@@ -256,6 +256,17 @@ class SchemeTests(unittest.TestCase):
 
         with self.subTest('default'):
             self.assertEqual(func(), 'MaxMax')
+
+
+class DefaultSchemeTests(MarshmallowSchemeTests):
+    def setUp(self):
+        class MyScheme(Scheme):
+            def is_valid(self):
+                if not isinstance(self.data['name'], str):
+                    self.errors = {'name': ['Not a valid string.']}
+                    return False
+                return True
+        self.Scheme = MyScheme
 
 
 if __name__ == '__main__':
