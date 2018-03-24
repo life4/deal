@@ -59,6 +59,8 @@ Library decorators doesn't catch any exceptions raised from contracts.
 
 ## Usage
 
+### Contract types
+
 Pre (`pre`, `require`):
 
 ```python
@@ -111,6 +113,8 @@ Out[12]: deal.core.AInvarianted
 
 ```
 
+### Customize error message
+
 Custom message:
 
 ```python
@@ -135,7 +139,21 @@ In [16]: f(-2)
 AssertionError: x must be > 0
 ```
 
-Validators (nearly Django Forms style, except initialization):
+Return error message from contract:
+
+```python
+In [21]: @pre(lambda x: x > 0 or "x must be > 0")
+    ...: def f(x):
+    ...:     return x * 2
+    ...:
+
+In [22]: f(-5)
+PreContractError: x must be > 0
+```
+
+### Validators
+
+Simple validator (nearly Django Forms style, except initialization):
 
 ```python
 In [17]: class Validator:
@@ -161,17 +179,7 @@ In [20]: f(-5)
 PreContractError: ['x must be > 0']
 ```
 
-Return error message from contract:
-
-```python
-In [21]: @pre(lambda x: x > 0 or "x must be > 0")
-    ...: def f(x):
-    ...:     return x * 2
-    ...:
-
-In [22]: f(-5)
-PreContractError: x must be > 0
-```
+### Contracts chaining
 
 Contracts chaining:
 
@@ -193,7 +201,7 @@ PreContractError:
 ```
 
 
-## Contracts chaining order
+Chaining order:
 
 * `@inv`: from top to bottom.
 * `@pre`: from top to bottom.
@@ -258,4 +266,3 @@ In [38]: %timeit inv_a.x = 10
 
 * Django Forms native support
 * Marshmallow native support
-
