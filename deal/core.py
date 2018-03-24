@@ -1,7 +1,9 @@
 from functools import partial, update_wrapper
+from inspect import getcallargs
 from types import MethodType
 
 from . import exceptions
+from .schemes import is_scheme
 
 
 __all__ = ['Pre', 'Post', 'Invariant']
@@ -30,7 +32,15 @@ class _Base(object):
         """
         Step 4 (6 for invariant). Process contract (validator)
         """
-        # Django Forms validation interface
+        # Schemes validation interface
+        if is_scheme(self.validator):
+            params = getcallargs(self.function, *args, **kwargs)
+            validator = self.validator(data=params, request=None)
+            if validator.is_valid():
+                return
+            raise self.exception(validator.errors)
+
+        # Simple validation interface
         if hasattr(self.validator, 'is_valid'):
             validator = self.validator(*args, **kwargs)
             # is valid
