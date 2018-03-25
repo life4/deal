@@ -248,21 +248,21 @@ In [4]: f(1, 2, 3, 4, 5, 6)
 4. You can use any validators from [djburger](https://github.com/orsinium/djburger). See [validators documentation](https://djburger.readthedocs.io/en/latest/validators.html) and [list of supported external libraries](https://github.com/orsinium/djburger#external-libraries-support). For example, deal + djburger + [marshmallow](https://marshmallow.readthedocs.io/en/latest/):
 
 ```python
-In [23]: import djburger, marshmallow
+In [1]: import djburger, marshmallow
 
-In [24]: class Scheme(djburger.v.b.Marshmallow):
+In [2]: class Scheme(djburger.v.b.Marshmallow):
    ...:     name = marshmallow.fields.Str()
    ...:
 
-In [25]: @pre(Scheme)
+In [3]: @pre(Scheme)
    ...: def func(name):
    ...:     return name * 2
    ...:
 
-In [26]: func('Chris')
-Out[26]: 'ChrisChris'
+In [4]: func('Chris')
+Out[4]: 'ChrisChris'
 
-In [27]: func(123)
+In [5]: func(123)
 PreContractError: {'name': ['Not a valid string.']}
 ```
 
@@ -273,19 +273,19 @@ Djburger is Django independent. You can use it in any python projects.
 You can chain any contracts:
 
 ```python
-In [23]: @pre(lambda x: x > 0)
+In [1]: @pre(lambda x: x > 0)
    ...: @pre(lambda x: x < 10)
    ...: def f(x):
    ...:     return x * 2
    ...:
 
-In [24]: f(5)
-Out[24]: 10
+In [2]: f(5)
+Out[2]: 10
 
-In [25]: f(-1)
+In [3]: f(-1)
 PreContractError:
 
-In [26]: f(12)
+In [3]: f(12)
 PreContractError:
 ```
 
@@ -304,19 +304,19 @@ Chaining order:
 `@pre` and `@post`:
 
 ```python
-In [27]: f = lambda x: x
+In [1]: f = lambda x: x
 
-In [28]: pre_f = pre(lambda x: True)(f)
+In [2]: pre_f = pre(lambda x: True)(f)
 
-In [29]: post_f = post(lambda x: True)(f)
+In [3]: post_f = post(lambda x: True)(f)
 
-In [30]: %timeit f(10)
+In [4]: %timeit f(10)
 92.3 ns ± 3.62 ns per loop (mean ± std. dev. of 7 runs, 10000000 loops each)
 
-In [31]: %timeit pre_f(10)
+In [5]: %timeit pre_f(10)
 2.07 µs ± 92.5 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
 
-In [32]: %timeit post_f(10)
+In [6]: %timeit post_f(10)
 2.03 µs ± 18.6 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
 ```
 
@@ -325,20 +325,20 @@ In [32]: %timeit post_f(10)
 `@inv`:
 
 ```python
-In [33]: class A:
-    ...:     x = 4
-    ...:     
+In [1]: class A:
+   ...:     x = 4
+   ...:     
 
-In [34]: InvA = inv(lambda obj: True)(A)
+In [2]: InvA = inv(lambda obj: True)(A)
 
-In [35]: a = A()
+In [3]: a = A()
 
-In [36]: inv_a = InvA()
+In [4]: inv_a = InvA()
 
-In [37]: %timeit a.x = 10
+In [5]: %timeit a.x = 10
 76.4 ns ± 1.36 ns per loop (mean ± std. dev. of 7 runs, 10000000 loops each)
 
-In [38]: %timeit inv_a.x = 10
+In [6]: %timeit inv_a.x = 10
 6.89 µs ± 408 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
 ```
 
