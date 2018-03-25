@@ -348,13 +348,13 @@ In [6]: %timeit inv_a.x = 10
 
 ## Changelog
 
-1.0. `@pre`, `@post`, `@inv`, error messages customization.
+**1.0.** `@pre`, `@post`, `@inv`, error messages customization.
 
-1.1. `@inv` chaining.
+**1.1.** `@inv` chaining.
 
-1.2. Travis CI, [wrapper updating](https://docs.python.org/3/library/functools.html#functools.update_wrapper).
+**1.2.** [Travis CI](https://travis-ci.org/orsinium/deal), [wrapper updating](https://docs.python.org/3/library/functools.html#functools.update_wrapper).
 
-2.0. [Schemes](#validators), [djburger](https://github.com/orsinium/djburger) validators support.
+**2.0.** [Schemes](#validators), [djburger](https://github.com/orsinium/djburger) validators support.
 
 
 ## Contributors
