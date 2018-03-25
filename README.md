@@ -64,7 +64,7 @@ Library decorators doesn't catch any exceptions raised from contracts.
 Pre (`pre`, `require`):
 
 ```python
-In [1]: from deal import pre, post, inv, ContractError
+In [1]: from deal import pre, post, inv, Scheme
 
 In [2]: @pre(lambda *args: all(map(lambda x: x > 0, args)))
    ...: def my_sum(*args):
@@ -81,35 +81,35 @@ PreContractError:
 Post (`post`, `ensure`):
 
 ```python
-In [5]: @post(lambda x: x > 0)
+In [1]: @post(lambda x: x > 0)
    ...: def my_sum(*args):
    ...:     return sum(args)
    ...:
 
-In [6]: my_sum(2, -3, 4)
-Out[6]: 3
+In [2]: my_sum(2, -3, 4)
+Out[2]: 3
 
-In [7]: my_sum(2, -3, -4)
+In [3]: my_sum(2, -3, -4)
 PostContractError:
 ```
 
 Inv (`inv`, `invariant`):
 
 ```python
-In [8]: @inv(lambda obj: obj.x > 0)
+In [1]: @inv(lambda obj: obj.x > 0)
    ...: class A:
    ...:     x = 4
    ...:     
 
-In [9]: a = A()
+In [2]: a = A()
 
-In [10]: a.x = 10
+In [3]: a.x = 10
 
-In [11]: a.x = -10
+In [4]: a.x = -10
 InvContractError:
 
-In [12]: A
-Out[12]: deal.core.AInvarianted
+In [5]: A
+Out[5]: deal.core.AInvarianted
 
 ```
 
@@ -118,70 +118,134 @@ Out[12]: deal.core.AInvarianted
 Custom message:
 
 ```python
-In [13]: @pre(lambda x: x > 0, "x must be > 0")
-    ...: def f(x):
-    ...:     return x * 2
-    ...:
+In [1]: @pre(lambda x: x > 0, "x must be > 0")
+   ...: def f(x):
+   ...:     return x * 2
+   ...:
 
-In [14]: f(-2)
+In [2]: f(-2)
 PreContractError: x must be > 0
 ```
 
 Custom exception:
 
 ```python
-In [15]: @pre(lambda x: x > 0, exception=AssertionError("x must be > 0"))
-    ...: def f(x):
-    ...:     return x * 2
-    ...:
+In [1]: @pre(lambda x: x > 0, exception=AssertionError("x must be > 0"))
+   ...: def f(x):
+   ...:     return x * 2
+   ...:
 
-In [16]: f(-2)
+In [2]: f(-2)
 AssertionError: x must be > 0
 ```
 
 Return error message from contract:
 
 ```python
-In [17]: @pre(lambda x: x > 0 or "x must be > 0")
-    ...: def f(x):
-    ...:     return x * 2
-    ...:
+In [1]: @pre(lambda x: x > 0 or "x must be > 0")
+   ...: def f(x):
+   ...:     return x * 2
+   ...:
 
-In [18]: f(-5)
+In [2]: f(-5)
 PreContractError: x must be > 0
 ```
 
 ### Validators
 
-Simple validator (nearly Django Forms style, except initialization):
+1. Regular contract with errors returning:
 
 ```python
-In [19]: class Validator:
-    ...:     def __init__(self, x):
-    ...:         self.x = x
-    ...:         
-    ...:     def is_valid(self):
-    ...:         if self.x <= 0:
-    ...:             self.errors = ['x must be > 0']
-    ...:             return False
-    ...:         return True
-    ...:     
+In [1]: def contract(name):
+   ...:     if not isinstance(name, str):
+   ...:         return "name must be str"
+   ...:     return True
+   ...: 
 
-In [20]: @pre(Validator)
-    ...: def f(x):
-    ...:     return x * 2
-    ...:
+In [2]: @pre(contract)
+   ...: def f(x):
+   ...:     return x * 2
+   ...: 
 
-In [21]: f(5)
-Out[21]: 10
+In [3]: f('Chris')
+Out[3]: 'ChrisChris'
 
-In [22]: f(-5)
+In [4]: f(4)
+PreContractError: name must be str
+```
+
+2. Simple validator (nearly Django Forms style, except initialization):
+
+```python
+In [1]: class Validator:
+   ...:     def __init__(self, x):
+   ...:         self.x = x
+   ...:         
+   ...:     def is_valid(self):
+   ...:         if self.x <= 0:
+   ...:             self.errors = ['x must be > 0']
+   ...:             return False
+   ...:         return True
+   ...:     
+
+In [2]: @pre(Validator)
+   ...: def f(x):
+   ...:     return x * 2
+   ...:
+
+In [3]: f(5)
+Out[3]: 10
+
+In [4]: f(-5)
 PreContractError: ['x must be > 0']
 ```
 
-You can use any validators from [djburger](https://github.com/orsinium/djburger). See [validators documentation](https://djburger.readthedocs.io/en/latest/validators.html) and [list of supported external libraries](https://github.com/orsinium/djburger#external-libraries-support).
+3. Scheme like simple validator but `data` attribute contains dictionary with all passed arguments:
 
-For example, deal + djburger + [marshmallow](https://marshmallow.readthedocs.io/en/latest/):
+```python
+
+In [1]: class NameScheme(Scheme):
+   ...:     def is_valid(self):
+   ...:         if not isinstance(self.data['name'], str):
+   ...:             self.errors = ['name must be str']
+   ...:             return False
+   ...:         return True
+   ...:     
+
+In [2]: @pre(NameScheme)
+   ...: def f(name):
+   ...:     return name * 2
+   ...: 
+
+In [3]: f('Chris')
+Out[3]: 'ChrisChris'
+
+In [4]: f(3)
+PreContractError: ['name must be str']
+```
+
+Scheme automatically detect all arguments names:
+
+```python
+In [1]: class Printer(Scheme):
+   ...:     def is_valid(self):
+   ...:         print(self.data)
+   ...:         return True
+   ...:     
+
+In [2]: @pre(Printer)
+   ...: def f(a, b, c=4, *args, **kwargs):
+   ...:     pass
+   ...: 
+
+In [3]: f(1, b=2, e=6)
+{'args': (), 'a': 1, 'b': 2, 'c': 4, 'e': 6, 'kwargs': {'e': 6}}
+
+In [4]: f(1, 2, 3, 4, 5, 6)
+{'a': 1, 'b': 2, 'c': 3, 'args': (4, 5, 6), 'kwargs': {}}
+```
+
+4. You can use any validators from [djburger](https://github.com/orsinium/djburger). See [validators documentation](https://djburger.readthedocs.io/en/latest/validators.html) and [list of supported external libraries](https://github.com/orsinium/djburger#external-libraries-support). For example, deal + djburger + [marshmallow](https://marshmallow.readthedocs.io/en/latest/):
 
 ```python
 In [23]: import djburger, marshmallow
@@ -202,7 +266,7 @@ In [27]: func(123)
 PreContractError: {'name': ['Not a valid string.']}
 ```
 
-INFO: djburger is django independent. You can use it in any python projects.
+Djburger is Django independent. You can use it in any python projects.
 
 ### Contracts chaining
 
