@@ -40,6 +40,7 @@ Dev:
 pip install -e git+https://github.com/orsinium/deal.git#egg=deal
 ```
 
+
 ## TL;DR
 
 * `@pre` -- validate function arguments (pre-validation).
@@ -345,13 +346,15 @@ In [6]: %timeit inv_a.x = 10
 +6 µs
 
 
+## Changelog
+
+1.0. `@pre`, `@post`, `@inv`, error messages customization
+1.1. `@inv` chaining
+1.2. Travis CI, [wrapper updating](https://docs.python.org/3/library/functools.html#functools.update_wrapper).
+2.0. [Schemes](#validators), [djburger](https://github.com/orsinium/djburger) validators support.
+
+
 ## Contributors
 
 * [orsinium](https://github.com/orsinium/)
-* [Inokenty90](https://github.com/Inokenty90)
-
-
-## TODO
-
-* Django Forms native support
-* Marshmallow native support
+* [Inokenty90](https://github.com/Inokenty90/)
