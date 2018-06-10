@@ -5,5 +5,8 @@ python:
   - "3.6"
 install:
   - pip install unittest2
+  - pip install coveralls
   - pip install -r constraints.txt
-script: python tests.py
+script:
+  - coverage run --source deal tests.py
+  - coveralls

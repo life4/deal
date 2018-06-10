@@ -2,7 +2,7 @@
 
 ![Deal Logo](logo.png)
 
-[![Build Status](https://travis-ci.org/orsinium/deal.svg?branch=master)](https://travis-ci.org/orsinium/deal) [![PyPI version](https://img.shields.io/pypi/v/deal.svg)](https://pypi.python.org/pypi/deal) [![Status](https://img.shields.io/pypi/status/deal.svg)](https://pypi.python.org/pypi/deal) [![Code size](https://img.shields.io/github/languages/code-size/orsinium/deal.svg)](https://github.com/orsinium/deal) [![License](https://img.shields.io/pypi/l/deal.svg)](LICENSE)
+[![Build Status](https://travis-ci.org/orsinium/deal.svg?branch=master)](https://travis-ci.org/orsinium/deal) [![Coverage Status](https://coveralls.io/repos/github/orsinium/deal/badge.svg)](https://coveralls.io/github/orsinium/deal) [![PyPI version](https://img.shields.io/pypi/v/deal.svg)](https://pypi.python.org/pypi/deal) [![Development Status](https://img.shields.io/pypi/status/deal.svg)](https://pypi.python.org/pypi/deal) [![Code size](https://img.shields.io/github/languages/code-size/orsinium/deal.svg)](https://github.com/orsinium/deal) [![License](https://img.shields.io/pypi/l/deal.svg)](LICENSE)
 
 **Deal** -- python library for [design by contract](https://en.wikipedia.org/wiki/Design_by_contract) (DbC) programming.
 
@@ -161,12 +161,12 @@ In [1]: def contract(name):
    ...:     if not isinstance(name, str):
    ...:         return "name must be str"
    ...:     return True
-   ...: 
+   ...:
 
 In [2]: @pre(contract)
    ...: def f(x):
    ...:     return x * 2
-   ...: 
+   ...:
 
 In [3]: f('Chris')
 Out[3]: 'ChrisChris'
@@ -216,7 +216,7 @@ In [1]: class NameScheme(Scheme):
 In [2]: @pre(NameScheme)
    ...: def f(name):
    ...:     return name * 2
-   ...: 
+   ...:
 
 In [3]: f('Chris')
 Out[3]: 'ChrisChris'
@@ -237,7 +237,7 @@ In [1]: class Printer(Scheme):
 In [2]: @pre(Printer)
    ...: def f(a, b, c=4, *args, **kwargs):
    ...:     pass
-   ...: 
+   ...:
 
 In [3]: f(1, b=2, e=6)
 {'args': (), 'a': 1, 'b': 2, 'c': 4, 'e': 6, 'kwargs': {'e': 6}}
