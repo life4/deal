@@ -51,7 +51,7 @@ class _Base(object):
             if hasattr(validator, 'errors'):
                 raise self.exception(validator.errors)
             if hasattr(validator, '_errors'):
-                raise self.exception(validator.errors)
+                raise self.exception(validator._errors)
             raise self.exception
 
         validation_result = self.validator(*args, **kwargs)

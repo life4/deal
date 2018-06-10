@@ -5,7 +5,7 @@ class Scheme(object):
         self.data = data
 
     def is_valid(self):
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
 
 def is_scheme(obj):

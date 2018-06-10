@@ -79,17 +79,7 @@ class PreTest(unittest.TestCase):
                 except NameError as e:
                     self.assertEqual(e.args[0], 'TEST')
 
-    def test_django_style(self):
-        class Validator(object):
-            def __init__(self, x):
-                self.x = x
-
-            def is_valid(self):
-                if self.x <= 0:
-                    self.errors = 'TEST'
-                    return False
-                return True
-
+    def _test_validator(self, Validator):
         func = pre(Validator)(lambda x: x)
         with self.subTest(text='good'):
             self.assertEqual(func(4), 4)
@@ -103,6 +93,50 @@ class PreTest(unittest.TestCase):
                 func(-2)
             except PreContractError as e:
                 self.assertEqual(e.args[0], 'TEST')
+
+    def test_django_style(self):
+        class Validator(object):
+            def __init__(self, x):
+                self.x = x
+
+            def is_valid(self):
+                if self.x <= 0:
+                    self.errors = 'TEST'
+                    return False
+                return True
+
+        self._test_validator(Validator)
+
+    def test_django_style_hidden_attr(self):
+        class Validator(object):
+            def __init__(self, x):
+                self.x = x
+
+            def is_valid(self):
+                if self.x <= 0:
+                    self._errors = 'TEST'
+                    return False
+                return True
+
+        self._test_validator(Validator)
+
+    def test_django_style_without_attr(self):
+        class Validator(object):
+            def __init__(self, x):
+                self.x = x
+
+            def is_valid(self):
+                if self.x <= 0:
+                    return False
+                return True
+
+        func = pre(Validator)(lambda x: x)
+        with self.subTest(text='good'):
+            self.assertEqual(func(4), 4)
+
+        with self.subTest(text='error'):
+            with self.assertRaises(PreContractError):
+                func(-2)
 
     def test_error_returning(self):
         func = pre(lambda x: x > 0 or 'TEST')(lambda x: x)
