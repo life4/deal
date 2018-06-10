@@ -6,7 +6,8 @@ Deal
 
    Deal Logo
 
-|Build Status| |PyPI version| |Status| |Code size| |License|
+|Build Status| |Coverage Status| |PyPI version| |Development Status|
+|Code size| |License|
 
 **Deal** -- python library for `design by
 contract <https://en.wikipedia.org/wiki/Design_by_contract>`__ (DbC)
@@ -177,12 +178,12 @@ Validators
        ...:     if not isinstance(name, str):
        ...:         return "name must be str"
        ...:     return True
-       ...: 
+       ...:
 
     In [2]: @pre(contract)
        ...: def f(x):
        ...:     return x * 2
-       ...: 
+       ...:
 
     In [3]: f('Chris')
     Out[3]: 'ChrisChris'
@@ -233,7 +234,7 @@ Validators
     In [2]: @pre(NameScheme)
        ...: def f(name):
        ...:     return name * 2
-       ...: 
+       ...:
 
     In [3]: f('Chris')
     Out[3]: 'ChrisChris'
@@ -254,7 +255,7 @@ Scheme automatically detect all arguments names:
     In [2]: @pre(Printer)
        ...: def f(a, b, c=4, *args, **kwargs):
        ...:     pass
-       ...: 
+       ...:
 
     In [3]: f(1, b=2, e=6)
     {'args': (), 'a': 1, 'b': 2, 'c': 4, 'e': 6, 'kwargs': {'e': 6}}
@@ -388,9 +389,11 @@ Contributors
 
 .. |Build Status| image:: https://travis-ci.org/orsinium/deal.svg?branch=master
    :target: https://travis-ci.org/orsinium/deal
+.. |Coverage Status| image:: https://coveralls.io/repos/github/orsinium/deal/badge.svg
+   :target: https://coveralls.io/github/orsinium/deal
 .. |PyPI version| image:: https://img.shields.io/pypi/v/deal.svg
    :target: https://pypi.python.org/pypi/deal
-.. |Status| image:: https://img.shields.io/pypi/status/deal.svg
+.. |Development Status| image:: https://img.shields.io/pypi/status/deal.svg
    :target: https://pypi.python.org/pypi/deal
 .. |Code size| image:: https://img.shields.io/github/languages/code-size/orsinium/deal.svg
    :target: https://github.com/orsinium/deal

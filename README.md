@@ -356,6 +356,8 @@ In [6]: %timeit inv_a.x = 10
 
 **2.0.** [Schemes](#validators), [djburger](https://github.com/orsinium/djburger) validators support.
 
+**2.1** `@pre` and `@post` can decorate class methods.
+
 
 ## Contributors
 
