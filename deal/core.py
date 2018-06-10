@@ -69,8 +69,12 @@ class _Base(object):
         Step 2. Return wrapped function.
         """
         self.function = function
-        new_function = partial(self.patched_function, self)
-        return update_wrapper(new_function, function)
+
+        # we can't use partial here because python can't bound class instance to partial.
+        def wrapped(*args, **kwargs):
+            return self.patched_function(*args, **kwargs)
+
+        return update_wrapper(wrapped, function)
 
 
 class Pre(_Base):
@@ -80,7 +84,6 @@ class Pre(_Base):
     """
     exception = exceptions.PreContractError
 
-    @staticmethod
     def patched_function(self, *args, **kwargs):
         """
         Step 3. Wrapped function calling.
@@ -96,7 +99,6 @@ class Post(_Base):
     """
     exception = exceptions.PostContractError
 
-    @staticmethod
     def patched_function(self, *args, **kwargs):
         """
         Step 3. Wrapped function calling.

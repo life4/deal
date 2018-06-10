@@ -126,6 +126,26 @@ class PreTest(unittest.TestCase):
         with self.subTest(text='good'):
             self.assertEqual(some_function.__name__, 'some_function')
 
+    def test_method_decorator(self):
+
+        class Class(object):
+            y = 7
+
+            @pre(lambda self, x: x > 0)
+            def method(self, x):
+                return x * 2
+
+            @pre(lambda self, x: x > 0)
+            def method2(self, y):
+                return self.y
+
+        self.assertEqual(Class().method(2), 4)
+        self.assertEqual(Class().method2(2), 7)
+        with self.assertRaises(PreContractError):
+            Class().method(-2)
+        with self.assertRaises(PreContractError):
+            Class().method2(-2)
+
 
 class PostTest(unittest.TestCase):
     def test_main(self):
