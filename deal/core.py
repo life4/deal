@@ -71,7 +71,7 @@ class _Base(object):
         """
         # if contract only for dev, but this is prod, do not wrap function
         if self.debug and not __debug__:
-            return function
+            return function  # pragma: no cover
 
         self.function = function
 
