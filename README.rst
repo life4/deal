@@ -320,6 +320,28 @@ Chaining order:
 -  ``@pre``: from top to bottom.
 -  ``@post``: from bottom to top.
 
+Disable contracts on production
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you want disable contracts on production, pass ``debug=True`` to
+decorator:
+
+.. code:: python
+
+    In [2]: from deal import pre, post, inv, Scheme
+       ...: @post(lambda x: x > 0, debug=True)
+       ...: def my_sum(*args):
+       ...:     return sum(args)
+       ...:
+
+If you run python with ``-O`` option, contracts will be disabled. This
+is uses Python's ``__debug__`` option:
+
+    The built-in variable ``__debug__`` is True under normal
+    circumstances, False when optimization is requested (command line
+    option -O). - `Official
+    documentation <https://docs.python.org/3/reference/simple_stmts.html#assert>`__
+
 Perfomance
 ----------
 
@@ -380,6 +402,11 @@ updating <https://docs.python.org/3/library/functools.html#functools.update_wrap
 
 **2.0.** `Schemes <#validators>`__,
 `djburger <https://github.com/orsinium/djburger>`__ validators support.
+
+**2.1** ``@pre`` and ``@post`` can decorate class methods.
+
+**2.2** new ``debug`` option for optional disabling contracts on
+production.
 
 Contributors
 ------------

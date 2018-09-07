@@ -375,6 +375,8 @@ In [6]: %timeit inv_a.x = 10
 
 **2.1** `@pre` and `@post` can decorate class methods.
 
+**2.2** new `debug` option for optional disabling contracts on production.
+
 
 ## Contributors
 
