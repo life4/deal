@@ -18,11 +18,12 @@ except NameError:
 class _Base(object):
     exception = exceptions.ContractError
 
-    def __init__(self, validator, message=None, exception=None):
+    def __init__(self, validator, message=None, exception=None, debug=False):
         """
         Step 1. Set contract (validator).
         """
         self.validator = validator
+        self.debug = debug
         if exception:
             self.exception = exception
         if message:
@@ -68,6 +69,10 @@ class _Base(object):
         """
         Step 2. Return wrapped function.
         """
+        # if contract only for dev, but this is prod, do not wrap function
+        if self.debug and not __debug__:
+            return function
+
         self.function = function
 
         # we can't use partial here because python can't bound class instance to partial.
