@@ -9,6 +9,7 @@ __all__ = [
     'inv', 'invariant',
     'raises', 'safe',
     'offline', 'silent',
+    'chain', 'pure',
 ]
 
 
@@ -28,3 +29,14 @@ def _optional(_contract, _func=None, message=None, exception=None, debug=False):
 offline = partial(_optional, Offline)
 safe = partial(_optional, Raises)
 silent = partial(_optional, Silent)
+
+
+def chain(*contracts):
+    def wrapped(func):
+        for contract in contracts:
+            func = contract(func)
+        return func
+    return wrapped
+
+
+pure = chain(offline, safe, silent)

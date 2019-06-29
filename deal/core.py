@@ -229,6 +229,8 @@ class Raises(_Base):
         """
         try:
             return self.function(*args, **kwargs)
+        except exceptions.ContractError:
+            raise
         except Exception as exc:
             if not isinstance(exc, self.exceptions):
                 raise self.exception from exc
