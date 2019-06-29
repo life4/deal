@@ -1,4 +1,4 @@
-# @pre
+# pre
 
 [Precondition](https://en.wikipedia.org/wiki/Precondition) -- condition that must be true before function is executed. Raises `PreContractError` otherwise.
 

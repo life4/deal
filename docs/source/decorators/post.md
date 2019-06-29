@@ -1,4 +1,4 @@
-# @post
+# post
 
 [Postcondition](https://en.wikipedia.org/wiki/Postcondition) -- condition that must be true after function executed. Raises `PostContractError` otherwise.
 
