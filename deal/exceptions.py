@@ -22,3 +22,7 @@ class RaisesContractError(ContractError):
 
 class OfflineContractError(ContractError):
     pass
+
+
+class SilentContractError(ContractError):
+    pass

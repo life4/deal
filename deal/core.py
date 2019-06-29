@@ -1,10 +1,17 @@
+import socket
+import sys
 from functools import partial, update_wrapper
 from inspect import getcallargs
-import socket
 from types import MethodType
 
 from . import exceptions
 from .schemes import is_scheme
+
+
+try:
+    from io import StringIO
+except ImportError:
+    from cStringIO import StringIO  # Python 2.7
 
 
 __all__ = ['Pre', 'Post', 'Invariant', 'Raises']
@@ -255,3 +262,26 @@ class Offline(_Base):
 
     def fake_socket(self, *args, **kwargs):
         raise self.exception
+
+
+class PatchedStringIO(StringIO):
+    def __init__(self, exception):
+        self.exception = exception
+
+    def write(self, *args, **kwargs):
+        raise self.exception
+
+
+class Silent(Offline):
+    exception = exceptions.SilentContractError
+
+    def patched_function(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        true_stdout = sys.stdout
+        sys.stdout = PatchedStringIO(exception=self.exception)
+        try:
+            return self.function(*args, **kwargs)
+        finally:
+            sys.stdout = true_stdout

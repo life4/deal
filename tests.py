@@ -2,9 +2,9 @@ import djburger
 import marshmallow
 import urllib3
 
-from deal import pre, post, inv, raises, offline
+from deal import pre, post, inv, raises, offline, silent
 from deal import PreContractError, PostContractError, InvContractError
-from deal import OfflineContractError, RaisesContractError, Scheme
+from deal import OfflineContractError, RaisesContractError, SilentContractError, Scheme
 from deal.schemes import is_scheme
 
 try:
@@ -355,6 +355,21 @@ class OfflineTest(unittest.TestCase):
         with self.subTest(text='error'):
             with self.assertRaises(OfflineContractError):
                 func(True)
+
+
+class SilentTest(unittest.TestCase):
+    def test_main(self):
+
+        @silent
+        def func(msg):
+            if msg:
+                print(msg)
+
+        with self.subTest(text='good'):
+            func(None)
+        with self.subTest(text='error'):
+            with self.assertRaises(SilentContractError):
+                func('bad')
 
 
 if __name__ == '__main__':
