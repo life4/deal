@@ -198,3 +198,30 @@ class Invariant(_Base):
 
         # return update_wrapper(patched_class, _class)
         return patched_class
+
+
+class Raises(_Base):
+    exception = exceptions.RaisesContractError
+
+    def __init__(self, *exceptions, message=None, exception=None, debug=False):
+        """
+        Step 1. Set allowed exceptions list.
+        """
+        self.exceptions = exceptions
+        super(Raises, self).__init__(
+            validator=None,
+            message=message,
+            exception=exception,
+            debug=debug,
+        )
+
+    def patched_function(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        try:
+            return self.function(*args, **kwargs)
+        except Exception as exc:
+            if not isinstance(exc, self.exceptions):
+                raise self.exception from exc
+            raise

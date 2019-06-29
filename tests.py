@@ -1,7 +1,8 @@
 import djburger
 import marshmallow
 
-from deal import pre, post, inv, PreContractError, PostContractError, InvContractError, Scheme
+from deal import pre, post, inv, raises
+from deal import PreContractError, PostContractError, InvContractError, RaisesContractError, Scheme
 from deal.schemes import is_scheme
 
 try:
@@ -321,6 +322,21 @@ class DefaultSchemeTests(MarshmallowSchemeTests):
                     return False
                 return True
         self.Scheme = MyScheme
+
+
+class RaisesTest(unittest.TestCase):
+    def test_main(self):
+        func = raises(ZeroDivisionError)(lambda x: 1 / x)
+        with self.subTest(text='good'):
+            with self.assertRaises(ZeroDivisionError):
+                func(0)
+        with self.subTest(text='good'):
+            func(2)
+
+        func = raises(KeyError)(lambda x: 1 / x)
+        with self.subTest(text='error'):
+            with self.assertRaises(RaisesContractError):
+                func(0)
 
 
 if __name__ == '__main__':
