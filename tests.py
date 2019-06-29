@@ -356,6 +356,20 @@ class OfflineTest(unittest.TestCase):
             with self.assertRaises(OfflineContractError):
                 func(True)
 
+    def test_different_exception(self):
+
+        @offline(exception=KeyError)
+        def func(do):
+            if do:
+                http = urllib3.PoolManager()
+                http.request('GET', 'http://httpbin.org/robots.txt')
+
+        with self.subTest(text='good'):
+            func(False)
+        with self.subTest(text='error'):
+            with self.assertRaises(KeyError):
+                func(True)
+
 
 class SilentTest(unittest.TestCase):
     def test_main(self):

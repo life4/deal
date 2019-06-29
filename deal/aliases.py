@@ -1,3 +1,5 @@
+from functools import partial
+
 from .core import Pre, Post, Invariant, Raises, Offline, Silent
 
 
@@ -16,19 +18,13 @@ inv = invariant = Invariant
 raises = Raises
 
 
-def offline(_func=None, message=None, exception=None, debug=False):
+# makes braces for decorator are optional
+def _optional(_contract, _func=None, message=None, exception=None, debug=False):
     if _func is not None:
-        return Offline()(_func)
-    return Offline(message=message, exception=exception, debug=debug)
+        return _contract()(_func)
+    return _contract(message=message, exception=exception, debug=debug)
 
 
-def safe(_func=None, message=None, exception=None, debug=False):
-    if _func is not None:
-        return Raises()(_func)
-    return Raises(message=message, exception=exception, debug=debug)
-
-
-def silent(_func=None, message=None, exception=None, debug=False):
-    if _func is not None:
-        return Silent()(_func)
-    return Silent(message=message, exception=exception, debug=debug)
+offline = partial(_optional, Offline)
+safe = partial(_optional, Raises)
+silent = partial(_optional, Silent)
