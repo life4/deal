@@ -18,3 +18,7 @@ class InvContractError(ContractError):
 
 class RaisesContractError(ContractError):
     pass
+
+
+class OfflineContractError(ContractError):
+    pass

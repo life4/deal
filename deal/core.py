@@ -1,12 +1,13 @@
 from functools import partial, update_wrapper
 from inspect import getcallargs
+import socket
 from types import MethodType
 
 from . import exceptions
 from .schemes import is_scheme
 
 
-__all__ = ['Pre', 'Post', 'Invariant']
+__all__ = ['Pre', 'Post', 'Invariant', 'Raises']
 
 
 try:
@@ -225,3 +226,32 @@ class Raises(_Base):
             if not isinstance(exc, self.exceptions):
                 raise self.exception from exc
             raise
+
+
+class Offline(_Base):
+    exception = exceptions.OfflineContractError
+
+    def __init__(self, message=None, exception=None, debug=False):
+        """
+        Step 1. Init params.
+        """
+        super(Offline, self).__init__(
+            validator=None,
+            message=message,
+            exception=exception,
+            debug=debug,
+        )
+
+    def patched_function(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        true_socket = socket.socket
+        socket.socket = self.fake_socket
+        try:
+            return self.function(*args, **kwargs)
+        finally:
+            socket.socket = true_socket
+
+    def fake_socket(self, *args, **kwargs):
+        raise self.exception

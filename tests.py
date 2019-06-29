@@ -1,8 +1,10 @@
 import djburger
 import marshmallow
+import urllib3
 
-from deal import pre, post, inv, raises
-from deal import PreContractError, PostContractError, InvContractError, RaisesContractError, Scheme
+from deal import pre, post, inv, raises, offline
+from deal import PreContractError, PostContractError, InvContractError
+from deal import OfflineContractError, RaisesContractError, Scheme
 from deal.schemes import is_scheme
 
 try:
@@ -337,6 +339,22 @@ class RaisesTest(unittest.TestCase):
         with self.subTest(text='error'):
             with self.assertRaises(RaisesContractError):
                 func(0)
+
+
+class OfflineTest(unittest.TestCase):
+    def test_main(self):
+
+        @offline()
+        def func(do):
+            if do:
+                http = urllib3.PoolManager()
+                http.request('GET', 'http://httpbin.org/robots.txt')
+
+        with self.subTest(text='good'):
+            func(False)
+        with self.subTest(text='error'):
+            with self.assertRaises(OfflineContractError):
+                func(True)
 
 
 if __name__ == '__main__':
