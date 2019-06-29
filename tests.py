@@ -344,7 +344,7 @@ class RaisesTest(unittest.TestCase):
 class OfflineTest(unittest.TestCase):
     def test_main(self):
 
-        @offline()
+        @offline
         def func(do):
             if do:
                 http = urllib3.PoolManager()
