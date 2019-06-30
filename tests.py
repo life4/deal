@@ -1,7 +1,10 @@
 import djburger
 import marshmallow
+import urllib3
 
-from deal import pre, post, inv, PreContractError, PostContractError, InvContractError, Scheme
+from deal import pre, post, inv, raises, offline, silent
+from deal import PreContractError, PostContractError, InvContractError
+from deal import OfflineContractError, RaisesContractError, SilentContractError, Scheme
 from deal.schemes import is_scheme
 
 try:
@@ -321,6 +324,66 @@ class DefaultSchemeTests(MarshmallowSchemeTests):
                     return False
                 return True
         self.Scheme = MyScheme
+
+
+class RaisesTest(unittest.TestCase):
+    def test_main(self):
+        func = raises(ZeroDivisionError)(lambda x: 1 / x)
+        with self.subTest(text='good'):
+            with self.assertRaises(ZeroDivisionError):
+                func(0)
+        with self.subTest(text='good'):
+            func(2)
+
+        func = raises(KeyError)(lambda x: 1 / x)
+        with self.subTest(text='error'):
+            with self.assertRaises(RaisesContractError):
+                func(0)
+
+
+class OfflineTest(unittest.TestCase):
+    def test_main(self):
+
+        @offline
+        def func(do):
+            if do:
+                http = urllib3.PoolManager()
+                http.request('GET', 'http://httpbin.org/robots.txt')
+
+        with self.subTest(text='good'):
+            func(False)
+        with self.subTest(text='error'):
+            with self.assertRaises(OfflineContractError):
+                func(True)
+
+    def test_different_exception(self):
+
+        @offline(exception=KeyError)
+        def func(do):
+            if do:
+                http = urllib3.PoolManager()
+                http.request('GET', 'http://httpbin.org/robots.txt')
+
+        with self.subTest(text='good'):
+            func(False)
+        with self.subTest(text='error'):
+            with self.assertRaises(KeyError):
+                func(True)
+
+
+class SilentTest(unittest.TestCase):
+    def test_main(self):
+
+        @silent
+        def func(msg):
+            if msg:
+                print(msg)
+
+        with self.subTest(text='good'):
+            func(None)
+        with self.subTest(text='error'):
+            with self.assertRaises(SilentContractError):
+                func('bad')
 
 
 if __name__ == '__main__':
