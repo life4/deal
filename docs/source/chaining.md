@@ -18,4 +18,4 @@ f(12)
 # PreContractError:
 ```
 
-`@post` contracts are chaining from bottom to top. All other contracts are chaining from top to bottom.
+`@deal.post` contracts are chaining from bottom to top. All other contracts are chaining from top to bottom.
