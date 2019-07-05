@@ -8,9 +8,7 @@ from typing import Callable, Type
 
 from . import exceptions
 from .schemes import is_scheme
-
-
-__all__ = ['Pre', 'Post', 'Invariant', 'Raises']
+from .state import state
 
 
 class _Base:
@@ -64,13 +62,20 @@ class _Base:
         # is invalid (falsy result)
         raise self.exception
 
+    @property
+    def enabled(self) -> bool:
+        if self.debug:
+            return state.debug
+        else:
+            return state.main
+
     def __call__(self, function: Callable) -> Callable:
         """
         Step 2. Return wrapped function.
         """
         # if contract only for dev, but this is prod, do not wrap function
-        if self.debug and not __debug__:
-            return function  # pragma: no cover
+        if not self.enabled:
+            return function
 
         self.function = function
 
