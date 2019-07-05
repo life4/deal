@@ -9,13 +9,7 @@ from .schemes import is_scheme
 __all__ = ['Pre', 'Post', 'Invariant']
 
 
-try:
-    string_types = (str, unicode)
-except NameError:
-    string_types = (str, )
-
-
-class _Base(object):
+class _Base:
     exception = exceptions.ContractError
 
     def __init__(self, validator, message=None, exception=None, debug=False):
@@ -57,7 +51,7 @@ class _Base(object):
 
         validation_result = self.validator(*args, **kwargs)
         # is invalid (validator return error message)
-        if isinstance(validation_result, string_types):
+        if isinstance(validation_result, str):
             raise self.exception(validation_result)
         # is valid (truely result)
         if validation_result:
@@ -113,7 +107,7 @@ class Post(_Base):
         return result
 
 
-class InvariantedClass(object):
+class InvariantedClass:
     _disable_patching = False
 
     def _validate(self):
@@ -140,7 +134,7 @@ class InvariantedClass(object):
         """
         Step 3 (1st flow). Get method
         """
-        attr = super(InvariantedClass, self).__getattribute__(name)
+        attr = super().__getattribute__(name)
         # disable patching for InvariantedClass methods
         if name in ('_patched_method', '_validate', '_validate_base', '_disable_patching'):
             return attr
@@ -159,7 +153,7 @@ class InvariantedClass(object):
         Step 3 (2nd flow). Set some attribute
         """
         # set
-        super(InvariantedClass, self).__setattr__(name, value)
+        super().__setattr__(name, value)
         if name == '_disable_patching':
             return
         # validation only after set

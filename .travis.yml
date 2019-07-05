@@ -1,12 +1,17 @@
 language: python
 python:
-  - "2.7"
-  - "3.4"
+  - "3.5"
   - "3.6"
+  - "3.7"
+  - "3.8-dev"
 install:
-  - pip install unittest2
   - pip install coveralls
   - pip install -r constraints.txt
 script:
   - coverage run --source deal tests.py
   - coveralls
+
+matrix:
+  include:
+    - python: "3.7"
+      env: ENV=flake8
