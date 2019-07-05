@@ -73,15 +73,13 @@ class _Base:
         """
         Step 2. Return wrapped function.
         """
-        # if contract only for dev, but this is prod, do not wrap function
-        if not self.enabled:
-            return function
-
         self.function = function
 
-        # we can't use partial here because python can't bound class instance to partial.
         def wrapped(*args, **kwargs):
-            return self.patched_function(*args, **kwargs)
+            if self.enabled:
+                return self.patched_function(*args, **kwargs)
+            else:
+                return function(*args, **kwargs)
 
         return update_wrapper(wrapped, function)
 
