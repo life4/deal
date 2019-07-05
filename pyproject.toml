@@ -38,7 +38,7 @@ import_heading_localfolder = "app"
 
 [tool.poetry]
 name = "deal"
-version = "2.2.1"
+version = "2.3.0"
 description = "Programming by contract"
 license = "MIT"
 authors = ["Gram <master_fess@mail.ru>"]
@@ -75,4 +75,4 @@ sphinx-rtd-theme = "*"
 
 [tool.poetry.extras]
 tests = ["coverage", "djburger", "marshmallow", "urllib3"]
-docs = ["sphinx", "recommonmark", "sphinx-rtd-theme", "urllib3", "m2r"]
+docs = ["urllib3", "m2r", "recommonmark", "sphinx", "sphinx-rtd-theme"]

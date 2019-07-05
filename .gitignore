@@ -6,3 +6,4 @@ dist/
 htmlcov/
 README.rst
 docs/build/
+/setup.py

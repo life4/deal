@@ -15,7 +15,7 @@ This library contain 3 main conception from DbC:
 
 # main package info
 __title__ = 'deal'
-__version__ = '2.2.1'
+__version__ = '2.3.0'
 __author__ = 'Gram Orsinium'
 __license__ = 'LGPL 3.0'
 
