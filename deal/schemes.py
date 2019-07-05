@@ -1,6 +1,6 @@
 
 
-class Scheme(object):
+class Scheme:
     def __init__(self, data, request=None):
         self.data = data
 
