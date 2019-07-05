@@ -15,3 +15,7 @@ divide(1, 0)
 # The above exception was the direct cause of the following exception:
 # RaisesContractError:
 ```
+
+## Motivation
+
+Can you be sure that some function never raises exceptions? Make promise about this, and `@deal.safe` will help you to control it.

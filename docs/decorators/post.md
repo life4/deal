@@ -14,7 +14,6 @@ always_positive_sum(2, -3, -4)
 # PostContractError:
 ```
 
-
 ## Motivation
 
 Make constraints about function response.

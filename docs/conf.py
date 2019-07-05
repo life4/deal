@@ -7,7 +7,6 @@ from pathlib import Path
 
 # external
 import sphinx_rtd_theme
-from recommonmark.parser import CommonMarkParser
 from recommonmark.transform import AutoStructify
 
 
@@ -23,9 +22,6 @@ extensions = [
 ]
 
 templates_path = ['_templates']
-# source_parsers = {
-#     '.md': CommonMarkParser,
-# }
 source_suffix = ['.rst', '.md']
 master_doc = 'index'
 
@@ -33,8 +29,8 @@ project = 'Deal'
 copyright = '{}, Gram (@orsinium)'.format(date.today().year)
 author = 'Gram (@orsinium)'
 
-version = '2.2'
-release = '2.2.1'
+version = ''
+release = ''
 
 language = None
 exclude_patterns = []

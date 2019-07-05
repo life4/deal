@@ -13,3 +13,7 @@ show_division(1, 2)
 show_division(1, 0)
 # RaisesContractError:
 ```
+
+## Motivation
+
+Get rid of long chains of decorators because it looks like centipede. Use `@chain` to place short decorators horizontally.

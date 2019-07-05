@@ -23,3 +23,7 @@ post.likes = -10
 type(post)
 # deal.core.PostInvarianted
 ```
+
+## Motivation
+
+Make assertions about object internal state and be sure that it always true.
