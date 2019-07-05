@@ -275,6 +275,7 @@ class Silent(Offline):
         true_stdout = sys.stdout
         true_stderr = sys.stderr
         sys.stdout = PatchedStringIO(exception=self.exception)
+        sys.stderr = PatchedStringIO(exception=self.exception)
         try:
             return self.function(*args, **kwargs)
         finally:
