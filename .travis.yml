@@ -1,12 +1,39 @@
+# Config for Travis CI, tests powered by DepHell.
+# https://travis-ci.org/
+# https://github.com/dephell/dephell
+
 language: python
-python:
-  # - "2.7"
-  - "3.4"
-  - "3.6"
+dist: xenial
+
+before_install:
+  # show a little bit more information about environment
+  - sudo apt-get install -y tree
+  - env
+  - tree
+  # install DepHell
+  # https://github.com/travis-ci/travis-ci/issues/8589
+  - curl https://raw.githubusercontent.com/dephell/dephell/master/install.py | /opt/python/3.7/bin/python
+  - dephell inspect self
 install:
-  - pip install unittest2
+  - dephell venv create --env=$ENV --python="/opt/python/$TRAVIS_PYTHON_VERSION/bin/python"
+  - dephell deps install --env=$ENV
   - pip install coveralls
-  - pip install -r constraints.txt
 script:
-  - coverage run --source deal tests.py
+  - dephell venv run --env=$ENV coverage run --source deal tests.py
   - coveralls
+
+# run tests
+env: ENV=tests
+python:
+  - "3.5"
+  - "3.6.7"
+  - "3.7"
+  - "3.8-dev"
+
+# run flake8
+matrix:
+  include:
+    - python: "3.7"
+      env: ENV=flake8
+      script:
+        - dephell venv run --env=$ENV

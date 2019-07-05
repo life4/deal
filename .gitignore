@@ -4,3 +4,4 @@ __pycache__/
 dist/
 .coverage
 htmlcov/
+README.rst
