@@ -7,11 +7,14 @@ from = {format = "pip", path = "requirements-flake.txt"}
 python = ">=3.6"
 command = "flake8"
 
+
+# generate report:
+# dephell venv run --env=tests coverage report --show-missing
 [tool.dephell.tests]
 from = {format = "poetry", path = "pyproject.toml"}
 envs = ["main", "dev"]
 tests = ["tests.py"]
-command = "python tests.py"
+command = "coverage run --source deal tests.py"
 
 
 [tool.isort]
@@ -58,3 +61,4 @@ python = ">=3.5"
 coverage = "*"
 djburger = "*"
 marshmallow = "*"
+urllib3 = "*"

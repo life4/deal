@@ -1,5 +1,8 @@
+import socket
+import sys
 from functools import partial, update_wrapper
 from inspect import getcallargs
+from io import StringIO
 from types import MethodType
 from typing import Callable, Type
 
@@ -7,7 +10,7 @@ from . import exceptions
 from .schemes import is_scheme
 
 
-__all__ = ['Pre', 'Post', 'Invariant']
+__all__ = ['Pre', 'Post', 'Invariant', 'Raises']
 
 
 class _Base:
@@ -194,3 +197,87 @@ class Invariant(_Base):
 
         # return update_wrapper(patched_class, _class)
         return patched_class
+
+
+class Raises(_Base):
+    exception = exceptions.RaisesContractError
+
+    def __init__(self, *exceptions, message=None, exception=None, debug=False):
+        """
+        Step 1. Set allowed exceptions list.
+        """
+        self.exceptions = exceptions
+        super().__init__(
+            validator=None,
+            message=message,
+            exception=exception,
+            debug=debug,
+        )
+
+    def patched_function(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        try:
+            return self.function(*args, **kwargs)
+        except exceptions.ContractError:
+            raise
+        except Exception as exc:
+            if not isinstance(exc, self.exceptions):
+                raise self.exception from exc
+            raise
+
+
+class Offline(_Base):
+    exception = exceptions.OfflineContractError
+
+    def __init__(self, message=None, exception=None, debug=False):
+        """
+        Step 1. Init params.
+        """
+        super().__init__(
+            validator=None,
+            message=message,
+            exception=exception,
+            debug=debug,
+        )
+
+    def patched_function(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        true_socket = socket.socket
+        socket.socket = self.fake_socket
+        try:
+            return self.function(*args, **kwargs)
+        finally:
+            socket.socket = true_socket
+
+    def fake_socket(self, *args, **kwargs):
+        raise self.exception
+
+
+class PatchedStringIO(StringIO):
+    def __init__(self, exception):
+        self.exception = exception
+
+    def write(self, *args, **kwargs):
+        raise self.exception
+
+
+class Silent(Offline):
+    exception = exceptions.SilentContractError
+
+    def patched_function(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        true_stdout = sys.stdout
+        true_stderr = sys.stderr
+        sys.stdout = PatchedStringIO(exception=self.exception)
+        sys.stderr = PatchedStringIO(exception=self.exception)
+        try:
+            return self.function(*args, **kwargs)
+        finally:
+            sys.stdout = true_stdout
+            sys.stderr = true_stderr

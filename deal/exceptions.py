@@ -14,3 +14,15 @@ class PostContractError(ContractError):
 
 class InvContractError(ContractError):
     pass
+
+
+class RaisesContractError(ContractError):
+    pass
+
+
+class OfflineContractError(ContractError):
+    pass
+
+
+class SilentContractError(ContractError):
+    pass
