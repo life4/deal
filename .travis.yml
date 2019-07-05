@@ -4,11 +4,6 @@
 
 language: python
 dist: xenial
-python:
-  - "3.5"
-  - "3.6"
-  - "3.7"
-  - "3.8-dev"
 
 before_install:
   # show a little bit more information about environment
@@ -24,9 +19,18 @@ install:
   - dephell deps install --env=$ENV
   - pip install coveralls
 script:
-  - dephell venv run --env=tests coverage run --source deal tests.py
+  - dephell venv run --env=$ENV coverage run --source deal tests.py
   - coveralls
 
+# run tests
+env: ENV=tests
+python:
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.8-dev"
+
+# run flake8
 matrix:
   include:
     - python: "3.7"
