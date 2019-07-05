@@ -19,7 +19,7 @@ install:
   - dephell deps install --env=$ENV
   - pip install coveralls
 script:
-  - dephell venv run --env=$ENV coverage run --source deal tests.py
+  - dephell venv run --env=$ENV
   - coveralls
 
 # run tests
