@@ -1,6 +1,6 @@
 # safe
 
-Safe function cannot raise any exceptions. Alias for [raises](decorators/raises) without arguments.
+Safe function cannot raise any exceptions. Alias for [raises](raises) without arguments.
 
 ```python
 @deal.safe
