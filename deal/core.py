@@ -1,6 +1,7 @@
 from functools import partial, update_wrapper
 from inspect import getcallargs
 from types import MethodType
+from typing import Callable
 
 from . import exceptions
 from .schemes import is_scheme
@@ -12,7 +13,7 @@ __all__ = ['Pre', 'Post', 'Invariant']
 class _Base:
     exception = exceptions.ContractError
 
-    def __init__(self, validator, message=None, exception=None, debug=False):
+    def __init__(self, validator, message: str = None, exception: Exception = None, debug: bool = False):
         """
         Step 1. Set contract (validator).
         """
@@ -23,7 +24,7 @@ class _Base:
         if message:
             self.exception = self.exception(message)
 
-    def validate(self, *args, **kwargs):
+    def validate(self, *args, **kwargs) -> None:
         """
         Step 4 (6 for invariant). Process contract (validator)
         """
@@ -59,7 +60,7 @@ class _Base:
         # is invalid (falsy result)
         raise self.exception
 
-    def __call__(self, function):
+    def __call__(self, function: Callable) -> Callable:
         """
         Step 2. Return wrapped function.
         """
@@ -110,7 +111,7 @@ class Post(_Base):
 class InvariantedClass:
     _disable_patching = False
 
-    def _validate(self):
+    def _validate(self) -> None:
         """
         Step 5 (1st flow) or Step 4 (2nd flow). Process contract for object.
         """
@@ -121,7 +122,7 @@ class InvariantedClass:
         # enable methods matching after validation
         self._disable_patching = False
 
-    def _patched_method(self, method, *args, **kwargs):
+    def _patched_method(self, method: Callable, *args, **kwargs):
         """
         Step 4 (1st flow). Call method
         """
@@ -130,7 +131,7 @@ class InvariantedClass:
         self._validate()
         return result
 
-    def __getattribute__(self, name):
+    def __getattribute__(self, name: str):
         """
         Step 3 (1st flow). Get method
         """
@@ -148,7 +149,7 @@ class InvariantedClass:
         patched_method = partial(self._patched_method, attr)
         return update_wrapper(patched_method, attr)
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name: str, value):
         """
         Step 3 (2nd flow). Set some attribute
         """
@@ -163,11 +164,11 @@ class InvariantedClass:
 class Invariant(_Base):
     exception = exceptions.InvContractError
 
-    def validate_chain(self, *args, **kwargs):
+    def validate_chain(self, *args, **kwargs) -> None:
         self.validate(*args, **kwargs)
         self.child_validator(*args, **kwargs)
 
-    def __call__(self, _class):
+    def __call__(self, _class: object):
         """
         Step 2. Return wrapped class.
         """
