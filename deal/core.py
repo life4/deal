@@ -2,17 +2,12 @@ import socket
 import sys
 from functools import partial, update_wrapper
 from inspect import getcallargs
+from io import StringIO
 from types import MethodType
 from typing import Callable, Type
 
 from . import exceptions
 from .schemes import is_scheme
-
-
-try:
-    from io import StringIO
-except ImportError:
-    from cStringIO import StringIO  # Python 2.7
 
 
 __all__ = ['Pre', 'Post', 'Invariant', 'Raises']
@@ -212,7 +207,7 @@ class Raises(_Base):
         Step 1. Set allowed exceptions list.
         """
         self.exceptions = exceptions
-        super(Raises, self).__init__(
+        super().__init__(
             validator=None,
             message=message,
             exception=exception,
@@ -240,7 +235,7 @@ class Offline(_Base):
         """
         Step 1. Init params.
         """
-        super(Offline, self).__init__(
+        super().__init__(
             validator=None,
             message=message,
             exception=exception,
