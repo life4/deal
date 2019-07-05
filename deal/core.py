@@ -273,8 +273,10 @@ class Silent(Offline):
         Step 3. Wrapped function calling.
         """
         true_stdout = sys.stdout
+        true_stderr = sys.stderr
         sys.stdout = PatchedStringIO(exception=self.exception)
         try:
             return self.function(*args, **kwargs)
         finally:
             sys.stdout = true_stdout
+            sys.stderr = true_stderr
