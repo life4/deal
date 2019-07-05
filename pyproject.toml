@@ -55,5 +55,6 @@ classifiers=[
 python = ">=3.5"
 
 [tool.poetry.dev-dependencies]
+coverage = "*"
 djburger = "*"
 marshmallow = "*"

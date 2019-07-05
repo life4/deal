@@ -4,6 +4,11 @@
 
 language: python
 dist: xenial
+python:
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.8-dev"
 
 before_install:
   # show a little bit more information about environment
@@ -17,17 +22,13 @@ before_install:
 install:
   - dephell venv create --env=$ENV --python="/opt/python/$TRAVIS_PYTHON_VERSION/bin/python"
   - dephell deps install --env=$ENV
+  - pip install coveralls
 script:
-  - dephell venv run --env=$ENV
+  - dephell venv run --env=tests coverage run --source deal tests.py
+  - coveralls
 
 matrix:
   include:
-    - python: "3.5"
-      env: ENV=tests
-    - python: "3.6.7"
-      env: ENV=tests
     - python: "3.7"
-      env: ENV=tests
-
-    - python: "3.7"
-      env: ENV=flake8
+      script:
+        - dephell venv run --env=flake8
