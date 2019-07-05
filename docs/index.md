@@ -1,10 +1,6 @@
-# Deal
-
-* `@pre` -- validate function arguments (pre-validation).
-* `@post` -- validate function result (post-validation).
-* `@inv` -- validate class methods before and after some method calling and after attribute setting.
-
 ```eval_rst
+.. mdinclude:: ../README.md
+
 .. toctree::
     :maxdepth: 1
     :caption: Classic contracts

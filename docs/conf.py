@@ -19,12 +19,13 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
+    'm2r',
 ]
 
 templates_path = ['_templates']
-source_parsers = {
-    '.md': CommonMarkParser,
-}
+# source_parsers = {
+#     '.md': CommonMarkParser,
+# }
 source_suffix = ['.rst', '.md']
 master_doc = 'index'
 
@@ -46,7 +47,7 @@ html_logo = str(Path(__file__).parent.parent / 'logo.png')
 html_theme_options = {
     'logo_only': True,
     'display_version': False,
-    'style_external_links': True,
+    'style_external_links': False,
     'style_nav_header_background': '#2c3e50',
 }
 

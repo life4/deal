@@ -68,10 +68,11 @@ djburger = "*"
 marshmallow = "*"
 urllib3 = "*"
 
-sphinx = "*"
+m2r = "*"
 recommonmark = "*"
+sphinx = "*"
 sphinx-rtd-theme = "*"
 
 [tool.poetry.extras]
 tests = ["coverage", "djburger", "marshmallow", "urllib3"]
-docs = ["sphinx", "recommonmark", "sphinx-rtd-theme", "urllib3"]
+docs = ["sphinx", "recommonmark", "sphinx-rtd-theme", "urllib3", "m2r"]
