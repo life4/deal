@@ -1,0 +1,5 @@
+# that's for readthedocs
+m2r
+recommonmark
+sphinx
+sphinx-rtd-theme
