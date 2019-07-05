@@ -37,7 +37,7 @@ class PreTest(unittest.TestCase):
                 func(20)
 
     def test_init(self):
-        with self.subTest(text='init doesn\'t raise any exceptions'):
+        with self.subTest(text='init has not raised any exceptions'):
             func = pre(lambda x: x > 0)
 
         with self.subTest(text='validator'):
@@ -79,8 +79,8 @@ class PreTest(unittest.TestCase):
                 except NameError as e:
                     self.assertEqual(e.args[0], 'TEST')
 
-    def _test_validator(self, Validator):
-        func = pre(Validator)(lambda x: x)
+    def _test_validator(self, validator):
+        func = pre(validator)(lambda x: x)
         with self.subTest(text='good'):
             self.assertEqual(func(4), 4)
 
@@ -95,7 +95,7 @@ class PreTest(unittest.TestCase):
                 self.assertEqual(e.args[0], 'TEST')
 
     def test_django_style(self):
-        class Validator(object):
+        class Validator:
             def __init__(self, x):
                 self.x = x
 
@@ -108,7 +108,7 @@ class PreTest(unittest.TestCase):
         self._test_validator(Validator)
 
     def test_django_style_hidden_attr(self):
-        class Validator(object):
+        class Validator:
             def __init__(self, x):
                 self.x = x
 
@@ -121,7 +121,7 @@ class PreTest(unittest.TestCase):
         self._test_validator(Validator)
 
     def test_django_style_without_attr(self):
-        class Validator(object):
+        class Validator:
             def __init__(self, x):
                 self.x = x
 
@@ -162,7 +162,7 @@ class PreTest(unittest.TestCase):
 
     def test_method_decorator(self):
 
-        class Class(object):
+        class Class:
             y = 7
 
             @pre(lambda self, x: x > 0)
@@ -194,7 +194,7 @@ class PostTest(unittest.TestCase):
 class InvTest(unittest.TestCase):
     def test_setattr(self):
         @inv(lambda obj: obj.x > 0)
-        class A(object):
+        class A:
             x = 2
 
         a = A()
@@ -206,7 +206,7 @@ class InvTest(unittest.TestCase):
 
     def test_method_call(self):
         @inv(lambda obj: obj.x > 0)
-        class A(object):
+        class A:
             x = 2
 
             def f(self, x):
@@ -222,7 +222,7 @@ class InvTest(unittest.TestCase):
     def test_chain(self):
         @inv(lambda obj: obj.x > 0)
         @inv(lambda obj: obj.x < 10)
-        class A(object):
+        class A:
             x = 2
 
         a = A()
@@ -236,7 +236,7 @@ class InvTest(unittest.TestCase):
                 a.x = 20
 
     def test_instance(self):
-        class A(object):
+        class A:
             x = 2
         PatchedA = inv(lambda obj: obj.x > 0)(A)  # noQA
         a = PatchedA()

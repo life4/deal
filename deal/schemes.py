@@ -1,14 +1,14 @@
 
 
-class Scheme(object):
+class Scheme:
     def __init__(self, data, request=None):
         self.data = data
 
-    def is_valid(self):
+    def is_valid(self) -> bool:
         raise NotImplementedError  # pragma: no cover
 
 
-def is_scheme(obj):
+def is_scheme(obj) -> bool:
     if not hasattr(obj, 'mro'):
         return False
     if Scheme in obj.mro():
