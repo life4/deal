@@ -5,3 +5,4 @@ dist/
 .coverage
 htmlcov/
 README.rst
+docs/build/

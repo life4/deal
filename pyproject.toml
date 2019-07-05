@@ -12,9 +12,14 @@ command = "flake8"
 # dephell venv run --env=tests coverage report --show-missing
 [tool.dephell.tests]
 from = {format = "poetry", path = "pyproject.toml"}
-envs = ["main", "dev"]
+envs = ["main", "tests"]
 tests = ["tests.py"]
 command = "coverage run --source deal tests.py"
+
+[tool.dephell.docs]
+from = {format = "poetry", path = "pyproject.toml"}
+envs = ["docs"]
+command = "sphinx-build -M html docs docs/build"
 
 
 [tool.isort]
@@ -62,3 +67,11 @@ coverage = "*"
 djburger = "*"
 marshmallow = "*"
 urllib3 = "*"
+
+sphinx = "*"
+recommonmark = "*"
+sphinx-rtd-theme = "*"
+
+[tool.poetry.extras]
+tests = ["coverage", "djburger", "marshmallow", "urllib3"]
+docs = ["sphinx", "recommonmark", "sphinx-rtd-theme", "urllib3"]
