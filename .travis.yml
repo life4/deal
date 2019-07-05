@@ -24,7 +24,7 @@ matrix:
   include:
     - python: "3.5"
       env: ENV=tests
-    - python: "3.6"
+    - python: "3.6.7"
       env: ENV=tests
     - python: "3.7"
       env: ENV=tests
