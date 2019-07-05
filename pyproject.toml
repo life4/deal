@@ -13,10 +13,6 @@ envs = ["main", "dev"]
 tests = ["tests.py"]
 command = "python tests.py"
 
-[tool.dephell.typing]
-from = {format = "poetry", path = "pyproject.toml"}
-command = "mypy --ignore-missing-imports --allow-redefinition deal"
-
 
 [tool.isort]
 line_length = 120

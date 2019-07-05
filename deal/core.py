@@ -1,7 +1,7 @@
 from functools import partial, update_wrapper
 from inspect import getcallargs
 from types import MethodType
-from typing import Callable
+from typing import Callable, Type
 
 from . import exceptions
 from .schemes import is_scheme
@@ -13,7 +13,8 @@ __all__ = ['Pre', 'Post', 'Invariant']
 class _Base:
     exception = exceptions.ContractError
 
-    def __init__(self, validator, message: str = None, exception: Exception = None, debug: bool = False):
+    def __init__(self, validator, message: str = None,
+                 exception: Type[Exception] = None, debug: bool = False):
         """
         Step 1. Set contract (validator).
         """
@@ -168,7 +169,7 @@ class Invariant(_Base):
         self.validate(*args, **kwargs)
         self.child_validator(*args, **kwargs)
 
-    def __call__(self, _class: object):
+    def __call__(self, _class: type):
         """
         Step 2. Return wrapped class.
         """
