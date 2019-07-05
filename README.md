@@ -42,7 +42,7 @@ class Post:
     visits: int = attr.ib(default=0)
     likes: set = attr.ib(factory=set)
 
-    @deal.pre(lambda user: REX_LOGIN.match(user), 'invalid username format')
+    @deal.pre(lambda user: REX_LOGIN.match(user), message='invalid username format')
     @deal.raises(PostAlreadyLiked)
     @deal.chain(deal.offline, deal.silent)
     def like(self, user: str) -> None:
