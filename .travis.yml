@@ -17,17 +17,23 @@ before_install:
 install:
   - dephell venv create --env=$ENV --python="/opt/python/$TRAVIS_PYTHON_VERSION/bin/python"
   - dephell deps install --env=$ENV
+  - pip install coveralls
 script:
-  - dephell venv run --env=$ENV
+  - dephell venv run --env=$ENV coverage run --source deal tests.py
+  - coveralls
 
+# run tests
+env: ENV=tests
+python:
+  - "3.5"
+  - "3.6.7"
+  - "3.7"
+  - "3.8-dev"
+
+# run flake8
 matrix:
   include:
-    - python: "3.5"
-      env: ENV=tests
-    - python: "3.6.7"
-      env: ENV=tests
-    - python: "3.7"
-      env: ENV=tests
-
     - python: "3.7"
       env: ENV=flake8
+      script:
+        - dephell venv run --env=$ENV
