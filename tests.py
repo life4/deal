@@ -338,6 +338,24 @@ class RaisesTest(unittest.TestCase):
             with self.assertRaises(deal.RaisesContractError):
                 func(0)
 
+    def test_preserve_original_contract_error(self):
+        @deal.raises(ZeroDivisionError)
+        @deal.offline
+        def func(do, number):
+            if do:
+                http = urllib3.PoolManager()
+                http.request('GET', 'http://httpbin.org/robots.txt')
+            1 / number
+
+        with self.subTest(text='good'):
+            func(False, 1)
+        with self.subTest(text='error'):
+            with self.assertRaises(deal.OfflineContractError):
+                func(True, 1)
+        with self.subTest(text='error'):
+            with self.assertRaises(ZeroDivisionError):
+                func(False, 0)
+
 
 class OfflineTest(unittest.TestCase):
     def test_main(self):
@@ -382,6 +400,27 @@ class SilentTest(unittest.TestCase):
         with self.subTest(text='error'):
             with self.assertRaises(deal.SilentContractError):
                 func('bad')
+
+
+class ChainTest(unittest.TestCase):
+    def test_main(self):
+
+        @deal.chain(deal.silent, deal.offline)
+        def func(msg, do):
+            if msg:
+                print(msg)
+            if do:
+                http = urllib3.PoolManager()
+                http.request('GET', 'http://httpbin.org/robots.txt')
+
+        with self.subTest(text='good'):
+            func(False, False)
+        with self.subTest(text='silent error'):
+            with self.assertRaises(deal.SilentContractError):
+                func(True, False)
+        with self.subTest(text='offline error'):
+            with self.assertRaises(deal.OfflineContractError):
+                func(False, True)
 
 
 if __name__ == '__main__':
