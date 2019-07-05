@@ -37,7 +37,7 @@ class PreTest(unittest.TestCase):
                 func(20)
 
     def test_init(self):
-        with self.subTest(text='init doesn\'t raise any exceptions'):
+        with self.subTest(text='init has not raised any exceptions'):
             func = pre(lambda x: x > 0)
 
         with self.subTest(text='validator'):
@@ -79,8 +79,8 @@ class PreTest(unittest.TestCase):
                 except NameError as e:
                     self.assertEqual(e.args[0], 'TEST')
 
-    def _test_validator(self, Validator):
-        func = pre(Validator)(lambda x: x)
+    def _test_validator(self, validator):
+        func = pre(validator)(lambda x: x)
         with self.subTest(text='good'):
             self.assertEqual(func(4), 4)
 
