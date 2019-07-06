@@ -18,6 +18,19 @@ That's nice `assert` statements in decorators style to validate function input, 
 
 ## Available decorators
 
+CLassic DbC:
+
+* `@deal.pre` -- validate function arguments (pre-condition)
+* `@deal.post` -- validate function return value (post-condition)
+* `@deal.inv` -- validate object internal state (invariant)
+
+Take more control:
+
+* `@deal.offline` -- forbid network requests
+* `@deal.raises` -- allow only list of exceptions
+* `@deal.safe` -- forbid exceptions
+* `@deal.silent` -- forbid output into stderr/stdout.
+
 ## Installation
 
 ```bash
@@ -73,3 +86,5 @@ p = Post()
 p.visits = -1
 # InvContractError:
 ```
+
+Dive deeper on [deal.readthedocs.io](https://deal.readthedocs.io/).
