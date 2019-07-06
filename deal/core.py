@@ -14,7 +14,7 @@ from .state import state
 class _Base:
     exception = exceptions.ContractError
 
-    def __init__(self, validator, message: str = None,
+    def __init__(self, validator, *, message: str = None,
                  exception: Type[Exception] = None, debug: bool = False):
         """
         Step 1. Set contract (validator).
@@ -234,7 +234,7 @@ class Raises(_Base):
 class Offline(_Base):
     exception = exceptions.OfflineContractError
 
-    def __init__(self, message=None, exception=None, debug=False):
+    def __init__(self, *, message=None, exception=None, debug=False):
         """
         Step 1. Init params.
         """

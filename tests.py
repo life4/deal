@@ -423,5 +423,33 @@ class ChainTest(unittest.TestCase):
                 func(False, True)
 
 
+class StateTest(unittest.TestCase):
+    def setUp(self):
+        deal.reset()
+
+    def tearDown(self):
+        deal.reset()
+
+    def test_debug(self):
+        func = deal.pre(lambda x: x > 0, debug=True)(lambda x: x * 2)
+        deal.switch(debug=False)
+        with self.subTest(text='good'):
+            func(-2)
+        deal.switch(debug=True)
+        with self.subTest(text='error'):
+            with self.assertRaises(deal.PreContractError):
+                func(-2)
+
+    def test_main(self):
+        func = deal.pre(lambda x: x > 0)(lambda x: x * 2)
+        deal.switch(main=False)
+        with self.subTest(text='good'):
+            func(-2)
+        deal.switch(main=True)
+        with self.subTest(text='error'):
+            with self.assertRaises(deal.PreContractError):
+                func(-2)
+
+
 if __name__ == '__main__':
     unittest.main()
