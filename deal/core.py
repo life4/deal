@@ -8,15 +8,13 @@ from typing import Callable, Type
 
 from . import exceptions
 from .schemes import is_scheme
-
-
-__all__ = ['Pre', 'Post', 'Invariant', 'Raises']
+from .state import state
 
 
 class _Base:
     exception = exceptions.ContractError
 
-    def __init__(self, validator, message: str = None,
+    def __init__(self, validator, *, message: str = None,
                  exception: Type[Exception] = None, debug: bool = False):
         """
         Step 1. Set contract (validator).
@@ -64,19 +62,24 @@ class _Base:
         # is invalid (falsy result)
         raise self.exception
 
+    @property
+    def enabled(self) -> bool:
+        if self.debug:
+            return state.debug
+        else:
+            return state.main
+
     def __call__(self, function: Callable) -> Callable:
         """
         Step 2. Return wrapped function.
         """
-        # if contract only for dev, but this is prod, do not wrap function
-        if self.debug and not __debug__:
-            return function  # pragma: no cover
-
         self.function = function
 
-        # we can't use partial here because python can't bound class instance to partial.
         def wrapped(*args, **kwargs):
-            return self.patched_function(*args, **kwargs)
+            if self.enabled:
+                return self.patched_function(*args, **kwargs)
+            else:
+                return function(*args, **kwargs)
 
         return update_wrapper(wrapped, function)
 
@@ -231,7 +234,7 @@ class Raises(_Base):
 class Offline(_Base):
     exception = exceptions.OfflineContractError
 
-    def __init__(self, message=None, exception=None, debug=False):
+    def __init__(self, *, message=None, exception=None, debug=False):
         """
         Step 1. Init params.
         """

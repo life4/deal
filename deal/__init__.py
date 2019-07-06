@@ -17,13 +17,14 @@ This library contain 3 main conception from DbC:
 __title__ = 'deal'
 __version__ = '2.3.0'
 __author__ = 'Gram Orsinium'
-__license__ = 'LGPL 3.0'
+__license__ = 'MIT'
 
 
 # version synonym
 VERSION = __version__
 
 
-from .exceptions import *       # noQA
-from .aliases import *          # noQA
-from .schemes import Scheme     # noQA
+from .aliases import *              # noQA
+from .exceptions import *           # noQA
+from .schemes import Scheme         # noQA
+from .state import reset, switch    # noQA
