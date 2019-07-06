@@ -38,7 +38,7 @@ import_heading_localfolder = "app"
 
 [tool.poetry]
 name = "deal"
-version = "2.3.0"
+version = "2.4.0"
 description = "Programming by contract"
 license = "MIT"
 authors = ["Gram <master_fess@mail.ru>"]
