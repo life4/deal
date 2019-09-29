@@ -284,3 +284,19 @@ class Silent(Offline):
         finally:
             sys.stdout = true_stdout
             sys.stderr = true_stderr
+
+class Ensure(Post):
+    """
+    Check both arguments and result (validator) after function processing.
+    Validate arguments and output result.
+    """
+    exception = exceptions.PostContractError
+
+    def patched_function(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        result = self.function(*args, **kwargs)
+        validator_args = [*args, result]
+        self.validate(*validator_args)
+        return result

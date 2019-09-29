@@ -450,6 +450,28 @@ class StateTest(unittest.TestCase):
             with self.assertRaises(deal.PreContractError):
                 func(-2)
 
+class EnsureTest(unittest.TestCase):
+    def test_main(self):
+        @deal.ensure(lambda a, b, result: a > 0 and b > 0 and result != "same number")
+        def func(a, b):
+            if a == b:
+                return "same number"
+            else:
+                return "different numbers"
+
+        with self.subTest(text='good'):
+            self.assertEqual(func(1, 2), "different numbers")
+        with self.subTest(text='argument error on a'):
+            with self.assertRaises(deal.PostContractError):
+                func(0, 1)
+        with self.subTest(text='argument error on b'):
+            with self.assertRaises(deal.PostContractError):
+                func(1, 0)
+        with self.subTest(text='result error'):
+            with self.assertRaises(deal.PostContractError):
+                func(1, 1)
+
+
 
 if __name__ == '__main__':
     unittest.main()
