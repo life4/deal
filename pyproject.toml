@@ -61,6 +61,7 @@ classifiers=[
 
 [tool.poetry.dependencies]
 python = ">=3.5"
+vaa = ">=0.1.3"
 
 [tool.poetry.dev-dependencies]
 coverage = "*"

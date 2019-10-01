@@ -1,9 +1,8 @@
-import djburger
 import marshmallow
 import urllib3
+import vaa
 
 import deal
-from deal.schemes import is_scheme
 
 try:
     import unittest2 as unittest
@@ -94,50 +93,6 @@ class PreTest(unittest.TestCase):
                 func(-2)
             except deal.PreContractError as e:
                 self.assertEqual(e.args[0], 'TEST')
-
-    def test_django_style(self):
-        class Validator:
-            def __init__(self, x):
-                self.x = x
-
-            def is_valid(self):
-                if self.x <= 0:
-                    self.errors = 'TEST'
-                    return False
-                return True
-
-        self._test_validator(Validator)
-
-    def test_django_style_hidden_attr(self):
-        class Validator:
-            def __init__(self, x):
-                self.x = x
-
-            def is_valid(self):
-                if self.x <= 0:
-                    self._errors = 'TEST'
-                    return False
-                return True
-
-        self._test_validator(Validator)
-
-    def test_django_style_without_attr(self):
-        class Validator:
-            def __init__(self, x):
-                self.x = x
-
-            def is_valid(self):
-                if self.x <= 0:
-                    return False
-                return True
-
-        func = deal.pre(Validator)(lambda x: x)
-        with self.subTest(text='good'):
-            self.assertEqual(func(4), 4)
-
-        with self.subTest(text='error'):
-            with self.assertRaises(deal.PreContractError):
-                func(-2)
 
     def test_error_returning(self):
         func = deal.pre(lambda x: x > 0 or 'TEST')(lambda x: x)
@@ -257,17 +212,9 @@ class InvTest(unittest.TestCase):
 
 class MarshmallowSchemeTests(unittest.TestCase):
     def setUp(self):
-        class _Scheme(djburger.v.b.Marshmallow):
+        class _Scheme(marshmallow.Schema):
             name = marshmallow.fields.Str()
-        self.Scheme = _Scheme
-
-    def test_detecting(self):
-        with self.subTest('is scheme'):
-            self.assertTrue(is_scheme(self.Scheme))
-        with self.subTest('is func'):
-            self.assertFalse(is_scheme(deal.pre))
-        with self.subTest('is class'):
-            self.assertFalse(is_scheme(deal.InvContractError))
+        self.Scheme = vaa.marshmallow(_Scheme)
 
     def test_validation(self):
         @deal.pre(self.Scheme)

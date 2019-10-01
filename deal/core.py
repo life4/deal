@@ -7,7 +7,6 @@ from types import MethodType
 from typing import Callable, Type
 
 from . import exceptions
-from .schemes import is_scheme
 from .state import state
 
 
@@ -30,27 +29,13 @@ class _Base:
         """
         Step 4 (6 for invariant). Process contract (validator)
         """
-        # Schemes validation interface
-        if is_scheme(self.validator):
+        if hasattr(self.validator, 'is_valid'):
             params = getcallargs(self.function, *args, **kwargs)
             params.update(kwargs)
-            validator = self.validator(data=params, request=None)
+            validator = self.validator(data=params)
             if validator.is_valid():
                 return
             raise self.exception(validator.errors)
-
-        # Simple validation interface
-        if hasattr(self.validator, 'is_valid'):
-            validator = self.validator(*args, **kwargs)
-            # is valid
-            if validator.is_valid():
-                return
-            # is invalid
-            if hasattr(validator, 'errors'):
-                raise self.exception(validator.errors)
-            if hasattr(validator, '_errors'):
-                raise self.exception(validator._errors)
-            raise self.exception
 
         validation_result = self.validator(*args, **kwargs)
         # is invalid (validator return error message)
