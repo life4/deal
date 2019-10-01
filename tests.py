@@ -234,6 +234,24 @@ class MarshmallowSchemeTests(unittest.TestCase):
             except deal.PreContractError as e:
                 self.assertEqual(e.args[0], {'name': ['Not a valid string.']})
 
+    def test_invariant(self):
+        @deal.inv(self.Scheme)
+        class User:
+            name = ''
+
+        with self.subTest('simple call'):
+            User.name = 'Chris'
+
+        with self.subTest('not passed validation'):
+            with self.assertRaises(deal.InvContractError):
+                User.name = 123
+
+        with self.subTest('error message'):
+            try:
+                User.name = 123
+            except deal.InvContractError as e:
+                self.assertEqual(e.args[0], {'name': ['Not a valid string.']})
+
     def test_arg_passing(self):
         @deal.pre(self.Scheme)
         def func(name):

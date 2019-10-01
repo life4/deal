@@ -27,20 +27,26 @@ class _Base:
 
     def validate(self, *args, **kwargs) -> None:
         """
-        Step 4 (6 for invariant). Process contract (validator)
+        Step 4. Process contract (validator)
         """
 
         if hasattr(self.validator, 'is_valid'):
-            function = self.function
-            while hasattr(function, '__wrapped__'):
-                function = function.__wrapped__
-            params = getcallargs(function, *args, **kwargs)
-            params.update(kwargs)
-            validator = self.validator(data=params)
-            if validator.is_valid():
-                return
-            raise self.exception(validator.errors)
+            self._vaa_validation(*args, **kwargs)
+        else:
+            self._simple_validation(*args, **kwargs)
 
+    def _vaa_validation(self, *args, **kwargs) -> None:
+        function = self.function
+        while hasattr(function, '__wrapped__'):
+            function = function.__wrapped__
+        params = getcallargs(function, *args, **kwargs)
+        params.update(kwargs)
+        validator = self.validator(data=params)
+        if validator.is_valid():
+            return
+        raise self.exception(validator.errors)
+
+    def _simple_validation(self, *args, **kwargs) -> None:
         validation_result = self.validator(*args, **kwargs)
         # is invalid (validator return error message)
         if isinstance(validation_result, str):
@@ -159,6 +165,16 @@ class InvariantedClass:
 
 class Invariant(_Base):
     exception = exceptions.InvContractError
+
+    def validate(self, obj) -> None:
+        """
+        Step 6. Process contract (validator)
+        """
+
+        if hasattr(self.validator, 'is_valid') and hasattr(obj, '__dict__'):
+            self._vaa_validation(**obj.__dict__)
+        else:
+            self._simple_validation(obj)
 
     def validate_chain(self, *args, **kwargs) -> None:
         self.validate(*args, **kwargs)
