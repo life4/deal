@@ -29,8 +29,12 @@ class _Base:
         """
         Step 4 (6 for invariant). Process contract (validator)
         """
+
         if hasattr(self.validator, 'is_valid'):
-            params = getcallargs(self.function, *args, **kwargs)
+            function = self.function
+            while hasattr(function, '__wrapped__'):
+                function = function.__wrapped__
+            params = getcallargs(function, *args, **kwargs)
             params.update(kwargs)
             validator = self.validator(data=params)
             if validator.is_valid():
