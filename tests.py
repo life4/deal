@@ -8,7 +8,6 @@ import deal
 import pytest
 
 
-
 class PreTest(unittest.TestCase):
     def test_main(self):
         func = deal.pre(lambda x: x > 0)(lambda x: x)
