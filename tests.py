@@ -213,6 +213,10 @@ class MarshmallowSchemeTests(unittest.TestCase):
     def setUp(self):
         class _Scheme(marshmallow.Schema):
             name = marshmallow.fields.Str()
+
+            class Meta:
+                unknown = marshmallow.EXCLUDE
+
         self.Scheme = vaa.marshmallow(_Scheme)
 
     def test_validation(self):
@@ -238,16 +242,18 @@ class MarshmallowSchemeTests(unittest.TestCase):
         class User:
             name = ''
 
+        user = User()
+
         with self.subTest('simple call'):
-            User.name = 'Chris'
+            user.name = 'Chris'
 
         with self.subTest('not passed validation'):
             with self.assertRaises(deal.InvContractError):
-                User.name = 123
+                user.name = 123
 
         with self.subTest('error message'):
             try:
-                User.name = 123
+                user.name = 123
             except deal.InvContractError as e:
                 self.assertEqual(e.args[0], {'name': ['Not a valid string.']})
 
