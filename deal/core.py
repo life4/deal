@@ -7,7 +7,6 @@ from types import MethodType
 from typing import Callable, Type
 
 from . import exceptions
-from .schemes import is_scheme
 from .state import state
 
 
@@ -28,30 +27,34 @@ class _Base:
 
     def validate(self, *args, **kwargs) -> None:
         """
-        Step 4 (6 for invariant). Process contract (validator)
+        Step 4. Process contract (validator)
         """
-        # Schemes validation interface
-        if is_scheme(self.validator):
-            params = getcallargs(self.function, *args, **kwargs)
-            params.update(kwargs)
-            validator = self.validator(data=params, request=None)
-            if validator.is_valid():
-                return
-            raise self.exception(validator.errors)
 
-        # Simple validation interface
         if hasattr(self.validator, 'is_valid'):
-            validator = self.validator(*args, **kwargs)
-            # is valid
-            if validator.is_valid():
-                return
-            # is invalid
-            if hasattr(validator, 'errors'):
-                raise self.exception(validator.errors)
-            if hasattr(validator, '_errors'):
-                raise self.exception(validator._errors)
-            raise self.exception
+            self._vaa_validation(*args, **kwargs)
+        else:
+            self._simple_validation(*args, **kwargs)
 
+    def _vaa_validation(self, *args, **kwargs) -> None:
+        params = kwargs.copy()
+        if hasattr(self, 'function'):
+            # detect original function
+            function = self.function
+            while hasattr(function, '__wrapped__'):
+                function = function.__wrapped__
+            # assign *args to real names
+            params.update(getcallargs(function, *args, **kwargs))
+            # drop args-kwargs, we already put them on the right places
+            for bad_name in ('args', 'kwargs'):
+                if bad_name in params and bad_name not in kwargs:
+                    del params[bad_name]
+
+        validator = self.validator(data=params)
+        if validator.is_valid():
+            return
+        raise self.exception(validator.errors)
+
+    def _simple_validation(self, *args, **kwargs) -> None:
         validation_result = self.validator(*args, **kwargs)
         # is invalid (validator return error message)
         if isinstance(validation_result, str):
@@ -170,6 +173,18 @@ class InvariantedClass:
 
 class Invariant(_Base):
     exception = exceptions.InvContractError
+
+    def validate(self, obj) -> None:
+        """
+        Step 6. Process contract (validator)
+        """
+
+        if hasattr(self.validator, 'is_valid') and hasattr(obj, '__dict__'):
+            kwargs = obj.__dict__.copy()
+            kwargs.pop('_disable_patching', '')
+            self._vaa_validation(**kwargs)
+        else:
+            self._simple_validation(obj)
 
     def validate_chain(self, *args, **kwargs) -> None:
         self.validate(*args, **kwargs)
