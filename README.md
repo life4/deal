@@ -61,7 +61,7 @@ class Post:
     def like(self, user: str) -> None:
         if user in self.likes:
             raise PostAlreadyLiked
-        likes.add(user)
+        self.likes.add(user)
 
     @deal.post(lambda result: 'visits' in result)
     @deal.post(lambda result: 'likes' in result)
