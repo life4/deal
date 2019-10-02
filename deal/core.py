@@ -36,11 +36,19 @@ class _Base:
             self._simple_validation(*args, **kwargs)
 
     def _vaa_validation(self, *args, **kwargs) -> None:
-        function = self.function
-        while hasattr(function, '__wrapped__'):
-            function = function.__wrapped__
-        params = getcallargs(function, *args, **kwargs)
-        params.update(kwargs)
+        params = kwargs.copy()
+        if hasattr(self, 'function'):
+            # detect original function
+            function = self.function
+            while hasattr(function, '__wrapped__'):
+                function = function.__wrapped__
+            # assign *args to real names
+            params.update(getcallargs(function, *args, **kwargs))
+            # drop args-kwargs, we already put them on the right places
+            for bad_name in ('args', 'kwargs'):
+                if bad_name in params and bad_name not in kwargs:
+                    del params[bad_name]
+
         validator = self.validator(data=params)
         if validator.is_valid():
             return
