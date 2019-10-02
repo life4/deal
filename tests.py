@@ -234,6 +234,23 @@ class MarshmallowSchemeTests(unittest.TestCase):
             except deal.PreContractError as e:
                 self.assertEqual(e.args[0], {'name': ['Not a valid string.']})
 
+    def test_pre_chain(self):
+        @deal.pre(self.Scheme)
+        @deal.pre(lambda name: name != 'Oleg')
+        def func(name):
+            return name * 2
+
+        with self.subTest('simple call'):
+            self.assertEqual(func('Chris'), 'ChrisChris')
+
+        with self.subTest('not passed first validation'):
+            with self.assertRaises(deal.PreContractError):
+                func(123)
+
+        with self.subTest('not passed second validation'):
+            with self.assertRaises(deal.PreContractError):
+                func('Oleg')
+
     def test_invariant(self):
         @deal.inv(self.Scheme)
         class User:
@@ -253,6 +270,32 @@ class MarshmallowSchemeTests(unittest.TestCase):
                 user.name = 123
             except deal.InvContractError as e:
                 self.assertEqual(e.args[0], {'name': ['Not a valid string.']})
+
+    def test_invariant_chain(self):
+        @deal.inv(lambda user: user.name != 'Oleg')
+        @deal.inv(self.Scheme)
+        @deal.inv(lambda user: user.name != 'Chris')
+        class User:
+            name = ''
+
+        user = User()
+        with self.subTest('simple call'):
+            user.name = 'Gram'
+
+        user = User()
+        with self.subTest('not passed first validation'):
+            with self.assertRaises(deal.InvContractError):
+                user.name = 'Oleg'
+
+        user = User()
+        with self.subTest('not passed second validation'):
+            with self.assertRaises(deal.InvContractError):
+                user.name = 123
+
+        user = User()
+        with self.subTest('not passed third validation'):
+            with self.assertRaises(deal.InvContractError):
+                user.name = 'Chris'
 
     def test_arg_passing(self):
         @deal.pre(self.Scheme)
