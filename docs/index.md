@@ -7,6 +7,7 @@
 
     decorators/pre
     decorators/post
+    decorators/ensure
     decorators/inv
 
 .. toctree::
