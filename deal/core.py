@@ -300,7 +300,8 @@ class Silent(Offline):
             sys.stdout = true_stdout
             sys.stderr = true_stderr
 
-class Ensure(Post):
+
+class Ensure(_Base):
     """
     Check both arguments and result (validator) after function processing.
     Validate arguments and output result.
@@ -312,6 +313,5 @@ class Ensure(Post):
         Step 3. Wrapped function calling.
         """
         result = self.function(*args, **kwargs)
-        validator_args = [*args, result]
-        self.validate(*validator_args)
+        self.validate(*args, result=result, **kwargs)
         return result
