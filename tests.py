@@ -1,13 +1,12 @@
+import unittest
+
 import marshmallow
 import urllib3
 import vaa
 
 import deal
+import pytest
 
-try:
-    import unittest2 as unittest
-except ImportError:
-    import unittest
 
 
 class PreTest(unittest.TestCase):
@@ -417,4 +416,4 @@ class StateTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    pytest.main(['tests.py'])

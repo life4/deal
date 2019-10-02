@@ -7,7 +7,6 @@ from = {format = "pip", path = "requirements-flake.txt"}
 python = ">=3.6"
 command = "flake8"
 
-
 # generate report:
 # dephell venv run --env=tests coverage report --show-missing
 [tool.dephell.tests]
@@ -65,8 +64,8 @@ vaa = ">=0.1.3"
 
 [tool.poetry.dev-dependencies]
 coverage = "*"
-djburger = "*"
 marshmallow = "*"
+pytest = "*"
 urllib3 = "*"
 
 m2r = "*"
@@ -75,5 +74,16 @@ sphinx = "*"
 sphinx-rtd-theme = "*"
 
 [tool.poetry.extras]
-tests = ["coverage", "djburger", "marshmallow", "urllib3"]
-docs = ["urllib3", "m2r", "recommonmark", "sphinx", "sphinx-rtd-theme"]
+tests = [
+  "coverage",
+  "marshmallow",
+  "pytest",
+  "urllib3",
+]
+docs = [
+  "m2r",
+  "recommonmark",
+  "sphinx-rtd-theme",
+  "sphinx",
+  "urllib3",
+]
