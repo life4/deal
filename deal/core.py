@@ -180,7 +180,9 @@ class Invariant(_Base):
         """
 
         if hasattr(self.validator, 'is_valid') and hasattr(obj, '__dict__'):
-            self._vaa_validation(**obj.__dict__)
+            kwargs = obj.__dict__.copy()
+            kwargs.pop('_disable_patching', '')
+            self._vaa_validation(**kwargs)
         else:
             self._simple_validation(obj)
 

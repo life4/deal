@@ -214,9 +214,6 @@ class MarshmallowSchemeTests(unittest.TestCase):
         class _Scheme(marshmallow.Schema):
             name = marshmallow.fields.Str()
 
-            class Meta:
-                unknown = marshmallow.EXCLUDE
-
         self.Scheme = vaa.marshmallow(_Scheme)
 
     def test_validation(self):
