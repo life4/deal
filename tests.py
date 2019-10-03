@@ -485,6 +485,7 @@ class EnsureTest(unittest.TestCase):
 class CaseTest(unittest.TestCase):
     def setUp(self):
         @deal.raises(ZeroDivisionError)
+        @deal.pre(lambda a, b: a > 0 and b > 0)
         def div(a: int, b: int) -> float:
             return a / b
 
@@ -494,6 +495,23 @@ class CaseTest(unittest.TestCase):
         for count in (1, 10, 20, 50):
             cases = deal.cases(self.func, runs=count)
             assert len(list(cases)) == count
+
+    def test_params_detected(self):
+        for case in deal.cases(self.func, runs=10):
+            assert set(case.parameters.kwargs) == {'a', 'b'}
+
+    def test_params_type(self):
+        for case in deal.cases(self.func, runs=10):
+            assert type(case.parameters.kwargs['a']) is int
+            assert type(case.parameters.kwargs['b']) is int
+
+    def test_params_ok_with_excs(self):
+        results = []
+        for case in deal.cases(self.func, runs=20):
+            result = case()
+            results.append(result)
+        assert any(r is not None for r in results), 'exception occured on every run'
+        assert any(r is None for r in results), 'no exception occured'
 
 
 if __name__ == '__main__':

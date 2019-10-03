@@ -30,7 +30,7 @@ def cases(func, *, args=None, kwargs=None, exceptions=None, runs: int = 50) -> N
     all_exceptions.extend(get_excs(func))
 
     kwargs.update(dict(
-        auto_allow_exceptions_=all_exceptions,
+        auto_allow_exceptions_=tuple(all_exceptions),
         auto_limit_=runs,
     ))
 
