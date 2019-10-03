@@ -15,21 +15,15 @@ def get_excs(func):
         func = func.__wrapped__
 
 
-def cases(func, *, args=None, kwargs=None, runs: int = 50) -> None:
+def cases(func, *args, runs: int = 50, **kwargs) -> None:
     from hypothesis_auto.tester import auto_test_cases
-
-    if not args:
-        args = ()
-    if not kwargs:
-        kwargs = {}
-    kwargs = kwargs.copy()
 
     all_exceptions = [PreContractError]
     all_exceptions.extend(get_excs(func))
-
-    kwargs.update(dict(
+    return auto_test_cases(
+        *args,
+        auto_function_=func,
         auto_allow_exceptions_=tuple(all_exceptions),
         auto_limit_=runs,
-    ))
-
-    return auto_test_cases(func, *args, **kwargs)
+        **kwargs,
+    )
