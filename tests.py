@@ -16,7 +16,7 @@ class PreTest(unittest.TestCase):
             self.assertEqual(func(4), 4)
 
         with self.subTest(text='error'):
-            with self.assertRaises(deal.PreContractError):
+            with pytest.raises(deal.PreContractError):
                 func(-2)
 
     def test_chain(self):
@@ -27,11 +27,11 @@ class PreTest(unittest.TestCase):
             self.assertEqual(func(4), 4)
 
         with self.subTest(text='error'):
-            with self.assertRaises(deal.PreContractError):
+            with pytest.raises(deal.PreContractError):
                 func(-2)
 
         with self.subTest(text='error'):
-            with self.assertRaises(deal.PreContractError):
+            with pytest.raises(deal.PreContractError):
                 func(20)
 
     def test_init(self):
@@ -40,7 +40,7 @@ class PreTest(unittest.TestCase):
 
         with self.subTest(text='validator'):
             func = deal.pre(lambda x: x > 0)(lambda x: x)
-            with self.assertRaises(deal.PreContractError):
+            with pytest.raises(deal.PreContractError):
                 func(-2)
 
         with self.subTest(text='message'):
@@ -52,13 +52,13 @@ class PreTest(unittest.TestCase):
 
         with self.subTest(text='exception'):
             func = deal.pre(lambda x: x > 0, exception=NameError)(lambda x: x)
-            with self.assertRaises(NameError):
+            with pytest.raises(NameError):
                 func(-2)
 
         with self.subTest(text='exception with name'):
             func = deal.pre(lambda x: x > 0, exception=NameError('TEST'))(lambda x: x)
             with self.subTest(text='exception/exception'):
-                with self.assertRaises(NameError):
+                with pytest.raises(NameError):
                     func(-2)
             with self.subTest(text='exception/message'):
                 try:
@@ -69,7 +69,7 @@ class PreTest(unittest.TestCase):
         with self.subTest(text='exception+message'):
             func = deal.pre(lambda x: x > 0, message='TEST', exception=NameError)(lambda x: x)
             with self.subTest(text='exception+message/exception'):
-                with self.assertRaises(NameError):
+                with pytest.raises(NameError):
                     func(-2)
             with self.subTest(text='exception+message/message'):
                 try:
@@ -83,7 +83,7 @@ class PreTest(unittest.TestCase):
             self.assertEqual(func(4), 4)
 
         with self.subTest(text='error'):
-            with self.assertRaises(deal.PreContractError):
+            with pytest.raises(deal.PreContractError):
                 func(-2)
 
         with self.subTest(text='error message'):
@@ -98,7 +98,7 @@ class PreTest(unittest.TestCase):
             self.assertEqual(func(4), 4)
 
         with self.subTest(text='error'):
-            with self.assertRaises(deal.PreContractError):
+            with pytest.raises(deal.PreContractError):
                 func(-2)
 
         with self.subTest(text='error message'):
@@ -129,9 +129,9 @@ class PreTest(unittest.TestCase):
 
         self.assertEqual(Class().method(2), 4)
         self.assertEqual(Class().method2(2), 7)
-        with self.assertRaises(deal.PreContractError):
+        with pytest.raises(deal.PreContractError):
             Class().method(-2)
-        with self.assertRaises(deal.PreContractError):
+        with pytest.raises(deal.PreContractError):
             Class().method2(-2)
 
 
@@ -141,7 +141,7 @@ class PostTest(unittest.TestCase):
         with self.subTest(text='good'):
             self.assertEqual(func(-4), 4)
         with self.subTest(text='error'):
-            with self.assertRaises(deal.PostContractError):
+            with pytest.raises(deal.PostContractError):
                 func(4)
 
 
@@ -155,7 +155,7 @@ class InvTest(unittest.TestCase):
         with self.subTest(text='good'):
             a.x = 4
         with self.subTest(text='error'):
-            with self.assertRaises(deal.InvContractError):
+            with pytest.raises(deal.InvContractError):
                 a.x = -2
 
     def test_method_call(self):
@@ -170,7 +170,7 @@ class InvTest(unittest.TestCase):
         with self.subTest(text='good'):
             a.f(4)
         with self.subTest(text='error'):
-            with self.assertRaises(deal.InvContractError):
+            with pytest.raises(deal.InvContractError):
                 a.f(-2)
 
     def test_chain(self):
@@ -183,10 +183,10 @@ class InvTest(unittest.TestCase):
         with self.subTest(text='good'):
             a.x = 4
         with self.subTest(text='error'):
-            with self.assertRaises(deal.InvContractError):
+            with pytest.raises(deal.InvContractError):
                 a.x = -2
         with self.subTest(text='error'):
-            with self.assertRaises(deal.InvContractError):
+            with pytest.raises(deal.InvContractError):
                 a.x = 20
 
     def test_instance(self):
@@ -224,7 +224,7 @@ class MarshmallowSchemeTests(unittest.TestCase):
             self.assertEqual(func('Chris'), 'ChrisChris')
 
         with self.subTest('not passed validation'):
-            with self.assertRaises(deal.PreContractError):
+            with pytest.raises(deal.PreContractError):
                 func(123)
 
         with self.subTest('error message'):
@@ -243,11 +243,11 @@ class MarshmallowSchemeTests(unittest.TestCase):
             self.assertEqual(func('Chris'), 'ChrisChris')
 
         with self.subTest('not passed first validation'):
-            with self.assertRaises(deal.PreContractError):
+            with pytest.raises(deal.PreContractError):
                 func(123)
 
         with self.subTest('not passed second validation'):
-            with self.assertRaises(deal.PreContractError):
+            with pytest.raises(deal.PreContractError):
                 func('Oleg')
 
     def test_invariant(self):
@@ -261,7 +261,7 @@ class MarshmallowSchemeTests(unittest.TestCase):
             user.name = 'Chris'
 
         with self.subTest('not passed validation'):
-            with self.assertRaises(deal.InvContractError):
+            with pytest.raises(deal.InvContractError):
                 user.name = 123
 
         with self.subTest('error message'):
@@ -283,17 +283,17 @@ class MarshmallowSchemeTests(unittest.TestCase):
 
         user = User()
         with self.subTest('not passed first validation'):
-            with self.assertRaises(deal.InvContractError):
+            with pytest.raises(deal.InvContractError):
                 user.name = 'Oleg'
 
         user = User()
         with self.subTest('not passed second validation'):
-            with self.assertRaises(deal.InvContractError):
+            with pytest.raises(deal.InvContractError):
                 user.name = 123
 
         user = User()
         with self.subTest('not passed third validation'):
-            with self.assertRaises(deal.InvContractError):
+            with pytest.raises(deal.InvContractError):
                 user.name = 'Chris'
 
     def test_arg_passing(self):
@@ -337,14 +337,14 @@ class RaisesTest(unittest.TestCase):
     def test_main(self):
         func = deal.raises(ZeroDivisionError)(lambda x: 1 / x)
         with self.subTest(text='good'):
-            with self.assertRaises(ZeroDivisionError):
+            with pytest.raises(ZeroDivisionError):
                 func(0)
         with self.subTest(text='good'):
             func(2)
 
         func = deal.raises(KeyError)(lambda x: 1 / x)
         with self.subTest(text='error'):
-            with self.assertRaises(deal.RaisesContractError):
+            with pytest.raises(deal.RaisesContractError):
                 func(0)
 
     def test_preserve_original_contract_error(self):
@@ -359,10 +359,10 @@ class RaisesTest(unittest.TestCase):
         with self.subTest(text='good'):
             func(False, 1)
         with self.subTest(text='error'):
-            with self.assertRaises(deal.OfflineContractError):
+            with pytest.raises(deal.OfflineContractError):
                 func(True, 1)
         with self.subTest(text='error'):
-            with self.assertRaises(ZeroDivisionError):
+            with pytest.raises(ZeroDivisionError):
                 func(False, 0)
 
 
@@ -378,7 +378,7 @@ class OfflineTest(unittest.TestCase):
         with self.subTest(text='good'):
             func(False)
         with self.subTest(text='error'):
-            with self.assertRaises(deal.OfflineContractError):
+            with pytest.raises(deal.OfflineContractError):
                 func(True)
 
     def test_different_exception(self):
@@ -392,7 +392,7 @@ class OfflineTest(unittest.TestCase):
         with self.subTest(text='good'):
             func(False)
         with self.subTest(text='error'):
-            with self.assertRaises(KeyError):
+            with pytest.raises(KeyError):
                 func(True)
 
 
@@ -407,7 +407,7 @@ class SilentTest(unittest.TestCase):
         with self.subTest(text='good'):
             func(None)
         with self.subTest(text='error'):
-            with self.assertRaises(deal.SilentContractError):
+            with pytest.raises(deal.SilentContractError):
                 func('bad')
 
 
@@ -425,10 +425,10 @@ class ChainTest(unittest.TestCase):
         with self.subTest(text='good'):
             func(False, False)
         with self.subTest(text='silent error'):
-            with self.assertRaises(deal.SilentContractError):
+            with pytest.raises(deal.SilentContractError):
                 func(True, False)
         with self.subTest(text='offline error'):
-            with self.assertRaises(deal.OfflineContractError):
+            with pytest.raises(deal.OfflineContractError):
                 func(False, True)
 
 
@@ -446,7 +446,7 @@ class StateTest(unittest.TestCase):
             func(-2)
         deal.switch(debug=True)
         with self.subTest(text='error'):
-            with self.assertRaises(deal.PreContractError):
+            with pytest.raises(deal.PreContractError):
                 func(-2)
 
     def test_main(self):
@@ -456,7 +456,7 @@ class StateTest(unittest.TestCase):
             func(-2)
         deal.switch(main=True)
         with self.subTest(text='error'):
-            with self.assertRaises(deal.PreContractError):
+            with pytest.raises(deal.PreContractError):
                 func(-2)
 
 
@@ -472,13 +472,13 @@ class EnsureTest(unittest.TestCase):
         with self.subTest(text='good'):
             self.assertEqual(func(1, 2), 'different numbers')
         with self.subTest(text='argument error on a'):
-            with self.assertRaises(deal.PostContractError):
+            with pytest.raises(deal.PostContractError):
                 func(0, 1)
         with self.subTest(text='argument error on b'):
-            with self.assertRaises(deal.PostContractError):
+            with pytest.raises(deal.PostContractError):
                 func(1, 0)
         with self.subTest(text='result error'):
-            with self.assertRaises(deal.PostContractError):
+            with pytest.raises(deal.PostContractError):
                 func(1, 1)
 
 
