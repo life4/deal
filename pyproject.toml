@@ -60,13 +60,13 @@ classifiers=[
 
 [tool.poetry.dependencies]
 python = ">=3.5"
-vaa = ">=0.1.4"
 
 [tool.poetry.dev-dependencies]
 coverage = "*"
 marshmallow = "*"
 pytest = "*"
 urllib3 = "*"
+vaa = ">=0.1.4"
 
 m2r = "*"
 recommonmark = "*"
@@ -79,6 +79,7 @@ tests = [
   "marshmallow",
   "pytest",
   "urllib3",
+  "vaa",
 ]
 docs = [
   "m2r",
