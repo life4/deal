@@ -482,5 +482,19 @@ class EnsureTest(unittest.TestCase):
                 func(1, 1)
 
 
+class CaseTest(unittest.TestCase):
+    def setUp(self):
+        @deal.raises(ZeroDivisionError)
+        def div(a: int, b: int) -> float:
+            return a / b
+
+        self.func = div
+
+    def test_count(self):
+        for count in (1, 10, 20, 50):
+            cases = deal.cases(self.func, runs=count)
+            assert len(list(cases)) == count
+
+
 if __name__ == '__main__':
     pytest.main(['tests.py'])

@@ -20,11 +20,15 @@ __author__ = 'Gram Orsinium'
 __license__ = 'MIT'
 
 
-# version synonym
-VERSION = __version__
-
-
 from .aliases import *              # noQA
 from .exceptions import *           # noQA
-from .schemes import Scheme         # noQA
-from .state import reset, switch    # noQA
+from .schemes import Scheme
+from .state import reset, switch
+from .testing import cases
+
+__all__ = [
+    'cases',
+    'reset',
+    'Scheme',
+    'switch',
+]
