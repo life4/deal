@@ -30,7 +30,6 @@ script:
 # run tests
 env: ENV=tests
 python:
-  - "3.5"
   - "3.6.7"
   - "3.7"
   - "3.8-dev"
