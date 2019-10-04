@@ -52,12 +52,8 @@ def get_excs(func: typing.Callable) -> typing.Iterator[ExceptionType]:
         func = func.__wrapped__
 
 
-def get_examples(
-        func: typing.Callable,
-        kwargs: typing.Dict[str, typing.Any],
-        count: int,
-        ) -> typing.List[ArgsKwargsType]:
-
+def get_examples(func: typing.Callable, kwargs: typing.Dict[str, typing.Any],
+                 count: int) -> typing.List[ArgsKwargsType]:
     kwargs = kwargs.copy()
     for name, value in kwargs.items():
         if not isinstance(value, hypothesis.strategies.SearchStrategy):
@@ -87,12 +83,9 @@ def get_examples(
     return examples
 
 
-def cases(
-        func: typing.Callable,
-        count: int = 50,
-        kwargs: typing.Dict[str, typing.Any] = None,
-        ) -> typing.Iterator[TestCase]:
-
+def cases(func: typing.Callable, *, count: int = 50,
+          kwargs: typing.Dict[str, typing.Any] = None,
+          ) -> typing.Iterator[TestCase]:
     if not kwargs:
         kwargs = {}
     params_generator = get_examples(
