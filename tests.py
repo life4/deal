@@ -10,13 +10,13 @@ import pytest
 
 class PreTest(unittest.TestCase):
 
-    def test_main(self):
+    def test_success_case(self):
         func = deal.pre(lambda x: x > 0)(lambda x: x)
         assert func(4) == 4
         with pytest.raises(deal.PreContractError):
             func(-1)
 
-    def test_chain(self):
+    def test_chain_all_contracts_fulfilled(self):
         func = deal.pre(lambda x: x < 10)(lambda x: x)
         func = deal.pre(lambda x: x > 0)(func)
         assert func(4) == 4
@@ -25,9 +25,7 @@ class PreTest(unittest.TestCase):
         with pytest.raises(deal.PreContractError):
             func(20)
 
-    def test_init(self):
-        deal.pre(lambda x: x > 0)
-
+    def test_correct_exceptions_raised_on_contract_fail(self):
         func = deal.pre(lambda x: x > 0)(lambda x: x)
         with pytest.raises(deal.PreContractError):
             func(-2)
@@ -58,19 +56,7 @@ class PreTest(unittest.TestCase):
         except NameError as e:
             assert e.args[0] == 'TEST'
 
-    def _test_validator(self, validator):
-        func = deal.pre(validator)(lambda x: x)
-        assert func(4) == 4
-
-        with pytest.raises(deal.PreContractError):
-            func(-2)
-
-        try:
-            func(-2)
-        except deal.PreContractError as e:
-            assert e.args[0] == 'TEST'
-
-    def test_error_returning(self):
+    def test_raise_error_with_param_on_contract_failure(self):
         func = deal.pre(lambda x: x > 0 or 'TEST')(lambda x: x)
         assert func(4) == 4
 
@@ -82,14 +68,13 @@ class PreTest(unittest.TestCase):
         except deal.PreContractError as e:
             assert e.args[0] == 'TEST'
 
-    def test_wrapping(self):
+    def test_method_decoration_name_is_correct(self):
         @deal.pre(lambda x: x > 0)
         def some_function(x):
             return x
         assert some_function.__name__ == 'some_function'
 
-    def test_method_decorator(self):
-
+    def test_class_method_decorator_raises_error_on_contract_fail(self):
         class Class:
             y = 7
 
@@ -108,9 +93,22 @@ class PreTest(unittest.TestCase):
         with pytest.raises(deal.PreContractError):
             Class().method2(-2)
 
+    # ignored test
+    def _test_validator(self, validator):
+        func = deal.pre(validator)(lambda x: x)
+        assert func(4) == 4
+
+        with pytest.raises(deal.PreContractError):
+            func(-2)
+
+        try:
+            func(-2)
+        except deal.PreContractError as e:
+            assert e.args[0] == 'TEST'
+
 
 class PostTest(unittest.TestCase):
-    def test_main(self):
+    def test_return_value_fulfils_contract(self):
         func = deal.post(lambda x: x > 0)(lambda x: -x)
         assert func(-4) == 4
 
@@ -119,7 +117,7 @@ class PostTest(unittest.TestCase):
 
 
 class InvTest(unittest.TestCase):
-    def test_setattr(self):
+    def test_setting_object_attribute_fulfills_contract(self):
         @deal.inv(lambda obj: obj.x > 0)
         class A:
             x = 2
@@ -129,7 +127,7 @@ class InvTest(unittest.TestCase):
         with pytest.raises(deal.InvContractError):
             a.x = -2
 
-    def test_method_call(self):
+    def test_setting_wrong_args_by_method_raises_error(self):
         @deal.inv(lambda obj: obj.x > 0)
         class A:
             x = 2
@@ -143,7 +141,7 @@ class InvTest(unittest.TestCase):
         with pytest.raises(deal.InvContractError):
             a.f(-2)
 
-    def test_chain(self):
+    def test_chain_contracts_both_fulfill(self):
         @deal.inv(lambda obj: obj.x > 0)
         @deal.inv(lambda obj: obj.x < 10)
         class A:
@@ -156,7 +154,7 @@ class InvTest(unittest.TestCase):
         with pytest.raises(deal.InvContractError):
             a.x = 20
 
-    def test_instance(self):
+    def test_patched_invariants_instance(self):
         class A:
             x = 2
         PatchedA = deal.inv(lambda obj: obj.x > 0)(A)  # noQA
@@ -180,7 +178,7 @@ class MarshmallowSchemeTests(unittest.TestCase):
 
         self.Scheme = vaa.marshmallow(_Scheme)
 
-    def test_validation(self):
+    def test_scheme_string_validation_args_correct(self):
         @deal.pre(self.Scheme)
         def func(name):
             return name * 2
@@ -195,7 +193,7 @@ class MarshmallowSchemeTests(unittest.TestCase):
         except deal.PreContractError as e:
             assert e.args[0] == {'name': ['Not a valid string.']}
 
-    def test_pre_chain(self):
+    def test_method_chain_decorator_with_scheme_is_fulfilled(self):
         @deal.pre(self.Scheme)
         @deal.pre(lambda name: name != 'Oleg')
         def func(name):
@@ -209,7 +207,7 @@ class MarshmallowSchemeTests(unittest.TestCase):
         with pytest.raises(deal.PreContractError):
             func('Oleg')
 
-    def test_invariant(self):
+    def test_scheme_contract_is_satisfied_when_setting_arg(self):
         @deal.inv(self.Scheme)
         class User:
             name = ''
@@ -226,7 +224,7 @@ class MarshmallowSchemeTests(unittest.TestCase):
         except deal.InvContractError as e:
             assert e.args[0] == {'name': ['Not a valid string.']}
 
-    def test_invariant_chain(self):
+    def test_scheme_contract_is_satisfied_within_chain(self):
         @deal.inv(lambda user: user.name != 'Oleg')
         @deal.inv(self.Scheme)
         @deal.inv(lambda user: user.name != 'Chris')
@@ -248,7 +246,7 @@ class MarshmallowSchemeTests(unittest.TestCase):
         with pytest.raises(deal.InvContractError):
             user.name = 'Chris'
 
-    def test_arg_passing(self):
+    def test_scheme_contract_is_satisfied_when_passing_args(self):
         @deal.pre(self.Scheme)
         def func(name):
             return name * 2
@@ -267,7 +265,7 @@ class MarshmallowSchemeTests(unittest.TestCase):
         def func(name='Max'):
             return name * 2
 
-            assert func() == 'MaxMax'
+        assert func() == 'MaxMax'
 
 
 class DefaultSchemeTests(MarshmallowSchemeTests):
@@ -282,7 +280,7 @@ class DefaultSchemeTests(MarshmallowSchemeTests):
 
 
 class RaisesTest(unittest.TestCase):
-    def test_main(self):
+    def test_raises_expects_function_to_raise_error(self):
         func = deal.raises(ZeroDivisionError)(lambda x: 1 / x)
         with pytest.raises(ZeroDivisionError):
             func(0)
@@ -292,7 +290,7 @@ class RaisesTest(unittest.TestCase):
         with pytest.raises(deal.RaisesContractError):
             func(0)
 
-    def test_preserve_original_contract_error(self):
+    def test_raises_doesnt_override_another_constract(self):
         @deal.raises(ZeroDivisionError)
         @deal.offline
         def func(do, number):
@@ -309,7 +307,7 @@ class RaisesTest(unittest.TestCase):
 
 
 class OfflineTest(unittest.TestCase):
-    def test_main(self):
+    def test_network_request_in_offline_raises_exception(self):
 
         @deal.offline
         def func(do):
@@ -321,7 +319,7 @@ class OfflineTest(unittest.TestCase):
         with pytest.raises(deal.OfflineContractError):
             func(True)
 
-    def test_different_exception(self):
+    def test_network_request_in_offline_and_raises_specified_exception(self):
 
         @deal.offline(exception=KeyError)
         def func(do):
@@ -335,7 +333,7 @@ class OfflineTest(unittest.TestCase):
 
 
 class SilentTest(unittest.TestCase):
-    def test_main(self):
+    def test_silent_contract_not_allow_print(self):
 
         @deal.silent
         def func(msg):
@@ -348,7 +346,7 @@ class SilentTest(unittest.TestCase):
 
 
 class ChainTest(unittest.TestCase):
-    def test_main(self):
+    def test_chained_contract_decorator(self):
 
         @deal.chain(deal.silent, deal.offline)
         def func(msg, do):
@@ -372,7 +370,7 @@ class StateTest(unittest.TestCase):
     def tearDown(self):
         deal.reset()
 
-    def test_debug(self):
+    def test_contract_state_switch_custom_param(self):
         func = deal.pre(lambda x: x > 0, debug=True)(lambda x: x * 2)
         deal.switch(debug=False)
         func(-2)
@@ -380,7 +378,7 @@ class StateTest(unittest.TestCase):
         with pytest.raises(deal.PreContractError):
             func(-2)
 
-    def test_main(self):
+    def test_contract_state_switch_default_param(self):
         func = deal.pre(lambda x: x > 0)(lambda x: x * 2)
         deal.switch(main=False)
         func(-2)
@@ -390,7 +388,7 @@ class StateTest(unittest.TestCase):
 
 
 class EnsureTest(unittest.TestCase):
-    def test_main(self):
+    def test_parameters_and_result_fulfill_constact(self):
         @deal.ensure(lambda a, b, result: a > 0 and b > 0 and result != 'same number')
         def func(a, b):
             if a == b:
