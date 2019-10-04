@@ -21,9 +21,9 @@ for case in deal.cases(div):
     case()
 ```
 
-## pytest
+## PyTest
 
-A simple snippet to use `deal.cases` with pytest (type annotations are optional):
+A simple snippet to use `deal.cases` with [pytest](https://docs.pytest.org/en/latest/) (type annotations are optional):
 
 ```python
 @pytest.mark.parametrize('case', deal.cases(div))
