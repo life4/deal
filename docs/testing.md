@@ -66,16 +66,31 @@ deal.cases(div, kwargs=dict(b=3))
 + `case.func` -- the original function itself
 + `case.exceptions` -- tuple of all exceptions that will be ignored.
 
-## Bigger example
+## Practical example
+
+The best case for Contract-Driven Development is when you have a clear business requirements for part of code. Write these requirements as contracts, and then write a code that satisfy these requirements.
+
+In this example, we will implement `index_of` function that returns index of the given element in the given list. Let's think about requirements:
+
+1. Function accepts list of elements (let's talk about list of integers), one element, and returns index.
+1. Result is in range from zero to the length of the list.
+1. Element by given index (result) is equal to the given element.
+1. If there are more than one matching element in the list, we'll return the first one.
+1. If there is no matching elements, we'll raise `LookupError`.
+
+And now, let's convert it from words into the code:
 
 ```python
 from typing import List, NoReturn
 import deal
 
+# if you have more than 2-3 contracts,
+# consider moving them from decorators into separate variable
+# like this:
 contract_for_index_of = deal.chain(
     # result is an index of items
     deal.post(lambda result: result >= 0),
-    deal.ensure(lambda items, item, result: result <= len(items)),
+    deal.ensure(lambda items, item, result: result < len(items)),
     # element at this position matches item
     deal.ensure(
         lambda items, item, result: items[result] == item,
@@ -86,17 +101,25 @@ contract_for_index_of = deal.chain(
         lambda items, item, result: not any(el == item for el in items[:result]),
         message='not the first match',
     ),
-    # IndexError will be raised if no elements found
-    deal.raises(IndexError),
+    # LookupError will be raised if no elements found
+    deal.raises(LookupError),
 )
+```
 
+Now, we can write a code that satisfies our requirements:
+
+```python
 @contract_for_index_of
 def index_of(items: List[int], item: int) -> int:
     for index, el in enumerate(items):
         if el == item:
             return index
-    raise IndexError
+    raise LookupError
+```
 
+And tests, after all, the easiest part. Let's make it a little bit interesting and in the process show all valid samples:
+
+```python
 # test and make examples
 for case in deal.cases(index_of, count=1000):
     # run test case
