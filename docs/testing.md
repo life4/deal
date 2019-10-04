@@ -72,21 +72,25 @@ deal.cases(div, kwargs=dict(b=3))
 from typing import List, NoReturn
 import deal
 
-# result is an index of items
-@deal.post(lambda result: result >= 0)
-@deal.ensure(lambda items, item, result: result <= len(items))
-# element at this position matches item
-@deal.ensure(
-    lambda items, item, result: items[result] == item,
-    message='invalid match',
+contract_for_index_of = deal.chain(
+    # result is an index of items
+    deal.post(lambda result: result >= 0),
+    deal.ensure(lambda items, item, result: result <= len(items)),
+    # element at this position matches item
+    deal.ensure(
+        lambda items, item, result: items[result] == item,
+        message='invalid match',
+    ),
+    # element at this position is the first match
+    deal.ensure(
+        lambda items, item, result: not any(el == item for el in items[:result]),
+        message='not the first match',
+    ),
+    # IndexError will be raised if no elements found
+    deal.raises(IndexError),
 )
-# element at this position is the first match
-@deal.ensure(
-    lambda items, item, result: not any(el == item for el in items[:result]),
-    message='not the first match',
-)
-# IndexError will be raised if no elements found
-@deal.raises(IndexError)
+
+@contract_for_index_of
 def index_of(items: List[int], item: int) -> int:
     for index, el in enumerate(items):
         if el == item:
