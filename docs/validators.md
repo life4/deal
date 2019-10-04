@@ -30,11 +30,10 @@ import deal
 import marshmallow
 import vaa
 
-@vaa.marshmallow
 class Schema(marshmallow.Schema):
     name = marshmallow.fields.Str()
 
-@deal.pre(Schema)
+@deal.pre(vaa.marshmallow(Schema))
 def func(name):
     return name * 2
 
