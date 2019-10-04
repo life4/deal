@@ -4,7 +4,7 @@ from functools import partial, update_wrapper
 from inspect import getcallargs
 from io import StringIO
 from types import MethodType
-from typing import Callable, Type
+from typing import Callable, Type, Tuple
 
 from . import exceptions
 from .state import state
@@ -225,7 +225,7 @@ class Raises(_Base):
         """
         Step 1. Set allowed exceptions list.
         """
-        self.exceptions = exceptions
+        self.exceptions: Tuple[Exception, ...] = exceptions
         super().__init__(
             validator=None,
             message=message,

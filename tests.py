@@ -518,6 +518,27 @@ class CaseTest(unittest.TestCase):
         assert any(r is not NoReturn for r in results), 'exception occured on every run'
         assert any(r is NoReturn for r in results), 'no exception occured'
 
+    def test_return_type_checks(self):
+        def div(a: int, b: int):
+            return 1
+
+        for case in deal.cases(div, runs=20):
+            case()
+
+        def div(a: int, b: int) -> str:
+            return 1
+
+        with pytest.raises(TypeError):
+            case = next(iter(deal.cases(div, runs=20)))
+            case()
+
+    def test_explicit_kwargs(self):
+        def div(a: int, b: int):
+            assert b == 4
+
+        for case in deal.cases(div, kwargs=dict(b=4), runs=20):
+            case()
+
 
 if __name__ == '__main__':
     pytest.main(['tests.py'])

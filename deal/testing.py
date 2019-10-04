@@ -45,10 +45,7 @@ def get_excs(func: typing.Callable) -> typing.Iterator[ExceptionType]:
                 if isinstance(obj, Raises):
                     yield from obj.exceptions
                 elif isinstance(obj, Pre):
-                    exc = obj.exception
-                    if not isinstance(exc, type):
-                        exc = type(exc)
-                    yield exc
+                    yield obj.exception
 
         if not hasattr(func, '__wrapped__'):
             return
@@ -63,8 +60,8 @@ def get_examples(
 
     kwargs = kwargs.copy()
     for name, value in kwargs.items():
-        if not isinstance(value, hypothesis.SearchStrategy):
-            kwargs[name] = hypothesis.just(value)
+        if not isinstance(value, hypothesis.strategies.SearchStrategy):
+            kwargs[name] = hypothesis.strategies.just(value)
 
     def pass_along_variables(*args, **kwargs) -> ArgsKwargsType:
         return args, kwargs
