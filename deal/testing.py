@@ -1,5 +1,4 @@
-from .exceptions import PreContractError
-from .core import Raises
+from .core import Raises, Pre
 
 
 def get_excs(func):
@@ -9,6 +8,11 @@ def get_excs(func):
                 obj = cell.cell_contents
                 if isinstance(obj, Raises):
                     yield from obj.exceptions
+                elif isinstance(obj, Pre):
+                    exc = obj.exception
+                    if not isinstance(exc, type):
+                        exc = type(exc)
+                    yield exc
 
         if not hasattr(func, '__wrapped__'):
             return
@@ -18,12 +22,10 @@ def get_excs(func):
 def cases(func, *args, runs: int = 50, **kwargs) -> None:
     from hypothesis_auto.tester import auto_test_cases
 
-    all_exceptions = [PreContractError]
-    all_exceptions.extend(get_excs(func))
     return auto_test_cases(
         *args,
         auto_function_=func,
-        auto_allow_exceptions_=tuple(all_exceptions),
+        auto_allow_exceptions_=tuple(get_excs(func)),
         auto_limit_=runs,
         **kwargs,
     )
