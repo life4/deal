@@ -6,16 +6,14 @@ import hypothesis.strategies
 import typeguard
 
 from .core import Raises, Pre
-
-
-ArgsKwargsType = typing.Tuple[typing.Tuple[typing.Any, ...], typing.Dict[str, typing.Any]]
+from .types import ArgsKwargsType, ExceptionType
 
 
 class TestCase(typing.NamedTuple):
     args: typing.Tuple[typing.Any, ...]
     kwargs: typing.Dict[str, typing.Any]
     func: typing.Callable
-    exceptions: typing.Tuple[Exception]
+    exceptions: typing.Tuple[ExceptionType, ...]
 
     def __call__(self) -> typing.Any:
         """Calls the given test case returning the called functions result on success or
@@ -39,7 +37,7 @@ class TestCase(typing.NamedTuple):
         )
 
 
-def get_excs(func: typing.Callable) -> typing.Iterator[Exception]:
+def get_excs(func: typing.Callable) -> typing.Iterator[ExceptionType]:
     while True:
         if func.__closure__:
             for cell in func.__closure__:

@@ -515,7 +515,7 @@ class CaseTest(unittest.TestCase):
         for case in deal.cases(self.func, runs=20):
             result = case()
             results.append(result)
-        assert any([r is not NoReturn for r in results]), 'exception occured on every run'
+        assert any(r is not NoReturn for r in results), 'exception occured on every run'
         assert any(r is NoReturn for r in results), 'no exception occured'
 
 
