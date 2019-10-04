@@ -89,7 +89,7 @@ def get_examples(
 
 def cases(
         func: typing.Callable,
-        runs: int = 50,
+        count: int = 50,
         kwargs: typing.Dict[str, typing.Any] = None,
         ) -> typing.Iterator[TestCase]:
 
@@ -97,7 +97,7 @@ def cases(
         kwargs = {}
     params_generator = get_examples(
         func=func,
-        count=runs,
+        count=count,
         kwargs=kwargs,
     )
     for args, kwargs in params_generator:
