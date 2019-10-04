@@ -8,3 +8,4 @@ README.rst
 docs/build/
 /setup.py
 .dephell_report/
+.mypy_cache/

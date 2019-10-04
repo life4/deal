@@ -4,14 +4,15 @@ from functools import partial, update_wrapper
 from inspect import getcallargs
 from io import StringIO
 from types import MethodType
-from typing import Callable, Type
+from typing import Callable, Type, Tuple
 
 from . import exceptions
 from .state import state
+from .types import ExceptionType
 
 
 class _Base:
-    exception = exceptions.ContractError
+    exception: ExceptionType = exceptions.ContractError
 
     def __init__(self, validator, *, message: str = None,
                  exception: Type[Exception] = None, debug: bool = False):
@@ -92,7 +93,7 @@ class Pre(_Base):
     Check contract (validator) before function processing.
     Validate input arguments.
     """
-    exception = exceptions.PreContractError
+    exception: ExceptionType = exceptions.PreContractError
 
     def patched_function(self, *args, **kwargs):
         """
@@ -107,7 +108,7 @@ class Post(_Base):
     Check contract (validator) after function processing.
     Validate output result.
     """
-    exception = exceptions.PostContractError
+    exception: ExceptionType = exceptions.PostContractError
 
     def patched_function(self, *args, **kwargs):
         """
@@ -119,7 +120,7 @@ class Post(_Base):
 
 
 class InvariantedClass:
-    _disable_patching = False
+    _disable_patching: bool = False
 
     def _validate(self) -> None:
         """
@@ -172,7 +173,7 @@ class InvariantedClass:
 
 
 class Invariant(_Base):
-    exception = exceptions.InvContractError
+    exception: ExceptionType = exceptions.InvContractError
 
     def validate(self, obj) -> None:
         """
@@ -218,13 +219,13 @@ class Invariant(_Base):
 
 
 class Raises(_Base):
-    exception = exceptions.RaisesContractError
+    exception: ExceptionType = exceptions.RaisesContractError
 
     def __init__(self, *exceptions, message=None, exception=None, debug=False):
         """
         Step 1. Set allowed exceptions list.
         """
-        self.exceptions = exceptions
+        self.exceptions: Tuple[Exception, ...] = exceptions
         super().__init__(
             validator=None,
             message=message,
@@ -247,7 +248,7 @@ class Raises(_Base):
 
 
 class Offline(_Base):
-    exception = exceptions.OfflineContractError
+    exception: ExceptionType = exceptions.OfflineContractError
 
     def __init__(self, *, message=None, exception=None, debug=False):
         """
@@ -284,7 +285,7 @@ class PatchedStringIO(StringIO):
 
 
 class Silent(Offline):
-    exception = exceptions.SilentContractError
+    exception: ExceptionType = exceptions.SilentContractError
 
     def patched_function(self, *args, **kwargs):
         """
@@ -306,7 +307,7 @@ class Ensure(_Base):
     Check both arguments and result (validator) after function processing.
     Validate arguments and output result.
     """
-    exception = exceptions.PostContractError
+    exception: ExceptionType = exceptions.PostContractError
 
     def patched_function(self, *args, **kwargs):
         """

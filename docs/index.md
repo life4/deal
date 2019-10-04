@@ -18,6 +18,7 @@
     disable
     chaining
     validators
+    testing
 
 .. toctree::
     :maxdepth: 1
