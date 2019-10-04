@@ -488,6 +488,10 @@ class CaseTest(unittest.TestCase):
         @deal.raises(ZeroDivisionError)
         @deal.pre(lambda a, b: a > 0 and b > 0)
         def div(a: int, b: int) -> float:
+            assert isinstance(a, int)
+            assert isinstance(b, int)
+            assert a > 0
+            assert b > 0
             return a / b
 
         self.func = div

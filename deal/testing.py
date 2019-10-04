@@ -87,7 +87,6 @@ def get_examples(func: typing.Callable, kwargs: typing.Dict[str, typing.Any], co
 def cases(func, runs: int = 50, kwargs: typing.Dict[str, typing.Any] = None) -> None:
     if not kwargs:
         kwargs = {}
-    exceptions = tuple(get_excs(func))
     params_generator = get_examples(
         func=func,
         count=runs,
@@ -98,5 +97,5 @@ def cases(func, runs: int = 50, kwargs: typing.Dict[str, typing.Any] = None) -> 
             args=args,
             kwargs=kwargs,
             func=func,
-            exceptions=exceptions,
+            exceptions=tuple(get_excs(func)),
         )
