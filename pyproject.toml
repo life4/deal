@@ -60,7 +60,8 @@ classifiers=[
 
 [tool.poetry.dependencies]
 python = ">=3.5"
-hypothesis-auto = "*"
+hypothesis = "*"
+typeguard = "*"
 
 [tool.poetry.dev-dependencies]
 coverage = "*"
@@ -75,9 +76,6 @@ sphinx = "*"
 sphinx-rtd-theme = "*"
 
 [tool.poetry.extras]
-autotest = [
-    "hypothesis-auto",
-]
 tests = [
     "coverage",
     "marshmallow",

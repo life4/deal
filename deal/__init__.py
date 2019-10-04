@@ -24,11 +24,12 @@ from .aliases import *              # noQA
 from .exceptions import *           # noQA
 from .schemes import Scheme
 from .state import reset, switch
-from .testing import cases
+from .testing import cases, TestCase
 
 __all__ = [
     'cases',
     'reset',
     'Scheme',
     'switch',
+    'TestCase',
 ]

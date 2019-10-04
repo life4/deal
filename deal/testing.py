@@ -8,6 +8,9 @@ import typeguard
 from .core import Raises, Pre
 
 
+ArgsKwargsType = typing.Tuple[typing.Tuple[typing.Any, ...], typing.Dict[str, typing.Any]]
+
+
 class TestCase(typing.NamedTuple):
     args: typing.Tuple[typing.Any, ...]
     kwargs: typing.Dict[str, typing.Any]
@@ -58,14 +61,14 @@ def get_examples(
         func: typing.Callable,
         kwargs: typing.Dict[str, typing.Any],
         count: int,
-        ) -> typing.List[typing.Tuple[typing.Tuple[typing.Any, ...], typing.Dict[str, typing.Any]]]:
+        ) -> typing.List[ArgsKwargsType]:
 
     kwargs = kwargs.copy()
     for name, value in kwargs.items():
         if not isinstance(value, hypothesis.SearchStrategy):
             kwargs[name] = hypothesis.just(value)
 
-    def pass_along_variables(*args, **kwargs):
+    def pass_along_variables(*args, **kwargs) -> ArgsKwargsType:
         return args, kwargs
 
     pass_along_variables.__signature__ = signature(func)
@@ -82,7 +85,7 @@ def get_examples(
         phases=(hypothesis.Phase.generate,),
         suppress_health_check=hypothesis.HealthCheck.all(),
     )
-    def example_generator(ex):
+    def example_generator(ex: ArgsKwargsType) -> None:
         examples.append(ex)
 
     example_generator()
@@ -93,7 +96,7 @@ def cases(
         func: typing.Callable,
         runs: int = 50,
         kwargs: typing.Dict[str, typing.Any] = None,
-        ) -> None:
+        ) -> typing.Iterator[TestCase]:
 
     if not kwargs:
         kwargs = {}
