@@ -56,3 +56,48 @@ Explicitly specify arguments to pass into the function:
 ```python
 deal.cases(div, kwargs=dict(b=3))
 ```
+
+## deal.TestCase
+
+`deal.TestCase` object has the next attributes:
+
++ `case.args` -- tuple of positional arguments that will be passed into the original function.
++ `case.kwargs` -- dict of keyword arguments that will be passed into the original function.
++ `case.func` -- the original function itself
++ `case.exceptions` -- tuple of all exceptions that will be ignored.
+
+## Bigger example
+
+```python
+from typing import List, NoReturn
+import deal
+
+# result is an index of items
+@deal.post(lambda result: result >= 0)
+@deal.ensure(lambda items, item, result: result <= len(items))
+# element at this position matches item
+@deal.ensure(
+    lambda items, item, result: items[result] == item,
+    message='invalid match',
+)
+# element at this position is the first match
+@deal.ensure(
+    lambda items, item, result: not any(el == item for el in items[:result]),
+    message='not the first match',
+)
+# IndexError will be raised if no elements found
+@deal.raises(IndexError)
+def index_of(items: List[int], item: int) -> int:
+    for index, el in enumerate(items):
+        if el == item:
+            return index
+    raise IndexError
+
+# test and make examples
+for case in deal.cases(index_of, count=1000):
+    # run test case
+    result = case()
+    if result is not NoReturn:
+        # if case is valid show it
+        print(f"index of {case.kwargs['item']} in {case.kwargs['items']} is {result}")
+```

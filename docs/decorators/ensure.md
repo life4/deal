@@ -35,7 +35,7 @@ def index_of(items: List[int], item: int) -> int:
     for index, element in enumerate(items):
         if element == item:
             return index
-    raise LookupError
+    raise IndexError
 ```
 
 It allows you to simplify testing, easier check hypothesis, tell more about the function behavior.
