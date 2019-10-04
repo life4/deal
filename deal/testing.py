@@ -27,13 +27,13 @@ class TestCase(typing.NamedTuple):
         return result
 
     def _check_result(self, result: typing.Any) -> None:
-        return_type = typing.get_type_hints(self.func).get('return', None)
-        if not return_type:
+        hints = typing.get_type_hints(self.func)
+        if 'return' not in hints:
             return
         typeguard.check_type(
             argname='return',
             value=result,
-            expected_type=return_type,
+            expected_type=hints['return'],
         )
 
 
