@@ -8,22 +8,24 @@ import deal
 import pytest
 
 
-class PreTest(unittest.TestCase):
-
-    def test_success_case(self):
+class TestPreDeal:
+    @pytest.mark.parametrize('correct,incorrect', [(1, -1), (2, -2), (3, -3), (5, -5), (7, -7), (11, -11)])
+    def test_pre_contract_fulfilled(self, correct, incorrect):
         func = deal.pre(lambda x: x > 0)(lambda x: x)
-        assert func(4) == 4
+        assert func(correct) == correct
         with pytest.raises(deal.PreContractError):
-            func(-1)
+            func(incorrect)
 
-    def test_chain_all_contracts_fulfilled(self):
+    @pytest.mark.parametrize('correct,incorrect_min,incorrect_max',
+                             [(1, -1, 20), (2, -2, 21), (3, -3, 22), (5, -5, 23), (7, -7, 24), (9, -11, 25)])
+    def test_chain_all_contracts_fulfilled(self, correct, incorrect_min, incorrect_max):
         func = deal.pre(lambda x: x < 10)(lambda x: x)
         func = deal.pre(lambda x: x > 0)(func)
-        assert func(4) == 4
+        assert func(correct) == correct
         with pytest.raises(deal.PreContractError):
-            func(-2)
+            func(incorrect_min)
         with pytest.raises(deal.PreContractError):
-            func(20)
+            func(incorrect_max)
 
     def test_correct_exceptions_raised_on_contract_fail(self):
         func = deal.pre(lambda x: x > 0)(lambda x: x)
@@ -72,6 +74,7 @@ class PreTest(unittest.TestCase):
         @deal.pre(lambda x: x > 0)
         def some_function(x):
             return x
+
         assert some_function.__name__ == 'some_function'
 
     def test_class_method_decorator_raises_error_on_contract_fail(self):
@@ -107,7 +110,7 @@ class PreTest(unittest.TestCase):
             assert e.args[0] == 'TEST'
 
 
-class PostTest(unittest.TestCase):
+class TestPostDeal:
     def test_return_value_fulfils_contract(self):
         func = deal.post(lambda x: x > 0)(lambda x: -x)
         assert func(-4) == 4
@@ -116,7 +119,7 @@ class PostTest(unittest.TestCase):
             func(4)
 
 
-class InvTest(unittest.TestCase):
+class TestInvDeal:
     def test_setting_object_attribute_fulfills_contract(self):
         @deal.inv(lambda obj: obj.x > 0)
         class A:
@@ -157,6 +160,7 @@ class InvTest(unittest.TestCase):
     def test_patched_invariants_instance(self):
         class A:
             x = 2
+
         PatchedA = deal.inv(lambda obj: obj.x > 0)(A)  # noQA
         a = PatchedA()
         assert isinstance(a, PatchedA)
@@ -268,7 +272,7 @@ class MarshmallowSchemeTests(unittest.TestCase):
         assert func() == 'MaxMax'
 
 
-class DefaultSchemeTests(MarshmallowSchemeTests):
+class TestDefaultScheme(MarshmallowSchemeTests):
     def setUp(self):
         class MyScheme(deal.Scheme):
             def is_valid(self):
@@ -276,10 +280,11 @@ class DefaultSchemeTests(MarshmallowSchemeTests):
                     self.errors = {'name': ['Not a valid string.']}
                     return False
                 return True
+
         self.Scheme = MyScheme
 
 
-class RaisesTest(unittest.TestCase):
+class TestRaises:
     def test_raises_expects_function_to_raise_error(self):
         func = deal.raises(ZeroDivisionError)(lambda x: 1 / x)
         with pytest.raises(ZeroDivisionError):
@@ -306,7 +311,7 @@ class RaisesTest(unittest.TestCase):
             func(False, 0)
 
 
-class OfflineTest(unittest.TestCase):
+class TestOffline:
     def test_network_request_in_offline_raises_exception(self):
 
         @deal.offline
@@ -332,9 +337,8 @@ class OfflineTest(unittest.TestCase):
             func(True)
 
 
-class SilentTest(unittest.TestCase):
+class TestSilent:
     def test_silent_contract_not_allow_print(self):
-
         @deal.silent
         def func(msg):
             if msg:
@@ -345,7 +349,7 @@ class SilentTest(unittest.TestCase):
             func('bad')
 
 
-class ChainTest(unittest.TestCase):
+class TestChain:
     def test_chained_contract_decorator(self):
 
         @deal.chain(deal.silent, deal.offline)
@@ -363,7 +367,7 @@ class ChainTest(unittest.TestCase):
             func(False, True)
 
 
-class StateTest(unittest.TestCase):
+class TestState:
     def setUp(self):
         deal.reset()
 
@@ -387,7 +391,7 @@ class StateTest(unittest.TestCase):
             func(-2)
 
 
-class EnsureTest(unittest.TestCase):
+class TestEnsure:
     def test_parameters_and_result_fulfill_constact(self):
         @deal.ensure(lambda a, b, result: a > 0 and b > 0 and result != 'same number')
         def func(a, b):
