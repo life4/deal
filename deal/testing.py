@@ -3,13 +3,13 @@ from inspect import signature
 
 import hypothesis
 import hypothesis.strategies
-from pydantic import BaseModel
+import typeguard
 
 from .core import Raises, Pre
 
 
 class TestCase(typing.NamedTuple):
-    args: typing.List[typing.Any]
+    args: typing.Tuple[typing.Any, ...]
     kwargs: typing.Dict[str, typing.Any]
     func: typing.Callable
     exceptions: typing.Tuple[Exception]
@@ -25,18 +25,18 @@ class TestCase(typing.NamedTuple):
         self._check_result(result)
         return result
 
-    def _check_result(self, result):
+    def _check_result(self, result: typing.Any) -> None:
         return_type = typing.get_type_hints(self.func).get('return', None)
         if not return_type:
             return
+        typeguard.check_type(
+            argname='return',
+            value=result,
+            expected_type=return_type,
+        )
 
-        class ReturnModel(BaseModel):
-            __annotations__ = {'returns': return_type}
 
-        ReturnModel(returns=result)
-
-
-def get_excs(func):
+def get_excs(func: typing.Callable) -> typing.Iterator[Exception]:
     while True:
         if func.__closure__:
             for cell in func.__closure__:
@@ -54,7 +54,12 @@ def get_excs(func):
         func = func.__wrapped__
 
 
-def get_examples(func: typing.Callable, kwargs: typing.Dict[str, typing.Any], count: int):
+def get_examples(
+        func: typing.Callable,
+        kwargs: typing.Dict[str, typing.Any],
+        count: int,
+        ) -> typing.List[typing.Tuple[typing.Tuple[typing.Any, ...], typing.Dict[str, typing.Any]]]:
+
     kwargs = kwargs.copy()
     for name, value in kwargs.items():
         if not isinstance(value, hypothesis.SearchStrategy):
@@ -84,7 +89,12 @@ def get_examples(func: typing.Callable, kwargs: typing.Dict[str, typing.Any], co
     return examples
 
 
-def cases(func, runs: int = 50, kwargs: typing.Dict[str, typing.Any] = None) -> None:
+def cases(
+        func: typing.Callable,
+        runs: int = 50,
+        kwargs: typing.Dict[str, typing.Any] = None,
+        ) -> None:
+
     if not kwargs:
         kwargs = {}
     params_generator = get_examples(
