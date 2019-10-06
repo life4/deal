@@ -14,7 +14,7 @@ from .types import ExceptionType
 class _Base:
     exception: ExceptionType = exceptions.ContractError
 
-    def __init__(self, validator, *, message: str = None,
+    def __init__(self, validator: Callable, *, message: str = None,
                  exception: Type[Exception] = None, debug: bool = False):
         """
         Step 1. Set contract (validator).
@@ -277,7 +277,7 @@ class Offline(_Base):
 
 
 class PatchedStringIO(StringIO):
-    def __init__(self, exception):
+    def __init__(self, exception: ExceptionType):
         self.exception = exception
 
     def write(self, *args, **kwargs):
