@@ -1,6 +1,6 @@
 from functools import partial
 
-from .core import Pre, Post, Invariant, Raises, Offline, Silent, Ensure
+from .core import Pre, Post, Invariant, Raises, Offline, Silent, Ensure, Reason
 
 
 __all__ = [
@@ -17,6 +17,7 @@ require = pre = Pre
 post = Post
 ensure = Ensure
 inv = invariant = Invariant
+reason = Reason
 raises = Raises
 
 

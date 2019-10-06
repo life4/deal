@@ -247,6 +247,37 @@ class Raises(_Base):
             raise
 
 
+class Reason(_Base):
+    exception: ExceptionType = exceptions.ReasonContractError
+
+    def __init__(self, trigger: Exception, validator: Callable, *,
+                 message: str = None, exception: ExceptionType = None, debug: bool = False):
+        """
+        Step 1. Set allowed exceptions list.
+        """
+        self.exceptions: Tuple[Exception, ...] = exceptions
+        self.trigger = trigger
+        super().__init__(
+            validator=validator,
+            message=message,
+            exception=exception,
+            debug=debug,
+        )
+
+    def patched_function(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        try:
+            return self.function(*args, **kwargs)
+        except self.trigger as origin:
+            try:
+                self.validate(*args, **kwargs)
+            except self.exception:
+                raise self.exception from origin
+            raise
+
+
 class Offline(_Base):
     exception: ExceptionType = exceptions.OfflineContractError
 
