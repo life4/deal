@@ -221,7 +221,7 @@ class Invariant(_Base):
 class Raises(_Base):
     exception: ExceptionType = exceptions.RaisesContractError
 
-    def __init__(self, *exceptions, message=None, exception=None, debug=False):
+    def __init__(self, *exceptions, message: str = None, exception: ExceptionType = None, debug: bool = False):
         """
         Step 1. Set allowed exceptions list.
         """
@@ -250,7 +250,7 @@ class Raises(_Base):
 class Offline(_Base):
     exception: ExceptionType = exceptions.OfflineContractError
 
-    def __init__(self, *, message=None, exception=None, debug=False):
+    def __init__(self, *, message: str = None, exception: ExceptionType = None, debug: bool = False):
         """
         Step 1. Init params.
         """
