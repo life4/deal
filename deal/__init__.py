@@ -20,11 +20,13 @@ __author__ = 'Gram Orsinium'
 __license__ = 'MIT'
 
 
-from ._aliases import *              # noQA
-from ._exceptions import *           # noQA
+# app
+from ._aliases import chain, ensure, inv, invariant, offline, post, pre, pure, raises, require, safe, silent
+from ._exceptions import *  # noQA
 from ._schemes import Scheme
 from ._state import reset, switch
-from ._testing import cases, TestCase
+from ._testing import TestCase, cases
+
 
 __all__ = [
     'cases',
@@ -32,4 +34,20 @@ __all__ = [
     'Scheme',
     'switch',
     'TestCase',
+
+    # decorators
+    'chain',
+    'ensure',
+    'inv',
+    'invariant',
+    'offline',
+    'post',
+    'pre',
+    'pure',
+    'raises',
+    'safe',
+    'silent',
+
+    # aliases
+    'require',
 ]
