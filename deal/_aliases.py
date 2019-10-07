@@ -5,16 +5,6 @@ from ._decorators import Pre, Post, Invariant, Raises, Offline, Silent, Ensure
 from ._types import ExceptionType
 
 
-__all__ = [
-    'require', 'pre',
-    'ensure', 'post',
-    'inv', 'invariant',
-    'raises', 'safe',
-    'offline', 'silent',
-    'chain', 'pure',
-]
-
-
 require = pre = Pre
 post = Post
 ensure = Ensure
