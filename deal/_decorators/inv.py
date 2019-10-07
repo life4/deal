@@ -1,7 +1,9 @@
+# built-in
 from functools import partial, update_wrapper
 from types import MethodType
 from typing import Callable
 
+# app
 from .._exceptions import InvContractError
 from .._types import ExceptionType
 from .base import Base

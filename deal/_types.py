@@ -1,4 +1,5 @@
-from typing import Union, Type, Tuple, Any, Dict
+# built-in
+from typing import Any, Dict, Tuple, Type, Union
 
 
 ExceptionType = Union[Exception, Type[Exception]]

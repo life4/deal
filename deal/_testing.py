@@ -1,11 +1,14 @@
+# built-in
 import typing
 from inspect import signature
 
+# external
 import hypothesis
 import hypothesis.strategies
 import typeguard
 
-from ._decorators import Raises, Pre
+# app
+from ._decorators import Pre, Raises
 from ._types import ArgsKwargsType, ExceptionType
 
 

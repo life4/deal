@@ -1,5 +1,7 @@
+# built-in
 import socket
 
+# app
 from .._exceptions import OfflineContractError
 from .._types import ExceptionType
 from .base import Base

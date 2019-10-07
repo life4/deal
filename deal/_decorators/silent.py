@@ -1,6 +1,8 @@
+# built-in
 import sys
 from io import StringIO
 
+# app
 from .._exceptions import SilentContractError
 from .._types import ExceptionType
 from .base import Base
