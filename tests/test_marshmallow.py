@@ -5,13 +5,23 @@ import deal
 import pytest
 
 
-@pytest.fixture()
-def scheme():
-    class _Scheme(marshmallow.Schema):
-        name = marshmallow.fields.Str()
-    yield vaa.marshmallow(_Scheme)
+@vaa.marshmallow
+class MarshMallowScheme(marshmallow.Schema):
+    name = marshmallow.fields.Str()
 
 
+class CustomScheme(deal.Scheme):
+    def is_valid(self):
+        if not isinstance(self.data['name'], str):
+            self.errors = {'name': ['Not a valid string.']}
+            return False
+        return True
+
+
+SCHEMES = (MarshMallowScheme, CustomScheme)
+
+
+@pytest.mark.parametrize('scheme', SCHEMES)
 def test_scheme_string_validation_args_correct(scheme):
     @deal.pre(scheme)
     def func(name):
@@ -28,6 +38,7 @@ def test_scheme_string_validation_args_correct(scheme):
         assert e.args[0] == {'name': ['Not a valid string.']}
 
 
+@pytest.mark.parametrize('scheme', SCHEMES)
 def test_method_chain_decorator_with_scheme_is_fulfilled(scheme):
     @deal.pre(scheme)
     @deal.pre(lambda name: name != 'Oleg')
@@ -43,6 +54,7 @@ def test_method_chain_decorator_with_scheme_is_fulfilled(scheme):
         func('Oleg')
 
 
+@pytest.mark.parametrize('scheme', SCHEMES)
 def test_scheme_contract_is_satisfied_when_setting_arg(scheme):
     @deal.inv(scheme)
     class User:
@@ -61,6 +73,7 @@ def test_scheme_contract_is_satisfied_when_setting_arg(scheme):
         assert e.args[0] == {'name': ['Not a valid string.']}
 
 
+@pytest.mark.parametrize('scheme', SCHEMES)
 def test_scheme_contract_is_satisfied_within_chain(scheme):
     @deal.inv(lambda user: user.name != 'Oleg')
     @deal.inv(scheme)
@@ -84,6 +97,7 @@ def test_scheme_contract_is_satisfied_within_chain(scheme):
         user.name = 'Chris'
 
 
+@pytest.mark.parametrize('scheme', SCHEMES)
 def test_scheme_contract_is_satisfied_when_passing_args(scheme):
     @deal.pre(scheme)
     def func(name):
