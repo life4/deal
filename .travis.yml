@@ -28,7 +28,7 @@ script:
   - coveralls
 
 # run tests
-env: ENV=tests
+env: ENV=pytest
 python:
   - "3.6.7"
   - "3.7"

@@ -14,7 +14,7 @@ from .types import ExceptionType
 class _Base:
     exception: ExceptionType = exceptions.ContractError
 
-    def __init__(self, validator, *, message: str = None,
+    def __init__(self, validator: Callable, *, message: str = None,
                  exception: Type[Exception] = None, debug: bool = False):
         """
         Step 1. Set contract (validator).
@@ -221,7 +221,7 @@ class Invariant(_Base):
 class Raises(_Base):
     exception: ExceptionType = exceptions.RaisesContractError
 
-    def __init__(self, *exceptions, message=None, exception=None, debug=False):
+    def __init__(self, *exceptions, message: str = None, exception: ExceptionType = None, debug: bool = False):
         """
         Step 1. Set allowed exceptions list.
         """
@@ -281,7 +281,7 @@ class Reason(_Base):
 class Offline(_Base):
     exception: ExceptionType = exceptions.OfflineContractError
 
-    def __init__(self, *, message=None, exception=None, debug=False):
+    def __init__(self, *, message: str = None, exception: ExceptionType = None, debug: bool = False):
         """
         Step 1. Init params.
         """
@@ -308,7 +308,7 @@ class Offline(_Base):
 
 
 class PatchedStringIO(StringIO):
-    def __init__(self, exception):
+    def __init__(self, exception: ExceptionType):
         self.exception = exception
 
     def write(self, *args, **kwargs):
