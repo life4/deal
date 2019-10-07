@@ -5,7 +5,7 @@ import hypothesis
 import hypothesis.strategies
 import typeguard
 
-from .core import Raises, Pre
+from ._decorators import Raises, Pre
 from .types import ArgsKwargsType, ExceptionType
 
 

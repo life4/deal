@@ -1,6 +1,6 @@
 from functools import partial
 
-from .core import Pre, Post, Invariant, Raises, Offline, Silent, Ensure
+from ._decorators import Pre, Post, Invariant, Raises, Offline, Silent, Ensure
 
 
 __all__ = [
