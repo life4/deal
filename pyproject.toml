@@ -21,7 +21,7 @@ command = "sphinx-build -M html docs docs/build"
 
 
 [tool.isort]
-line_length = 120
+line_length = 90
 combine_as_imports = true
 balanced_wrapping = true
 lines_after_imports = 2

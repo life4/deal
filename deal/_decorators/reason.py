@@ -1,8 +1,10 @@
+# built-in
 from typing import Callable
 
-from .base import Base
-from .._types import ExceptionType
+# app
 from .._exceptions import ReasonContractError
+from .._types import ExceptionType
+from .base import Base
 
 
 class Reason(Base):
