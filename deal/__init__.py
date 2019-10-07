@@ -20,11 +20,11 @@ __author__ = 'Gram Orsinium'
 __license__ = 'MIT'
 
 
-from .aliases import *              # noQA
-from .exceptions import *           # noQA
-from .schemes import Scheme
-from .state import reset, switch
-from .testing import cases, TestCase
+from ._aliases import *              # noQA
+from ._exceptions import *           # noQA
+from ._schemes import Scheme
+from ._state import reset, switch
+from ._testing import cases, TestCase
 
 __all__ = [
     'cases',
