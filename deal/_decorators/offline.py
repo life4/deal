@@ -1,12 +1,12 @@
 import socket
 
-from .. import exceptions
-from ..types import ExceptionType
+from .._exceptions import OfflineContractError
+from .._types import ExceptionType
 from .base import Base
 
 
 class Offline(Base):
-    exception: ExceptionType = exceptions.OfflineContractError
+    exception: ExceptionType = OfflineContractError
 
     def __init__(self, *, message: str = None, exception: ExceptionType = None, debug: bool = False):
         """

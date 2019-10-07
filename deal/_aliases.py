@@ -2,7 +2,7 @@ from functools import partial
 from typing import Callable
 
 from ._decorators import Pre, Post, Invariant, Raises, Offline, Silent, Ensure
-from .types import ExceptionType
+from ._types import ExceptionType
 
 
 __all__ = [

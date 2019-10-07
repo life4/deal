@@ -1,5 +1,5 @@
-from .. import exceptions
-from ..types import ExceptionType
+from .._exceptions import PreContractError
+from .._types import ExceptionType
 from .base import Base
 
 
@@ -8,7 +8,7 @@ class Pre(Base):
     Check contract (validator) before function processing.
     Validate input arguments.
     """
-    exception: ExceptionType = exceptions.PreContractError
+    exception: ExceptionType = PreContractError
 
     def patched_function(self, *args, **kwargs):
         """

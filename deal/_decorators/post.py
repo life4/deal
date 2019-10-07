@@ -1,5 +1,5 @@
-from .. import exceptions
-from ..types import ExceptionType
+from .._exceptions import PostContractError
+from .._types import ExceptionType
 from .base import Base
 
 
@@ -8,7 +8,7 @@ class Post(Base):
     Check contract (validator) after function processing.
     Validate output result.
     """
-    exception: ExceptionType = exceptions.PostContractError
+    exception: ExceptionType = PostContractError
 
     def patched_function(self, *args, **kwargs):
         """

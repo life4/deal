@@ -1,10 +1,8 @@
-import socket
 import sys
 from io import StringIO
-from typing import Tuple
 
-from .. import exceptions
-from ..types import ExceptionType
+from .._exceptions import SilentContractError
+from .._types import ExceptionType
 from .base import Base
 
 
@@ -17,7 +15,7 @@ class PatchedStringIO(StringIO):
 
 
 class Silent(Base):
-    exception: ExceptionType = exceptions.SilentContractError
+    exception: ExceptionType = SilentContractError
 
     def __init__(self, *, message: str = None, exception: ExceptionType = None, debug: bool = False):
         """

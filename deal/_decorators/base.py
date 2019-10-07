@@ -2,13 +2,13 @@ from functools import update_wrapper
 from inspect import getcallargs
 from typing import Callable, Type
 
-from .. import exceptions
-from ..state import state
-from ..types import ExceptionType
+from .._exceptions import ContractError
+from .._state import state
+from .._types import ExceptionType
 
 
 class Base:
-    exception: ExceptionType = exceptions.ContractError
+    exception: ExceptionType = ContractError
 
     def __init__(self, validator: Callable, *, message: str = None,
                  exception: Type[Exception] = None, debug: bool = False):

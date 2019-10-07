@@ -6,7 +6,7 @@ import hypothesis.strategies
 import typeguard
 
 from ._decorators import Raises, Pre
-from .types import ArgsKwargsType, ExceptionType
+from ._types import ArgsKwargsType, ExceptionType
 
 
 class TestCase(typing.NamedTuple):

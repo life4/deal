@@ -1,12 +1,12 @@
 from typing import Tuple
 
-from .. import exceptions
-from ..types import ExceptionType
+from .._exceptions import ContractError, RaisesContractError
+from .._types import ExceptionType
 from .base import Base
 
 
 class Raises(Base):
-    exception: ExceptionType = exceptions.RaisesContractError
+    exception: ExceptionType = RaisesContractError
 
     def __init__(self, *exceptions, message: str = None, exception: ExceptionType = None, debug: bool = False):
         """
@@ -26,7 +26,7 @@ class Raises(Base):
         """
         try:
             return self.function(*args, **kwargs)
-        except exceptions.ContractError:
+        except ContractError:
             raise
         except Exception as exc:
             if not isinstance(exc, self.exceptions):
