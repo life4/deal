@@ -9,11 +9,10 @@ command = "flake8"
 
 # generate report:
 # dephell venv run --env=tests coverage report --show-missing
-[tool.dephell.tests]
+[tool.dephell.pytest]
 from = {format = "poetry", path = "pyproject.toml"}
 envs = ["main", "tests"]
-tests = ["tests.py"]
-command = "coverage run --source deal tests.py"
+command = "pytest --cov=deal tests/"
 
 [tool.dephell.docs]
 from = {format = "poetry", path = "pyproject.toml"}
@@ -67,6 +66,7 @@ typeguard = "*"
 coverage = "*"
 marshmallow = "*"
 pytest = "*"
+pytest-cov = "*"
 urllib3 = "*"
 vaa = ">=0.1.4"
 
@@ -80,6 +80,7 @@ tests = [
     "coverage",
     "marshmallow",
     "pytest",
+    "pytest-cov",
     "urllib3",
     "vaa",
 ]
