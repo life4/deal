@@ -10,12 +10,12 @@ from .base import Base
 class Reason(Base):
     exception: ExceptionType = ReasonContractError
 
-    def __init__(self, trigger: Exception, validator: Callable, *,
+    def __init__(self, event: Exception, validator: Callable, *,
                  message: str = None, exception: ExceptionType = None, debug: bool = False):
         """
         Step 1. Set allowed exceptions list.
         """
-        self.trigger = trigger
+        self.event = event
         super().__init__(
             validator=validator,
             message=message,
@@ -29,7 +29,7 @@ class Reason(Base):
         """
         try:
             return self.function(*args, **kwargs)
-        except self.trigger as origin:
+        except self.event as origin:
             try:
                 self.validate(*args, **kwargs)
             except self.exception:
