@@ -47,3 +47,11 @@ from typing import Callable, List
 def map(items: List[str], func: Callable[[str], str]) -> List[str]:
     ...
 ```
+
+Or if function `choice` returns random element from the list, we can't from one run check result randomness, but can't ensure that result is an element from the list:
+
+```python
+@deal.ensure(lambda items, result: result in items)
+def choice(items: List[str]) -> str:
+    ...
+```

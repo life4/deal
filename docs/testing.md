@@ -103,6 +103,7 @@ contract_for_index_of = deal.chain(
     ),
     # LookupError will be raised if no elements found
     deal.raises(LookupError),
+    deal.reason(LookupError, lambda items, item: item not in items)
 )
 ```
 
