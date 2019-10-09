@@ -10,7 +10,7 @@ def divide(a, b):
 
 ## Motivation
 
-This is the [@deal.ensure](ensure) for exceptions. It works perfect when it's easy to check correctness of conditions when exception is raised.
+This is the [@deal.ensure](./ensure.html) for exceptions. It works perfect when it's easy to check correctness of conditions when exception is raised.
 
 For example, if function `index_of` returns index of the first element that equal to the given element and raises `LookupError` if element is not found, we can check that if `LookupError` is raised, element not in the list:
 

@@ -17,7 +17,7 @@ command = "pytest --cov=deal tests/"
 [tool.dephell.docs]
 from = {format = "poetry", path = "pyproject.toml"}
 envs = ["docs"]
-command = "sphinx-build -M html docs docs/build"
+command = "sphinx-build -W docs docs/build"
 
 
 [tool.isort]
