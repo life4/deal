@@ -52,7 +52,7 @@ class Base:
         if validator.is_valid():
             return
         if isinstance(self.exception, Exception):
-            raise self.exception
+            raise type(self.exception)(validator.errors)
         raise self.exception(validator.errors)
 
     def _simple_validation(self, *args, **kwargs) -> None:
@@ -60,7 +60,7 @@ class Base:
         # is invalid (validator returns error message)
         if isinstance(validation_result, str):
             if isinstance(self.exception, Exception):
-                raise self.exception
+                raise type(self.exception)(validation_result)
             raise self.exception(validation_result)
         # is valid (truely result)
         if validation_result:

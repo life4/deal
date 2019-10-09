@@ -4,7 +4,8 @@ from typing import NoReturn
 
 
 @deal.raises(ZeroDivisionError)
-@deal.pre(lambda a, b: a > 0 and b > 0)
+@deal.pre(lambda a, b: a > 0)
+@deal.pre(lambda a, b: b > 0, message='b must be positive')
 def div(a: int, b: int) -> float:
     assert isinstance(a, int)
     assert isinstance(b, int)
