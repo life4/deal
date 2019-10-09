@@ -16,7 +16,7 @@ double(0)
 
 ## Motivation
 
-Perfect for complex task that easy to check. For example:
+Ensure allows you to simplify testing, easier check hypothesis, tell more about the function behavior. It works perfect for [P vs NP](https://en.wikipedia.org/wiki/P_versus_NP_problem) like problems. In other words, for complex task when checking result correctness (even partial checking only for some cases) is much easier then calculation itself. For example:
 
 ```python
 from typing import List
@@ -38,4 +38,12 @@ def index_of(items: List[int], item: int) -> int:
     raise LookupError
 ```
 
-It allows you to simplify testing, easier check hypothesis, tell more about the function behavior.
+Also, it's ok if you can check only some simple cases. For example, function `map` applies given function to the list. Let's check that count of returned elements is the same as the count of given elements:
+
+```python
+from typing import Callable, List
+
+@deal.ensure(lambda: items, func, result: len(result) == len(items))
+def map(items: List[str], func: Callable[[str], str]) -> List[str]:
+    ...
+```

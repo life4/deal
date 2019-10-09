@@ -16,35 +16,23 @@ always_positive_sum(2, -3, -4)
 
 ## Motivation
 
-Make constraints about function response.
+Post-condition allows to make additional constraints about function result. Use type annotations to limit types of result and post-conditions to limit possible values inside given types. Let's see a few examples.
 
-Bad:
+If function `count` returns count of elements that equal to given element, result is always non-negative.
 
 ```python
-def get_usernames(role):
-    if role != 'admin':
-        return dict(code=403)
-    return dict(records=['oleg', 'greg', 'admin'])
-
-def some_other_code(role):
-    response = get_usernames(role)
-    if 'code' not in response:
-        response['code'] = 200
+@deal.post(lambda result: result >= 0)
+def count(items: List[str], item: str) -> int:
     ...
 ```
 
-Good:
+Or you can make promise that your response always contains some specific fields:
 
 ```python
-@deal.post(lambda resp: type(resp) is dict)
-@deal.post(lambda resp: 'code' in resp)
-@deal.post(lambda resp: 'records' in resp)
+@deal.post(lambda result: 'code' in result)
+@deal.post(lambda result: 'records' in result)
 def get_usernames(role):
     if role != 'admin':
         return dict(code=403, records=[])
     return dict(code=200, records=['oleg', 'greg', 'admin'])
-
-def some_other_code(role):
-    response = get_usernames(role)
-    ...
 ```
