@@ -28,14 +28,14 @@ def get_returns(body: list = None):
         if not isinstance(expr, ast.Return):
             continue
 
-        # string
-        if isinstance(expr.value, ast.Str):
+        # string, binary string
+        if isinstance(expr.value, (ast.Str, ast.Bytes)):
             yield Token(value=expr.value.s, line=expr.lineno, col=expr.col_offset)
             continue
 
-        # binary string
-        if isinstance(expr.value, ast.Bytes):
-            yield Token(value=expr.value.s, line=expr.lineno, col=expr.col_offset)
+        # True, False, None
+        if isinstance(expr.value, ast.NameConstant):
+            yield Token(value=expr.value.value, line=expr.lineno, col=expr.col_offset)
             continue
 
         # positive number
