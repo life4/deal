@@ -33,6 +33,11 @@ def get_returns(body: list = None):
             yield Token(value=expr.value.s, line=expr.lineno, col=expr.col_offset)
             continue
 
+        # binary string
+        if isinstance(expr.value, ast.Bytes):
+            yield Token(value=expr.value.s, line=expr.lineno, col=expr.col_offset)
+            continue
+
         # positive number
         if isinstance(expr.value, ast.Num):
             yield Token(value=expr.value.n, line=expr.lineno, col=expr.col_offset)

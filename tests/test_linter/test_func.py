@@ -1,5 +1,3 @@
-
-
 from deal.linter._func import Func
 
 
