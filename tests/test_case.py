@@ -38,7 +38,6 @@ def test_params_ok_with_excs():
     for case in deal.cases(func, count=20):
         result = case()
         results.append(result)
-    assert any(r is not NoReturn for r in results), 'exception occured on every run'
     assert any(r is NoReturn for r in results), 'no exception occured'
 
 
