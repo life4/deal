@@ -16,6 +16,7 @@ from deal.linter._extractors import get_returns, get_exceptions
     ('return None', (None, )),
 
     ('if True: return 13', (13, )),
+    ('if True:\n  return 13\nelse:\n  return 16', (13, 16)),
     ('for i in lst: return 13', (13, )),
 ])
 def test_get_returns_simple(text, expected):

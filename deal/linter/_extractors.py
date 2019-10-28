@@ -18,7 +18,12 @@ def get_exceptions(body: list = None):
         if isinstance(expr, ast.Expr):
             yield from get_exceptions(body=[expr.value])
             continue
-        if isinstance(expr, (ast.If, ast.For)):
+        if isinstance(expr, ast.If):
+            yield from get_exceptions(body=expr.body)
+            if expr.orelse:
+                yield from get_exceptions(body=expr.orelse)
+            continue
+        if isinstance(expr, ast.For):
             yield from get_exceptions(body=expr.body)
             continue
 
@@ -42,7 +47,12 @@ def get_returns(body: list = None):
         if isinstance(expr, ast.Expr):
             yield from get_returns(body=[expr.value])
             continue
-        if isinstance(expr, (ast.If, ast.For)):
+        if isinstance(expr, ast.If):
+            yield from get_returns(body=expr.body)
+            if expr.orelse:
+                yield from get_returns(body=expr.orelse)
+            continue
+        if isinstance(expr, ast.For):
             yield from get_returns(body=expr.body)
             continue
 
