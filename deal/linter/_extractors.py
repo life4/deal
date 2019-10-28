@@ -85,9 +85,5 @@ def get_returns(body: list = None):
         if isinstance(expr.value, ast.UnaryOp):
             if isinstance(expr.value.op, ast.USub):
                 if isinstance(expr.value.operand, ast.Num):
-                    yield Token(
-                        value=-expr.value.operand.n,
-                        line=expr.lineno,
-                        col=expr.col_offset,
-                    )
+                    yield Token(value=-expr.value.operand.n, **token_info)
             continue
