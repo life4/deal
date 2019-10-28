@@ -14,6 +14,9 @@ from deal.linter._extractors import get_returns, get_exceptions
     ('return b"lol"', (b'lol', )),
     ('return True', (True, )),
     ('return None', (None, )),
+
+    ('if True: return 13', (13, )),
+    ('for i in lst: return 13', (13, )),
 ])
 def test_get_returns_simple(text, expected):
     returns = tuple(r.value for r in get_returns(body=ast.parse(text).body))
@@ -24,7 +27,12 @@ def test_get_returns_simple(text, expected):
     ('raise BaseException', (BaseException, )),
     ('raise ValueError', (ValueError, )),
     ('12 / 0', (ZeroDivisionError, )),
+
+    ('if True: raise KeyError', (KeyError, )),
+    ('for i in lst: raise KeyError', (KeyError, )),
 ])
 def test_get_exceptions_simple(text, expected):
-    returns = tuple(r.value for r in get_exceptions(body=ast.parse(text).body))
+    tree = ast.parse(text)
+    print(ast.dump(tree))
+    returns = tuple(r.value for r in get_exceptions(body=tree.body))
     assert returns == expected

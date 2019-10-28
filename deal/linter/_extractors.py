@@ -18,6 +18,10 @@ def get_exceptions(body: list = None):
         if isinstance(expr, ast.Expr):
             yield from get_exceptions(body=[expr.value])
             continue
+        if isinstance(expr, (ast.If, ast.For)):
+            yield from get_exceptions(body=expr.body)
+            continue
+
         token_info = dict(line=expr.lineno, col=expr.col_offset)
 
         # explicit raise
@@ -37,6 +41,9 @@ def get_returns(body: list = None):
     for expr in body:
         if isinstance(expr, ast.Expr):
             yield from get_returns(body=[expr.value])
+            continue
+        if isinstance(expr, (ast.If, ast.For)):
+            yield from get_returns(body=expr.body)
             continue
 
         token_info = dict(line=expr.lineno, col=expr.col_offset)
