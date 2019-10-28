@@ -13,20 +13,28 @@ class Token:
         return self.line - 1
 
 
-def get_exceptions(body: list = None):
+def _traverse(body):
     for expr in body:
         if isinstance(expr, ast.Expr):
-            yield from get_exceptions(body=[expr.value])
+            yield expr.value
             continue
         if isinstance(expr, ast.If):
-            yield from get_exceptions(body=expr.body)
+            yield from _traverse(body=expr.body)
             if expr.orelse:
-                yield from get_exceptions(body=expr.orelse)
+                yield from _traverse(body=expr.orelse)
             continue
         if isinstance(expr, ast.For):
-            yield from get_exceptions(body=expr.body)
+            yield from _traverse(body=expr.body)
             continue
+        if isinstance(expr, ast.Try):
+            yield from _traverse(body=expr.orelse)
+            yield from _traverse(body=expr.finalbody)
+            continue
+        yield expr
 
+
+def get_exceptions(body: list = None):
+    for expr in _traverse(body):
         token_info = dict(line=expr.lineno, col=expr.col_offset)
 
         # explicit raise
@@ -43,19 +51,7 @@ def get_exceptions(body: list = None):
 
 
 def get_returns(body: list = None):
-    for expr in body:
-        if isinstance(expr, ast.Expr):
-            yield from get_returns(body=[expr.value])
-            continue
-        if isinstance(expr, ast.If):
-            yield from get_returns(body=expr.body)
-            if expr.orelse:
-                yield from get_returns(body=expr.orelse)
-            continue
-        if isinstance(expr, ast.For):
-            yield from get_returns(body=expr.body)
-            continue
-
+    for expr in _traverse(body):
         token_info = dict(line=expr.lineno, col=expr.col_offset)
         if not isinstance(expr, ast.Return):
             continue
