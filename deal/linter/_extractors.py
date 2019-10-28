@@ -25,6 +25,8 @@ def _traverse(body):
             continue
         if isinstance(expr, ast.For):
             yield from _traverse(body=expr.body)
+            if expr.orelse:
+                yield from _traverse(body=expr.orelse)
             continue
         if isinstance(expr, ast.Try):
             yield from _traverse(body=expr.orelse)
