@@ -30,6 +30,9 @@ def _traverse(body):
             yield from _traverse(body=expr.orelse)
             yield from _traverse(body=expr.finalbody)
             continue
+        if isinstance(expr, ast.With):
+            yield from _traverse(body=expr.body)
+            continue
         yield expr
 
 

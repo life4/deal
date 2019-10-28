@@ -20,6 +20,7 @@ from deal.linter._extractors import get_returns, get_exceptions
     ('for i in lst: return 13', (13, )),
     ('try:\n lol()\nexcept:\n 1\nelse:\n return 3', (3, )),
     ('try:\n lol()\nexcept:\n 1\nfinally:\n return 3', (3, )),
+    ('with lol():\n return 3', (3, )),
 ])
 def test_get_returns_simple(text, expected):
     returns = tuple(r.value for r in get_returns(body=ast.parse(text).body))
