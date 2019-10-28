@@ -52,6 +52,11 @@ def get_exceptions(body: list = None):
                 yield Token(value=ZeroDivisionError, **token_info)
                 continue
 
+        if isinstance(expr, ast.Call) and isinstance(expr.func, ast.Name):
+            if expr.func.id == 'exit':
+                yield Token(value=SystemExit, **token_info)
+                continue
+
 
 def get_returns(body: list = None):
     for expr in _traverse(body):

@@ -31,6 +31,7 @@ def test_get_returns_simple(text, expected):
     ('raise BaseException', (BaseException, )),
     ('raise ValueError', (ValueError, )),
     ('12 / 0', (ZeroDivisionError, )),
+    ('exit(13)', (SystemExit, )),
 
     ('if True: raise KeyError', (KeyError, )),
     ('for i in lst: raise KeyError', (KeyError, )),
