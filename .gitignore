@@ -7,5 +7,7 @@ htmlcov/
 README.rst
 docs/build/
 /setup.py
+/setup.cfg
 .dephell_report/
 .mypy_cache/
+/tmp.py

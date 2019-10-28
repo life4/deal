@@ -91,3 +91,6 @@ docs = [
     "sphinx",
     "urllib3",
 ]
+
+[tool.poetry.plugins."flake8.extension"]
+DEAL00 = "deal.linter:Checker"

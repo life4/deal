@@ -23,14 +23,20 @@ class Func:
 
     @classmethod
     def from_text(cls, text: str) -> List['Func']:
+        return cls.from_tree(ast.parse(text))
+
+    @classmethod
+    def from_tree(cls, tree: str) -> List['Func']:
         funcs = []
-        for expr in ast.parse(text).body:
+        for expr in tree.body:
             if not isinstance(expr, ast.FunctionDef):
                 continue
             for contract in expr.decorator_list:
                 if not isinstance(contract, ast.Call):
                     continue
                 if not isinstance(contract.func, ast.Attribute):
+                    continue
+                if not isinstance(contract.func.value, ast.Name):
                     continue
                 if contract.func.value.id != 'deal':
                     continue
@@ -51,3 +57,10 @@ class Func:
         globals = dict(args=args, kwargs=kwargs)
         exec(self.bytecode, globals)
         return globals['result']
+
+    def __repr__(self):
+        return '{name}({category}, {contract})'.format(
+            name=type(self).__name__,
+            contract=ast.dump(self.contract),
+            category=self.category.name,
+        )
