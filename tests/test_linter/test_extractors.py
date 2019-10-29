@@ -36,6 +36,17 @@ def test_get_returns_simple(text, expected):
 
 
 @pytest.mark.parametrize('text, expected', [
+    ('return 1 + 2', (3, )),
+    ('a = 10\nreturn a', (10, )),
+])
+def test_get_returns_inference(text, expected):
+    tree = astroid.parse(text)
+    print(tree.repr_tree())
+    returns = tuple(r.value for r in get_returns(body=tree.body))
+    assert returns == expected
+
+
+@pytest.mark.parametrize('text, expected', [
     ('raise BaseException', (BaseException, )),
     ('raise ValueError', (ValueError, )),
     ('12 / 0', (ZeroDivisionError, )),

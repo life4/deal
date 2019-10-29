@@ -125,3 +125,11 @@ def get_returns(body: list = None):
                 if isinstance(expr.value.operand, astroid.Const):
                     yield Token(value=-expr.value.operand.value, **token_info)
                     continue
+
+        # astroid inference
+        if hasattr(expr.value, 'infer'):
+            for value in expr.value.infer():
+                if value is astroid.Uninferable:
+                    continue
+                if isinstance(value, astroid.Const):
+                    yield Token(value=value.value, **token_info)
