@@ -1,4 +1,5 @@
 import ast
+import astroid
 
 import pytest
 
@@ -23,6 +24,11 @@ from deal.linter._extractors import get_returns, get_exceptions
     ('with lol():\n return 3', (3, )),
 ])
 def test_get_returns_simple(text, expected):
+    tree = astroid.parse(text)
+    print(tree.repr_tree())
+    returns = tuple(r.value for r in get_returns(body=tree.body))
+    assert returns == expected
+
     tree = ast.parse(text)
     print(ast.dump(tree))
     returns = tuple(r.value for r in get_returns(body=tree.body))
@@ -39,6 +45,11 @@ def test_get_returns_simple(text, expected):
     ('for i in lst: raise KeyError', (KeyError, )),
 ])
 def test_get_exceptions_simple(text, expected):
+    tree = astroid.parse(text)
+    print(tree.repr_tree())
+    returns = tuple(r.value for r in get_exceptions(body=tree.body))
+    assert returns == expected
+
     tree = ast.parse(text)
     print(ast.dump(tree))
     returns = tuple(r.value for r in get_exceptions(body=tree.body))

@@ -59,6 +59,7 @@ classifiers=[
 
 [tool.poetry.dependencies]
 python = ">=3.5"
+astroid = "*"
 hypothesis = "*"
 typeguard = "*"
 
