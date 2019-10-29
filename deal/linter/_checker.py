@@ -1,5 +1,6 @@
 import ast
 import typing
+from pathlib import Path
 
 from ._error import Error
 from ._func import Func
@@ -21,7 +22,11 @@ class Checker:
             yield tuple(error) + (type(self),)  # type: ignore
 
     def get_errors(self) -> typing.Iterator[Error]:
-        funcs = Func.from_ast(tree=self._tree)
+        if self._filename == 'stdin':
+            funcs = Func.from_ast(tree=self._tree)
+        else:
+            funcs = Func.from_path(path=Path(self._filename))
+
         for func in funcs:
             for rule in self._rules:
                 if rule.required != Required.FUNC:

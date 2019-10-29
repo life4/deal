@@ -66,9 +66,10 @@ class Func:
     @classmethod
     def from_astroid(cls, tree: astroid.Module) -> List['Func']:
         funcs = []
-        print(tree.repr_tree())
         for expr in tree.body:
             if not isinstance(expr, astroid.FunctionDef):
+                continue
+            if not expr.decorators:
                 continue
             for contract in expr.decorators.nodes:
                 if not isinstance(contract, astroid.Call):
