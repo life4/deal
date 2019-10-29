@@ -87,3 +87,15 @@ def test_get_prints_simple(text, expected):
     print(ast.dump(tree))
     returns = tuple(r.value for r in get_prints(body=tree.body))
     assert returns == expected
+
+
+@pytest.mark.parametrize('text, expected', [
+    ('from pathlib import Path\np = Path()\np.write_text("lol")', ('Path.open', )),
+    ('from pathlib import Path\np = Path()\np.open("w")', ('Path.open', )),
+    ('from pathlib import Path\np = Path()\nwith p.open("w"): ...', ('Path.open', )),
+])
+def test_get_prints_infer(text, expected):
+    tree = astroid.parse(text)
+    print(tree.repr_tree())
+    returns = tuple(r.value for r in get_prints(body=tree.body))
+    assert returns == expected

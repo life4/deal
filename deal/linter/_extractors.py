@@ -156,12 +156,17 @@ def get_prints(body: list):
             name = get_name(expr.func)
             if name in ('print', 'sys.stdout', 'sys.stderr'):
                 yield Token(value=name, **token_info)
+                continue
             if name in ('sys.stdout.write', 'sys.stderr.write'):
                 yield Token(value=name[:-6], **token_info)
+                continue
             if name == 'open':
                 if _is_open_to_write(expr):
                     yield Token(value='open', **token_info)
-            continue
+                continue
+
+        if _is_pathlib_write(expr):
+            yield Token(value='Path.open', **token_info)
 
         if isinstance(expr, TOKENS.WITH):
             for item in expr.items:
@@ -169,6 +174,8 @@ def get_prints(body: list):
                     item = item.context_expr
                 else:
                     item = item[0]
+                if _is_pathlib_write(item):
+                    yield Token(value='Path.open', **token_info)
                 if not isinstance(item, TOKENS.CALL):
                     continue
                 name = get_name(item.func)
@@ -193,4 +200,24 @@ def _is_open_to_write(expr) -> bool:
             return True
         if isinstance(arg.value, ast.Str) and 'w' in arg.value.s:
             return True
+    return False
+
+
+def _is_pathlib_write(expr) -> bool:
+    if not isinstance(expr, astroid.Call):
+        return False
+    if not isinstance(expr.func, astroid.Attribute):
+        return False
+    if expr.func.attrname not in ('write_text', 'write_bytes', 'open'):
+        return False
+
+    # if it's open, check that mode is "w"
+    if expr.func.attrname == 'open':
+        if not _is_open_to_write(expr):
+            return False
+
+    for value in expr.func.expr.infer():
+        if isinstance(value, astroid.Instance):
+            if value.pytype().startswith('pathlib.'):
+                return True
     return False
