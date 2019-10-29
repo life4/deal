@@ -66,8 +66,11 @@ def get_exceptions(body: list = None):
         # explicit raise
         if isinstance(expr, TOKENS.RAISE):
             name = _get_name(expr.exc)
-            if not name:
-                continue
+            # raise instance
+            if not name and isinstance(expr.exc, TOKENS.CALL):
+                name = _get_name(expr.exc.func)
+                if not name or name[0].islower():
+                    continue
             exc = getattr(builtins, name, name)
             yield Token(value=exc, **token_info)
             continue

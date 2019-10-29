@@ -49,6 +49,7 @@ def test_get_returns_inference(text, expected):
 @pytest.mark.parametrize('text, expected', [
     ('raise BaseException', (BaseException, )),
     ('raise ValueError', (ValueError, )),
+    ('raise ValueError("lol")', (ValueError, )),
     ('12 / 0', (ZeroDivisionError, )),
     ('exit(13)', (SystemExit, )),
 
