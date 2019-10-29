@@ -2,7 +2,7 @@ import enum
 from typing import Iterator
 
 from ._error import Error
-from ._extractors import get_exceptions, get_returns
+from ._extractors import get_exceptions, get_returns, get_imports
 from ._func import Func, Category
 
 
@@ -11,7 +11,7 @@ rules = []
 
 class Required(enum.Enum):
     FUNC = 'func'
-    AST = 'ast'
+    MODULE = 'module'
 
 
 def register(rule):
@@ -20,8 +20,25 @@ def register(rule):
 
 
 @register
-class CheckReturns:
+class CheckImports:
     code = 1
+    message = 'do not use `from deal import ...`, use `import deal` instead'
+    required = Required.MODULE
+
+    def __call__(self, tree) -> Iterator[Error]:
+        for token in get_imports(tree.body):
+            if token.value == 'deal':
+                yield Error(
+                    code=self.code,
+                    text=self.message,
+                    row=token.line,
+                    col=token.col,
+                )
+
+
+@register
+class CheckReturns:
+    code = 11
     message = 'post contract error'
     required = Required.FUNC
 
@@ -40,7 +57,7 @@ class CheckReturns:
 
 @register
 class CheckRaises:
-    code = 2
+    code = 12
     message = 'raises contract error ({exc})'
     required = Required.FUNC
 

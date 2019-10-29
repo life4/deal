@@ -34,6 +34,6 @@ class Checker:
                 yield from rule(func)
 
         for rule in self._rules:
-            if rule.required != Required.AST:
+            if rule.required != Required.MODULE:
                 continue
             yield from rule(self._tree)

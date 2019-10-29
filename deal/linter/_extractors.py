@@ -64,7 +64,7 @@ def get_name(expr):
     return None
 
 
-def get_exceptions(body: list = None):
+def get_exceptions(body: list):
     for expr in _traverse(body):
         token_info = dict(line=expr.lineno, col=expr.col_offset)
 
@@ -104,7 +104,7 @@ def get_exceptions(body: list = None):
                     continue
 
 
-def get_returns(body: list = None):
+def get_returns(body: list):
     for expr in _traverse(body):
         token_info = dict(line=expr.lineno, col=expr.col_offset)
         if not isinstance(expr, TOKENS.RETURN):
@@ -148,3 +148,12 @@ def get_returns(body: list = None):
                     continue
                 if isinstance(value, astroid.Const):
                     yield Token(value=value.value, **token_info)
+
+
+def get_imports(body: list):
+    for expr in _traverse(body):
+        token_info = dict(line=expr.lineno, col=expr.col_offset)
+        if isinstance(expr, astroid.ImportFrom):
+            yield Token(value=expr.modname, **token_info)
+        if isinstance(expr, ast.ImportFrom):
+            yield Token(value=expr.module, **token_info)

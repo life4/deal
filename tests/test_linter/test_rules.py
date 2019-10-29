@@ -4,7 +4,7 @@ from textwrap import dedent
 import astroid
 
 from deal.linter._func import Func
-from deal.linter._rules import CheckRaises, CheckReturns
+from deal.linter._rules import CheckRaises, CheckReturns, CheckImports
 
 
 def test_check_returns():
@@ -22,7 +22,7 @@ def test_check_returns():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(6, 8, 'DEAL001: post contract error')]
+        expected = [(6, 8, 'DEAL011: post contract error')]
         assert actual == expected
 
 
@@ -39,5 +39,18 @@ def test_check_raises():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(4, 4, 'DEAL002: raises contract error (KeyError)')]
+        expected = [(4, 4, 'DEAL012: raises contract error (KeyError)')]
+        assert actual == expected
+
+
+def test_check_imports():
+    checker = CheckImports()
+    text = """
+    import deal
+    from deal import pre
+    """
+    text = dedent(text).strip()
+    for tree in (ast.parse(text), astroid.parse(text)):
+        actual = [tuple(err) for err in checker(tree)]
+        expected = [(2, 0, 'DEAL001: ' + CheckImports.message)]
         assert actual == expected
