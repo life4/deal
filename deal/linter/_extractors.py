@@ -48,7 +48,6 @@ def _traverse(body):
             continue
         if isinstance(expr, TOKENS.WITH):
             yield from _traverse(body=expr.body)
-            continue
         yield expr
 
 
@@ -148,3 +147,50 @@ def get_returns(body: list = None):
                     continue
                 if isinstance(value, astroid.Const):
                     yield Token(value=value.value, **token_info)
+
+
+def get_prints(body: list):
+    for expr in _traverse(body):
+        token_info = dict(line=expr.lineno, col=expr.col_offset)
+        if isinstance(expr, TOKENS.CALL):
+            name = get_name(expr.func)
+            if name in ('print', 'sys.stdout', 'sys.stderr'):
+                yield Token(value=name, **token_info)
+            if name in ('sys.stdout.write', 'sys.stderr.write'):
+                yield Token(value=name[:-6], **token_info)
+            if name == 'open':
+                if _is_open_to_write(expr):
+                    yield Token(value='open', **token_info)
+            continue
+
+        if isinstance(expr, TOKENS.WITH):
+            for item in expr.items:
+                if isinstance(item, ast.withitem):
+                    item = item.context_expr
+                else:
+                    item = item[0]
+                if not isinstance(item, TOKENS.CALL):
+                    continue
+                name = get_name(item.func)
+                if name == 'open':
+                    if _is_open_to_write(item):
+                        yield Token(value='open', **token_info)
+
+
+def _is_open_to_write(expr) -> bool:
+    for arg in expr.args:
+        if isinstance(arg, astroid.Const) and arg.value == 'w':
+            return True
+        if isinstance(arg, ast.Str) and 'w' in arg.s:
+            return True
+
+    if not expr.keywords:
+        return False
+    for arg in expr.keywords:
+        if arg.arg != 'mode':
+            continue
+        if isinstance(arg.value, astroid.Const) and 'w' in arg.value.value:
+            return True
+        if isinstance(arg.value, ast.Str) and 'w' in arg.value.s:
+            return True
+    return False
