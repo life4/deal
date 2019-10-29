@@ -2,7 +2,7 @@ import enum
 from typing import Iterator
 
 from ._error import Error
-from ._extractors import get_returns
+from ._extractors import get_exceptions, get_returns
 from ._func import Func, Category
 
 
@@ -36,3 +36,29 @@ class CheckReturns:
                 continue
             if not result:
                 yield Error(text=self.message, **error_info)
+
+
+@register
+class CheckRaises:
+    code = 1
+    message = 'raises contract error ({exc})'
+    required = Required.FUNC
+
+    def __call__(self, func: Func) -> Iterator[Error]:
+        if func.category != Category.RAISES:
+            return
+        allowed = func.exceptions.copy()
+        if not allowed:
+            return
+        for token in get_exceptions(body=func.body):
+            if token.value in allowed:
+                continue
+            exc = token.value
+            if not isinstance(exc, str):
+                exc = exc.__name__
+            yield Error(
+                code=self.code,
+                text=self.message.format(exc=exc),
+                row=token.line,
+                col=token.col,
+            )

@@ -52,15 +52,15 @@ def _traverse(body):
         yield expr
 
 
-def _get_name(expr):
+def get_name(expr):
     if isinstance(expr, ast.Name):
         return expr.id
     if isinstance(expr, astroid.Name):
         return expr.name
     if isinstance(expr, astroid.Attribute):
-        return _get_name(expr.expr) + '.' + expr.attrname
+        return get_name(expr.expr) + '.' + expr.attrname
     if isinstance(expr, ast.Attribute):
-        return _get_name(expr.value) + '.' + expr.attr
+        return get_name(expr.value) + '.' + expr.attr
     return None
 
 
@@ -70,10 +70,10 @@ def get_exceptions(body: list = None):
 
         # explicit raise
         if isinstance(expr, TOKENS.RAISE):
-            name = _get_name(expr.exc)
+            name = get_name(expr.exc)
             # raise instance
             if not name and isinstance(expr.exc, TOKENS.CALL):
-                name = _get_name(expr.exc.func)
+                name = get_name(expr.exc.func)
                 if not name or name[0].islower():
                     continue
             exc = getattr(builtins, name, name)
@@ -92,13 +92,13 @@ def get_exceptions(body: list = None):
 
         # exit()
         if isinstance(expr, TOKENS.CALL):
-            name = _get_name(expr.func)
+            name = get_name(expr.func)
             if name and name == 'exit':
                 yield Token(value=SystemExit, **token_info)
                 continue
             # sys.exit()
             if isinstance(expr.func, TOKENS.ATTR):
-                name = _get_name(expr.func)
+                name = get_name(expr.func)
                 if name and name == 'sys.exit':
                     yield Token(value=SystemExit, **token_info)
                     continue
