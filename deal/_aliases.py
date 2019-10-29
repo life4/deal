@@ -3,15 +3,16 @@ from functools import partial
 from typing import Callable
 
 # app
-from ._decorators import Ensure, Invariant, Offline, Post, Pre, Raises, Silent
+from . import _decorators
 from ._types import ExceptionType
 
 
-require = pre = Pre
-post = Post
-ensure = Ensure
-inv = invariant = Invariant
-raises = Raises
+require = pre = _decorators.Pre
+post = _decorators.Post
+ensure = _decorators.Ensure
+inv = invariant = _decorators.Invariant
+raises = _decorators.Raises
+reason = _decorators.Reason
 
 
 # makes braces for decorator are optional
@@ -22,9 +23,9 @@ def _optional(_contract, _func: Callable = None, *, message: str = None,
     return _contract(message=message, exception=exception, debug=debug)
 
 
-offline = partial(_optional, Offline)
-safe = partial(_optional, Raises)
-silent = partial(_optional, Silent)
+offline = partial(_optional, _decorators.Offline)
+safe = partial(_optional, _decorators.Raises)
+silent = partial(_optional, _decorators.Silent)
 
 
 def chain(*contracts) -> Callable[[Callable], Callable]:

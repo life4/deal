@@ -28,6 +28,7 @@
     decorators/offline
     decorators/pure
     decorators/raises
+    decorators/reason
     decorators/safe
     decorators/silent
 

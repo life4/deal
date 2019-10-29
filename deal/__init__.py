@@ -21,7 +21,10 @@ __license__ = 'MIT'
 
 
 # app
-from ._aliases import chain, ensure, inv, invariant, offline, post, pre, pure, raises, require, safe, silent
+from ._aliases import (
+    chain, ensure, inv, invariant, offline, post,
+    pre, pure, raises, reason, require, safe, silent,
+)
 from ._exceptions import *  # noQA
 from ._schemes import Scheme
 from ._state import reset, switch
@@ -39,15 +42,16 @@ __all__ = [
     'chain',
     'ensure',
     'inv',
-    'invariant',
     'offline',
     'post',
     'pre',
     'pure',
     'raises',
+    'reason',
     'safe',
     'silent',
 
     # aliases
+    'invariant',
     'require',
 ]

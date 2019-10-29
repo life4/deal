@@ -13,7 +13,7 @@ class Base:
     exception: ExceptionType = ContractError
 
     def __init__(self, validator: Callable, *, message: str = None,
-                 exception: Type[Exception] = None, debug: bool = False):
+                 exception: Type[ExceptionType] = None, debug: bool = False):
         """
         Step 1. Set contract (validator).
         """
@@ -22,7 +22,7 @@ class Base:
         if exception:
             self.exception = exception
         if message:
-            self.exception = self.exception(message)
+            self.exception = self.exception(message)    # type: ignore
 
     def validate(self, *args, **kwargs) -> None:
         """
@@ -40,7 +40,7 @@ class Base:
             # detect original function
             function = self.function
             while hasattr(function, '__wrapped__'):
-                function = function.__wrapped__
+                function = function.__wrapped__     # type: ignore
             # assign *args to real names
             params.update(getcallargs(function, *args, **kwargs))
             # drop args-kwargs, we already put them on the right places
@@ -51,12 +51,16 @@ class Base:
         validator = self.validator(data=params)
         if validator.is_valid():
             return
+        if isinstance(self.exception, Exception):
+            raise type(self.exception)(validator.errors)
         raise self.exception(validator.errors)
 
     def _simple_validation(self, *args, **kwargs) -> None:
         validation_result = self.validator(*args, **kwargs)
-        # is invalid (validator return error message)
+        # is invalid (validator returns error message)
         if isinstance(validation_result, str):
+            if isinstance(self.exception, Exception):
+                raise type(self.exception)(validation_result)
             raise self.exception(validation_result)
         # is valid (truely result)
         if validation_result:
