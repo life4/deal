@@ -52,6 +52,7 @@ def test_get_returns_inference(text, expected):
     ('raise ValueError("lol")', (ValueError, )),
     ('12 / 0', (ZeroDivisionError, )),
     ('exit(13)', (SystemExit, )),
+    ('sys.exit(13)', (SystemExit, )),
 
     ('if True: raise KeyError', (KeyError, )),
     ('for i in lst: raise KeyError', (KeyError, )),

@@ -6,6 +6,7 @@ import astroid
 
 
 TOKENS = SimpleNamespace(
+    ATTR=(ast.Attribute, astroid.Attribute),
     BIN_OP=(ast.BinOp, astroid.BinOp),
     CALL=(ast.Call, astroid.Call),
     EXPR=(ast.Expr, astroid.Expr),
@@ -56,6 +57,10 @@ def _get_name(expr):
         return expr.id
     if isinstance(expr, astroid.Name):
         return expr.name
+    if isinstance(expr, astroid.Attribute):
+        return _get_name(expr.expr) + '.' + expr.attrname
+    if isinstance(expr, ast.Attribute):
+        return _get_name(expr.value) + '.' + expr.attr
     return None
 
 
@@ -85,11 +90,18 @@ def get_exceptions(body: list = None):
                     yield Token(value=ZeroDivisionError, **token_info)
                     continue
 
+        # exit()
         if isinstance(expr, TOKENS.CALL):
             name = _get_name(expr.func)
             if name and name == 'exit':
                 yield Token(value=SystemExit, **token_info)
                 continue
+            # sys.exit()
+            if isinstance(expr.func, TOKENS.ATTR):
+                name = _get_name(expr.func)
+                if name and name == 'sys.exit':
+                    yield Token(value=SystemExit, **token_info)
+                    continue
 
 
 def get_returns(body: list = None):
