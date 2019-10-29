@@ -1,5 +1,5 @@
 # built-in
-from typing import Tuple
+from typing import Tuple, Type
 
 # app
 from .._exceptions import ContractError, RaisesContractError
@@ -14,7 +14,7 @@ class Raises(Base):
         """
         Step 1. Set allowed exceptions list.
         """
-        self.exceptions: Tuple[Exception, ...] = exceptions
+        self.exceptions: Tuple[Type[Exception], ...] = exceptions
         super().__init__(
             validator=None,
             message=message,

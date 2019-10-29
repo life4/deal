@@ -95,9 +95,8 @@ def test_class_method_decorator_raises_error_on_contract_fail():
         Class().method2(-2)
 
 
-# ignored test
-def _test_validator(validator):
-    func = deal.pre(validator)(lambda x: x)
+def test_contract_returns_message():
+    func = deal.pre(lambda x: x > 0 or 'TEST')(lambda x: x)
     assert func(4) == 4
 
     with pytest.raises(deal.PreContractError):
@@ -107,3 +106,14 @@ def _test_validator(validator):
         func(-2)
     except deal.PreContractError as e:
         assert e.args[0] == 'TEST'
+
+
+def test_text_from_contract_rewrites_default_one():
+    @deal.pre(lambda x: x > 0 or 'new message', message='old message')
+    def double(x):
+        return x * 2
+
+    try:
+        double(-1)
+    except deal.PreContractError as exc:
+        assert exc.args[0] == 'new message'

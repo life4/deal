@@ -118,3 +118,15 @@ def test_scheme_contract_is_satisfied_when_passing_args(scheme):
         return name * 2
 
     assert func() == 'MaxMax'
+
+
+@pytest.mark.parametrize('scheme', SCHEMES)
+def test_scheme_errors_rewrite_message(scheme):
+    @deal.pre(scheme, message='old message')
+    def func(name):
+        return name * 2
+
+    try:
+        func(2)
+    except deal.PreContractError as exc:
+        assert exc.args[0] == {'name': ['Not a valid string.']}

@@ -9,14 +9,14 @@ import typeguard
 
 # app
 from ._decorators import Pre, Raises
-from ._types import ArgsKwargsType, ExceptionType
+from ._types import ArgsKwargsType
 
 
 class TestCase(typing.NamedTuple):
     args: typing.Tuple[typing.Any, ...]
     kwargs: typing.Dict[str, typing.Any]
     func: typing.Callable
-    exceptions: typing.Tuple[ExceptionType, ...]
+    exceptions: typing.Tuple[typing.Type[Exception], ...]
 
     def __call__(self) -> typing.Any:
         """Calls the given test case returning the called functions result on success or
@@ -25,7 +25,7 @@ class TestCase(typing.NamedTuple):
         try:
             result = self.func(*self.args, **self.kwargs)
         except self.exceptions:
-            return typing.NoReturn
+            return typing.NoReturn  # type: ignore
         self._check_result(result)
         return result
 
@@ -40,19 +40,22 @@ class TestCase(typing.NamedTuple):
         )
 
 
-def get_excs(func: typing.Callable) -> typing.Iterator[ExceptionType]:
+def get_excs(func: typing.Callable) -> typing.Iterator[typing.Type[Exception]]:
     while True:
-        if func.__closure__:
-            for cell in func.__closure__:
+        if getattr(func, '__closure__', None):
+            for cell in func.__closure__:       # type: ignore
                 obj = cell.cell_contents
                 if isinstance(obj, Raises):
                     yield from obj.exceptions
                 elif isinstance(obj, Pre):
-                    yield obj.exception
+                    if isinstance(obj.exception, Exception):
+                        yield type(obj.exception)
+                    else:
+                        yield obj.exception
 
-        if not hasattr(func, '__wrapped__'):
+        if not hasattr(func, '__wrapped__'):    # type: ignore
             return
-        func = func.__wrapped__
+        func = func.__wrapped__                 # type: ignore
 
 
 def get_examples(func: typing.Callable, kwargs: typing.Dict[str, typing.Any],
@@ -65,7 +68,7 @@ def get_examples(func: typing.Callable, kwargs: typing.Dict[str, typing.Any],
     def pass_along_variables(*args, **kwargs) -> ArgsKwargsType:
         return args, kwargs
 
-    pass_along_variables.__signature__ = signature(func)
+    pass_along_variables.__signature__ = signature(func)    # type: ignore
     pass_along_variables.__annotations__ = getattr(func, '__annotations__', {})
     strategy = hypothesis.strategies.builds(pass_along_variables, **kwargs)
     examples = []

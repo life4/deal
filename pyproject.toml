@@ -8,7 +8,7 @@ python = ">=3.6"
 command = "flake8"
 
 # generate report:
-# dephell venv run --env=tests coverage report --show-missing
+# dephell venv run --env=pytest coverage report --show-missing
 [tool.dephell.pytest]
 from = {format = "poetry", path = "pyproject.toml"}
 envs = ["main", "tests"]
@@ -17,11 +17,11 @@ command = "pytest --cov=deal tests/"
 [tool.dephell.docs]
 from = {format = "poetry", path = "pyproject.toml"}
 envs = ["docs"]
-command = "sphinx-build -M html docs docs/build"
+command = "sphinx-build -W docs docs/build"
 
 
 [tool.isort]
-line_length = 120
+line_length = 90
 combine_as_imports = true
 balanced_wrapping = true
 lines_after_imports = 2
