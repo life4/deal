@@ -40,7 +40,7 @@ class CheckReturns:
 
 @register
 class CheckRaises:
-    code = 1
+    code = 2
     message = 'raises contract error ({exc})'
     required = Required.FUNC
 

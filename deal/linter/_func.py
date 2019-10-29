@@ -1,17 +1,19 @@
 import ast
 import builtins
 import enum
+from pathlib import Path
 from typing import List
 
 import astroid
 
-from ._extractors import get_name, TOKENS
+from ._extractors import get_name
 
 
 TEMPLATE = """
 contract = PLACEHOLDER
 result = contract(*args, **kwargs)
 """
+SUPPORTED_CONTRACTS = {'post', 'raises'}
 
 
 class Category(enum.Enum):
@@ -27,8 +29,15 @@ class Func:
         self.category = category
 
     @classmethod
+    def from_path(cls, path: Path) -> List['Func']:
+        text = path.read_text()
+        tree = astroid.parse(code=text, path=str(path))
+        return cls.from_astroid(tree)
+
+    @classmethod
     def from_text(cls, text: str) -> List['Func']:
-        return cls.from_astroid(astroid.parse(text))
+        tree = astroid.parse(text)
+        return cls.from_astroid(tree)
 
     @classmethod
     def from_ast(cls, tree: ast.Module) -> List['Func']:
@@ -44,6 +53,8 @@ class Func:
                 if not isinstance(contract.func.value, ast.Name):
                     continue
                 if contract.func.value.id != 'deal':
+                    continue
+                if contract.func.attr not in SUPPORTED_CONTRACTS:
                     continue
                 funcs.append(cls(
                     body=expr.body,
@@ -68,6 +79,8 @@ class Func:
                     continue
                 if contract.func.expr.name != 'deal':
                     continue
+                if contract.func.attrname not in SUPPORTED_CONTRACTS:
+                    continue
                 funcs.append(cls(
                     body=expr.body,
                     category=Category(contract.func.attrname),
@@ -88,11 +101,8 @@ class Func:
         excs = []
         for expr in self.args:
             name = get_name(expr)
-            # raise instance
-            if not name and isinstance(expr.exc, TOKENS.CALL):
-                name = get_name(expr.exc.func)
-                if not name or name[0].islower():
-                    continue
+            if not name:
+                continue
             exc = getattr(builtins, name, name)
             excs.append(exc)
         return excs
