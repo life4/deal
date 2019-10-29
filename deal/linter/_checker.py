@@ -3,7 +3,7 @@ import typing
 
 from ._error import Error
 from ._func import Func
-from ._rules import rules
+from ._rules import rules, Required
 
 
 class Checker:
@@ -24,4 +24,11 @@ class Checker:
         funcs = Func.from_tree(tree=self._tree)
         for func in funcs:
             for rule in self._rules:
+                if rule.required != Required.FUNC:
+                    continue
                 yield from rule(func)
+
+        for rule in self._rules:
+            if rule.required != Required.AST:
+                continue
+            yield from rule(self._tree)
