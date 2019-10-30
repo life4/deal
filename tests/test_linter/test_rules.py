@@ -26,6 +26,25 @@ def test_check_returns():
         assert actual == expected
 
 
+def test_check_returns_with_message():
+    checker = CheckReturns()
+    text = """
+    @deal.post(lambda x: x > 0 or 'oh no!')
+    def test(a):
+        if a:
+            return 1
+        else:
+            return -1
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    for func in (funcs1[0], funcs2[0]):
+        actual = [tuple(err) for err in checker(func)]
+        expected = [(6, 8, 'DEAL011: oh no!')]
+        assert actual == expected
+
+
 def test_check_raises():
     checker = CheckRaises()
     text = """
@@ -40,6 +59,22 @@ def test_check_raises():
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
         expected = [(4, 4, 'DEAL012: raises contract error (KeyError)')]
+        assert actual == expected
+
+
+def test_check_raises_without_():
+    checker = CheckRaises()
+    text = """
+    @deal.raises()
+    def test(a):
+        raise ValueError
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    for func in (funcs1[0], funcs2[0]):
+        actual = [tuple(err) for err in checker(func)]
+        expected = [(3, 4, 'DEAL012: raises contract error (ValueError)')]
         assert actual == expected
 
 

@@ -38,7 +38,7 @@ def test_get_returns_simple(text, expected):
 
 @pytest.mark.parametrize('text, expected', [
     ('return 1 + 2', (3, )),
-    ('a = 10\nreturn a', (10, )),
+    ('return a', ()),
 ])
 def test_get_returns_inference(text, expected):
     tree = astroid.parse(text)
@@ -52,6 +52,7 @@ def test_get_returns_inference(text, expected):
     ('raise ValueError', (ValueError, )),
     ('raise UnknownError', ('UnknownError', )),
     ('raise ValueError("lol")', (ValueError, )),
+    ('raise unknown()', ()),
     ('assert False', (AssertionError, )),
     ('12 / 0', (ZeroDivisionError, )),
     ('exit(13)', (SystemExit, )),
@@ -78,6 +79,10 @@ def test_get_exceptions_simple(text, expected):
     ('open("fpath", "w")', ('open', )),
     ('open("fpath", mode="w")', ('open', )),
     ('with open("fpath", "w") as f: ...', ('open', )),
+    ('with something: ...', ()),
+    ('open("fpath", "r")', ()),
+    ('open("fpath")', ()),
+    ('open("fpath", encoding="utf8")', ()),
 ])
 def test_get_prints_simple(text, expected):
     tree = astroid.parse(text)
@@ -95,6 +100,10 @@ def test_get_prints_simple(text, expected):
     ('from pathlib import Path\np = Path()\np.write_text("lol")', ('Path.open', )),
     ('from pathlib import Path\np = Path()\np.open("w")', ('Path.open', )),
     ('from pathlib import Path\np = Path()\nwith p.open("w"): ...', ('Path.open', )),
+    ('from pathlib import Path\np = Path()\np.read_text()', ()),
+    ('from pathlib import Path\np = Path()\np.open()', ()),
+    ('with something.open("w"): ...', ()),
+    ('something = file\nwith something.open("w"): ...', ()),
 ])
 def test_get_prints_infer(text, expected):
     tree = astroid.parse(text)
@@ -143,6 +152,7 @@ def test_get_contracts_decorators(text, expected):
 
 def test_get_contracts_infer():
     text = """
+        from io import StringIO
         import deal
 
         contracts = deal.chain(deal.silent, deal.post(lambda x: x>0))
@@ -150,10 +160,15 @@ def test_get_contracts_infer():
         @contracts
         def f(x):
             return x
+
+        with StringIO() as contracts2:
+            @contracts2
+            def f(x):
+                return x
     """
 
     tree = astroid.parse(dedent(text))
     print(tree.repr_tree())
-    decos = tree.body[-1].decorators.nodes
+    decos = tree.body[-2].decorators.nodes
     returns = tuple(cat for cat, _ in get_contracts(decos))
     assert returns == ('silent', 'post')

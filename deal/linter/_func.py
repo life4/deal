@@ -99,8 +99,7 @@ class Func:
         return globals['result']
 
     def __repr__(self) -> str:
-        return '{name}({category}, {contract})'.format(
+        return '{name}({category})'.format(
             name=type(self).__name__,
-            contract=ast.dump(self.contract),
-            category=self.category.name,
+            category=self.category.value,
         )

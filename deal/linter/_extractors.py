@@ -91,10 +91,11 @@ def get_contracts(decorators: list) -> Iterator[Tuple[str, list]]:
                 continue
             # use only the closest assignment
             expr = assigments[0]
-            if not isinstance(expr, astroid.AssignName):
+            # can it be not an assignment? IDK
+            if not isinstance(expr, astroid.AssignName):  # pragma: no cover
                 continue
             expr = expr.parent
-            if not isinstance(expr, astroid.Assign):
+            if not isinstance(expr, astroid.Assign):  # pragma: no cover
                 continue
             yield from get_contracts([expr.value])
 
@@ -183,9 +184,11 @@ def get_returns(body: list) -> Iterator[Token]:
 
         # astroid inference
         if hasattr(expr.value, 'infer'):
-            for value in expr.value.infer():
-                if value is astroid.Uninferable:
-                    continue
+            try:
+                guesses = tuple(expr.value.infer())
+            except astroid.exceptions.NameInferenceError:
+                continue
+            for value in guesses:
                 if isinstance(value, astroid.Const):
                     yield Token(value=value.value, **token_info)
 
@@ -257,7 +260,11 @@ def _is_pathlib_write(expr) -> bool:
         if not _is_open_to_write(expr):
             return False
 
-    for value in expr.func.expr.infer():
+    try:
+        guesses = tuple(expr.func.expr.infer())
+    except astroid.exceptions.NameInferenceError:
+        return False
+    for value in guesses:
         if isinstance(value, astroid.Instance):
             if value.pytype().startswith('pathlib.'):
                 return True

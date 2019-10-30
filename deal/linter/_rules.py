@@ -65,8 +65,6 @@ class CheckRaises:
         if func.category != Category.RAISES:
             return
         allowed = func.exceptions.copy()
-        if not allowed:
-            return
         for token in get_exceptions(body=func.body):
             if token.value in allowed:
                 continue

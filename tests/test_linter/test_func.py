@@ -17,6 +17,9 @@ import deal
 @something()
 def f(x):
     return x
+
+def h(x):
+    return x
 """
 
 
@@ -48,3 +51,10 @@ def test_exceptions():
     funcs2 = Func.from_astroid(astroid.parse(TEXT))
     for func in (funcs1[1], funcs2[1]):
         assert func.exceptions == [ValueError, 'UnknownError']
+
+
+def test_repr():
+    funcs1 = Func.from_ast(ast.parse(TEXT))
+    funcs2 = Func.from_astroid(astroid.parse(TEXT))
+    for func in (funcs1[0], funcs2[0]):
+        assert repr(func) == 'Func(post)'
