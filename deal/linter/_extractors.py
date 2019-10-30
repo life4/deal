@@ -17,7 +17,10 @@ TOKENS = SimpleNamespace(
     TRY=(ast.Try, astroid.TryExcept, astroid.TryFinally),
     UNARY_OP=(ast.UnaryOp, astroid.UnaryOp),
     WITH=(ast.With, astroid.With),
+    FUNC=(ast.FunctionDef, astroid.FunctionDef),
 )
+SUPPORTED_CONTRACTS = {'deal.post', 'deal.raises', 'deal.silent'}
+SUPPORTED_MARKERS = {'deal.silent'}
 
 
 class Token:
@@ -61,6 +64,25 @@ def get_name(expr):
     if isinstance(expr, ast.Attribute):
         return get_name(expr.value) + '.' + expr.attr
     return None
+
+
+def get_contracts(decorators: list):
+    for contract in decorators:
+        if isinstance(contract, TOKENS.ATTR):
+            name = get_name(contract)
+            if name not in SUPPORTED_MARKERS:
+                continue
+            yield name.split('.')[-1], []
+
+        if isinstance(contract, TOKENS.CALL):
+            if not isinstance(contract.func, TOKENS.ATTR):
+                continue
+            name = get_name(contract.func)
+            if name == 'deal.chain':
+                yield from get_contracts(contract.args)
+            if name not in SUPPORTED_CONTRACTS:
+                continue
+            yield name.split('.')[-1], contract.args
 
 
 def get_exceptions(body: list):

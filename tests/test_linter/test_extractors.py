@@ -3,7 +3,7 @@ import astroid
 
 import pytest
 
-from deal.linter._extractors import get_returns, get_exceptions, get_prints, get_imports
+from deal.linter._extractors import get_returns, get_exceptions, get_prints, get_imports, get_contracts
 
 
 @pytest.mark.parametrize('text, expected', [
@@ -113,4 +113,27 @@ def test_get_imports_simple(text, expected):
     tree = ast.parse(text)
     print(ast.dump(tree))
     returns = tuple(r.value for r in get_imports(body=tree.body))
+    assert returns == expected
+
+
+@pytest.mark.parametrize('text, expected', [
+    ('@deal.post(lambda x: x>0)', ('post', )),
+    ('@deal.silent', ('silent', )),
+    ('@deal.silent()', ('silent', )),
+    ('@deal.chain(deal.silent)', ('silent', )),
+    ('@deal.chain(deal.silent, deal.post(lambda x: x>0))', ('silent', 'post')),
+])
+def test_get_contracts_decorators(text, expected):
+    text += '\ndef f(x): pass'
+
+    tree = astroid.parse(text)
+    print(tree.repr_tree())
+    decos = tree.body[-1].decorators.nodes
+    returns = tuple(cat for cat, _ in get_contracts(decos))
+    assert returns == expected
+
+    tree = ast.parse(text)
+    print(ast.dump(tree))
+    decos = tree.body[-1].decorator_list
+    returns = tuple(cat for cat, _ in get_contracts(decos))
     assert returns == expected

@@ -6,14 +6,13 @@ from typing import List
 
 import astroid
 
-from ._extractors import get_name
+from ._extractors import get_name, get_contracts
 
 
 TEMPLATE = """
 contract = PLACEHOLDER
 result = contract(*args, **kwargs)
 """
-SUPPORTED_CONTRACTS = {'post', 'raises'}
 
 
 class Category(enum.Enum):
@@ -45,21 +44,11 @@ class Func:
         for expr in tree.body:
             if not isinstance(expr, ast.FunctionDef):
                 continue
-            for contract in expr.decorator_list:
-                if not isinstance(contract, ast.Call):
-                    continue
-                if not isinstance(contract.func, ast.Attribute):
-                    continue
-                if not isinstance(contract.func.value, ast.Name):
-                    continue
-                if contract.func.value.id != 'deal':
-                    continue
-                if contract.func.attr not in SUPPORTED_CONTRACTS:
-                    continue
+            for cat, args in get_contracts(expr.decorator_list):
                 funcs.append(cls(
                     body=expr.body,
-                    category=Category(contract.func.attr),
-                    args=contract.args,
+                    category=Category(cat),
+                    args=args,
                 ))
         return funcs
 
@@ -71,21 +60,11 @@ class Func:
                 continue
             if not expr.decorators:
                 continue
-            for contract in expr.decorators.nodes:
-                if not isinstance(contract, astroid.Call):
-                    continue
-                if not isinstance(contract.func, astroid.Attribute):
-                    continue
-                if not isinstance(contract.func.expr, astroid.Name):
-                    continue
-                if contract.func.expr.name != 'deal':
-                    continue
-                if contract.func.attrname not in SUPPORTED_CONTRACTS:
-                    continue
+            for cat, args in get_contracts(expr.decorators.nodes):
                 funcs.append(cls(
                     body=expr.body,
-                    category=Category(contract.func.attrname),
-                    args=contract.args,
+                    category=Category(cat),
+                    args=args,
                 ))
         return funcs
 
