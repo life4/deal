@@ -1,5 +1,6 @@
 import ast
 import astroid
+from textwrap import dedent
 
 import pytest
 
@@ -137,3 +138,21 @@ def test_get_contracts_decorators(text, expected):
     decos = tree.body[-1].decorator_list
     returns = tuple(cat for cat, _ in get_contracts(decos))
     assert returns == expected
+
+
+def test_get_contracts_infer():
+    text = """
+        import deal
+
+        contracts = deal.chain(deal.silent, deal.post(lambda x: x>0))
+
+        @contracts
+        def f(x):
+            return x
+    """
+
+    tree = astroid.parse(dedent(text))
+    print(tree.repr_tree())
+    decos = tree.body[-1].decorators.nodes
+    returns = tuple(cat for cat, _ in get_contracts(decos))
+    assert returns == ('silent', 'post')

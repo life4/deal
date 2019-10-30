@@ -77,7 +77,7 @@ class Func:
         return contract
 
     @property
-    def exceptions(self):
+    def exceptions(self) -> list:
         excs = []
         for expr in self.args:
             name = get_name(expr)
@@ -98,7 +98,7 @@ class Func:
         exec(self.bytecode, globals)
         return globals['result']
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return '{name}({category}, {contract})'.format(
             name=type(self).__name__,
             contract=ast.dump(self.contract),

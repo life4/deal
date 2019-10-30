@@ -1,6 +1,7 @@
 import ast
 import builtins
 from types import SimpleNamespace
+from typing import Optional, Tuple, Iterator
 
 import astroid
 
@@ -29,10 +30,6 @@ class Token:
         self.line = line
         self.col = col
 
-    @property
-    def row(self):
-        return self.line - 1
-
 
 def _traverse(body):
     for expr in body:
@@ -54,19 +51,21 @@ def _traverse(body):
         yield expr
 
 
-def get_name(expr):
+def get_name(expr) -> Optional[str]:
     if isinstance(expr, ast.Name):
         return expr.id
     if isinstance(expr, astroid.Name):
         return expr.name
+
     if isinstance(expr, astroid.Attribute):
         return get_name(expr.expr) + '.' + expr.attrname
     if isinstance(expr, ast.Attribute):
         return get_name(expr.value) + '.' + expr.attr
+
     return None
 
 
-def get_contracts(decorators: list):
+def get_contracts(decorators: list) -> Iterator[Tuple[str, list]]:
     for contract in decorators:
         if isinstance(contract, TOKENS.ATTR):
             name = get_name(contract)
@@ -84,8 +83,22 @@ def get_contracts(decorators: list):
                 continue
             yield name.split('.')[-1], contract.args
 
+        # infer assigned value
+        if isinstance(contract, astroid.Name):
+            assigments = contract.lookup(contract.name)[1]
+            if not assigments:
+                continue
+            # use only the closest assignment
+            expr = assigments[0]
+            if not isinstance(expr, astroid.AssignName):
+                continue
+            expr = expr.parent
+            if not isinstance(expr, astroid.Assign):
+                continue
+            yield from get_contracts([expr.value])
 
-def get_exceptions(body: list):
+
+def get_exceptions(body: list) -> Iterator[Token]:
     for expr in _traverse(body):
         token_info = dict(line=expr.lineno, col=expr.col_offset)
 
@@ -125,7 +138,7 @@ def get_exceptions(body: list):
                     continue
 
 
-def get_returns(body: list):
+def get_returns(body: list) -> Iterator[Token]:
     for expr in _traverse(body):
         token_info = dict(line=expr.lineno, col=expr.col_offset)
         if not isinstance(expr, TOKENS.RETURN):
@@ -171,7 +184,7 @@ def get_returns(body: list):
                     yield Token(value=value.value, **token_info)
 
 
-def get_prints(body: list):
+def get_prints(body: list) -> Iterator[Token]:
     for expr in _traverse(body):
         token_info = dict(line=expr.lineno, col=expr.col_offset)
         if isinstance(expr, TOKENS.CALL):
@@ -245,7 +258,7 @@ def _is_pathlib_write(expr) -> bool:
     return False
 
 
-def get_imports(body: list):
+def get_imports(body: list) -> Iterator[Token]:
     for expr in _traverse(body):
         token_info = dict(line=expr.lineno, col=expr.col_offset)
         if isinstance(expr, astroid.ImportFrom):
