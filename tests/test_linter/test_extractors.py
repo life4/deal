@@ -52,6 +52,7 @@ def test_get_returns_inference(text, expected):
     ('raise ValueError', (ValueError, )),
     ('raise UnknownError', ('UnknownError', )),
     ('raise ValueError("lol")', (ValueError, )),
+    ('assert False', (AssertionError, )),
     ('12 / 0', (ZeroDivisionError, )),
     ('exit(13)', (SystemExit, )),
     ('sys.exit(13)', (SystemExit, )),

@@ -8,6 +8,7 @@ import astroid
 
 TOKENS = SimpleNamespace(
     ATTR=(ast.Attribute, astroid.Attribute),
+    ASSERT=(ast.Assert, astroid.Assert),
     BIN_OP=(ast.BinOp, astroid.BinOp),
     CALL=(ast.Call, astroid.Call),
     EXPR=(ast.Expr, astroid.Expr),
@@ -101,6 +102,11 @@ def get_contracts(decorators: list) -> Iterator[Tuple[str, list]]:
 def get_exceptions(body: list) -> Iterator[Token]:
     for expr in _traverse(body):
         token_info = dict(line=expr.lineno, col=expr.col_offset)
+
+        # assert
+        if isinstance(expr, TOKENS.ASSERT):
+            yield Token(value=AssertionError, **token_info)
+            continue
 
         # explicit raise
         if isinstance(expr, TOKENS.RAISE):
