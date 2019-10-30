@@ -20,6 +20,10 @@ class RaisesContractError(ContractError):
     pass
 
 
+class ReasonContractError(ContractError):
+    pass
+
+
 class OfflineContractError(ContractError):
     pass
 
