@@ -16,9 +16,9 @@ result = contract(*args, **kwargs)
 
 
 class Category(enum.Enum):
-    PRE = 'pre'
     POST = 'post'
     RAISES = 'raises'
+    SILENT = 'silent'
 
 
 class Func:

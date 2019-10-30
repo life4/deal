@@ -2,7 +2,7 @@ import enum
 from typing import Iterator
 
 from ._error import Error
-from ._extractors import get_exceptions, get_returns, get_imports
+from ._extractors import get_exceptions, get_returns, get_imports, get_prints
 from ._func import Func, Category
 
 
@@ -76,6 +76,24 @@ class CheckRaises:
             yield Error(
                 code=self.code,
                 text=self.message.format(exc=exc),
+                row=token.line,
+                col=token.col,
+            )
+
+
+@register
+class CheckPrints:
+    code = 13
+    message = 'silent contract error ({func})'
+    required = Required.FUNC
+
+    def __call__(self, func: Func) -> Iterator[Error]:
+        if func.category != Category.SILENT:
+            return
+        for token in get_prints(body=func.body):
+            yield Error(
+                code=self.code,
+                text=self.message.format(func=token.value),
                 row=token.line,
                 col=token.col,
             )
