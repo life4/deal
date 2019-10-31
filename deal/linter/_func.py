@@ -73,7 +73,22 @@ class Func:
         contract = self.args[0]
         # convert astroid node to ast node
         if hasattr(contract, 'as_string'):
-            contract = ast.parse(contract.as_string()).body[0].value
+            contract = self._resolve_name(contract)
+            contract = ast.parse(contract.as_string()).body[0]
+        return contract
+
+    @staticmethod
+    def _resolve_name(contract):
+        if not isinstance(contract, astroid.Name):
+            return contract
+        definitions = contract.lookup(contract.name)[1]
+        if not definitions:
+            return contract
+        definition = definitions[0]
+        if isinstance(definition, astroid.FunctionDef):
+            return definition
+        if isinstance(definition, astroid.AssignName):
+            return definition.parent.value
         return contract
 
     @property
@@ -90,7 +105,22 @@ class Func:
     @property
     def bytecode(self):
         module = ast.parse(TEMPLATE)
-        module.body[0].value = self.contract
+        contract = self.contract
+        if isinstance(contract, ast.FunctionDef):
+            # if contract is function, add it's definition and assign it's name
+            # to `contract` variable.
+            module.body = [contract] + module.body
+            module.body[1].value = ast.Name(
+                id=contract.name,
+                lineno=1,
+                col_offset=1,
+                ctx=ast.Load(),
+            )
+        else:
+            if isinstance(contract, ast.Expr):
+                contract = contract.value
+            module.body[0].value = contract
+        print(ast.dump(module))
         return compile(module, filename='<ast>', mode='exec')
 
     def run(self, *args, **kwargs):

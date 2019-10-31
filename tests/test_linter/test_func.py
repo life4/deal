@@ -1,4 +1,5 @@
 import ast
+from textwrap import dedent
 
 import astroid
 
@@ -58,3 +59,40 @@ def test_repr():
     funcs2 = Func.from_astroid(astroid.parse(TEXT))
     for func in (funcs1[0], funcs2[0]):
         assert repr(func) == 'Func(post)'
+
+
+def test_resolve_func():
+    text = """
+    import deal
+
+    def contract(x):
+        return x > 0
+
+    @deal.post(contract)
+    def f(x):
+        ...
+    """
+    text = dedent(text).strip()
+    funcs = Func.from_astroid(astroid.parse(text))
+    assert len(funcs) == 1
+    func = funcs[0]
+    assert func.run(1) is True
+    assert func.run(-1) is False
+
+
+def test_resolve_lambda():
+    text = """
+    import deal
+
+    contract = lambda x: x > 0
+
+    @deal.post(contract)
+    def f(x):
+        ...
+    """
+    text = dedent(text).strip()
+    funcs = Func.from_astroid(astroid.parse(text))
+    assert len(funcs) == 1
+    func = funcs[0]
+    assert func.run(1) is True
+    assert func.run(-1) is False
