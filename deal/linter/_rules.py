@@ -74,7 +74,6 @@ class CheckRaises:
         for token in get_exceptions(body=func.body):
             if token.value in allowed:
                 continue
-            print(token.value, allowed_types)
             if issubclass(token.value, allowed_types):
                 continue
             exc = token.value

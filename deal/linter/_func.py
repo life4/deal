@@ -121,7 +121,6 @@ class Func:
             if isinstance(contract, ast.Expr):
                 contract = contract.value
             module.body[0].value = contract
-        print(ast.dump(module))
         return compile(module, filename='<ast>', mode='exec')
 
     def run(self, *args, **kwargs):
