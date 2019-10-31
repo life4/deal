@@ -94,4 +94,4 @@ docs = [
 ]
 
 [tool.poetry.plugins."flake8.extension"]
-DEAL00 = "deal.linter:Checker"
+DEAL = "deal.linter:Checker"
