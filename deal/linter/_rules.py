@@ -69,9 +69,13 @@ class CheckRaises:
     def __call__(self, func: Func) -> Iterator[Error]:
         if func.category != Category.RAISES:
             return
-        allowed = func.exceptions.copy()
+        allowed = func.exceptions
+        allowed_types = tuple(exc for exc in allowed if type(exc) is not str)
         for token in get_exceptions(body=func.body):
             if token.value in allowed:
+                continue
+            print(token.value, allowed_types)
+            if issubclass(token.value, allowed_types):
                 continue
             exc = token.value
             if not isinstance(exc, str):

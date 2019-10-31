@@ -77,7 +77,7 @@ def test_check_raises():
         assert actual == expected
 
 
-def test_check_raises_without_():
+def test_check_raises_without_allowed():
     checker = CheckRaises()
     text = """
     @deal.raises()
@@ -90,6 +90,23 @@ def test_check_raises_without_():
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
         expected = [(3, 4, 'DEAL012: raises contract error (ValueError)')]
+        assert actual == expected
+
+
+def test_check_raises_inherited():
+    checker = CheckRaises()
+    text = """
+    @deal.raises(LookupError)
+    def test(a):
+        raise KeyError
+        raise ValueError
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    for func in (funcs1[0], funcs2[0]):
+        actual = [tuple(err) for err in checker(func)]
+        expected = [(4, 4, 'DEAL012: raises contract error (ValueError)')]
         assert actual == expected
 
 

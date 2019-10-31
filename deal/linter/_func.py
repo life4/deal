@@ -89,7 +89,8 @@ class Func:
             return definition
         if isinstance(definition, astroid.AssignName):
             return definition.parent.value
-        return contract
+        # resolved into something tricky, live with it
+        return contract  # pragma: no cover
 
     @property
     def exceptions(self) -> list:
