@@ -45,6 +45,21 @@ def test_check_returns_with_message():
         assert actual == expected
 
 
+def test_check_returns_ok_unresolved():
+    checker = CheckReturns()
+    text = """
+    @deal.post(unknown)
+    def test(a):
+        return 1
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    for func in (funcs1[0], funcs2[0]):
+        actual = tuple(checker(func))
+        assert not actual
+
+
 def test_check_raises():
     checker = CheckRaises()
     text = """

@@ -46,7 +46,12 @@ class CheckReturns:
         if func.category != Category.POST:
             return
         for token in get_returns(body=func.body):
-            result = func.run(token.value)
+            try:
+                result = func.run(token.value)
+            except NameError:
+                # cannot resolve contract dependencies
+                return
+
             error_info = dict(row=token.line, col=token.col, code=self.code)
             if isinstance(result, str):
                 yield Error(text=result, **error_info)
