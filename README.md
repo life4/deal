@@ -8,13 +8,13 @@ That's nice `assert` statements in decorators style to validate function input, 
 
 ## Features
 
-* Functional declaration.
-* Custom exceptions.
-* Raising exceptions from contract.
-* Django Forms styled validators.
-* Attribute setting invariant validation.
-* Dynamically assigned attributes and methods invariant validation.
-* Decorators to control available resources: forbid input/output, network operations, raising exceptions
+* [Automatic property-based tests](https://deal.readthedocs.io/testing.html).
+* [Static analysis](https://deal.readthedocs.io/linter.html).
+* [External validators support](https://deal.readthedocs.io/validators.html#external-validators).
+* [Specify allowed exceptions](https://deal.readthedocs.io/decorators/raises.html) for function
+* [Invariant](https://deal.readthedocs.io/decorators/inv.html) for all actions with class instances.
+* Decorators to control available resources: forbid [output](https://deal.readthedocs.io/decorators/silent.html), [network operations](https://deal.readthedocs.io/decorators/offline.html), [raising exceptions](https://deal.readthedocs.io/decorators/safe.html).
+* You can [disable contracts](https://deal.readthedocs.io/disable.html) on production.
 
 ## Available decorators
 
