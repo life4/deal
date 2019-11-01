@@ -40,7 +40,7 @@ import_heading_localfolder = "app"
 
 [tool.poetry]
 name = "deal"
-version = "3.1.0"
+version = "3.2.0"
 description = "Programming by contract"
 license = "MIT"
 authors = ["Gram <master_fess@mail.ru>"]
@@ -81,21 +81,8 @@ sphinx = "*"
 sphinx-rtd-theme = "*"
 
 [tool.poetry.extras]
-tests = [
-    "coverage",
-    "marshmallow",
-    "pytest",
-    "pytest-cov",
-    "urllib3",
-    "vaa",
-]
-docs = [
-    "m2r",
-    "recommonmark",
-    "sphinx-rtd-theme",
-    "sphinx",
-    "urllib3",
-]
+tests = ["coverage", "marshmallow", "pytest", "pytest-cov", "urllib3", "vaa"]
+docs = ["m2r", "recommonmark", "sphinx", "sphinx-rtd-theme", "urllib3"]
 
 [tool.poetry.plugins."flake8.extension"]
 DEAL = "deal.linter:Checker"
