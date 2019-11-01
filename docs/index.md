@@ -19,6 +19,7 @@
     chaining
     validators
     testing
+    linter
 
 .. toctree::
     :maxdepth: 1

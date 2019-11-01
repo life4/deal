@@ -20,6 +20,10 @@ envs = ["docs"]
 command = "sphinx-build -W docs docs/build"
 
 
+[tool.flakehell.plugins]
+deal = ["+*"]
+
+
 [tool.isort]
 line_length = 90
 combine_as_imports = true

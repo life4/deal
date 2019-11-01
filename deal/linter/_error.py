@@ -1,6 +1,6 @@
 import typing
 
-ERROR_FORMAT = "DEAL{code:03d}: {text}"
+ERROR_FORMAT = 'DEAL{code:03d}: {text}'
 
 
 class Error:
