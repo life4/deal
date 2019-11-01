@@ -39,6 +39,7 @@ todo_include_todos = True
 pygments_style = 'sphinx'
 html_theme = 'sphinx_rtd_theme'
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+html_static_path = [str(Path(__file__).parent.parent / 'assets')]
 html_logo = str(Path(__file__).parent.parent / 'logo.png')
 html_theme_options = {
     'logo_only': True,
