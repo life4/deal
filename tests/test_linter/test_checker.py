@@ -25,9 +25,9 @@ def test_stdin():
     checker = Checker(tree=ast.parse(TEXT))
     errors = list(checker.run())
     expected = [
-        (6, 4, 'DEAL011: post contract error', Checker),
-        (11, 4, 'DEAL012: raises contract error (ZeroDivisionError)', Checker),
-        (13, 4, 'DEAL012: raises contract error (KeyError)', Checker),
+        (6, 11, 'DEAL011: post contract error', Checker),
+        (11, 8, 'DEAL012: raises contract error (ZeroDivisionError)', Checker),
+        (13, 10, 'DEAL012: raises contract error (KeyError)', Checker),
     ]
     assert errors == expected
 
@@ -38,8 +38,8 @@ def test_astroid_path(tmp_path: Path):
     checker = Checker(tree=ast.parse(TEXT), filename=str(path))
     errors = list(checker.run())
     expected = [
-        (6, 4, 'DEAL011: post contract error', Checker),
-        (11, 4, 'DEAL012: raises contract error (ZeroDivisionError)', Checker),
-        (13, 4, 'DEAL012: raises contract error (KeyError)', Checker),
+        (6, 11, 'DEAL011: post contract error', Checker),
+        (11, 8, 'DEAL012: raises contract error (ZeroDivisionError)', Checker),
+        (13, 10, 'DEAL012: raises contract error (KeyError)', Checker),
     ]
     assert errors == expected
