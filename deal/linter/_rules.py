@@ -63,7 +63,7 @@ class CheckReturns:
 @register
 class CheckRaises:
     code = 12
-    message = 'raises contract error ({exc})'
+    message = 'raises contract error'
     required = Required.FUNC
 
     def __call__(self, func: Func) -> Iterator[Error]:
@@ -81,7 +81,8 @@ class CheckRaises:
                 exc = exc.__name__
             yield Error(
                 code=self.code,
-                text=self.message.format(exc=exc),
+                text=self.message,
+                value=exc,
                 row=token.line,
                 col=token.col,
             )
@@ -90,7 +91,7 @@ class CheckRaises:
 @register
 class CheckPrints:
     code = 13
-    message = 'silent contract error ({func})'
+    message = 'silent contract error'
     required = Required.FUNC
 
     def __call__(self, func: Func) -> Iterator[Error]:
@@ -99,7 +100,8 @@ class CheckPrints:
         for token in get_prints(body=func.body):
             yield Error(
                 code=self.code,
-                text=self.message.format(func=token.value),
+                text=self.message,
+                value=str(token.value),
                 row=token.line,
                 col=token.col,
             )

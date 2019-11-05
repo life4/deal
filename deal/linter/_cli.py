@@ -51,17 +51,29 @@ def get_errors(argv: Iterable) -> Iterator[dict]:
                     col=error.col,
                     code=error.code,
                     text=error.text,
+                    value=error.value,
                     content=lines[error.row - 1],
                 )
 
 
 def main(argv: Iterable) -> int:
+    if not argv:
+        argv = ['.']
     errors = list(get_errors(argv=argv))
     prev = None
     for error in errors:
+        # print file path
         if error['path'] != prev:
             print('{green}{path}{end}'.format(**COLORS, **error))
-        print(TEMPLATE.format(**COLORS, **error))
+        prev = error['path']
+
+        # print message
+        line = TEMPLATE.format(**COLORS, **error)
+        if error['value']:
+            line += ' {magenta}({value}){end}'.format(**COLORS, **error)
+        print(line)
+
+        # print code line
         pointer = ' ' * error['col'] + POINTER.format(**COLORS)
         content = error['content'] + '\n' + pointer
         content = indent(dedent(content), prefix='    ')
