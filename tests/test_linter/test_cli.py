@@ -2,7 +2,16 @@ from pathlib import Path
 
 import pytest
 
-from deal.linter._cli import get_paths
+from deal.linter._cli import get_errors, get_paths
+
+
+TEXT = """
+import deal
+
+@deal.post(lambda x: x > 0)
+def f(x):
+    return -1
+"""
 
 
 def test_get_paths(tmp_path: Path):
@@ -20,3 +29,11 @@ def test_get_paths(tmp_path: Path):
 
     with pytest.raises(FileNotFoundError):
         list(get_paths(tmp_path / 'not_exists'))
+
+
+def test_get_errors(tmp_path: Path):
+    (tmp_path / 'example.py').write_text(TEXT)
+    errors = list(get_errors([tmp_path]))
+    assert len(errors) == 1
+    assert errors[0]['code'] == 11
+    assert errors[0]['content'] == '    return -1'
