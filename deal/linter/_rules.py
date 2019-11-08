@@ -52,7 +52,12 @@ class CheckReturns:
                 # cannot resolve contract dependencies
                 return
 
-            error_info = dict(row=token.line, col=token.col, code=self.code)
+            error_info = dict(
+                row=token.line,
+                col=token.col,
+                code=self.code,
+                value=token.value,
+            )
             if isinstance(result, str):
                 yield Error(text=result, **error_info)
                 continue

@@ -22,7 +22,7 @@ def test_check_returns():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(6, 15, 'DEAL011: post contract error')]
+        expected = [(6, 15, 'DEAL011: post contract error (-1)')]
         assert actual == expected
 
 
@@ -41,7 +41,7 @@ def test_check_returns_with_message():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(6, 15, 'DEAL011: oh no!')]
+        expected = [(6, 15, 'DEAL011: oh no! (-1)')]
         assert actual == expected
 
 
