@@ -56,7 +56,7 @@ class CheckReturns:
                 row=token.line,
                 col=token.col,
                 code=self.code,
-                value=token.value,
+                value=str(token.value),
             )
             if isinstance(result, str):
                 yield Error(text=result, **error_info)

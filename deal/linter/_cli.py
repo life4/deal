@@ -1,7 +1,9 @@
 import ast
+import json
+from argparse import ArgumentParser
 from pathlib import Path
 from textwrap import dedent, indent
-from typing import Iterable, Iterator
+from typing import Iterable, Iterator, Union
 
 from ._checker import Checker
 
@@ -35,8 +37,8 @@ def get_paths(path: Path) -> Iterator[Path]:
         yield from get_paths(subpath)
 
 
-def get_errors(argv: Iterable) -> Iterator[dict]:
-    for arg in argv:
+def get_errors(paths: Iterable[Union[str, Path]]) -> Iterator[dict]:
+    for arg in paths:
         for path in get_paths(Path(arg)):
             content = path.read_text()
             checker = Checker(
@@ -56,12 +58,23 @@ def get_errors(argv: Iterable) -> Iterator[dict]:
                 )
 
 
+def get_parser() -> ArgumentParser:
+    parser = ArgumentParser()
+    parser.add_argument('--json', action='store_true', help='json output')
+    parser.add_argument('paths', nargs='*', default='.')
+    return parser
+
+
 def main(argv: Iterable) -> int:
-    if not argv:
-        argv = ['.']
-    errors = list(get_errors(argv=argv))
+    parser = get_parser()
+    args = parser.parse_args(argv)
     prev = None
+    errors = list(get_errors(paths=args.paths))
     for error in errors:
+        if args.json:
+            print(json.dumps(error))
+            continue
+
         # print file path
         if error['path'] != prev:
             print('{green}{path}{end}'.format(**COLORS, **error))

@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from deal.linter._cli import get_errors, get_paths
+from deal.linter._cli import get_errors, get_paths, main
 
 
 TEXT = """
@@ -33,7 +33,29 @@ def test_get_paths(tmp_path: Path):
 
 def test_get_errors(tmp_path: Path):
     (tmp_path / 'example.py').write_text(TEXT)
-    errors = list(get_errors([tmp_path]))
+    errors = list(get_errors(paths=[tmp_path]))
     assert len(errors) == 1
     assert errors[0]['code'] == 11
     assert errors[0]['content'] == '    return -1'
+
+
+def test_main(tmp_path: Path, capsys):
+    (tmp_path / 'example.py').write_text(TEXT)
+    count = main([str(tmp_path)])
+    assert count == 1
+
+    captured = capsys.readouterr()
+    assert 'return -1' in captured.out
+    assert '(-1)' in captured.out
+    assert '^' in captured.out
+
+
+def test_main_json(tmp_path: Path, capsys):
+    (tmp_path / 'example.py').write_text(TEXT)
+    count = main(['--json', str(tmp_path)])
+    assert count == 1
+
+    captured = capsys.readouterr()
+    assert '"    return -1"' in captured.out
+    assert '"-1"' in captured.out
+    assert '^' not in captured.out
