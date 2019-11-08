@@ -4,6 +4,8 @@ Deal can do static checks for functions with contracts to catch trivial mistakes
 
 ![](../assets/linter.png)
 
+Another option is to use built-in CLI from deal: `python3 -m deal.linter`. I has beautiful colored output by default. Use `--json` option to get compact JSON output. Pipe output into [jq](https://stedolan.github.io/jq/) to beautify JSON.
+
 ## Codes
 
 | Code    | Message               |
