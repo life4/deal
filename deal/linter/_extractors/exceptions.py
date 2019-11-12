@@ -25,6 +25,7 @@ def get_exceptions(body: list) -> Iterator[Token]:
                 if not name or name[0].islower():
                     continue
             exc = getattr(builtins, name, name)
+            token_info['col'] = expr.exc.col_offset
             yield Token(value=exc, **token_info)
             continue
 
@@ -32,9 +33,11 @@ def get_exceptions(body: list) -> Iterator[Token]:
         if isinstance(expr, TOKENS.BIN_OP):
             if isinstance(expr.op, ast.Div) or expr.op == '/':
                 if isinstance(expr.right, astroid.Const) and expr.right.value == 0:
+                    token_info['col'] = expr.right.col_offset
                     yield Token(value=ZeroDivisionError, **token_info)
                     continue
                 if isinstance(expr.right, ast.Num) and expr.right.n == 0:
+                    token_info['col'] = expr.right.col_offset
                     yield Token(value=ZeroDivisionError, **token_info)
                     continue
 

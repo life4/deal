@@ -8,9 +8,9 @@ from .common import traverse, Token, TOKENS
 
 def get_returns(body: list) -> Iterator[Token]:
     for expr in traverse(body):
-        token_info = dict(line=expr.lineno, col=expr.col_offset)
         if not isinstance(expr, TOKENS.RETURN):
             continue
+        token_info = dict(line=expr.lineno, col=expr.value.col_offset)
 
         # any constant value in astroid
         if isinstance(expr.value, astroid.Const):
