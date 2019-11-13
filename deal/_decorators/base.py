@@ -1,4 +1,5 @@
 # built-in
+from asyncio import iscoroutinefunction
 from functools import update_wrapper
 from inspect import getcallargs
 from typing import Callable, Type
@@ -87,4 +88,12 @@ class Base:
             else:
                 return function(*args, **kwargs)
 
+        async def async_wrapped(*args, **kwargs):
+            if self.enabled:
+                return await self.async_patched_function(*args, **kwargs)
+            else:
+                return await function(*args, **kwargs)
+
+        if iscoroutinefunction(function):
+            return update_wrapper(async_wrapped, function)
         return update_wrapper(wrapped, function)

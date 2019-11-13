@@ -43,3 +43,17 @@ class Silent(Base):
         finally:
             sys.stdout = true_stdout
             sys.stderr = true_stderr
+
+    async def async_patched_function(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        true_stdout = sys.stdout
+        true_stderr = sys.stderr
+        sys.stdout = PatchedStringIO(exception=self.exception)
+        sys.stderr = PatchedStringIO(exception=self.exception)
+        try:
+            return await self.function(*args, **kwargs)
+        finally:
+            sys.stdout = true_stdout
+            sys.stderr = true_stderr

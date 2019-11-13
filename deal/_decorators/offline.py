@@ -32,5 +32,16 @@ class Offline(Base):
         finally:
             socket.socket = true_socket
 
+    async def async_patched_function(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        true_socket = socket.socket
+        socket.socket = self.fake_socket
+        try:
+            return await self.function(*args, **kwargs)
+        finally:
+            socket.socket = true_socket
+
     def fake_socket(self, *args, **kwargs):
         raise self.exception

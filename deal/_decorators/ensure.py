@@ -18,3 +18,11 @@ class Ensure(Base):
         result = self.function(*args, **kwargs)
         self.validate(*args, result=result, **kwargs)
         return result
+
+    async def async_patched_function(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        result = await self.function(*args, **kwargs)
+        self.validate(*args, result=result, **kwargs)
+        return result

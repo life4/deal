@@ -34,3 +34,16 @@ class Raises(Base):
             if not isinstance(exc, self.exceptions):
                 raise self.exception from exc
             raise
+
+    async def async_patched_function(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        try:
+            return await self.function(*args, **kwargs)
+        except ContractError:
+            raise
+        except Exception as exc:
+            if not isinstance(exc, self.exceptions):
+                raise self.exception from exc
+            raise
