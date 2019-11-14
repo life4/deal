@@ -10,6 +10,7 @@ That's nice `assert` statements in decorators style to validate function input, 
 
 * [Automatic property-based tests](https://deal.readthedocs.io/testing.html).
 * [Static analysis](https://deal.readthedocs.io/linter.html).
+* Asyncio support.
 * [External validators support](https://deal.readthedocs.io/validators.html#external-validators).
 * [Specify allowed exceptions](https://deal.readthedocs.io/decorators/raises.html) for function
 * [Invariant](https://deal.readthedocs.io/decorators/inv.html) for all actions with class instances.

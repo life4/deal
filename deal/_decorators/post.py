@@ -18,3 +18,11 @@ class Post(Base):
         result = self.function(*args, **kwargs)
         self.validate(result)
         return result
+
+    async def async_patched_function(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        result = await self.function(*args, **kwargs)
+        self.validate(result)
+        return result
