@@ -1,6 +1,8 @@
 import deal
 import pytest
 
+from .helpers import run_sync
+
 
 @pytest.mark.parametrize('correct,incorrect', [(1, -1), (2, -2), (3, -3), (5, -5), (7, -7), (11, -11)])
 def test_pre_contract_fulfilled(correct, incorrect):
@@ -117,3 +119,13 @@ def test_text_from_contract_rewrites_default_one():
         double(-1)
     except deal.PreContractError as exc:
         assert exc.args[0] == 'new message'
+
+
+def test_decorating_async_function():
+    @deal.pre(lambda x: x > 0)
+    async def double(x):
+        return x * 2
+
+    assert run_sync(double(2)) == 4
+    with pytest.raises(deal.PreContractError):
+        assert run_sync(double(-2))
