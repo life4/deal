@@ -19,4 +19,4 @@ def test_decorating_async_function():
 
     assert run_sync(func(-2)) == 2
     with pytest.raises(deal.PostContractError):
-        assert run_sync(func(2))
+        run_sync(func(2))

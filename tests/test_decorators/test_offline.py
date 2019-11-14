@@ -41,4 +41,4 @@ def test_decorating_async_function():
 
     assert run_sync(func(False)) == 1
     with pytest.raises(deal.OfflineContractError):
-        assert run_sync(func(True))
+        run_sync(func(True))

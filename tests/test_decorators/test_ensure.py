@@ -31,4 +31,4 @@ def test_decorating_async_function():
 
     assert run_sync(func(1, 2)) == 'different numbers'
     with pytest.raises(deal.PostContractError):
-        assert run_sync(func(0, 1))
+        run_sync(func(0, 1))

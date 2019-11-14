@@ -128,4 +128,4 @@ def test_decorating_async_function():
 
     assert run_sync(double(2)) == 4
     with pytest.raises(deal.PreContractError):
-        assert run_sync(double(-2))
+        run_sync(double(-2))

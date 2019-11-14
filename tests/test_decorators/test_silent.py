@@ -1,6 +1,8 @@
 import deal
 import pytest
 
+from .helpers import run_sync
+
 
 def test_silent_contract_not_allow_print():
     @deal.silent
@@ -11,3 +13,15 @@ def test_silent_contract_not_allow_print():
     func(None)
     with pytest.raises(deal.SilentContractError):
         func('bad')
+
+
+def test_decorating_async_function():
+    @deal.silent
+    async def func(msg):
+        if msg:
+            print(msg)
+        return msg
+
+    assert run_sync(func('')) == ''
+    with pytest.raises(deal.SilentContractError):
+        run_sync(func('a'))
