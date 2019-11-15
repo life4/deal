@@ -59,6 +59,31 @@ class Contract:
             excs.append(exc)
         return excs
 
+    @property
+    def bytecode(self):
+        module = ast.parse(TEMPLATE)
+        contract = self.body
+        if isinstance(contract, ast.FunctionDef):
+            # if contract is function, add it's definition and assign it's name
+            # to `contract` variable.
+            module.body = [contract] + module.body
+            module.body[1].value = ast.Name(
+                id=contract.name,
+                lineno=1,
+                col_offset=1,
+                ctx=ast.Load(),
+            )
+        else:
+            if isinstance(contract, ast.Expr):
+                contract = contract.value
+            module.body[0].value = contract
+        return compile(module, filename='<ast>', mode='exec')
+
+    def run(self, *args, **kwargs):
+        globals = dict(args=args, kwargs=kwargs)
+        exec(self.bytecode, globals)
+        return globals['result']
+
     def __repr__(self) -> str:
         return '{name}({category})'.format(
             name=type(self).__name__,
