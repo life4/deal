@@ -1,12 +1,11 @@
 import ast
-import builtins
-import enum
 from pathlib import Path
-from typing import List
+from typing import Iterable, List
 
 import astroid
 
-from ._extractors import get_name, get_contracts
+from ._contract import Category, Contract
+from ._extractors import get_contracts
 
 
 TEMPLATE = """
@@ -15,17 +14,10 @@ result = contract(*args, **kwargs)
 """
 
 
-class Category(enum.Enum):
-    POST = 'post'
-    RAISES = 'raises'
-    SILENT = 'silent'
-
-
 class Func:
-    def __init__(self, body: list, args, category: Category):
+    def __init__(self, body: list, contracts: Iterable[Contract]):
         self.body = body
-        self.args = args
-        self.category = category
+        self.contracts = contracts
 
     @classmethod
     def from_path(cls, path: Path) -> List['Func']:
@@ -44,12 +36,13 @@ class Func:
         for expr in tree.body:
             if not isinstance(expr, ast.FunctionDef):
                 continue
-            for cat, args in get_contracts(expr.decorator_list):
-                funcs.append(cls(
+            for category, args in get_contracts(expr.decorator_list):
+                contract = Contract(args=args, category=Category(category))
+                func = cls(
                     body=expr.body,
-                    category=Category(cat),
-                    args=args,
-                ))
+                    contracts=[contract],
+                )
+                funcs.append(func)
         return funcs
 
     @classmethod
@@ -60,48 +53,26 @@ class Func:
                 continue
             if not expr.decorators:
                 continue
-            for cat, args in get_contracts(expr.decorators.nodes):
-                funcs.append(cls(
+            for category, args in get_contracts(expr.decorators.nodes):
+                contract = Contract(args=args, category=Category(category))
+                func = cls(
                     body=expr.body,
-                    category=Category(cat),
-                    args=args,
-                ))
+                    contracts=[contract],
+                )
+                funcs.append(func)
         return funcs
 
     @property
     def contract(self):
-        contract = self.args[0]
-        # convert astroid node to ast node
-        if hasattr(contract, 'as_string'):
-            contract = self._resolve_name(contract)
-            contract = ast.parse(contract.as_string()).body[0]
-        return contract
-
-    @staticmethod
-    def _resolve_name(contract):
-        if not isinstance(contract, astroid.Name):
-            return contract
-        definitions = contract.lookup(contract.name)[1]
-        if not definitions:
-            return contract
-        definition = definitions[0]
-        if isinstance(definition, astroid.FunctionDef):
-            return definition
-        if isinstance(definition, astroid.AssignName):
-            return definition.parent.value
-        # resolved into something tricky, live with it
-        return contract  # pragma: no cover
+        return self.contracts[0].contract
 
     @property
     def exceptions(self) -> list:
-        excs = []
-        for expr in self.args:
-            name = get_name(expr)
-            if not name:
-                continue
-            exc = getattr(builtins, name, name)
-            excs.append(exc)
-        return excs
+        return self.contracts[0].exceptions
+
+    @property
+    def category(self) -> list:
+        return self.contracts[0].category
 
     @property
     def bytecode(self):
