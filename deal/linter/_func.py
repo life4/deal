@@ -36,13 +36,13 @@ class Func:
         for expr in tree.body:
             if not isinstance(expr, ast.FunctionDef):
                 continue
+            contracts = []
             for category, args in get_contracts(expr.decorator_list):
                 contract = Contract(args=args, category=Category(category))
-                func = cls(
-                    body=expr.body,
-                    contracts=[contract],
-                )
-                funcs.append(func)
+                contracts.append(contract)
+            if not contracts:
+                continue
+            funcs.append(cls(body=expr.body, contracts=contracts))
         return funcs
 
     @classmethod
@@ -53,17 +53,17 @@ class Func:
                 continue
             if not expr.decorators:
                 continue
+            contracts = []
             for category, args in get_contracts(expr.decorators.nodes):
                 contract = Contract(args=args, category=Category(category))
-                func = cls(
-                    body=expr.body,
-                    contracts=[contract],
-                )
-                funcs.append(func)
+                contracts.append(contract)
+            if not contracts:
+                continue
+            funcs.append(cls(body=expr.body, contracts=contracts))
         return funcs
 
     def __repr__(self) -> str:
         return '{name}({cats})'.format(
             name=type(self).__name__,
-            cats=','.join(contract.category.value for contract in self.contracts),
+            cats=', '.join(contract.category.value for contract in self.contracts),
         )
