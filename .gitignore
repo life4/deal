@@ -2,7 +2,7 @@
 __pycache__/
 *.egg-info/
 dist/
-.coverage
+.coverage*
 htmlcov/
 README.rst
 docs/build/

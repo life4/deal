@@ -25,7 +25,7 @@ class Contract:
         self.category = category
 
     @property
-    def contract(self):
+    def body(self):
         contract = self.args[0]
         # convert astroid node to ast node
         if hasattr(contract, 'as_string'):

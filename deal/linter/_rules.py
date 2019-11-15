@@ -3,7 +3,8 @@ from typing import Iterator
 
 from ._error import Error
 from ._extractors import get_exceptions, get_returns, get_imports, get_prints
-from ._func import Func, Category
+from ._func import Func
+from ._contract import Category, Contract
 
 
 rules = []
@@ -72,9 +73,13 @@ class CheckRaises:
     required = Required.FUNC
 
     def __call__(self, func: Func) -> Iterator[Error]:
-        if func.category != Category.RAISES:
-            return
-        allowed = func.exceptions
+        for contract in func.contracts:
+            if contract.category != Category.RAISES:
+                continue
+            yield from self._check(func=func, contract=contract)
+
+    def _check(self, func: Func, contract: Contract):
+        allowed = contract.exceptions
         allowed_types = tuple(exc for exc in allowed if type(exc) is not str)
         for token in get_exceptions(body=func.body):
             if token.value in allowed:

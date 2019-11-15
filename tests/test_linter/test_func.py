@@ -47,13 +47,6 @@ def test_run():
         assert func.run(-1) is False
 
 
-def test_exceptions():
-    funcs1 = Func.from_ast(ast.parse(TEXT))
-    funcs2 = Func.from_astroid(astroid.parse(TEXT))
-    for func in (funcs1[1], funcs2[1]):
-        assert func.exceptions == [ValueError, 'UnknownError']
-
-
 def test_repr():
     funcs1 = Func.from_ast(ast.parse(TEXT))
     funcs2 = Func.from_astroid(astroid.parse(TEXT))

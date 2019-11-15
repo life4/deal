@@ -64,11 +64,7 @@ class Func:
 
     @property
     def contract(self):
-        return self.contracts[0].contract
-
-    @property
-    def exceptions(self) -> list:
-        return self.contracts[0].exceptions
+        return self.contracts[0].body
 
     @property
     def category(self) -> list:
