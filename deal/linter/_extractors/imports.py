@@ -11,7 +11,9 @@ def get_imports(body: list) -> Iterator[Token]:
         token_info = dict(line=expr.lineno, col=expr.col_offset)
         if isinstance(expr, astroid.ImportFrom):
             dots = '.' * (expr.level or 0)
-            yield Token(value=dots + expr.modname, **token_info)
+            name = expr.modname or ''
+            yield Token(value=dots + name, **token_info)
         if isinstance(expr, ast.ImportFrom):
             dots = '.' * expr.level
-            yield Token(value=dots + expr.module, **token_info)
+            name = expr.module or ''
+            yield Token(value=dots + name, **token_info)
