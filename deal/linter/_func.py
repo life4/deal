@@ -62,12 +62,8 @@ class Func:
                 funcs.append(func)
         return funcs
 
-    @property
-    def category(self) -> list:
-        return self.contracts[0].category
-
     def __repr__(self) -> str:
-        return '{name}({category})'.format(
+        return '{name}({cats})'.format(
             name=type(self).__name__,
-            category=self.category.value,
+            cats=','.join(contract.category.value for contract in self.contracts),
         )
