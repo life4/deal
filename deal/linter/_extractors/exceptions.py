@@ -81,3 +81,7 @@ def get_names(expr):
     if isinstance(expr, TOKENS.CALL):
         if isinstance(expr.func, TOKENS.NAME):
             yield expr.func
+        for subnode in expr.args:
+            yield from get_names(subnode)
+        for subnode in (expr.keywords or ()):
+            yield from get_names(subnode.value)

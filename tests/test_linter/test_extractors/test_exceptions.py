@@ -44,11 +44,11 @@ def test_inference_simple():
 
         @deal.raises(KeyError)
         def f():
+            a = 1
+            a()  # resolved not in a function
             unknown()  # cannot resolve
             subf()  # resolve
             subf2()
-            a = 1
-            a  # resolved not in a function
     """
     tree = astroid.parse(dedent(text))
     print(tree.repr_tree())
@@ -87,6 +87,25 @@ def test_inference_ok_uncalled():
     func_tree = tree.body[-1].body
     returns = tuple(r.value for r in get_exceptions(body=func_tree))
     assert returns == ()
+
+
+def test_inference_subcalls():
+    text = """
+        def subf():
+            raise ValueError
+
+        def subf2():
+            raise IndexError
+
+        @deal.raises(KeyError)
+        def f():
+            other(subf(), b=subf2())
+    """
+    tree = astroid.parse(dedent(text))
+    print(tree.repr_tree())
+    func_tree = tree.body[-1].body
+    returns = tuple(r.value for r in get_exceptions(body=func_tree))
+    assert returns == (ValueError, IndexError)
 
 
 def test_resolve_doesnt_fail_for_simple_ast():
