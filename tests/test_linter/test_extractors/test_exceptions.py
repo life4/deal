@@ -1,5 +1,6 @@
 import ast
 import astroid
+from textwrap import dedent
 
 import pytest
 
@@ -30,3 +31,19 @@ def test_get_exceptions_simple(text, expected):
     print(ast.dump(tree))
     returns = tuple(r.value for r in get_exceptions(body=tree.body))
     assert returns == expected
+
+
+def test_inference_simple():
+    text = """
+        def subf():
+            raise ValueError
+
+        @deal.raises(KeyError)
+        def f():
+            subf()
+    """
+    tree = astroid.parse(dedent(text))
+    print(tree.repr_tree())
+    func_tree = tree.body[-1].body
+    returns = tuple(r.value for r in get_exceptions(body=func_tree))
+    assert returns == (ValueError, )
