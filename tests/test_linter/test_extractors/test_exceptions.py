@@ -36,14 +36,37 @@ def test_get_exceptions_simple(text, expected):
 def test_inference_simple():
     text = """
         def subf():
-            raise ValueError
+            raise ValueError  # explicit raise
+
+        def subf2():
+            1 / 0  # implicit raise
+            a = b
 
         @deal.raises(KeyError)
         def f():
-            subf()
+            unknown()  # cannot resolve
+            subf()  # resolve
+            subf2()
+            a = 1
+            a  # resolved not in a function
     """
     tree = astroid.parse(dedent(text))
     print(tree.repr_tree())
     func_tree = tree.body[-1].body
     returns = tuple(r.value for r in get_exceptions(body=func_tree))
-    assert returns == (ValueError, )
+    assert returns == (ValueError, ZeroDivisionError)
+
+
+def test_resolve_doesnt_fail_for_simple_ast():
+    text = """
+        def subf():
+            raise ValueError  # explicit raise
+
+        @deal.raises(KeyError)
+        def f():
+            subf()
+    """
+    tree = ast.parse(dedent(text))
+    print(ast.dump(tree))
+    func_tree = tree.body[-1].body
+    tuple(get_exceptions(body=func_tree))

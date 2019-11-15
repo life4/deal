@@ -68,7 +68,11 @@ def get_exceptions(body: list, *, dive: bool = True) -> Iterator[Token]:
                 if not isinstance(value, astroid.FunctionDef):
                     continue
                 for error in get_exceptions(body=value.body, dive=False):
-                    yield Token(value=error.value, **token_info)
+                    yield Token(
+                        value=error.value,
+                        line=name_node.lineno,
+                        col=name_node.col_offset,
+                    )
 
 
 def get_names(expr):
