@@ -76,7 +76,8 @@ def get_exceptions(body: list, *, dive: bool = True) -> Iterator[Token]:
 
 
 def get_names(expr):
-    if isinstance(expr, TOKENS.NAME):
-        yield expr
+    if isinstance(expr, astroid.Assign):
+        yield from get_names(expr.value)
     if isinstance(expr, TOKENS.CALL):
-        yield from get_names(expr.func)
+        if isinstance(expr.func, TOKENS.NAME):
+            yield expr.func

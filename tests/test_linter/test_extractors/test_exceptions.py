@@ -57,6 +57,38 @@ def test_inference_simple():
     assert returns == (ValueError, ZeroDivisionError)
 
 
+def test_inference_assign():
+    text = """
+        def subf():
+            raise Unknown
+
+        @deal.raises(KeyError)
+        def f():
+            b = subf()
+    """
+    tree = astroid.parse(dedent(text))
+    print(tree.repr_tree())
+    func_tree = tree.body[-1].body
+    returns = tuple(r.value for r in get_exceptions(body=func_tree))
+    assert returns == ('Unknown', )
+
+
+def test_inference_ok_uncalled():
+    text = """
+        def subf():
+            raise ValueError
+
+        @deal.raises(KeyError)
+        def f():
+            subf
+    """
+    tree = astroid.parse(dedent(text))
+    print(tree.repr_tree())
+    func_tree = tree.body[-1].body
+    returns = tuple(r.value for r in get_exceptions(body=func_tree))
+    assert returns == ()
+
+
 def test_resolve_doesnt_fail_for_simple_ast():
     text = """
         def subf():
