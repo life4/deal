@@ -66,9 +66,6 @@ class Func:
     def category(self) -> list:
         return self.contracts[0].category
 
-    def run(self, *args, **kwargs):
-        return self.contracts[0].run(*args, **kwargs)
-
     def __repr__(self) -> str:
         return '{name}({category})'.format(
             name=type(self).__name__,
