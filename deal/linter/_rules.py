@@ -3,7 +3,8 @@ from typing import Iterator
 
 from ._error import Error
 from ._extractors import get_exceptions, get_returns, get_imports, get_prints
-from ._func import Func, Category
+from ._func import Func
+from ._contract import Category, Contract
 
 
 rules = []
@@ -27,13 +28,14 @@ class CheckImports:
 
     def __call__(self, tree) -> Iterator[Error]:
         for token in get_imports(tree.body):
-            if token.value == 'deal':
-                yield Error(
-                    code=self.code,
-                    text=self.message,
-                    row=token.line,
-                    col=token.col,
-                )
+            if token.value != 'deal':
+                continue
+            yield Error(
+                code=self.code,
+                text=self.message,
+                row=token.line,
+                col=token.col,
+            )
 
 
 @register
@@ -43,11 +45,15 @@ class CheckReturns:
     required = Required.FUNC
 
     def __call__(self, func: Func) -> Iterator[Error]:
-        if func.category != Category.POST:
-            return
+        for contract in func.contracts:
+            if contract.category != Category.POST:
+                continue
+            yield from self._check(func=func, contract=contract)
+
+    def _check(self, func: Func, contract: Contract) -> Iterator[Error]:
         for token in get_returns(body=func.body):
             try:
-                result = func.run(token.value)
+                result = contract.run(token.value)
             except NameError:
                 # cannot resolve contract dependencies
                 return
@@ -72,9 +78,13 @@ class CheckRaises:
     required = Required.FUNC
 
     def __call__(self, func: Func) -> Iterator[Error]:
-        if func.category != Category.RAISES:
-            return
-        allowed = func.exceptions
+        for contract in func.contracts:
+            if contract.category != Category.RAISES:
+                continue
+            yield from self._check(func=func, contract=contract)
+
+    def _check(self, func: Func, contract: Contract) -> Iterator[Error]:
+        allowed = contract.exceptions
         allowed_types = tuple(exc for exc in allowed if type(exc) is not str)
         for token in get_exceptions(body=func.body):
             if token.value in allowed:
@@ -100,8 +110,14 @@ class CheckPrints:
     required = Required.FUNC
 
     def __call__(self, func: Func) -> Iterator[Error]:
-        if func.category != Category.SILENT:
+        for contract in func.contracts:
+            if contract.category != Category.SILENT:
+                continue
+            yield from self._check(func=func, contract=contract)
+            # if `@deal.silent` is duplicated, check the function only once
             return
+
+    def _check(self, func: Func, contract: Contract) -> Iterator[Error]:
         for token in get_prints(body=func.body):
             yield Error(
                 code=self.code,

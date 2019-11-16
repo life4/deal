@@ -13,6 +13,7 @@ TOKENS = SimpleNamespace(
     EXPR=(ast.Expr, astroid.Expr),
     FOR=(ast.For, astroid.For),
     IF=(ast.If, astroid.If),
+    NAME=(ast.Name, astroid.Name),
     RAISE=(ast.Raise, astroid.Raise),
     RETURN=(ast.Return, astroid.Return),
     TRY=(ast.Try, astroid.TryExcept, astroid.TryFinally),

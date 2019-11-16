@@ -131,6 +131,8 @@ def test_check_imports():
     text = """
     import deal
     from deal import pre
+    from not_a_deal import pre
+    from .deal import pre
     """
     text = dedent(text).strip()
     for tree in (ast.parse(text), astroid.parse(text)):

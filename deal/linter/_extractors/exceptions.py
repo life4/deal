@@ -7,7 +7,7 @@ import astroid
 from .common import traverse, Token, TOKENS, get_name
 
 
-def get_exceptions(body: list) -> Iterator[Token]:
+def get_exceptions(body: list, *, dive: bool = True) -> Iterator[Token]:
     for expr in traverse(body):
         token_info = dict(line=expr.lineno, col=expr.col_offset)
 
@@ -53,3 +53,35 @@ def get_exceptions(body: list) -> Iterator[Token]:
                 if name and name == 'sys.exit':
                     yield Token(value=SystemExit, **token_info)
                     continue
+
+        # infer function call and check the function body for raises
+        if not dive:
+            continue
+        for name_node in get_names(expr):
+            if not isinstance(name_node, astroid.Name):
+                continue
+            try:
+                guesses = tuple(name_node.infer())
+            except astroid.exceptions.NameInferenceError:
+                continue
+            for value in guesses:
+                if not isinstance(value, astroid.FunctionDef):
+                    continue
+                for error in get_exceptions(body=value.body, dive=False):
+                    yield Token(
+                        value=error.value,
+                        line=name_node.lineno,
+                        col=name_node.col_offset,
+                    )
+
+
+def get_names(expr):
+    if isinstance(expr, astroid.Assign):
+        yield from get_names(expr.value)
+    if isinstance(expr, TOKENS.CALL):
+        if isinstance(expr.func, TOKENS.NAME):
+            yield expr.func
+        for subnode in expr.args:
+            yield from get_names(subnode)
+        for subnode in (expr.keywords or ()):
+            yield from get_names(subnode.value)
