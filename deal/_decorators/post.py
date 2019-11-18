@@ -26,3 +26,11 @@ class Post(Base):
         result = await self.function(*args, **kwargs)
         self.validate(result)
         return result
+
+    def patched_generator(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        for result in self.function(*args, **kwargs):
+            self.validate(result)
+            yield result

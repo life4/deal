@@ -48,3 +48,16 @@ class Reason(Base):
             except self.exception:
                 raise self.exception from origin
             raise
+
+    def patched_generator(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        try:
+            yield from self.function(*args, **kwargs)
+        except self.event as origin:
+            try:
+                self.validate(*args, **kwargs)
+            except self.exception:
+                raise self.exception from origin
+            raise

@@ -47,3 +47,16 @@ class Raises(Base):
             if not isinstance(exc, self.exceptions):
                 raise self.exception from exc
             raise
+
+    def patched_generator(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        try:
+            yield from self.function(*args, **kwargs)
+        except ContractError:
+            raise
+        except Exception as exc:
+            if not isinstance(exc, self.exceptions):
+                raise self.exception from exc
+            raise

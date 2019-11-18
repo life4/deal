@@ -1,7 +1,7 @@
 # built-in
 from asyncio import iscoroutinefunction
 from functools import update_wrapper
-from inspect import getcallargs
+from inspect import getcallargs, isgeneratorfunction
 from typing import Callable, Type
 
 # app
@@ -94,6 +94,14 @@ class Base:
             else:
                 return await function(*args, **kwargs)
 
+        def wrapped_generator(*args, **kwargs):
+            if self.enabled:
+                yield from self.patched_generator(*args, **kwargs)
+            else:
+                yield from function(*args, **kwargs)
+
         if iscoroutinefunction(function):
             return update_wrapper(async_wrapped, function)
+        if isgeneratorfunction(function):
+            return update_wrapper(wrapped_generator, function)
         return update_wrapper(wrapped, function)
