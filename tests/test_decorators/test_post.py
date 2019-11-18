@@ -20,3 +20,15 @@ def test_decorating_async_function():
     assert run_sync(func(-2)) == 2
     with pytest.raises(deal.PostContractError):
         run_sync(func(2))
+
+
+def test_decorating_generator():
+    @deal.post(lambda x: x <= 8)
+    def double(x):
+        yield x
+        yield x * 2
+        yield x * 4
+
+    assert list(double(2)) == [2, 4, 8]
+    with pytest.raises(deal.PostContractError):
+        list(double(4))

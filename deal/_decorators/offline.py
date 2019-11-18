@@ -50,7 +50,7 @@ class Offline(Base):
             self.patch()
             try:
                 result = next(generator)
-            except GeneratorExit:
+            except StopIteration:
                 return
             finally:
                 self.unpatch()

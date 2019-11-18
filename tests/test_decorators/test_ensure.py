@@ -32,3 +32,15 @@ def test_decorating_async_function():
     assert run_sync(func(1, 2)) == 'different numbers'
     with pytest.raises(deal.PostContractError):
         run_sync(func(0, 1))
+
+
+def test_decorating_generator():
+    @deal.ensure(lambda x, y, result: result > y ** 2)
+    def multiply(x, y):
+        yield x * y
+        yield x * y * 2
+        yield x * y * 4
+
+    assert list(multiply(2, 1)) == [2, 4, 8]
+    with pytest.raises(deal.PostContractError):
+        list(multiply(2, 2))
