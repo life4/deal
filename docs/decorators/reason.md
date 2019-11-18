@@ -8,6 +8,8 @@ def divide(a, b):
     return a / b
 ```
 
+It works the same for generators and async functions.
+
 ## Motivation
 
 This is the [@deal.ensure](./ensure.html) for exceptions. It works perfect when it's easy to check correctness of conditions when exception is raised.

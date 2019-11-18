@@ -32,3 +32,15 @@ def test_contract_state_switch_default_param_async():
     deal.switch(main=True)
     with pytest.raises(deal.PreContractError):
         run_sync(func(-2))
+
+
+def test_contract_state_switch_default_param_generator():
+    @deal.pre(lambda x: x > 0)
+    def func(x):
+        yield x * 2
+
+    deal.switch(main=False)
+    assert list(func(-2)) == [-4]
+    deal.switch(main=True)
+    with pytest.raises(deal.PreContractError):
+        list(func(-2))

@@ -129,3 +129,15 @@ def test_decorating_async_function():
     assert run_sync(double(2)) == 4
     with pytest.raises(deal.PreContractError):
         run_sync(double(-2))
+
+
+def test_decorating_generator():
+    @deal.pre(lambda x: x > 0)
+    def double(x):
+        yield x
+        yield x * 2
+        yield x * 4
+
+    assert list(double(2)) == [2, 4, 8]
+    with pytest.raises(deal.PreContractError):
+        list(double(-2))

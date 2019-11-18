@@ -48,3 +48,24 @@ def test_decorating_async_function(value, exc):
     assert run_sync(func(3)) == 3
     with pytest.raises(exc):
         run_sync(func(value))
+
+
+@pytest.mark.parametrize('value, exc', [
+    (0, ZeroDivisionError),
+    (1, ValueError),
+    (2, deal.ReasonContractError),
+])
+def test_decorating_generator(value, exc):
+    @deal.reason(ValueError, lambda x: x == 1)
+    def func(x):
+        if x == 0:
+            raise ZeroDivisionError
+        if x == 1:
+            raise ValueError
+        if x == 2:
+            raise ValueError
+        yield x
+
+    assert list(func(3)) == [3]
+    with pytest.raises(exc):
+        list(func(value))

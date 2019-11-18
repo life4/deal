@@ -25,3 +25,15 @@ def test_decorating_async_function():
     assert run_sync(func('')) == ''
     with pytest.raises(deal.SilentContractError):
         run_sync(func('a'))
+
+
+def test_decorating_generator():
+    @deal.silent
+    def func(msg):
+        if msg:
+            print(msg)
+        yield msg
+
+    assert list(func('')) == ['']
+    with pytest.raises(deal.SilentContractError):
+        list(func('a'))

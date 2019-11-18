@@ -17,6 +17,8 @@ has_access('superuser')
 # SilentContractError:
 ```
 
+It works the same for generators. For async functions keep in mind patching.
+
 ## Motivation
 
 If possible, avoid any output from function. Direct output makes debugging and re-usage much more difficult. Of course, there are some exceptions:

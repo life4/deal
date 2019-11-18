@@ -26,3 +26,11 @@ class Ensure(Base):
         result = await self.function(*args, **kwargs)
         self.validate(*args, result=result, **kwargs)
         return result
+
+    def patched_generator(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        for result in self.function(*args, **kwargs):
+            self.validate(*args, result=result, **kwargs)
+            yield result

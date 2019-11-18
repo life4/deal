@@ -14,6 +14,17 @@ double(0)
 # PostContractError:
 ```
 
+For async functions it works the same. For generators validation runs for every yielded value:
+
+```python
+@deal.ensure(lambda start, end, result: start <= result < end)
+def range(start, end):
+    step = start
+    while step < end:
+        yield step
+        step += 1
+```
+
 ## Motivation
 
 Ensure allows you to simplify testing, easier check hypothesis, tell more about the function behavior. It works perfect for [P vs NP](https://en.wikipedia.org/wiki/P_versus_NP_problem) like problems. In other words, for complex task when checking result correctness (even partial checking only for some cases) is much easier then calculation itself. For example:

@@ -14,6 +14,15 @@ always_positive_sum(2, -3, -4)
 # PostContractError:
 ```
 
+For async functions it works the same. For generators validation runs for every yielded value:
+
+```python
+@deal.post(lambda result: result == 2 or result % 2 == 1)
+@deal.post(lambda result: result == 3 or result % 3 != 0)
+def get_primary_numbers():
+    yield from (2, 3, 5, 7, 11, 13)
+```
+
 ## Motivation
 
 Post-condition allows to make additional constraints about function result. Use type annotations to limit types of result and post-conditions to limit possible values inside given types. Let's see a few examples.

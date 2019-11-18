@@ -42,3 +42,17 @@ def test_decorating_async_function():
     assert run_sync(func(False)) == 1
     with pytest.raises(deal.OfflineContractError):
         run_sync(func(True))
+
+
+def test_decorating_generator():
+    @deal.offline
+    def func(do):
+        if not do:
+            yield 1
+            return
+        http = urllib3.PoolManager()
+        http.request('GET', 'http://httpbin.org/robots.txt')
+
+    assert list(func(False)) == [1]
+    with pytest.raises(deal.OfflineContractError):
+        list(func(True))

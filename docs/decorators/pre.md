@@ -13,3 +13,5 @@ sum_positive(1, 2, 3, 4)
 sum_positive(1, 2, -3, 4)
 # PreContractError:
 ```
+
+It works the same for generators and async functions.

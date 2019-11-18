@@ -17,6 +17,8 @@ ping('ya.ru')
 # OfflineContractError:
 ```
 
+It works the same for generators. For async functions keep in mind patching.
+
 ## Motivation
 
 Sometimes, your code are doing unexpected network requests. Use `@offline` to catch these cases to do code optimization if possible.

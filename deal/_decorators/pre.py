@@ -24,3 +24,10 @@ class Pre(Base):
         """
         self.validate(*args, **kwargs)
         return await self.function(*args, **kwargs)
+
+    def patched_generator(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        self.validate(*args, **kwargs)
+        yield from self.function(*args, **kwargs)
