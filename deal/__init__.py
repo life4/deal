@@ -28,6 +28,7 @@ from ._aliases import (
 from ._exceptions import *  # noQA
 from ._schemes import Scheme
 from ._state import reset, switch
+from ._imports import load, register
 from ._testing import TestCase, cases
 
 
@@ -54,4 +55,8 @@ __all__ = [
     # aliases
     'invariant',
     'require',
+
+    # module level
+    'load',
+    'register',
 ]
