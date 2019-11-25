@@ -2,7 +2,8 @@
 import ast
 import sys
 from _frozen_importlib_external import PathFinder
-from typing import Callable, Optional
+from types import ModuleType
+from typing import Callable, Optional, List
 
 from .linter._extractors.common import get_name
 from . import _aliases
@@ -21,10 +22,10 @@ class DealLoader:
     def __init__(self, loader):
         self._loader = loader
 
-    def __getattr__(self, name):
+    def __getattr__(self, name: str):
         return getattr(self._loader, name)
 
-    def exec_module(self, module) -> None:
+    def exec_module(self, module: ModuleType) -> None:
         if not hasattr(self._loader, 'get_source'):
             return self._loader.exec_module(module)
 
@@ -51,19 +52,24 @@ class DealLoader:
         wrapped(module)
 
     @staticmethod
-    def _get_contracts(tree) -> Optional[list]:
+    def _get_contracts(tree: ast.Module) -> List[ast.AST]:
         for node in tree.body:
             if not type(node) is ast.Expr:
                 continue
             if not type(node.value) is ast.Call:
                 continue
-            if get_name(node.value.func) != 'deal.load':
+            if get_name(node.value.func) != 'deal.module_load':
                 continue
             return node.value.args
         return []
 
-    @staticmethod
-    def _exec_contract(node) -> Optional[Callable]:
+    @classmethod
+    def _exec_contract(cls, node: ast.AST) -> Optional[Callable]:
+        """Get AST node and return a contract function
+        """
+        if type(node) is ast.Call and not node.args:
+            return cls._exec_contract(node.func)
+
         if not isinstance(node, ast.Attribute):
             return None
         if node.value.id != 'deal':
@@ -74,12 +80,23 @@ class DealLoader:
         return contract
 
 
-def load(*contracts) -> None:
-    return
+def module_load(*contracts) -> None:
+    if not contracts:
+        raise RuntimeError('no contracts specified')
+    if DealFinder not in sys.meta_path:
+        msg = 'deal.activate must be called '
+        msg += 'before importing anything with deal.module_load contract'
+        raise RuntimeError(msg)
 
 
-def register():
+def activate() -> bool:
+    """Activate module-level checks.
+
+    This function must be called before importing anything
+    with deal.module_load() contract.
+    """
     if DealFinder in sys.meta_path:
-        return
+        return False
     index = sys.meta_path.index(PathFinder)
     sys.meta_path[index] = DealFinder
+    return True
