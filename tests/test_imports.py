@@ -1,4 +1,5 @@
 import ast
+from pathlib import Path
 from textwrap import dedent
 
 import pytest
@@ -76,6 +77,16 @@ def test_exec_module():
         DealLoader(loader=SubLoader(ok=True, text=text)).exec_module(TestModule)
 
 
+def test_not_path_loader():
+    class SubLoaderNoGetSource:
+        def exec_module(self, module):
+            assert module is TestModule
+            raise TestException
+
+    with pytest.raises(TestException):
+        DealLoader(loader=SubLoaderNoGetSource()).exec_module(TestModule)
+
+
 def test_exec_module_invalid_contract():
     text = """
         import deal
@@ -98,6 +109,13 @@ def test_exec_module_no_contracts():
         DealLoader(loader=SubLoader(ok=False, text=text)).exec_module(TestModule)
 
 
+def test_exec_module_no_source():
+    text = None
+    DealLoader(loader=SubLoader(ok=True, text=text)).exec_module(TestModule)
+    with pytest.raises(TestException):
+        DealLoader(loader=SubLoader(ok=False, text=text)).exec_module(TestModule)
+
+
 def test_module_load():
     assert deal.activate()
     try:
@@ -109,6 +127,11 @@ def test_module_load():
         deal.module_load(deal.silent)
 
 
+def test_module_load_no_contracts():
+    with pytest.raises(RuntimeError):
+        deal.module_load()
+
+
 def test_activate():
     try:
         assert deal.activate()
@@ -116,3 +139,22 @@ def test_activate():
     finally:
         assert deactivate()
         assert not deactivate()
+
+
+def test_smoke():
+    text = """
+        import deal
+        deal.module_load(deal.silent)
+        print(1)
+        """
+    text = dedent(text)
+    Path('tmp123.py').write_text(text)
+
+    try:
+        assert deal.activate()
+        with pytest.raises(deal.SilentContractError):
+            __import__('tmp123')
+    finally:
+        assert deactivate()
+        assert not deactivate()
+        Path('tmp123.py').unlink()
