@@ -5,13 +5,15 @@ import pytest
 
 import deal
 from deal.linter._extractors.common import get_name
-from deal._imports import DealLoader
+from deal._imports import DealLoader, deactivate
 
 
 def test_get_contracts():
     text = """
         import deal
         a = 1
+        1 / 0
+        not_a_deal.module_load(something)
         deal.module_load(deal.silent)
         """
     text = dedent(text)
@@ -24,12 +26,39 @@ def test_get_contracts():
 @pytest.mark.parametrize('text, expected', [
     ('deal.silent', deal.silent),
     ('deal.silent()', deal.silent),
+    ('deal.pre(something)', None),
+    ('not_a_deal.silent', None),
+    ('deal.typo', None),
 ])
 def test_exec_contract(text, expected):
     tree = ast.parse(text)
     print(ast.dump(tree))
     actual = DealLoader._exec_contract(node=tree.body[0].value)
     assert actual == expected
+
+
+class TestException(Exception):
+    pass
+
+
+class TestModule:
+    pass
+
+
+class SubLoader:
+    def __init__(self, ok, text):
+        self.ok = ok
+        self.text = text
+
+    def get_source(self, module):
+        assert module == 'TestModule'
+        return self.text
+
+    def exec_module(self, module):
+        assert module is TestModule
+        if not self.ok:
+            raise TestException
+        print(1)
 
 
 def test_exec_module():
@@ -40,28 +69,50 @@ def test_exec_module():
         """
     text = dedent(text)
 
-    class TestException(Exception):
-        pass
-
-    class TestModule:
-        pass
-
-    class SubLoader:
-        def __init__(self, ok):
-            self.ok = ok
-
-        def get_source(self, module):
-            assert module == 'TestModule'
-            return text
-
-        def exec_module(self, module):
-            assert module is TestModule
-            if not self.ok:
-                raise TestException
-            print(1)
-
     with pytest.raises(TestException):
-        DealLoader(loader=SubLoader(ok=False)).exec_module(TestModule)
+        DealLoader(loader=SubLoader(ok=False, text=text)).exec_module(TestModule)
 
     with pytest.raises(deal.SilentContractError):
-        DealLoader(loader=SubLoader(ok=True)).exec_module(TestModule)
+        DealLoader(loader=SubLoader(ok=True, text=text)).exec_module(TestModule)
+
+
+def test_exec_module_invalid_contract():
+    text = """
+        import deal
+        deal.module_load(deal.pre(something))
+        print(1)
+        """
+    text = dedent(text)
+    with pytest.raises(RuntimeError, match='unsupported contract:.+'):
+        DealLoader(loader=SubLoader(ok=False, text=text)).exec_module(TestModule)
+
+
+def test_exec_module_no_contracts():
+    text = """
+        import deal
+        print(1)
+        """
+    text = dedent(text)
+    DealLoader(loader=SubLoader(ok=True, text=text)).exec_module(TestModule)
+    with pytest.raises(TestException):
+        DealLoader(loader=SubLoader(ok=False, text=text)).exec_module(TestModule)
+
+
+def test_module_load():
+    assert deal.activate()
+    try:
+        deal.module_load(deal.silent)
+    finally:
+        assert deactivate()
+
+    with pytest.raises(RuntimeError):
+        deal.module_load(deal.silent)
+
+
+def test_activate():
+    try:
+        assert deal.activate()
+        assert not deal.activate()
+    finally:
+        assert deactivate()
+        assert not deactivate()

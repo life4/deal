@@ -43,7 +43,7 @@ class DealLoader:
         for node in nodes:
             contract = self._exec_contract(node=node)
             if contract is None:
-                msg = 'unsupported contract: {}'.format(ast.dump(contract))
+                msg = 'unsupported contract: {}'.format(ast.dump(node))
                 raise RuntimeError(msg)
             contracts.append(contract)
 
@@ -99,4 +99,14 @@ def activate() -> bool:
         return False
     index = sys.meta_path.index(PathFinder)
     sys.meta_path[index] = DealFinder
+    return True
+
+
+def deactivate() -> bool:
+    """used in tests
+    """
+    if DealFinder not in sys.meta_path:
+        return False
+    index = sys.meta_path.index(DealFinder)
+    sys.meta_path[index] = PathFinder
     return True
