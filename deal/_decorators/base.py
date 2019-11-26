@@ -73,8 +73,7 @@ class Base:
     def enabled(self) -> bool:
         if self.debug:
             return state.debug
-        else:
-            return state.main
+        return state.main
 
     def __call__(self, function: Callable) -> Callable:
         """

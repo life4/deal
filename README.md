@@ -21,21 +21,29 @@ That's nice `assert` statements in decorators style to validate function input, 
 
 CLassic DbC:
 
-* `@deal.pre` -- validate function arguments (pre-condition)
-* `@deal.post` -- validate function return value (post-condition)
-* `@deal.inv` -- validate object internal state (invariant)
+* [`@deal.pre`](https://deal.readthedocs.io/decorators/pre.html) -- validate function arguments (pre-condition)
+* [`@deal.post`](https://deal.readthedocs.io/decorators/post.html) -- validate function return value (post-condition)
+* [`@deal.ensure`](https://deal.readthedocs.io/decorators/ensure.html) -- post-condition that accepts not only result, but also function arguments.
+* [`@deal.inv`](https://deal.readthedocs.io/decorators/inv.html) -- validate object internal state (invariant).
 
 Take more control:
 
-* `@deal.offline` -- forbid network requests
-* `@deal.raises` -- allow only list of exceptions
-* `@deal.safe` -- forbid exceptions
-* `@deal.silent` -- forbid output into stderr/stdout.
+* [`@deal.module_load`](https://deal.readthedocs.io/decorators/module_load.html) -- check contracts at module initialization.
+* [`@deal.offline`](https://deal.readthedocs.io/decorators/offline.html) -- forbid network requests
+* [`@deal.raises`](https://deal.readthedocs.io/decorators/raises.html) -- allow only list of exceptions
+* [`@deal.reason`](https://deal.readthedocs.io/decorators/reason.html) -- check function arguments that caused a given exception.
+* [`@deal.silent`](https://deal.readthedocs.io/decorators/silent.html) -- forbid output into stderr/stdout.
+
+Helpers:
+
+* [`@deal.chain`](https://deal.readthedocs.io/decorators/chain.html) -- chain a few contracts in one.
+* [`@deal.pure`](https://deal.readthedocs.io/decorators/pure.html) -- alias for `safe`, `silent`, and `offline`.
+* [`@deal.safe`](https://deal.readthedocs.io/decorators/safe.html) -- forbid exceptions.
 
 ## Installation
 
 ```bash
-pip3 install --user deal
+python3 -m pip install --user deal
 ```
 
 ## Quick Start

@@ -25,12 +25,17 @@
     :maxdepth: 1
     :caption: Take more control
 
-    decorators/chain
+    decorators/module_load
     decorators/offline
-    decorators/pure
     decorators/raises
     decorators/reason
-    decorators/safe
     decorators/silent
 
+.. toctree::
+    :maxdepth: 1
+    :caption: Helpers
+
+    decorators/chain
+    decorators/pure
+    decorators/safe
 ```

@@ -1,5 +1,6 @@
 import deal
 import pytest
+from deal._imports import deactivate
 
 from .test_decorators.helpers import run_sync
 
@@ -44,3 +45,39 @@ def test_contract_state_switch_default_param_generator():
     deal.switch(main=True)
     with pytest.raises(deal.PreContractError):
         list(func(-2))
+
+
+def test_state_switch_module_load():
+    with pytest.raises(RuntimeError):
+        deal.module_load()
+    try:
+        deal.switch(main=False)
+        deal.activate()
+        deal.module_load()
+    finally:
+        deactivate()
+        deal.switch(main=True)
+
+
+def test_state_switch_module_load_debug():
+    with pytest.raises(RuntimeError):
+        deal.module_load(debug=True)
+    try:
+        deal.switch(debug=False)
+        deal.activate()
+        deal.module_load(debug=True)
+    finally:
+        deactivate()
+        deal.switch(debug=True)
+
+
+def test_state_switch_activate():
+    try:
+        assert deal.activate()
+        assert deactivate()
+
+        deal.switch(main=False)
+        assert not deal.activate()
+    finally:
+        deactivate()
+        deal.switch(main=True)
