@@ -7,6 +7,13 @@ from typing import Callable, Optional, List
 
 from .linter._extractors.common import get_name
 from . import _aliases
+from ._state import state
+
+
+def _enabled(debug: bool = False) -> bool:
+    if debug:
+        return state.debug
+    return state.main
 
 
 class DealFinder(PathFinder):
@@ -80,7 +87,9 @@ class DealLoader:
         return contract
 
 
-def module_load(*contracts) -> None:
+def module_load(*contracts, debug: bool = False) -> None:
+    if not _enabled(debug):
+        return
     if not contracts:
         raise RuntimeError('no contracts specified')
     if DealFinder not in sys.meta_path:
@@ -89,12 +98,14 @@ def module_load(*contracts) -> None:
         raise RuntimeError(msg)
 
 
-def activate() -> bool:
+def activate(debug: bool = False) -> bool:
     """Activate module-level checks.
 
     This function must be called before importing anything
     with deal.module_load() contract.
     """
+    if not _enabled(debug):
+        return False
     if DealFinder in sys.meta_path:
         return False
     index = sys.meta_path.index(PathFinder)
