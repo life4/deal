@@ -1,6 +1,6 @@
 # ensure
 
-Ensure is a [postcondition](./post) that aceepts not only result, but also function arguments. Must be true after function executed. Raises `PostContractError` otherwise.
+Ensure is a [postcondition](./post) that accepts not only result, but also function arguments. Must be true after function executed. Raises `PostContractError` otherwise.
 
 ```python
 @deal.ensure(lambda x, result: x != result)
