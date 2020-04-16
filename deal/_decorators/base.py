@@ -56,6 +56,8 @@ class Base:
 
     def _vaa_validation(self, *args, **kwargs) -> None:
         params = kwargs.copy()
+
+        # if it is a decorator for a function, convert positional args into named ones.
         if hasattr(self, 'function'):
             # detect original function
             function = self.function
@@ -68,12 +70,27 @@ class Base:
                 if bad_name in params and bad_name not in kwargs:
                     del params[bad_name]
 
+        # validate
         validator = self.validator(data=params)
         if validator.is_valid():
             return
+
+        # process errors
+        errors = validator.errors
+        if not errors:
+            errors = self.message
+        # Flatten single error without field to one simple str message.
+        # This is for better readability of simple validators.
+        if type(errors) is list:
+            if type(errors[0]) is vaa.Error:
+                if len(errors) == 1:
+                    if errors[0].field is None:
+                        errors = errors[0].message
+
+        # raise errors
         if isinstance(self.exception, Exception):
-            raise type(self.exception)(validator.errors)
-        raise self.exception(validator.errors)
+            raise type(self.exception)(errors)
+        raise self.exception(errors)
 
     def _simple_validation(self, *args, **kwargs) -> None:
         validation_result = self.validator(*args, **kwargs)
