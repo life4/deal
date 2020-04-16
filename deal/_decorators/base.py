@@ -38,8 +38,6 @@ class Base:
         if inspect.isfunction(validator):
             params = inspect.signature(validator).parameters
             if set(params) == {'_'}:
-                if not message:
-                    message = 'validation error'
                 return vaa.simple(validator, error=message)
 
         return validator
@@ -75,10 +73,11 @@ class Base:
         if validator.is_valid():
             return
 
-        # process errors
+        # if no errors returned, raise the default exception
         errors = validator.errors
         if not errors:
-            errors = self.message
+            raise self.exception
+
         # Flatten single error without field to one simple str message.
         # This is for better readability of simple validators.
         if type(errors) is list:

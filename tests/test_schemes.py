@@ -130,3 +130,29 @@ def test_scheme_errors_rewrite_message(scheme):
         func(2)
     except deal.PreContractError as exc:
         assert exc.args[0] == [vaa.Error(field='name', message='Not a valid string.')]
+
+
+def test_underscore_validator():
+    @deal.pre(lambda _: _.a != _.b, message='actual message')
+    def func(a, b=1):
+        return a + b
+
+    func(2)
+    func(1, 3)
+    func(a=1, b=3)
+    with pytest.raises(deal.PreContractError) as exc_info:
+        func(1)
+    assert exc_info.value.args == ('actual message',)
+
+
+def test_underscore_validator_default_message():
+    @deal.pre(lambda _: _.a != _.b)
+    def func(a, b=1):
+        return a + b
+
+    func(2)
+    func(1, 3)
+    func(a=1, b=3)
+    with pytest.raises(deal.PreContractError) as exc_info:
+        func(1)
+    assert exc_info.value.args == tuple()
