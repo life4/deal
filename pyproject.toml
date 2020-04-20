@@ -20,6 +20,11 @@ from = {format = "poetry", path = "pyproject.toml"}
 envs = ["docs"]
 command = "sphinx-build -W docs docs/build"
 
+[tool.dephell.typing]
+from = {format = "poetry", path = "pyproject.toml"}
+envs = ["main", "tests"]
+command = "mypy --ignore-missing-imports --allow-redefinition deal/"
+
 
 [tool.flakehell.plugins]
 deal = ["+*"]
@@ -70,19 +75,22 @@ typeguard = "*"
 vaa = ">=0.2.1"
 
 [tool.poetry.dev-dependencies]
+# tests
 coverage = "*"
 marshmallow = "*"
+mypy = "*"
 pytest = "*"
 pytest-cov = "*"
 urllib3 = "*"
 
+# docs
 m2r = "*"
 recommonmark = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
 
 [tool.poetry.extras]
-tests = ["coverage", "marshmallow", "pytest", "pytest-cov", "urllib3"]
+tests = ["coverage", "marshmallow", "mypy", "pytest", "pytest-cov", "urllib3"]
 docs = ["m2r", "recommonmark", "sphinx", "sphinx-rtd-theme", "urllib3"]
 
 [tool.poetry.plugins."flake8.extension"]
