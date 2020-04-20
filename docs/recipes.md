@@ -50,7 +50,14 @@ If a contract needs only function arguments, use `pre`. If a contract checks onl
 
 ## Prefer `reason` over `raises`
 
-Always try your best to tell why exception can be raised.
+Always try your best to tell why exception can be raised. However, keep in mind that all exceptions from `reason` still have to be explicitly specified in `raises` since contracts are isolated and have no way to exchange information between each other:
+
+```python
+@deal.reason(ZeroDivisionError, lambda a, b: b == 0)
+@deal.raises(ZeroDivisionError)
+def divide(a, b):
+    return a / b
+```
 
 ## Keep module initialization pure
 
