@@ -16,6 +16,7 @@ from deal.linter._extractors import get_exceptions
     ('raise UnknownError', ('UnknownError', )),
     ('raise ValueError("lol")', (ValueError, )),
     ('raise unknown()', ()),
+    ('raise 1 + 2', ()),
     ('assert False', (AssertionError, )),
     ('12 / 0', (ZeroDivisionError, )),
     ('exit(13)', (SystemExit, )),
