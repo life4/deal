@@ -13,13 +13,17 @@ from ._rules import Required, rules
 
 class Checker:
     name = 'deal'
-    version = '1.0.0'
-    _tree = None  # type: ast.Module
     _rules = rules
 
     def __init__(self, tree: ast.Module, file_tokens=None, filename: str = 'stdin'):
         self._tree = tree
         self._filename = filename
+
+    @property
+    def version(self):
+        import deal
+
+        return deal.__version__
 
     def run(self) -> typing.Iterator[tuple]:
         for error in self.get_errors():
