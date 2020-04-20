@@ -3,7 +3,7 @@ import ast
 import sys
 from _frozen_importlib_external import PathFinder
 from types import ModuleType
-from typing import Callable, Optional, List
+from typing import Any, Callable, Optional, List
 
 from .linter._extractors.common import get_name
 from . import _aliases
@@ -60,10 +60,10 @@ class DealLoader:
 
     @staticmethod
     def _get_contracts(tree: ast.Module) -> List[ast.AST]:
-        for node in tree.body:
-            if not type(node) is ast.Expr:
+        for node in tree.body:  # type: Any
+            if type(node) is not ast.Expr:
                 continue
-            if not type(node.value) is ast.Call:
+            if type(node.value) is not ast.Call:
                 continue
             if get_name(node.value.func) != 'deal.module_load':
                 continue
@@ -74,12 +74,12 @@ class DealLoader:
     def _exec_contract(cls, node: ast.AST) -> Optional[Callable]:
         """Get AST node and return a contract function
         """
-        if type(node) is ast.Call and not node.args:
-            return cls._exec_contract(node.func)
+        if type(node) is ast.Call and not node.args:    # type: ignore
+            return cls._exec_contract(node.func)        # type: ignore
 
         if not isinstance(node, ast.Attribute):
             return None
-        if node.value.id != 'deal':
+        if node.value.id != 'deal':  # type: ignore
             return None
         contract = getattr(_aliases, node.attr, None)
         if contract is None:
@@ -109,7 +109,7 @@ def activate(debug: bool = False) -> bool:
     if DealFinder in sys.meta_path:
         return False
     index = sys.meta_path.index(PathFinder)
-    sys.meta_path[index] = DealFinder
+    sys.meta_path[index] = DealFinder  # type: ignore
     return True
 
 
@@ -118,6 +118,6 @@ def deactivate() -> bool:
     """
     if DealFinder not in sys.meta_path:
         return False
-    index = sys.meta_path.index(DealFinder)
+    index = sys.meta_path.index(DealFinder)  # type: ignore
     sys.meta_path[index] = PathFinder
     return True
