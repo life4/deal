@@ -66,6 +66,7 @@ python = ">=3.5"
 astroid = "*"
 hypothesis = "*"
 typeguard = "*"
+vaa = ">=0.2.1"
 
 [tool.poetry.dev-dependencies]
 coverage = "*"
@@ -73,7 +74,6 @@ marshmallow = "*"
 pytest = "*"
 pytest-cov = "*"
 urllib3 = "*"
-vaa = ">=0.1.4"
 
 m2r = "*"
 recommonmark = "*"
@@ -81,7 +81,7 @@ sphinx = "*"
 sphinx-rtd-theme = "*"
 
 [tool.poetry.extras]
-tests = ["coverage", "marshmallow", "pytest", "pytest-cov", "urllib3", "vaa"]
+tests = ["coverage", "marshmallow", "pytest", "pytest-cov", "urllib3"]
 docs = ["m2r", "recommonmark", "sphinx", "sphinx-rtd-theme", "urllib3"]
 
 [tool.poetry.plugins."flake8.extension"]

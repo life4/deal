@@ -13,7 +13,7 @@ class MarshMallowScheme(marshmallow.Schema):
 class CustomScheme(deal.Scheme):
     def is_valid(self):
         if not isinstance(self.data['name'], str):
-            self.errors = {'name': ['Not a valid string.']}
+            self.errors = vaa.Error.parse({'name': ['Not a valid string.']})
             return False
         return True
 
@@ -35,7 +35,7 @@ def test_scheme_string_validation_args_correct(scheme):
     try:
         func(123)
     except deal.PreContractError as e:
-        assert e.args[0] == {'name': ['Not a valid string.']}
+        assert e.args[0] == [vaa.Error(field='name', message='Not a valid string.')]
 
 
 @pytest.mark.parametrize('scheme', SCHEMES)
@@ -70,7 +70,7 @@ def test_scheme_contract_is_satisfied_when_setting_arg(scheme):
     try:
         user.name = 123
     except deal.InvContractError as e:
-        assert e.args[0] == {'name': ['Not a valid string.']}
+        assert e.args[0] == [vaa.Error(field='name', message='Not a valid string.')]
 
 
 @pytest.mark.parametrize('scheme', SCHEMES)
@@ -129,4 +129,30 @@ def test_scheme_errors_rewrite_message(scheme):
     try:
         func(2)
     except deal.PreContractError as exc:
-        assert exc.args[0] == {'name': ['Not a valid string.']}
+        assert exc.args[0] == [vaa.Error(field='name', message='Not a valid string.')]
+
+
+def test_underscore_validator():
+    @deal.pre(lambda _: _.a != _.b, message='actual message')
+    def func(a, b=1):
+        return a + b
+
+    func(2)
+    func(1, 3)
+    func(a=1, b=3)
+    with pytest.raises(deal.PreContractError) as exc_info:
+        func(1)
+    assert exc_info.value.args == ('actual message',)
+
+
+def test_underscore_validator_default_message():
+    @deal.pre(lambda _: _.a != _.b)
+    def func(a, b=1):
+        return a + b
+
+    func(2)
+    func(1, 3)
+    func(a=1, b=3)
+    with pytest.raises(deal.PreContractError) as exc_info:
+        func(1)
+    assert exc_info.value.args == tuple()

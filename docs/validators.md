@@ -1,6 +1,22 @@
 # Validators
 
-## Simple contract
+## Simplified signature
+
+The main problem with contracts is that they have to duplicate the original function's signature, including default arguments. While it's not a problem for small examples, things become more complicated when the signature grows. For this case, you can specify a function that accepts only one `_` argument, and deal will pass here a container with arguments of the function call, including default ones:
+
+```python
+@deal.pre(lambda _: _.a + _.b > 0)
+def f(a, b=1):
+    return a + b
+
+f(1)
+# 2
+
+f(-2)
+# PreContractError:
+```
+
+## Providing an error
 
 Regular contract can return error message instead of `False`:
 
@@ -23,17 +39,16 @@ f(4)
 
 ## External validators
 
-For a complex validation you can wrap your contract into [vaa](https://github.com/life4/vaa). It supports Marshmallow, WTForms, PyScheme etc. For example:
+Deal supports a lot of external validation libraries, like Marshmallow, WTForms, PyScheme etc. For example:
 
 ```python
 import deal
 import marshmallow
-import vaa
 
 class Schema(marshmallow.Schema):
     name = marshmallow.fields.Str()
 
-@deal.pre(vaa.marshmallow(Schema))
+@deal.pre(Schema)
 def func(name):
     return name * 2
 
@@ -43,3 +58,5 @@ func('Chris')
 func(123)
 # PreContractError: {'name': ['Not a valid string.']}
 ```
+
+See [vaa](https://github.com/life4/vaa) documentation for details.
