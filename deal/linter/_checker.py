@@ -10,10 +10,10 @@ from ._rules import rules, Required
 class Checker:
     name = 'deal'
     version = '1.0.0'
-    _tree = None
+    _tree = None  # type: ast.Module
     _rules = rules
 
-    def __init__(self, tree: ast.AST, file_tokens=None, filename: str = 'stdin'):
+    def __init__(self, tree: ast.Module, file_tokens=None, filename: str = 'stdin'):
         self._tree = tree
         self._filename = filename
 

@@ -29,7 +29,7 @@ class Base:
             self.exception = self.exception(message)    # type: ignore
 
     @staticmethod
-    def _make_validator(validator, message: str):
+    def _make_validator(validator, message: str = None):
         # implicitly wrap in vaa all external validators
         with suppress(TypeError):
             return vaa.wrap(validator, simple=False)

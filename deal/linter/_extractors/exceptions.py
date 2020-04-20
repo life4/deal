@@ -19,8 +19,11 @@ def get_exceptions(body: list, *, dive: bool = True) -> Iterator[Token]:
         # explicit raise
         if isinstance(expr, TOKENS.RAISE):
             name = get_name(expr.exc)
-            # raise instance
-            if not name and isinstance(expr.exc, TOKENS.CALL):
+            if not name:
+                # raised a value, too tricky
+                if not isinstance(expr.exc, TOKENS.CALL):
+                    continue
+                # raised an instance of an exception
                 name = get_name(expr.exc.func)
                 if not name or name[0].islower():
                     continue

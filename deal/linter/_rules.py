@@ -65,10 +65,10 @@ class CheckReturns:
                 value=str(token.value),
             )
             if isinstance(result, str):
-                yield Error(text=result, **error_info)
+                yield Error(text=result, **error_info)  # type: ignore
                 continue
             if not result:
-                yield Error(text=self.message, **error_info)
+                yield Error(text=self.message, **error_info)  # type: ignore
 
 
 @register
