@@ -15,7 +15,7 @@ class Offline(Base):
         Step 1. Init params.
         """
         super().__init__(
-            validator=None,
+            validator=None,  # type: ignore
             message=message,
             exception=exception,
             debug=debug,

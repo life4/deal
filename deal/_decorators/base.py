@@ -3,7 +3,7 @@ import inspect
 from asyncio import iscoroutinefunction
 from contextlib import suppress
 from functools import update_wrapper
-from typing import Callable, Type
+from typing import Callable
 
 import vaa
 
@@ -16,8 +16,8 @@ from .._types import ExceptionType
 class Base:
     exception: ExceptionType = ContractError
 
-    def __init__(self, validator: Callable, *, message: str = None,
-                 exception: Type[ExceptionType] = None, debug: bool = False):
+    def __init__(self, validator, *, message: str = None,
+                 exception: ExceptionType = None, debug: bool = False):
         """
         Step 1. Set contract (validator).
         """
@@ -30,6 +30,8 @@ class Base:
 
     @staticmethod
     def _make_validator(validator, message: str = None):
+        if validator is None:
+            return None
         # implicitly wrap in vaa all external validators
         with suppress(TypeError):
             return vaa.wrap(validator, simple=False)
