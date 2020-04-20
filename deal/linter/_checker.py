@@ -3,6 +3,8 @@ import ast
 import typing
 from pathlib import Path
 
+from astroid import AstroidSyntaxError
+
 # app
 from ._error import Error
 from ._func import Func
@@ -23,13 +25,16 @@ class Checker:
         for error in self.get_errors():
             yield tuple(error) + (type(self),)  # type: ignore
 
-    def get_errors(self) -> typing.Iterator[Error]:
+    def get_funcs(self) -> typing.List['Func']:
         if self._filename == 'stdin':
-            funcs = Func.from_ast(tree=self._tree)
-        else:
-            funcs = Func.from_path(path=Path(self._filename))
+            return Func.from_ast(tree=self._tree)
+        try:
+            return Func.from_path(path=Path(self._filename))
+        except AstroidSyntaxError:
+            return Func.from_ast(tree=self._tree)
 
-        for func in funcs:
+    def get_errors(self) -> typing.Iterator[Error]:
+        for func in self.get_funcs():
             for rule in self._rules:
                 if rule.required != Required.FUNC:
                     continue

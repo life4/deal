@@ -1,4 +1,5 @@
 # built-in
+import ast
 import enum
 from typing import Iterator
 
@@ -28,7 +29,7 @@ class CheckImports:
     message = 'do not use `from deal import ...`, use `import deal` instead'
     required = Required.MODULE
 
-    def __call__(self, tree) -> Iterator[Error]:
+    def __call__(self, tree: ast.Module) -> Iterator[Error]:
         for token in get_imports(tree.body):
             if token.value != 'deal':
                 continue
