@@ -1,5 +1,8 @@
-import deal
+# external
 import pytest
+
+# project
+import deal
 
 
 def test_setting_object_attribute_fulfills_contract():

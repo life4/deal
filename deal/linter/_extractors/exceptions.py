@@ -1,10 +1,13 @@
+# built-in
 import ast
 import builtins
 from typing import Iterator
 
+# external
 import astroid
 
-from .common import traverse, Token, TOKENS, get_name
+# app
+from .common import TOKENS, Token, get_name, traverse
 
 
 def get_exceptions(body: list, *, dive: bool = True) -> Iterator[Token]:

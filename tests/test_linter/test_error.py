@@ -1,3 +1,4 @@
+# project
 from deal.linter._error import Error
 
 

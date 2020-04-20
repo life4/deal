@@ -1,7 +1,11 @@
-import deal
+# external
 import pytest
 import urllib3
 
+# project
+import deal
+
+# app
 from .helpers import run_sync
 
 

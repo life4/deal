@@ -1,10 +1,12 @@
+# built-in
 import enum
 from typing import Iterator
 
-from ._error import Error
-from ._extractors import get_exceptions, get_returns, get_imports, get_prints
-from ._func import Func
+# app
 from ._contract import Category, Contract
+from ._error import Error
+from ._extractors import get_exceptions, get_imports, get_prints, get_returns
+from ._func import Func
 
 
 rules = []

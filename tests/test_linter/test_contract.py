@@ -1,10 +1,14 @@
+# built-in
 import ast
 from textwrap import dedent
 
+# external
 import astroid
 
-from deal.linter._contract import Contract, Category
+# project
+from deal.linter._contract import Category, Contract
 from deal.linter._func import Func
+
 
 TEXT = """
 import deal

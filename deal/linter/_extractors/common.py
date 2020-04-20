@@ -1,7 +1,9 @@
+# built-in
 import ast
 from types import SimpleNamespace
 from typing import Optional
 
+# external
 import astroid
 
 

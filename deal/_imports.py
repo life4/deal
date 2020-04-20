@@ -1,13 +1,16 @@
 # built-in
 import ast
 import sys
-from _frozen_importlib_external import PathFinder
 from types import ModuleType
-from typing import Any, Callable, Optional, List
+from typing import Any, Callable, List, Optional
 
-from .linter._extractors.common import get_name
+# project
+from _frozen_importlib_external import PathFinder
+
+# app
 from . import _aliases
 from ._state import state
+from .linter._extractors.common import get_name
 
 
 def _enabled(debug: bool = False) -> bool:

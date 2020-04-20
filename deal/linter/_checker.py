@@ -1,10 +1,12 @@
+# built-in
 import ast
 import typing
 from pathlib import Path
 
+# app
 from ._error import Error
 from ._func import Func
-from ._rules import rules, Required
+from ._rules import Required, rules
 
 
 class Checker:

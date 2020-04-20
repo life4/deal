@@ -1,10 +1,13 @@
+# built-in
 import ast
 from textwrap import dedent
 
+# external
 import astroid
 
+# project
 from deal.linter._func import Func
-from deal.linter._rules import CheckRaises, CheckReturns, CheckImports, CheckPrints
+from deal.linter._rules import CheckImports, CheckPrints, CheckRaises, CheckReturns
 
 
 def test_check_returns():

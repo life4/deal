@@ -1,7 +1,10 @@
+# built-in
 from pathlib import Path
 
+# external
 import pytest
 
+# project
 from deal.linter._cli import get_errors, get_paths, main
 
 

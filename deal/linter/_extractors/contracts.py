@@ -1,8 +1,11 @@
-from typing import Tuple, Iterator
+# built-in
+from typing import Iterator, Tuple
 
+# external
 import astroid
 
-from .common import get_name, TOKENS
+# app
+from .common import TOKENS, get_name
 
 
 SUPPORTED_CONTRACTS = {'deal.post', 'deal.raises', 'deal.silent'}

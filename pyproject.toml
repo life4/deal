@@ -25,6 +25,11 @@ from = {format = "poetry", path = "pyproject.toml"}
 envs = ["main", "tests"]
 command = "mypy --ignore-missing-imports --allow-redefinition deal/"
 
+[tool.dephell.isort]
+from = {format = "poetry", path = "pyproject.toml"}
+envs = ["main", "tests"]
+command = "isort -rc -y ."
+
 
 [tool.flakehell.plugins]
 deal = ["+*"]
@@ -77,6 +82,7 @@ vaa = ">=0.2.1"
 [tool.poetry.dev-dependencies]
 # tests
 coverage = "*"
+isort = {version = "*", extras = ["pyproject"]}
 marshmallow = "*"
 mypy = "*"
 pytest = "*"
@@ -90,7 +96,7 @@ sphinx = "*"
 sphinx-rtd-theme = "*"
 
 [tool.poetry.extras]
-tests = ["coverage", "marshmallow", "mypy", "pytest", "pytest-cov", "urllib3"]
+tests = ["coverage", "isort", "marshmallow", "mypy", "pytest", "pytest-cov", "urllib3"]
 docs = ["m2r", "recommonmark", "sphinx", "sphinx-rtd-theme", "urllib3"]
 
 [tool.poetry.plugins."flake8.extension"]

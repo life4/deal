@@ -1,6 +1,11 @@
-import deal
-import pytest
+# built-in
 from typing import NoReturn
+
+# external
+import pytest
+
+# project
+import deal
 
 
 @deal.raises(ZeroDivisionError)

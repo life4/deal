@@ -1,9 +1,12 @@
+# built-in
 import ast
-import astroid
 from textwrap import dedent
 
+# external
+import astroid
 import pytest
 
+# project
 from deal.linter._extractors import get_exceptions
 
 
