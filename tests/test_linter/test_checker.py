@@ -45,3 +45,8 @@ def test_astroid_path(tmp_path: Path):
         (13, 10, 'DEAL012: raises contract error (KeyError)', Checker),
     ]
     assert errors == expected
+
+
+def test_version():
+    version = Checker(tree=None, filename='stdin').version
+    assert not set(version) - set('0123456789.')
