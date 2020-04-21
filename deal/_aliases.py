@@ -1,18 +1,78 @@
 # built-in
 from functools import partial
-from typing import Callable
+from typing import Callable, TypeVar
 
 # app
 from . import _decorators
 from ._types import ExceptionType
 
 
-require = pre = _decorators.Pre
-post = _decorators.Post
-ensure = _decorators.Ensure
+_CallableType = TypeVar('_CallableType', bound=Callable)
+
+
+def pre(
+    validator,
+    *,
+    message: str = None,
+    exception: ExceptionType = None,
+    debug: bool = False,
+) -> Callable[[_CallableType], _CallableType]:
+    return _decorators.Pre[_CallableType](
+        validator, message=message, exception=exception, debug=debug,
+    )
+
+
+def post(
+    validator,
+    *,
+    message: str = None,
+    exception: ExceptionType = None,
+    debug: bool = False,
+) -> Callable[[_CallableType], _CallableType]:
+    return _decorators.Post[_CallableType](
+        validator, message=message, exception=exception, debug=debug,
+    )
+
+
+def ensure(
+    validator,
+    *,
+    message: str = None,
+    exception: ExceptionType = None,
+    debug: bool = False,
+) -> Callable[[_CallableType], _CallableType]:
+    return _decorators.Ensure[_CallableType](
+        validator, message=message, exception=exception, debug=debug,
+    )
+
+
+def raises(
+    validator,
+    *,
+    message: str = None,
+    exception: ExceptionType = None,
+    debug: bool = False,
+) -> Callable[[_CallableType], _CallableType]:
+    return _decorators.Raises[_CallableType](
+        validator, message=message, exception=exception, debug=debug,
+    )
+
+
+def reason(
+    event: Exception,
+    validator,
+    *,
+    message: str = None,
+    exception: ExceptionType = None,
+    debug: bool = False,
+) -> Callable[[_CallableType], _CallableType]:
+    return _decorators.Reason[_CallableType](
+        event, validator, message=message, exception=exception, debug=debug,
+    )
+
+
+require = pre
 inv = invariant = _decorators.Invariant
-raises = _decorators.Raises
-reason = _decorators.Reason
 
 
 # makes braces for decorator are optional

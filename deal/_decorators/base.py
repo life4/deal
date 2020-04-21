@@ -3,7 +3,7 @@ import inspect
 from asyncio import iscoroutinefunction
 from contextlib import suppress
 from functools import update_wrapper
-from typing import Callable
+from typing import Callable, Generic, TypeVar
 
 # external
 import vaa
@@ -14,8 +14,13 @@ from .._state import state
 from .._types import ExceptionType
 
 
-class Base:
+#: We use this type in many other subclasses of `Base` decorator.
+_CallableType = TypeVar('_CallableType', bound=Callable)
+
+
+class Base(Generic[_CallableType]):
     exception: ExceptionType = ContractError
+    function: _CallableType
 
     def __init__(self, validator, *, message: str = None,
                  exception: ExceptionType = None, debug: bool = False):
@@ -113,7 +118,7 @@ class Base:
             return state.debug
         return state.main
 
-    def __call__(self, function: Callable) -> Callable:
+    def __call__(self, function: _CallableType) -> _CallableType:
         """
         Step 2. Return wrapped function.
         """
@@ -138,7 +143,9 @@ class Base:
                 yield from function(*args, **kwargs)
 
         if iscoroutinefunction(function):
-            return update_wrapper(async_wrapped, function)
-        if inspect.isgeneratorfunction(function):
-            return update_wrapper(wrapped_generator, function)
-        return update_wrapper(wrapped, function)
+            new_callable = update_wrapper(async_wrapped, function)
+        elif inspect.isgeneratorfunction(function):
+            new_callable = update_wrapper(wrapped_generator, function)
+        else:
+            new_callable = update_wrapper(wrapped, function)
+        return new_callable  # type: ignore

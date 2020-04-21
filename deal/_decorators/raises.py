@@ -1,5 +1,5 @@
 # built-in
-from typing import Tuple, Type
+from typing import Callable, Tuple, Type, TypeVar
 
 # app
 from .._exceptions import ContractError, RaisesContractError
@@ -7,7 +7,10 @@ from .._types import ExceptionType
 from .base import Base
 
 
-class Raises(Base):
+_CallableType = TypeVar('_CallableType', bound=Callable)
+
+
+class Raises(Base[_CallableType]):
     exception: ExceptionType = RaisesContractError
 
     def __init__(self, *exceptions, message: str = None, exception: ExceptionType = None, debug: bool = False):

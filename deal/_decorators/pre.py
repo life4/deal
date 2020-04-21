@@ -1,10 +1,16 @@
 # app
+# built-in
+from typing import Callable, TypeVar
+
 from .._exceptions import PreContractError
 from .._types import ExceptionType
 from .base import Base
 
 
-class Pre(Base):
+_CallableType = TypeVar('_CallableType', bound=Callable)
+
+
+class Pre(Base[_CallableType]):
     """
     Check contract (validator) before function processing.
     Validate input arguments.
