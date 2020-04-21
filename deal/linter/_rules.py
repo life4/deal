@@ -6,7 +6,7 @@ from typing import Iterator
 # app
 from ._contract import Category, Contract
 from ._error import Error
-from ._extractors import get_exceptions, get_imports, get_prints, get_returns
+from ._extractors import get_exceptions, get_imports, get_prints, get_returns, get_globals
 from ._func import Func
 
 
@@ -116,12 +116,37 @@ class CheckPrints:
         for contract in func.contracts:
             if contract.category != Category.SILENT:
                 continue
-            yield from self._check(func=func, contract=contract)
+            yield from self._check(func=func)
             # if `@deal.silent` is duplicated, check the function only once
             return
 
-    def _check(self, func: Func, contract: Contract) -> Iterator[Error]:
+    def _check(self, func: Func) -> Iterator[Error]:
         for token in get_prints(body=func.body):
+            yield Error(
+                code=self.code,
+                text=self.message,
+                value=str(token.value),
+                row=token.line,
+                col=token.col,
+            )
+
+
+@register
+class CheckPure:
+    code = 14
+    message = 'pure contract error'
+    required = Required.FUNC
+
+    def __call__(self, func: Func) -> Iterator[Error]:
+        for contract in func.contracts:
+            print(contract.category)
+            if contract.category != Category.PURE:
+                continue
+            yield from self._check(func=func)
+            return
+
+    def _check(self, func: Func) -> Iterator[Error]:
+        for token in get_globals(body=func.body):
             yield Error(
                 code=self.code,
                 text=self.message,
