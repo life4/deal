@@ -22,16 +22,17 @@ def test2():
     raise KeyError
 """.strip()
 
+EXPECTED = [
+    (6, 11, 'DEAL011: post contract error (-1)', Checker),
+    (11, 8, 'DEAL012: raises contract error (ZeroDivisionError)', Checker),
+    (13, 10, 'DEAL012: raises contract error (KeyError)', Checker),
+]
+
 
 def test_stdin():
     checker = Checker(tree=ast.parse(TEXT))
     errors = list(checker.run())
-    expected = [
-        (6, 11, 'DEAL011: post contract error (-1)', Checker),
-        (11, 8, 'DEAL012: raises contract error (ZeroDivisionError)', Checker),
-        (13, 10, 'DEAL012: raises contract error (KeyError)', Checker),
-    ]
-    assert errors == expected
+    assert errors == EXPECTED
 
 
 def test_astroid_path(tmp_path: Path):
@@ -39,12 +40,20 @@ def test_astroid_path(tmp_path: Path):
     path.write_text(TEXT)
     checker = Checker(tree=ast.parse(TEXT), filename=str(path))
     errors = list(checker.run())
-    expected = [
-        (6, 11, 'DEAL011: post contract error (-1)', Checker),
-        (11, 8, 'DEAL012: raises contract error (ZeroDivisionError)', Checker),
-        (13, 10, 'DEAL012: raises contract error (KeyError)', Checker),
-    ]
-    assert errors == expected
+    assert errors == EXPECTED
+
+
+def test_get_funcs_invalid_syntax(tmp_path: Path):
+    """
+    Atom IDE flake8 plugin can call flake8 with AST with correct syntax but with path
+    to code with invalid syntax. In that case, we should ignore the file and fallback
+    to the passed AST.
+    """
+    path = tmp_path / 'test.py'
+    path.write_text('1/')
+    checker = Checker(tree=ast.parse(TEXT), filename=str(path))
+    errors = list(checker.run())
+    assert errors == EXPECTED
 
 
 def test_version():
