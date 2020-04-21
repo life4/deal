@@ -19,6 +19,9 @@ from deal.linter._extractors import get_globals
     ('import a', ('a', )),
     ('import a as b', ('a', )),
     ('import a as b, c', ('a', 'c')),
+
+    ('from a import b', ('a', )),
+    ('from a import b as c', ('a', )),
 ])
 def test_get_globals_simple(text, expected):
     tree = astroid.parse(text)

@@ -25,3 +25,11 @@ def get_globals(body: list) -> Iterator[Token]:
             for name, _ in expr.names:
                 yield Token(value=name, line=expr.lineno, col=expr.col_offset + 7)
             continue
+
+        if type(expr) is ast.ImportFrom:
+            yield Token(value=expr.module, line=expr.lineno, col=expr.col_offset + 5)
+            continue
+
+        if type(expr) is astroid.ImportFrom:
+            yield Token(value=expr.modname, line=expr.lineno, col=expr.col_offset + 5)
+            continue
