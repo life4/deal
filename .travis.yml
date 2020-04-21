@@ -32,12 +32,17 @@ env: ENV=pytest
 python:
   - "3.6.7"
   - "3.7"
-  - "3.8-dev"
+  - "3.8"
 
 # run flake8
 matrix:
   include:
     - python: "3.7"
       env: ENV=flake8
+      script:
+        - dephell venv run --env=$ENV
+
+    - python: "3.7"
+      env: ENV=typing
       script:
         - dephell venv run --env=$ENV

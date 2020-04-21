@@ -1,9 +1,12 @@
+# built-in
 import ast
 from typing import Iterator
 
+# external
 import astroid
 
-from .common import traverse, Token
+# app
+from .common import Token, traverse
 
 
 def get_imports(body: list) -> Iterator[Token]:

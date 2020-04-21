@@ -1,7 +1,9 @@
+# built-in
 import ast
 from types import SimpleNamespace
 from typing import Optional
 
+# external
 import astroid
 
 
@@ -57,8 +59,14 @@ def get_name(expr) -> Optional[str]:
         return expr.name
 
     if isinstance(expr, astroid.Attribute):
-        return get_name(expr.expr) + '.' + expr.attrname
+        left = get_name(expr.expr)
+        if left is None:
+            return None
+        return left + '.' + expr.attrname
     if isinstance(expr, ast.Attribute):
-        return get_name(expr.value) + '.' + expr.attr
+        left = get_name(expr.value)
+        if left is None:
+            return None
+        return left + '.' + expr.attr
 
     return None

@@ -1,10 +1,13 @@
+# built-in
 import ast
 import builtins
 from typing import Iterator
 
+# external
 import astroid
 
-from .common import traverse, Token, TOKENS, get_name
+# app
+from .common import TOKENS, Token, get_name, traverse
 
 
 def get_exceptions(body: list, *, dive: bool = True) -> Iterator[Token]:
@@ -19,8 +22,11 @@ def get_exceptions(body: list, *, dive: bool = True) -> Iterator[Token]:
         # explicit raise
         if isinstance(expr, TOKENS.RAISE):
             name = get_name(expr.exc)
-            # raise instance
-            if not name and isinstance(expr.exc, TOKENS.CALL):
+            if not name:
+                # raised a value, too tricky
+                if not isinstance(expr.exc, TOKENS.CALL):
+                    continue
+                # raised an instance of an exception
                 name = get_name(expr.exc.func)
                 if not name or name[0].islower():
                     continue

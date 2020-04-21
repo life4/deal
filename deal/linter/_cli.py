@@ -1,10 +1,12 @@
+# built-in
 import ast
 import json
 from argparse import ArgumentParser
 from pathlib import Path
 from textwrap import dedent, indent
-from typing import Iterable, Iterator, Union
+from typing import Iterable, Iterator, Sequence, Union
 
+# app
 from ._checker import Checker
 
 
@@ -65,7 +67,7 @@ def get_parser() -> ArgumentParser:
     return parser
 
 
-def main(argv: Iterable) -> int:
+def main(argv: Sequence[str]) -> int:
     parser = get_parser()
     args = parser.parse_args(argv)
     prev = None

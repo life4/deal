@@ -16,7 +16,7 @@ class Raises(Base):
         """
         self.exceptions: Tuple[Type[Exception], ...] = exceptions
         super().__init__(
-            validator=None,
+            validator=None,  # type: ignore
             message=message,
             exception=exception,
             debug=debug,

@@ -15,7 +15,7 @@ This library contain 3 main conception from DbC:
 
 # main package info
 __title__ = 'deal'
-__version__ = '3.6.0'
+__version__ = '3.6.1'
 __author__ = 'Gram Orsinium'
 __license__ = 'MIT'
 
@@ -26,9 +26,9 @@ from ._aliases import (
     pre, pure, raises, reason, require, safe, silent,
 )
 from ._exceptions import *  # noQA
+from ._imports import activate, module_load
 from ._schemes import Scheme
 from ._state import reset, switch
-from ._imports import module_load, activate
 from ._testing import TestCase, cases
 
 
@@ -46,7 +46,6 @@ __all__ = [
     'offline',
     'post',
     'pre',
-    'pure',
     'raises',
     'reason',
     'safe',
@@ -54,6 +53,7 @@ __all__ = [
 
     # aliases
     'invariant',
+    'pure',
     'require',
 
     # module level

@@ -1,6 +1,9 @@
-import deal
+# external
 import pytest
 import urllib3
+
+# project
+import deal
 
 
 def test_chained_contract_decorator():

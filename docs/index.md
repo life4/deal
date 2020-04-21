@@ -20,6 +20,7 @@
     validators
     testing
     linter
+    recipes
 
 .. toctree::
     :maxdepth: 1

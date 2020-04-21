@@ -1,9 +1,12 @@
+# built-in
 import ast
 from pathlib import Path
 from typing import Iterable, List
 
+# external
 import astroid
 
+# app
 from ._contract import Category, Contract
 from ._extractors import get_contracts
 

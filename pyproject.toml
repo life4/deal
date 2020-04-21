@@ -1,6 +1,7 @@
 [tool.dephell.main]
 from = {format = "poetry", path = "pyproject.toml"}
 to = {format = "setuppy", path = "setup.py"}
+tag = "v."
 
 [tool.dephell.flake8]
 from = {format = "pip", path = "requirements-flake.txt"}
@@ -18,6 +19,16 @@ command = "pytest --cov=deal tests/"
 from = {format = "poetry", path = "pyproject.toml"}
 envs = ["docs"]
 command = "sphinx-build -W docs docs/build"
+
+[tool.dephell.typing]
+from = {format = "poetry", path = "pyproject.toml"}
+envs = ["main", "tests"]
+command = "mypy --ignore-missing-imports --allow-redefinition deal/"
+
+[tool.dephell.isort]
+from = {format = "poetry", path = "pyproject.toml"}
+envs = ["main", "tests"]
+command = "isort -rc -y ."
 
 
 [tool.flakehell.plugins]
@@ -40,7 +51,7 @@ import_heading_localfolder = "app"
 
 [tool.poetry]
 name = "deal"
-version = "3.6.0"
+version = "3.6.1"
 description = "Programming by contract"
 license = "MIT"
 authors = ["Gram <master_fess@mail.ru>"]
@@ -66,22 +77,26 @@ python = ">=3.5"
 astroid = "*"
 hypothesis = "*"
 typeguard = "*"
+vaa = ">=0.2.1"
 
 [tool.poetry.dev-dependencies]
+# tests
 coverage = "*"
+isort = {version = "*", extras = ["pyproject"]}
 marshmallow = "*"
+mypy = "*"
 pytest = "*"
 pytest-cov = "*"
 urllib3 = "*"
-vaa = ">=0.1.4"
 
+# docs
 m2r = "*"
 recommonmark = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
 
 [tool.poetry.extras]
-tests = ["coverage", "marshmallow", "pytest", "pytest-cov", "urllib3", "vaa"]
+tests = ["coverage", "isort", "marshmallow", "mypy", "pytest", "pytest-cov", "urllib3"]
 docs = ["m2r", "recommonmark", "sphinx", "sphinx-rtd-theme", "urllib3"]
 
 [tool.poetry.plugins."flake8.extension"]
