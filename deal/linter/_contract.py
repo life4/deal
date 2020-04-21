@@ -1,9 +1,12 @@
+# built-in
 import ast
 import builtins
 import enum
 
+# external
 import astroid
 
+# app
 from ._extractors import get_name
 
 

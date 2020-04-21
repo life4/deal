@@ -1,10 +1,13 @@
+# built-in
+import ast
 import enum
 from typing import Iterator
 
-from ._error import Error
-from ._extractors import get_exceptions, get_returns, get_imports, get_prints
-from ._func import Func
+# app
 from ._contract import Category, Contract
+from ._error import Error
+from ._extractors import get_exceptions, get_imports, get_prints, get_returns
+from ._func import Func
 
 
 rules = []
@@ -26,7 +29,7 @@ class CheckImports:
     message = 'do not use `from deal import ...`, use `import deal` instead'
     required = Required.MODULE
 
-    def __call__(self, tree) -> Iterator[Error]:
+    def __call__(self, tree: ast.Module) -> Iterator[Error]:
         for token in get_imports(tree.body):
             if token.value != 'deal':
                 continue
@@ -65,10 +68,10 @@ class CheckReturns:
                 value=str(token.value),
             )
             if isinstance(result, str):
-                yield Error(text=result, **error_info)
+                yield Error(text=result, **error_info)  # type: ignore
                 continue
             if not result:
-                yield Error(text=self.message, **error_info)
+                yield Error(text=self.message, **error_info)  # type: ignore
 
 
 @register

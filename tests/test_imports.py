@@ -1,12 +1,15 @@
+# built-in
 import ast
 from pathlib import Path
 from textwrap import dedent
 
+# external
 import pytest
 
+# project
 import deal
-from deal.linter._extractors.common import get_name
 from deal._imports import DealLoader, deactivate
+from deal.linter._extractors.common import get_name
 
 
 def test_get_contracts():

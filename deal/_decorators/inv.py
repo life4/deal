@@ -65,7 +65,7 @@ class InvariantedClass:
 class Invariant(Base):
     exception: ExceptionType = InvContractError
 
-    def validate(self, obj) -> None:
+    def validate(self, obj) -> None:  # type: ignore
         """
         Step 6. Process contract (validator)
         """
@@ -81,7 +81,7 @@ class Invariant(Base):
         self.validate(*args, **kwargs)
         self.child_validator(*args, **kwargs)
 
-    def __call__(self, _class: type):
+    def __call__(self, _class: type):  # type: ignore
         """
         Step 2. Return wrapped class.
         """
@@ -89,7 +89,7 @@ class Invariant(Base):
 
         # if already invarianted
         if hasattr(_class, '_validate_base'):
-            self.child_validator = _class._validate_base
+            self.child_validator = _class._validate_base  # type: ignore
             patched_class = type(
                 _class.__name__,
                 (_class, ),
