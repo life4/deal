@@ -51,7 +51,7 @@ import_heading_localfolder = "app"
 
 [tool.poetry]
 name = "deal"
-version = "3.6.1"
+version = "3.6.2"
 description = "Programming by contract"
 license = "MIT"
 authors = ["Gram <master_fess@mail.ru>"]
@@ -82,7 +82,7 @@ vaa = ">=0.2.1"
 [tool.poetry.dev-dependencies]
 # tests
 coverage = "*"
-isort = {version = "*", extras = ["pyproject"]}
+isort = {extras = ["pyproject"], version = "*"}
 marshmallow = "*"
 mypy = "*"
 pytest = "*"
