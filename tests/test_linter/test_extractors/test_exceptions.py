@@ -125,3 +125,22 @@ def test_resolve_doesnt_fail_for_simple_ast():
     print(ast.dump(tree))
     func_tree = tree.body[-1].body
     tuple(get_exceptions(body=func_tree))
+
+
+def test_inference_subcontracts():
+    text = """
+        @deal.raises(SomeError)     # actual contract
+        @deal.raises(1)             # ignore junk
+        @deal.post(lambda _: 1)     # ignore other contracts
+        def subf():
+            return 1
+
+        @deal.raises(KeyError)
+        def f():
+            b = subf()
+    """
+    tree = astroid.parse(dedent(text))
+    print(tree.repr_tree())
+    func_tree = tree.body[-1].body
+    returns = tuple(r.value for r in get_exceptions(body=func_tree))
+    assert returns == ('SomeError', )
