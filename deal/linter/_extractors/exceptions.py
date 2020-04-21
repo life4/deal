@@ -8,6 +8,7 @@ import astroid
 
 # app
 from .common import TOKENS, Token, get_name, traverse
+from .contracts import get_contracts
 
 
 def get_exceptions(body: list, *, dive: bool = True) -> Iterator[Token]:
@@ -61,24 +62,45 @@ def get_exceptions(body: list, *, dive: bool = True) -> Iterator[Token]:
                     continue
 
         # infer function call and check the function body for raises
-        if not dive:
+        if dive:
+            yield from _exceptions_from_funcs(expr=expr)
+
+
+def _exceptions_from_funcs(expr) -> Iterator[Token]:
+    for name_node in get_names(expr):
+        # node have to be a name
+        if type(name_node) is not astroid.Name:
             continue
-        for name_node in get_names(expr):
-            if not isinstance(name_node, astroid.Name):
+
+        # get possible definitions
+        try:
+            guesses = tuple(name_node.infer())
+        except astroid.exceptions.NameInferenceError:
+            continue
+
+        extra = dict(
+            line=name_node.lineno,
+            col=name_node.col_offset,
+        )
+        for value in guesses:
+            if type(value) is not astroid.FunctionDef:
                 continue
-            try:
-                guesses = tuple(name_node.infer())
-            except astroid.exceptions.NameInferenceError:
+
+            # recursively infer exceptions from the function body
+            for error in get_exceptions(body=value.body, dive=False):
+                yield Token(value=error.value, **extra)
+
+            # get explicitly specified exceptions from `@deal.raises`
+            if not value.decorators:
                 continue
-            for value in guesses:
-                if not isinstance(value, astroid.FunctionDef):
+            for category, args in get_contracts(value.decorators.nodes):
+                if category != 'raises':
                     continue
-                for error in get_exceptions(body=value.body, dive=False):
-                    yield Token(
-                        value=error.value,
-                        line=name_node.lineno,
-                        col=name_node.col_offset,
-                    )
+                for arg in args:
+                    name = get_name(arg)
+                    if name is None:
+                        continue
+                    yield Token(value=name, **extra)
 
 
 def get_names(expr):
