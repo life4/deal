@@ -139,7 +139,6 @@ class CheckPure:
 
     def __call__(self, func: Func) -> Iterator[Error]:
         for contract in func.contracts:
-            print(contract.category)
             if contract.category != Category.PURE:
                 continue
             yield from self._check(func=func)
