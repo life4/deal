@@ -1,5 +1,4 @@
 # built-in
-from functools import partial
 from typing import Callable, TypeVar, overload
 
 # app
