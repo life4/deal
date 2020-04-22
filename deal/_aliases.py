@@ -1,6 +1,6 @@
 # built-in
 from functools import partial
-from typing import Callable, TypeVar
+from typing import Callable, TypeVar, overload
 
 # app
 from . import _decorators
@@ -76,19 +76,113 @@ inv = invariant = _decorators.Invariant
 
 
 # makes braces for decorator are optional
-def _optional(_contract, _func: Callable = None, *, message: str = None,
-              exception: ExceptionType = None, debug: bool = False):
+def _optional(
+    _contract,
+    _func: Callable = None,
+    *,
+    message: str = None,
+    exception: ExceptionType = None,
+    debug: bool = False,
+):
     if _func is not None:
         return _contract()(_func)
     return _contract(message=message, exception=exception, debug=debug)
 
 
-offline = partial(_optional, _decorators.Offline)
-safe = partial(_optional, _decorators.Raises)
-silent = partial(_optional, _decorators.Silent)
+@overload
+def offline(
+    *,
+    message: str = None,
+    exception: ExceptionType = None,
+    debug: bool = False,
+) -> Callable[[_CallableType], _CallableType]:
+    ...
 
 
-def chain(*contracts) -> Callable[[Callable], Callable]:
+@overload
+def offline(_func: _CallableType) -> _CallableType:
+    ...
+
+
+def offline(
+    _func=None,
+    *,
+    message=None,
+    exception=None,
+    debug=False,
+):
+    return _optional(
+        _decorators.Offline,
+        _func,
+        message=message,
+        exception=exception,
+        debug=debug,
+    )
+
+
+@overload
+def safe(
+    *,
+    message: str = None,
+    exception: ExceptionType = None,
+    debug: bool = False,
+) -> Callable[[_CallableType], _CallableType]:
+    ...
+
+
+@overload
+def safe(_func: _CallableType) -> _CallableType:
+    ...
+
+
+def safe(
+    _func=None,
+    *,
+    message=None,
+    exception=None,
+    debug=False,
+):
+    return _optional(
+        _decorators.Raises,
+        _func,
+        message=message,
+        exception=exception,
+        debug=debug,
+    )
+
+
+@overload
+def silent(
+    *,
+    message: str = None,
+    exception: ExceptionType = None,
+    debug: bool = False,
+) -> Callable[[_CallableType], _CallableType]:
+    ...
+
+
+@overload
+def silent(_func: _CallableType) -> _CallableType:
+    ...
+
+
+def silent(
+    _func=None,
+    *,
+    message=None,
+    exception=None,
+    debug=False,
+):
+    return _optional(
+        _decorators.Silent,
+        _func,
+        message=message,
+        exception=exception,
+        debug=debug,
+    )
+
+
+def chain(*contracts) -> Callable[[_CallableType], _CallableType]:
     def wrapped(func):
         for contract in contracts:
             func = contract(func)
@@ -96,4 +190,5 @@ def chain(*contracts) -> Callable[[Callable], Callable]:
     return wrapped
 
 
-pure = chain(offline, safe, silent)
+def pure(_func: _CallableType) -> _CallableType:
+    return chain(offline, safe, silent)(_func)
