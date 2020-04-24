@@ -1,12 +1,15 @@
 # built-in
 from functools import partial, update_wrapper
 from types import MethodType
-from typing import Callable
+from typing import Callable, TypeVar
 
 # app
 from .._exceptions import InvContractError
 from .._types import ExceptionType
 from .base import Base
+
+
+_CallableType = TypeVar('_CallableType', bound=Callable)
 
 
 class InvariantedClass:
@@ -62,7 +65,7 @@ class InvariantedClass:
         self._validate()
 
 
-class Invariant(Base):
+class Invariant(Base[_CallableType]):
     exception: ExceptionType = InvContractError
 
     def validate(self, obj) -> None:  # type: ignore

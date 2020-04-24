@@ -1,10 +1,16 @@
 # app
+# built-in
+from typing import Callable, TypeVar
+
 from .._exceptions import PostContractError
 from .._types import ExceptionType
 from .base import Base
 
 
-class Post(Base):
+_CallableType = TypeVar('_CallableType', bound=Callable)
+
+
+class Post(Base[_CallableType]):
     """
     Check contract (validator) after function processing.
     Validate output result.

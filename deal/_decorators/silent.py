@@ -1,11 +1,15 @@
 # built-in
 import sys
 from io import StringIO
+from typing import Callable, TypeVar
 
 # app
 from .._exceptions import SilentContractError
 from .._types import ExceptionType
 from .offline import Offline
+
+
+_CallableType = TypeVar('_CallableType', bound=Callable)
 
 
 class PatchedStringIO(StringIO):
@@ -16,7 +20,7 @@ class PatchedStringIO(StringIO):
         raise self.exception
 
 
-class Silent(Offline):
+class Silent(Offline[_CallableType]):
     exception: ExceptionType = SilentContractError
 
     def patch(self):

@@ -1,10 +1,16 @@
 # app
+# built-in
+from typing import Callable, TypeVar
+
 from .._exceptions import PostContractError
 from .._types import ExceptionType
 from .base import Base
 
 
-class Ensure(Base):
+_CallableType = TypeVar('_CallableType', bound=Callable)
+
+
+class Ensure(Base[_CallableType]):
     """
     Check both arguments and result (validator) after function processing.
     Validate arguments and output result.
