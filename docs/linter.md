@@ -14,3 +14,4 @@ Another option is to use built-in CLI from deal: `python3 -m deal.linter`. I has
 | DEAL011 | post contract error   |
 | DEAL012 | raises contract error |
 | DEAL013 | silent contract error |
+| DEAL014 | pure contract error   |
