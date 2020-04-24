@@ -1,5 +1,6 @@
 # built-in
 import socket
+from typing import Callable, TypeVar
 
 # app
 from .._exceptions import OfflineContractError
@@ -7,7 +8,10 @@ from .._types import ExceptionType
 from .base import Base
 
 
-class Offline(Base):
+_CallableType = TypeVar('_CallableType', bound=Callable)
+
+
+class Offline(Base[_CallableType]):
     exception: ExceptionType = OfflineContractError
 
     def __init__(self, *, message: str = None, exception: ExceptionType = None, debug: bool = False):

@@ -1,0 +1,42 @@
+from inspect import getdoc
+from typing import get_type_hints
+
+import deal
+
+
+def get_func():
+    @deal.require(lambda x: x > 0)
+    @deal.post(lambda x: x > 0)
+    @deal.ensure(lambda *args, **kwargs: True)
+    @deal.raises(ValueError)
+    @deal.offline()
+    @deal.offline
+    @deal.safe
+    @deal.safe()
+    @deal.silent
+    @deal.silent()
+    @deal.pure
+    @deal.chain(deal.safe, deal.silent)
+    def func(x: int) -> int:
+        """docs were before docker
+        """
+        return x
+
+    return func
+
+
+def test_preserve_type_annotations():
+    """
+    IMPORTANT: this checks preserving type annotations in runtime.
+    mypy is a static analyser and can produce a different result.
+    """
+    func = get_func()
+    annotations = get_type_hints(func)
+    assert set(annotations) == {'x', 'return'}
+    assert annotations['x'] in ('int', int)
+    assert annotations['return'] in ('int', int)
+
+
+def test_preserve_docstring():
+    func = get_func()
+    assert getdoc(func).strip() == 'docs were before docker'
