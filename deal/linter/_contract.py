@@ -20,6 +20,7 @@ class Category(enum.Enum):
     POST = 'post'
     RAISES = 'raises'
     SILENT = 'silent'
+    PURE = 'pure'
 
 
 class Contract:

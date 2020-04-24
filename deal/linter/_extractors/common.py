@@ -8,20 +8,22 @@ import astroid
 
 
 TOKENS = SimpleNamespace(
-    ATTR=(ast.Attribute, astroid.Attribute),
     ASSERT=(ast.Assert, astroid.Assert),
+    ATTR=(ast.Attribute, astroid.Attribute),
     BIN_OP=(ast.BinOp, astroid.BinOp),
     CALL=(ast.Call, astroid.Call),
     EXPR=(ast.Expr, astroid.Expr),
     FOR=(ast.For, astroid.For),
+    FUNC=(ast.FunctionDef, astroid.FunctionDef),
+    GLOBAL=(ast.Global, astroid.Global),
     IF=(ast.If, astroid.If),
     NAME=(ast.Name, astroid.Name),
+    NONLOCAL=(ast.Nonlocal, astroid.Nonlocal),
     RAISE=(ast.Raise, astroid.Raise),
     RETURN=(ast.Return, astroid.Return),
     TRY=(ast.Try, astroid.TryExcept, astroid.TryFinally),
     UNARY_OP=(ast.UnaryOp, astroid.UnaryOp),
     WITH=(ast.With, astroid.With),
-    FUNC=(ast.FunctionDef, astroid.FunctionDef),
 )
 
 
