@@ -7,7 +7,17 @@ import astroid
 
 # project
 from deal.linter._func import Func
-from deal.linter._rules import CheckImports, CheckPrints, CheckRaises, CheckReturns, CheckPure
+from deal.linter._rules import rules, CheckImports, CheckPrints, CheckRaises, CheckReturns, CheckPure
+
+
+def test_error_codes():
+    codes = [rule.code for rule in rules]
+    assert len(codes) == len(set(codes))
+
+
+def test_error_messages():
+    messages = [rule.message for rule in rules]
+    assert len(messages) == len(set(messages))
 
 
 def test_check_returns():
