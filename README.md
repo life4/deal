@@ -12,7 +12,8 @@ That's nice `assert` statements in decorators style to validate function input, 
 * [Static analysis](https://deal.readthedocs.io/linter.html).
 * Generators and async coroutines support.
 * [External validators support](https://deal.readthedocs.io/validators.html#external-validators).
-* [Specify allowed exceptions](https://deal.readthedocs.io/decorators/raises.html) for function
+* Type-annotated and mypy-friendly.
+* [Specify allowed exceptions](https://deal.readthedocs.io/decorators/raises.html) for function.
 * [Invariant](https://deal.readthedocs.io/decorators/inv.html) for all actions with class instances.
 * Decorators to control available resources: forbid [output](https://deal.readthedocs.io/decorators/silent.html), [network operations](https://deal.readthedocs.io/decorators/offline.html), [raising exceptions](https://deal.readthedocs.io/decorators/safe.html).
 * You can [disable contracts](https://deal.readthedocs.io/disable.html) on production.
@@ -36,9 +37,9 @@ Take more control:
 
 Helpers:
 
-* [`@deal.chain`](https://deal.readthedocs.io/decorators/chain.html) -- chain a few contracts in one.
-* [`@deal.pure`](https://deal.readthedocs.io/decorators/pure.html) -- alias for `safe`, `silent`, and `offline`.
-* [`@deal.safe`](https://deal.readthedocs.io/decorators/safe.html) -- forbid exceptions.
+* [deal.chain](https://deal.readthedocs.io/decorators/chain.html) -- chain a few contracts in one.
+* [deal.pure](https://deal.readthedocs.io/decorators/pure.html) -- forbid side-effects and combine `safe`, `silent`, and `offline`.
+* [deal.safe](https://deal.readthedocs.io/decorators/safe.html) -- forbid exceptions.
 
 ## Installation
 
