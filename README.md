@@ -98,3 +98,18 @@ p.visits = -1
 ```
 
 Dive deeper on [deal.readthedocs.io](https://deal.readthedocs.io/).
+
+
+## Contributing
+
+Contributions are welcome! A few ideas what you can contribute:
+
++ Add new checks for the linter.
++ Improve documentation.
++ Add more tests.
++ Improve performance.
++ Found a bug? Fix it!
++ Made an article about deal? Great! Let's add it into the `README.md`.
++ Don't have time to code? No worries! Just tell your friends and subscribers about the project. More users -> more contributors -> more cool features.
+
+Thank you :heart:
