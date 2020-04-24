@@ -7,7 +7,7 @@ import astroid
 
 # project
 from deal.linter._func import Func
-from deal.linter._rules import CheckImports, CheckPrints, CheckRaises, CheckReturns
+from deal.linter._rules import CheckImports, CheckPrints, CheckRaises, CheckReturns, CheckPure
 
 
 def test_check_returns():
@@ -126,6 +126,22 @@ def test_check_prints():
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
         expected = [(3, 4, 'DEAL013: silent contract error (print)')]
+        assert actual == expected
+
+
+def test_check_pure():
+    checker = CheckPure()
+    text = """
+    @deal.pure
+    def test(a):
+        global b
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    for func in (funcs1[0], funcs2[0]):
+        actual = [tuple(err) for err in checker(func)]
+        expected = [(3, 4, 'DEAL014: pure contract error (global)')]
         assert actual == expected
 
 
