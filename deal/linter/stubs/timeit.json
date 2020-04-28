@@ -1,1 +1,9 @@
-{}
+{
+  "main": {
+    "raises": [
+      "TypeError",
+      "RuntimeError",
+      "message"
+    ]
+  }
+}

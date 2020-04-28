@@ -6,17 +6,23 @@
   },
   "parse_qs": {
     "raises": [
-      "TypeError"
+      "TypeError",
+      "RuntimeError",
+      "message"
     ]
   },
   "parse_qsl": {
     "raises": [
-      "TypeError"
+      "TypeError",
+      "RuntimeError",
+      "message"
     ]
   },
   "escape": {
     "raises": [
-      "TypeError"
+      "TypeError",
+      "RuntimeError",
+      "message"
     ]
   }
 }

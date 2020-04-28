@@ -29,9 +29,23 @@
       "TypeError"
     ]
   },
+  "encodestring": {
+    "raises": [
+      "TypeError",
+      "RuntimeError",
+      "message"
+    ]
+  },
   "decodebytes": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "decodestring": {
+    "raises": [
+      "TypeError",
+      "RuntimeError",
+      "message"
     ]
   },
   "main": {

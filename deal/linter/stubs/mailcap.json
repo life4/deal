@@ -1,1 +1,9 @@
-{}
+{
+  "readmailcapfile": {
+    "raises": [
+      "TypeError",
+      "RuntimeError",
+      "message"
+    ]
+  }
+}

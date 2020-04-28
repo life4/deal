@@ -3,5 +3,12 @@
     "raises": [
       "ValueError"
     ]
+  },
+  "filemode": {
+    "raises": [
+      "TypeError",
+      "RuntimeError",
+      "message"
+    ]
   }
 }

@@ -32,12 +32,17 @@
   },
   "getargspec": {
     "raises": [
+      "TypeError",
+      "RuntimeError",
+      "message",
       "ValueError"
     ]
   },
   "formatargspec": {
     "raises": [
-      "TypeError"
+      "TypeError",
+      "RuntimeError",
+      "message"
     ]
   },
   "_missing_arguments": {

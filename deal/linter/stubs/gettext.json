@@ -10,6 +10,13 @@
       "_error"
     ]
   },
+  "_as_int": {
+    "raises": [
+      "TypeError",
+      "RuntimeError",
+      "message"
+    ]
+  },
   "c2py": {
     "raises": [
       "ValueError"

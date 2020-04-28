@@ -25,6 +25,7 @@
   },
   "get_exec_path": {
     "raises": [
+      "AssertionError",
       "ValueError"
     ]
   },

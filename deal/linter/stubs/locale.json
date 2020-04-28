@@ -6,6 +6,9 @@
   },
   "format": {
     "raises": [
+      "TypeError",
+      "RuntimeError",
+      "message",
       "ValueError"
     ]
   },

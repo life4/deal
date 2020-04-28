@@ -5,6 +5,11 @@
       "ValueError"
     ]
   },
+  "_import_imp": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "iter_importers": {
     "raises": [
       "ImportError"

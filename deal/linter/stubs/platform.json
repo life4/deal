@@ -1,7 +1,33 @@
 {
+  "linux_distribution": {
+    "raises": [
+      "TypeError",
+      "RuntimeError",
+      "message"
+    ]
+  },
+  "dist": {
+    "raises": [
+      "TypeError",
+      "RuntimeError",
+      "message"
+    ]
+  },
+  "popen": {
+    "raises": [
+      "TypeError",
+      "RuntimeError",
+      "message"
+    ]
+  },
   "_sys_version": {
     "raises": [
       "ValueError"
+    ]
+  },
+  "platform": {
+    "raises": [
+      "AssertionError"
     ]
   }
 }

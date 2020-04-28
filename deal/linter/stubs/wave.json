@@ -3,5 +3,12 @@
     "raises": [
       "Error"
     ]
+  },
+  "openfp": {
+    "raises": [
+      "TypeError",
+      "RuntimeError",
+      "message"
+    ]
   }
 }

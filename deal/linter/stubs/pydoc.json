@@ -9,9 +9,19 @@
       "ImportError"
     ]
   },
+  "apropos": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "_url_handler": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "browse": {
+    "raises": [
+      "Error"
     ]
   }
 }
