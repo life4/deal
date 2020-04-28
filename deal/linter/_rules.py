@@ -8,6 +8,7 @@ from ._contract import Category, Contract
 from ._error import Error
 from ._extractors import get_exceptions, get_imports, get_prints, get_returns, get_globals
 from ._func import Func
+from ._stub import StubsManager
 
 
 rules = []
@@ -47,7 +48,7 @@ class CheckReturns:
     message = 'post contract error'
     required = Required.FUNC
 
-    def __call__(self, func: Func) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         for contract in func.contracts:
             if contract.category != Category.POST:
                 continue
@@ -80,16 +81,16 @@ class CheckRaises:
     message = 'raises contract error'
     required = Required.FUNC
 
-    def __call__(self, func: Func) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         for contract in func.contracts:
             if contract.category != Category.RAISES:
                 continue
-            yield from self._check(func=func, contract=contract)
+            yield from self._check(func=func, contract=contract, stubs=stubs)
 
-    def _check(self, func: Func, contract: Contract) -> Iterator[Error]:
+    def _check(self, func: Func, contract: Contract, stubs: StubsManager = None) -> Iterator[Error]:
         allowed = contract.exceptions
         allowed_types = tuple(exc for exc in allowed if type(exc) is not str)
-        for token in get_exceptions(body=func.body):
+        for token in get_exceptions(body=func.body, stubs=stubs):
             if token.value in allowed:
                 continue
             if issubclass(token.value, allowed_types):
@@ -112,7 +113,7 @@ class CheckPrints:
     message = 'silent contract error'
     required = Required.FUNC
 
-    def __call__(self, func: Func) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         for contract in func.contracts:
             if contract.category != Category.SILENT:
                 continue
@@ -120,7 +121,7 @@ class CheckPrints:
             # if `@deal.silent` is duplicated, check the function only once
             return
 
-    def _check(self, func: Func) -> Iterator[Error]:
+    def _check(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         for token in get_prints(body=func.body):
             yield Error(
                 code=self.code,
@@ -137,14 +138,14 @@ class CheckPure:
     message = 'pure contract error'
     required = Required.FUNC
 
-    def __call__(self, func: Func) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         for contract in func.contracts:
             if contract.category != Category.PURE:
                 continue
             yield from self._check(func=func)
             return
 
-    def _check(self, func: Func) -> Iterator[Error]:
+    def _check(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         for token in get_globals(body=func.body):
             yield Error(
                 code=self.code,

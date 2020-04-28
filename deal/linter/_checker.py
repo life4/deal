@@ -10,6 +10,7 @@ from astroid import AstroidSyntaxError
 from ._error import Error
 from ._func import Func
 from ._rules import Required, rules
+from ._stub import StubsManager
 
 
 class Checker:
@@ -19,6 +20,7 @@ class Checker:
     def __init__(self, tree: ast.Module, file_tokens=None, filename: str = 'stdin'):
         self._tree = tree
         self._filename = filename
+        self._stubs = StubsManager()
 
     @property
     def version(self):
@@ -43,9 +45,9 @@ class Checker:
             for rule in self._rules:
                 if rule.required != Required.FUNC:
                     continue
-                yield from rule(func)
+                yield from rule(func=func, stubs=self._stubs)
 
         for rule in self._rules:
             if rule.required != Required.MODULE:
                 continue
-            yield from rule(self._tree)
+            yield from rule(tree=self._tree)

@@ -9,9 +9,10 @@ import astroid
 # app
 from .common import TOKENS, Token, get_name, traverse
 from .contracts import get_contracts
+from .._stub import StubsManager
 
 
-def get_exceptions(body: list, *, dive: bool = True) -> Iterator[Token]:
+def get_exceptions(body: list, *, dive: bool = True, stubs: StubsManager = None) -> Iterator[Token]:
     for expr in traverse(body):
         token_info = dict(line=expr.lineno, col=expr.col_offset)
 

@@ -12,4 +12,6 @@ def test_generate_stub(tmp_path: Path):
     source_path.write_text("def func(): 1/0")
     stub_path = generate_stub(path=source_path)
     content = json.loads(stub_path.read_text())
+    assert stub_path.name == 'example.json'
+    assert stub_path.parent == root
     assert content == {'func': {'raises': ['ZeroDivisionError']}}
