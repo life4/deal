@@ -11,8 +11,8 @@
   },
   "openfp": {
     "raises": [
-      "TypeError",
       "RuntimeError",
+      "TypeError",
       "message"
     ]
   }

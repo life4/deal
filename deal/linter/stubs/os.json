@@ -6,21 +6,21 @@
   },
   "execvp": {
     "raises": [
-      "saved_exc",
-      "last_exc"
+      "last_exc",
+      "saved_exc"
     ]
   },
   "execvpe": {
     "raises": [
-      "saved_exc",
-      "last_exc"
+      "last_exc",
+      "saved_exc"
     ]
   },
   "_execvpe": {
     "raises": [
       "ValueError",
-      "saved_exc",
-      "last_exc"
+      "last_exc",
+      "saved_exc"
     ]
   },
   "get_exec_path": {

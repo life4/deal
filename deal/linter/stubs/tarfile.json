@@ -6,8 +6,8 @@
   },
   "filemode": {
     "raises": [
-      "TypeError",
       "RuntimeError",
+      "TypeError",
       "message"
     ]
   }

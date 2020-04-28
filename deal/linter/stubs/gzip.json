@@ -1,14 +1,14 @@
 {
   "open": {
     "raises": [
-      "ValueError",
-      "TypeError"
+      "TypeError",
+      "ValueError"
     ]
   },
   "_test": {
     "raises": [
-      "ValueError",
-      "TypeError"
+      "TypeError",
+      "ValueError"
     ]
   }
 }

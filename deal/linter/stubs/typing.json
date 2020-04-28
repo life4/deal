@@ -21,8 +21,8 @@
   },
   "get_type_hints": {
     "raises": [
-      "TypeError",
-      "AssertionError"
+      "AssertionError",
+      "TypeError"
     ]
   },
   "_overload_dummy": {

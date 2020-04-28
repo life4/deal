@@ -6,8 +6,8 @@
   },
   "_check_compression": {
     "raises": [
-      "RuntimeError",
-      "NotImplementedError"
+      "NotImplementedError",
+      "RuntimeError"
     ]
   },
   "_get_decompressor": {

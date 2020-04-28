@@ -11,8 +11,8 @@
   },
   "findsource": {
     "raises": [
-      "TypeError",
-      "OSError"
+      "OSError",
+      "TypeError"
     ]
   },
   "getsourcelines": {
@@ -32,16 +32,16 @@
   },
   "getargspec": {
     "raises": [
-      "TypeError",
       "RuntimeError",
-      "message",
-      "ValueError"
+      "TypeError",
+      "ValueError",
+      "message"
     ]
   },
   "formatargspec": {
     "raises": [
-      "TypeError",
       "RuntimeError",
+      "TypeError",
       "message"
     ]
   },
@@ -119,8 +119,8 @@
   },
   "_signature_from_callable": {
     "raises": [
-      "TypeError",
       "AssertionError",
+      "TypeError",
       "ValueError"
     ]
   },

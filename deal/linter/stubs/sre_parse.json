@@ -11,8 +11,8 @@
   },
   "parse": {
     "raises": [
-      "ValueError",
-      "AssertionError"
+      "AssertionError",
+      "ValueError"
     ]
   }
 }

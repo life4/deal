@@ -31,8 +31,8 @@
   },
   "read_string1": {
     "raises": [
-      "ValueError",
-      "AssertionError"
+      "AssertionError",
+      "ValueError"
     ]
   },
   "read_string4": {
@@ -42,20 +42,20 @@
   },
   "read_bytes1": {
     "raises": [
-      "ValueError",
-      "AssertionError"
+      "AssertionError",
+      "ValueError"
     ]
   },
   "read_bytes4": {
     "raises": [
-      "ValueError",
-      "AssertionError"
+      "AssertionError",
+      "ValueError"
     ]
   },
   "read_bytes8": {
     "raises": [
-      "ValueError",
-      "AssertionError"
+      "AssertionError",
+      "ValueError"
     ]
   },
   "read_unicodestringnl": {
@@ -65,20 +65,20 @@
   },
   "read_unicodestring1": {
     "raises": [
-      "ValueError",
-      "AssertionError"
+      "AssertionError",
+      "ValueError"
     ]
   },
   "read_unicodestring4": {
     "raises": [
-      "ValueError",
-      "AssertionError"
+      "AssertionError",
+      "ValueError"
     ]
   },
   "read_unicodestring8": {
     "raises": [
-      "ValueError",
-      "AssertionError"
+      "AssertionError",
+      "ValueError"
     ]
   },
   "read_decimalnl_short": {

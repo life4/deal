@@ -1,8 +1,8 @@
 {
   "_sum": {
     "raises": [
-      "TypeError",
-      "AssertionError"
+      "AssertionError",
+      "TypeError"
     ]
   },
   "_coerce": {
@@ -33,15 +33,15 @@
   },
   "mean": {
     "raises": [
-      "StatisticsError",
-      "AssertionError"
+      "AssertionError",
+      "StatisticsError"
     ]
   },
   "harmonic_mean": {
     "raises": [
+      "AssertionError",
       "StatisticsError",
-      "TypeError",
-      "AssertionError"
+      "TypeError"
     ]
   },
   "median": {
@@ -73,20 +73,20 @@
   },
   "_ss": {
     "raises": [
-      "StatisticsError",
-      "AssertionError"
+      "AssertionError",
+      "StatisticsError"
     ]
   },
   "variance": {
     "raises": [
-      "StatisticsError",
-      "AssertionError"
+      "AssertionError",
+      "StatisticsError"
     ]
   },
   "pvariance": {
     "raises": [
-      "StatisticsError",
-      "AssertionError"
+      "AssertionError",
+      "StatisticsError"
     ]
   },
   "stdev": {

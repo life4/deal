@@ -12,8 +12,8 @@
   },
   "_as_int": {
     "raises": [
-      "TypeError",
       "RuntimeError",
+      "TypeError",
       "message"
     ]
   },

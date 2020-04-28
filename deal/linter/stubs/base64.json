@@ -31,8 +31,8 @@
   },
   "encodestring": {
     "raises": [
-      "TypeError",
       "RuntimeError",
+      "TypeError",
       "message"
     ]
   },
@@ -43,8 +43,8 @@
   },
   "decodestring": {
     "raises": [
-      "TypeError",
       "RuntimeError",
+      "TypeError",
       "message"
     ]
   },

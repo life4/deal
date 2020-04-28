@@ -11,8 +11,8 @@
   },
   "run": {
     "raises": [
-      "ValueError",
-      "CalledProcessError"
+      "CalledProcessError",
+      "ValueError"
     ]
   }
 }

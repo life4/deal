@@ -1,32 +1,32 @@
 {
   "readPlist": {
     "raises": [
-      "TypeError",
       "RuntimeError",
+      "TypeError",
       "message"
     ]
   },
   "writePlist": {
     "raises": [
-      "TypeError",
       "RuntimeError",
-      "message",
-      "ValueError"
+      "TypeError",
+      "ValueError",
+      "message"
     ]
   },
   "readPlistFromBytes": {
     "raises": [
-      "TypeError",
       "RuntimeError",
+      "TypeError",
       "message"
     ]
   },
   "writePlistToBytes": {
     "raises": [
-      "TypeError",
       "RuntimeError",
-      "message",
-      "ValueError"
+      "TypeError",
+      "ValueError",
+      "message"
     ]
   },
   "_escape": {

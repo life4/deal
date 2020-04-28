@@ -16,8 +16,8 @@
   },
   "match_hostname": {
     "raises": [
-      "ValueError",
-      "CertificateError"
+      "CertificateError",
+      "ValueError"
     ]
   },
   "create_default_context": {

@@ -21,15 +21,15 @@
   },
   "load_module": {
     "raises": [
-      "ValueError",
-      "ImportError"
+      "ImportError",
+      "ValueError"
     ]
   },
   "find_module": {
     "raises": [
-      "TypeError",
+      "ImportError",
       "RuntimeError",
-      "ImportError"
+      "TypeError"
     ]
   }
 }

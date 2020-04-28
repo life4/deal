@@ -1,8 +1,8 @@
 {
   "fallback_getpass": {
     "raises": [
-      "TypeError",
       "RuntimeError",
+      "TypeError",
       "message"
     ]
   },

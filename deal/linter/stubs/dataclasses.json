@@ -11,8 +11,8 @@
   },
   "_get_field": {
     "raises": [
-      "ValueError",
-      "TypeError"
+      "TypeError",
+      "ValueError"
     ]
   },
   "_hash_exception": {

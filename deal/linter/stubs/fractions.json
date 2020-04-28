@@ -1,8 +1,8 @@
 {
   "gcd": {
     "raises": [
-      "TypeError",
       "RuntimeError",
+      "TypeError",
       "message"
     ]
   }
