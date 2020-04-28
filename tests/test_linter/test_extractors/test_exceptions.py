@@ -178,11 +178,18 @@ def test_get_full_name_func():
     tree = astroid.parse("def f(): pass")
     print(tree.repr_tree())
     func = tree.body[0]
-    assert _get_full_name(func=func) == ('', 'f')
+    assert _get_full_name(expr=func) == ('', 'f')
 
 
 def test_get_full_name_method():
     tree = astroid.parse("class C:\n  def f(): pass")
     print(tree.repr_tree())
     func = tree.body[0].body[0]
-    assert _get_full_name(func=func) == ('', 'C.f')
+    assert _get_full_name(expr=func) == ('', 'C.f')
+
+
+def test_get_full_name_deep_method():
+    tree = astroid.parse("class A:\n  class B:\n    def f(): pass")
+    print(tree.repr_tree())
+    func = tree.body[0].body[0].body[0]
+    assert _get_full_name(expr=func) == ('', 'A.B.f')

@@ -125,7 +125,7 @@ def _exceptions_from_stubs(expr, stubs: StubsManager) -> Iterator[Token]:
     for value in guesses:
         if type(value) is not astroid.FunctionDef:
             continue
-        module_name, func_name = _get_full_name(func=value)
+        module_name, func_name = _get_full_name(expr=value)
         if not module_name:
             continue
         stub = stubs.get(module_name)
@@ -137,13 +137,23 @@ def _exceptions_from_stubs(expr, stubs: StubsManager) -> Iterator[Token]:
             yield Token(value=name, **extra)
 
 
-def _get_full_name(func: astroid.FunctionDef) -> Tuple[str, str]:
-    if func.parent is None:
-        return '', func.name
-    if type(func.parent) is astroid.ClassDef:
-        local_name = func.parent.name + '.' + func.name
-        return func.parent.parent.qname(), local_name
-    return func.parent.qname(), func.name
+def _get_full_name(expr) -> Tuple[str, str]:
+    if expr.parent is None:
+        return '', expr.name
+
+    if type(expr.parent) is astroid.Module:
+        return expr.parent.qname(), expr.name
+
+    if type(expr.parent) is astroid.FunctionDef:
+        module_name, func_name = _get_full_name(expr=expr.parent)
+        return module_name, func_name + '.' + expr.name
+
+    if type(expr.parent) is astroid.ClassDef:
+        module_name, class_name = _get_full_name(expr=expr.parent)
+        return module_name, class_name + '.' + expr.name
+
+    path, _, func_name = expr.qname().rpartition('.')
+    return path, func_name
 
 
 def get_names(expr) -> Iterator:
