@@ -1,10 +1,10 @@
 {
-  "getincrementalencoder": {
+  "getincrementaldecoder": {
     "raises": [
       "LookupError"
     ]
   },
-  "getincrementaldecoder": {
+  "getincrementalencoder": {
     "raises": [
       "LookupError"
     ]

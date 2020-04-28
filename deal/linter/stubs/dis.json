@@ -1,20 +1,20 @@
 {
-  "dis": {
-    "raises": [
-      "TypeError"
-    ]
-  },
   "_get_code_object": {
     "raises": [
       "TypeError"
     ]
   },
-  "get_instructions": {
+  "_test": {
     "raises": [
       "TypeError"
     ]
   },
-  "_test": {
+  "dis": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "get_instructions": {
     "raises": [
       "TypeError"
     ]

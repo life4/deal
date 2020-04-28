@@ -1,5 +1,26 @@
 {
+  "_getaction": {
+    "raises": [
+      "_OptionError"
+    ]
+  },
+  "_getcategory": {
+    "raises": [
+      "_OptionError"
+    ]
+  },
+  "_setoption": {
+    "raises": [
+      "AssertionError",
+      "_OptionError"
+    ]
+  },
   "_showwarnmsg": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_warn_unawaited_coroutine": {
     "raises": [
       "TypeError"
     ]
@@ -14,22 +35,6 @@
       "AssertionError"
     ]
   },
-  "_setoption": {
-    "raises": [
-      "AssertionError",
-      "_OptionError"
-    ]
-  },
-  "_getaction": {
-    "raises": [
-      "_OptionError"
-    ]
-  },
-  "_getcategory": {
-    "raises": [
-      "_OptionError"
-    ]
-  },
   "warn": {
     "raises": [
       "RuntimeError",
@@ -42,11 +47,6 @@
       "RuntimeError",
       "TypeError",
       "message"
-    ]
-  },
-  "_warn_unawaited_coroutine": {
-    "raises": [
-      "TypeError"
     ]
   }
 }

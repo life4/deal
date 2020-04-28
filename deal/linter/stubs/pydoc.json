@@ -1,14 +1,4 @@
 {
-  "resolve": {
-    "raises": [
-      "ImportError"
-    ]
-  },
-  "render_doc": {
-    "raises": [
-      "ImportError"
-    ]
-  },
   "_url_handler": {
     "raises": [
       "TypeError"
@@ -22,6 +12,16 @@
   "browse": {
     "raises": [
       "Error"
+    ]
+  },
+  "render_doc": {
+    "raises": [
+      "ImportError"
+    ]
+  },
+  "resolve": {
+    "raises": [
+      "ImportError"
     ]
   }
 }

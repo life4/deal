@@ -1,10 +1,10 @@
 {
-  "usage": {
+  "parseargs": {
     "raises": [
       "SystemExit"
     ]
   },
-  "parseargs": {
+  "usage": {
     "raises": [
       "SystemExit"
     ]

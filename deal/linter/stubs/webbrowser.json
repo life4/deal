@@ -4,14 +4,14 @@
       "Error"
     ]
   },
-  "open": {
-    "raises": [
-      "Error"
-    ]
-  },
   "main": {
     "raises": [
       "SystemExit"
+    ]
+  },
+  "open": {
+    "raises": [
+      "Error"
     ]
   }
 }

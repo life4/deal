@@ -1,10 +1,10 @@
 {
-  "relpath": {
+  "commonpath": {
     "raises": [
       "ValueError"
     ]
   },
-  "commonpath": {
+  "relpath": {
     "raises": [
       "ValueError"
     ]

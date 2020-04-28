@@ -1,4 +1,14 @@
 {
+  "ishex": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "main": {
+    "raises": [
+      "SystemExit"
+    ]
+  },
   "needsquoting": {
     "raises": [
       "AssertionError"
@@ -9,19 +19,9 @@
       "AssertionError"
     ]
   },
-  "ishex": {
-    "raises": [
-      "AssertionError"
-    ]
-  },
   "unhex": {
     "raises": [
       "AssertionError"
-    ]
-  },
-  "main": {
-    "raises": [
-      "SystemExit"
     ]
   }
 }

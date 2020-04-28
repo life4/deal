@@ -1,11 +1,11 @@
 {
-  "open": {
+  "_test": {
     "raises": [
       "TypeError",
       "ValueError"
     ]
   },
-  "_test": {
+  "open": {
     "raises": [
       "TypeError",
       "ValueError"

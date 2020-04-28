@@ -1,4 +1,11 @@
 {
+  "escape": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
   "parse": {
     "raises": [
       "ValueError"
@@ -12,13 +19,6 @@
     ]
   },
   "parse_qsl": {
-    "raises": [
-      "RuntimeError",
-      "TypeError",
-      "message"
-    ]
-  },
-  "escape": {
     "raises": [
       "RuntimeError",
       "TypeError",

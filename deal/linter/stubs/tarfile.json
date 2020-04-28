@@ -1,14 +1,14 @@
 {
-  "itn": {
-    "raises": [
-      "ValueError"
-    ]
-  },
   "filemode": {
     "raises": [
       "RuntimeError",
       "TypeError",
       "message"
+    ]
+  },
+  "itn": {
+    "raises": [
+      "ValueError"
     ]
   }
 }

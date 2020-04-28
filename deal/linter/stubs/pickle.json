@@ -1,12 +1,12 @@
 {
-  "_getattribute": {
-    "raises": [
-      "AttributeError"
-    ]
-  },
   "_dumps": {
     "raises": [
       "AssertionError"
+    ]
+  },
+  "_getattribute": {
+    "raises": [
+      "AttributeError"
     ]
   },
   "_loads": {

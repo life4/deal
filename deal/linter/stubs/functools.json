@@ -1,7 +1,7 @@
 {
-  "total_ordering": {
+  "_find_impl": {
     "raises": [
-      "ValueError"
+      "RuntimeError"
     ]
   },
   "lru_cache": {
@@ -9,9 +9,9 @@
       "TypeError"
     ]
   },
-  "_find_impl": {
+  "total_ordering": {
     "raises": [
-      "RuntimeError"
+      "ValueError"
     ]
   }
 }

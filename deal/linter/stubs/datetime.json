@@ -1,37 +1,22 @@
 {
-  "_days_in_month": {
-    "raises": [
-      "AssertionError"
-    ]
-  },
-  "_days_before_month": {
-    "raises": [
-      "AssertionError"
-    ]
-  },
-  "_ymd2ord": {
-    "raises": [
-      "AssertionError"
-    ]
-  },
-  "_ord2ymd": {
-    "raises": [
-      "AssertionError"
-    ]
-  },
-  "_parse_isoformat_date": {
+  "_check_date_fields": {
     "raises": [
       "ValueError"
     ]
   },
-  "_parse_hh_mm_ss_ff": {
+  "_check_int_field": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_check_time_fields": {
     "raises": [
       "ValueError"
     ]
   },
-  "_parse_isoformat_time": {
+  "_check_tzinfo_arg": {
     "raises": [
-      "ValueError"
+      "TypeError"
     ]
   },
   "_check_tzname": {
@@ -46,29 +31,44 @@
       "ValueError"
     ]
   },
-  "_check_int_field": {
-    "raises": [
-      "TypeError"
-    ]
-  },
-  "_check_date_fields": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "_check_time_fields": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "_check_tzinfo_arg": {
-    "raises": [
-      "TypeError"
-    ]
-  },
   "_cmperror": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "_days_before_month": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_days_in_month": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_ord2ymd": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_parse_hh_mm_ss_ff": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_parse_isoformat_date": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_parse_isoformat_time": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_ymd2ord": {
+    "raises": [
+      "AssertionError"
     ]
   }
 }

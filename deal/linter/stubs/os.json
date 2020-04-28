@@ -1,5 +1,12 @@
 {
-  "walk": {
+  "_execvpe": {
+    "raises": [
+      "ValueError",
+      "last_exc",
+      "saved_exc"
+    ]
+  },
+  "_fspath": {
     "raises": [
       "TypeError"
     ]
@@ -16,11 +23,9 @@
       "saved_exc"
     ]
   },
-  "_execvpe": {
+  "fdopen": {
     "raises": [
-      "ValueError",
-      "last_exc",
-      "saved_exc"
+      "TypeError"
     ]
   },
   "get_exec_path": {
@@ -35,12 +40,7 @@
       "ValueError"
     ]
   },
-  "fdopen": {
-    "raises": [
-      "TypeError"
-    ]
-  },
-  "_fspath": {
+  "walk": {
     "raises": [
       "TypeError"
     ]

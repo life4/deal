@@ -1,5 +1,5 @@
 {
-  "insort_right": {
+  "bisect_left": {
     "raises": [
       "ValueError"
     ]
@@ -14,7 +14,7 @@
       "ValueError"
     ]
   },
-  "bisect_left": {
+  "insort_right": {
     "raises": [
       "ValueError"
     ]

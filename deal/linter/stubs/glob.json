@@ -1,5 +1,5 @@
 {
-  "iglob": {
+  "_glob2": {
     "raises": [
       "AssertionError"
     ]
@@ -9,7 +9,7 @@
       "AssertionError"
     ]
   },
-  "_glob2": {
+  "iglob": {
     "raises": [
       "AssertionError"
     ]

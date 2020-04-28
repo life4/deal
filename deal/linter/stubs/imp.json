@@ -1,23 +1,7 @@
 {
-  "load_source": {
+  "cache_from_source": {
     "raises": [
-      "ImportError"
-    ]
-  },
-  "load_compiled": {
-    "raises": [
-      "ImportError"
-    ]
-  },
-  "load_package": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "load_module": {
-    "raises": [
-      "ImportError",
-      "ValueError"
+      "AssertionError"
     ]
   },
   "find_module": {
@@ -27,9 +11,25 @@
       "TypeError"
     ]
   },
-  "cache_from_source": {
+  "load_compiled": {
     "raises": [
-      "AssertionError"
+      "ImportError"
+    ]
+  },
+  "load_module": {
+    "raises": [
+      "ImportError",
+      "ValueError"
+    ]
+  },
+  "load_package": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "load_source": {
+    "raises": [
+      "ImportError"
     ]
   }
 }

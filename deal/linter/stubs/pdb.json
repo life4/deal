@@ -1,7 +1,7 @@
 {
-  "post_mortem": {
+  "main": {
     "raises": [
-      "ValueError"
+      "SystemExit"
     ]
   },
   "pm": {
@@ -9,9 +9,9 @@
       "ValueError"
     ]
   },
-  "main": {
+  "post_mortem": {
     "raises": [
-      "SystemExit"
+      "ValueError"
     ]
   }
 }

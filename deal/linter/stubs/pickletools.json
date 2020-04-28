@@ -1,42 +1,12 @@
 {
-  "read_uint1": {
+  "assure_pickle_consistency": {
     "raises": [
       "ValueError"
     ]
   },
-  "read_uint2": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "read_int4": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "read_uint4": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "read_uint8": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "read_stringnl": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "read_string1": {
+  "dis": {
     "raises": [
       "AssertionError",
-      "ValueError"
-    ]
-  },
-  "read_string4": {
-    "raises": [
       "ValueError"
     ]
   },
@@ -58,7 +28,73 @@
       "ValueError"
     ]
   },
-  "read_unicodestringnl": {
+  "read_decimalnl_long": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_decimalnl_short": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_float8": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_floatnl": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_int4": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_long1": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_long4": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_string1": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "read_string4": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_stringnl": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_uint1": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_uint2": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_uint4": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_uint8": {
     "raises": [
       "ValueError"
     ]
@@ -81,44 +117,8 @@
       "ValueError"
     ]
   },
-  "read_decimalnl_short": {
+  "read_unicodestringnl": {
     "raises": [
-      "ValueError"
-    ]
-  },
-  "read_decimalnl_long": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "read_floatnl": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "read_float8": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "read_long1": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "read_long4": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "assure_pickle_consistency": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "dis": {
-    "raises": [
-      "AssertionError",
       "ValueError"
     ]
   }

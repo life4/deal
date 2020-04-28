@@ -1,5 +1,15 @@
 {
-  "b64encode": {
+  "_input_type_check": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "a85decode": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "b32decode": {
     "raises": [
       "AssertionError"
     ]
@@ -9,19 +19,21 @@
       "AssertionError"
     ]
   },
-  "b32decode": {
+  "b64encode": {
     "raises": [
       "AssertionError"
     ]
   },
-  "a85decode": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "_input_type_check": {
+  "decodebytes": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "decodestring": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
     ]
   },
   "encodebytes": {
@@ -29,9 +41,11 @@
       "TypeError"
     ]
   },
-  "decodebytes": {
+  "encodestring": {
     "raises": [
-      "TypeError"
+      "RuntimeError",
+      "TypeError",
+      "message"
     ]
   },
   "main": {
@@ -42,20 +56,6 @@
   "test": {
     "raises": [
       "AssertionError"
-    ]
-  },
-  "encodestring": {
-    "raises": [
-      "RuntimeError",
-      "TypeError",
-      "message"
-    ]
-  },
-  "decodestring": {
-    "raises": [
-      "RuntimeError",
-      "TypeError",
-      "message"
     ]
   }
 }

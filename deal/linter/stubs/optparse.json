@@ -1,13 +1,13 @@
 {
-  "check_choice": {
-    "raises": [
-      "OptionValueError"
-    ]
-  },
   "_match_abbrev": {
     "raises": [
       "AmbiguousOptionError",
       "BadOptionError"
+    ]
+  },
+  "check_choice": {
+    "raises": [
+      "OptionValueError"
     ]
   }
 }

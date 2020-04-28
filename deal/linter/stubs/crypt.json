@@ -1,5 +1,5 @@
 {
-  "mksalt": {
+  "_add_method": {
     "raises": [
       "TypeError",
       "ValueError"
@@ -11,7 +11,7 @@
       "ValueError"
     ]
   },
-  "_add_method": {
+  "mksalt": {
     "raises": [
       "TypeError",
       "ValueError"

@@ -1,4 +1,15 @@
 {
+  "PEM_cert_to_DER_cert": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_create_unverified_context": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
   "_dnsname_match": {
     "raises": [
       "CertificateError"
@@ -14,36 +25,25 @@
       "ValueError"
     ]
   },
+  "create_default_context": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "get_server_certificate": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
   "match_hostname": {
     "raises": [
       "CertificateError",
       "ValueError"
     ]
   },
-  "create_default_context": {
-    "raises": [
-      "TypeError"
-    ]
-  },
-  "_create_unverified_context": {
-    "raises": [
-      "TypeError",
-      "ValueError"
-    ]
-  },
   "wrap_socket": {
     "raises": [
-      "ValueError"
-    ]
-  },
-  "PEM_cert_to_DER_cert": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "get_server_certificate": {
-    "raises": [
-      "TypeError",
       "ValueError"
     ]
   }

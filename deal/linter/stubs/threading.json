@@ -1,10 +1,10 @@
 {
-  "_shutdown": {
+  "_after_fork": {
     "raises": [
       "AssertionError"
     ]
   },
-  "_after_fork": {
+  "_shutdown": {
     "raises": [
       "AssertionError"
     ]

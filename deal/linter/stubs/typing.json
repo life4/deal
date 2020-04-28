@@ -1,17 +1,7 @@
 {
-  "_type_check": {
-    "raises": [
-      "TypeError"
-    ]
-  },
   "_check_generic": {
     "raises": [
       "TypeError"
-    ]
-  },
-  "_remove_dups_flatten": {
-    "raises": [
-      "AssertionError"
     ]
   },
   "_get_defaults": {
@@ -19,15 +9,25 @@
       "AssertionError"
     ]
   },
+  "_overload_dummy": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "_remove_dups_flatten": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_type_check": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "get_type_hints": {
     "raises": [
       "AssertionError",
       "TypeError"
-    ]
-  },
-  "_overload_dummy": {
-    "raises": [
-      "NotImplementedError"
     ]
   }
 }

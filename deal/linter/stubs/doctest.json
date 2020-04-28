@@ -1,37 +1,11 @@
 {
-  "_normalize_module": {
-    "raises": [
-      "TypeError"
-    ]
-  },
-  "_load_testfile": {
+  "DocFileSuite": {
     "raises": [
       "TypeError",
       "ValueError"
     ]
   },
-  "_ellipsis_match": {
-    "raises": [
-      "AssertionError"
-    ]
-  },
-  "_module_relative_path": {
-    "raises": [
-      "TypeError",
-      "ValueError"
-    ]
-  },
-  "testmod": {
-    "raises": [
-      "TypeError"
-    ]
-  },
-  "testfile": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "set_unittest_reportflags": {
+  "DocFileTest": {
     "raises": [
       "ValueError"
     ]
@@ -41,18 +15,29 @@
       "TypeError"
     ]
   },
-  "DocFileTest": {
+  "_ellipsis_match": {
     "raises": [
-      "ValueError"
+      "AssertionError"
     ]
   },
-  "DocFileSuite": {
+  "_load_testfile": {
     "raises": [
       "TypeError",
       "ValueError"
     ]
   },
-  "testsource": {
+  "_module_relative_path": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_normalize_module": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_test": {
     "raises": [
       "TypeError",
       "ValueError"
@@ -64,7 +49,22 @@
       "ValueError"
     ]
   },
-  "_test": {
+  "set_unittest_reportflags": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "testfile": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "testmod": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "testsource": {
     "raises": [
       "TypeError",
       "ValueError"

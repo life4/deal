@@ -1,12 +1,7 @@
 {
-  "_infer_return_type": {
+  "NamedTemporaryFile": {
     "raises": [
-      "TypeError"
-    ]
-  },
-  "_sanitize_params": {
-    "raises": [
-      "TypeError"
+      "FileExistsError"
     ]
   },
   "_get_default_tempdir": {
@@ -14,9 +9,19 @@
       "FileNotFoundError"
     ]
   },
+  "_infer_return_type": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "_mkstemp_inner": {
     "raises": [
       "FileExistsError"
+    ]
+  },
+  "_sanitize_params": {
+    "raises": [
+      "TypeError"
     ]
   },
   "mkdtemp": {
@@ -25,11 +30,6 @@
     ]
   },
   "mktemp": {
-    "raises": [
-      "FileExistsError"
-    ]
-  },
-  "NamedTemporaryFile": {
     "raises": [
       "FileExistsError"
     ]

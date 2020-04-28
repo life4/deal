@@ -1,14 +1,4 @@
 {
-  "field": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "_init_fn": {
-    "raises": [
-      "TypeError"
-    ]
-  },
   "_get_field": {
     "raises": [
       "TypeError",
@@ -16,6 +6,11 @@
     ]
   },
   "_hash_exception": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_init_fn": {
     "raises": [
       "TypeError"
     ]
@@ -34,6 +29,11 @@
   "astuple": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "field": {
+    "raises": [
+      "ValueError"
     ]
   },
   "make_dataclass": {

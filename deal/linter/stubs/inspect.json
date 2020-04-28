@@ -1,10 +1,64 @@
 {
-  "getfile": {
+  "_getfullargs": {
     "raises": [
       "TypeError"
     ]
   },
-  "getsourcefile": {
+  "_main": {
+    "raises": [
+      "SystemExit"
+    ]
+  },
+  "_missing_arguments": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_signature_bound_method": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_signature_from_builtin": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_signature_from_callable": {
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_signature_from_function": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_signature_fromstr": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "_signature_get_bound_param": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_signature_get_partial": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_signature_strip_non_python_syntax": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_too_many": {
     "raises": [
       "TypeError"
     ]
@@ -15,17 +69,14 @@
       "TypeError"
     ]
   },
-  "getsourcelines": {
+  "formatargspec": {
     "raises": [
-      "OSError"
+      "RuntimeError",
+      "TypeError",
+      "message"
     ]
   },
   "getargs": {
-    "raises": [
-      "TypeError"
-    ]
-  },
-  "_getfullargs": {
     "raises": [
       "TypeError"
     ]
@@ -38,21 +89,9 @@
       "message"
     ]
   },
-  "formatargspec": {
+  "getattr_static": {
     "raises": [
-      "RuntimeError",
-      "TypeError",
-      "message"
-    ]
-  },
-  "_missing_arguments": {
-    "raises": [
-      "TypeError"
-    ]
-  },
-  "_too_many": {
-    "raises": [
-      "TypeError"
+      "AttributeError"
     ]
   },
   "getcallargs": {
@@ -65,14 +104,14 @@
       "TypeError"
     ]
   },
-  "getframeinfo": {
+  "getfile": {
     "raises": [
       "TypeError"
     ]
   },
-  "getattr_static": {
+  "getframeinfo": {
     "raises": [
-      "AttributeError"
+      "TypeError"
     ]
   },
   "getgeneratorlocals": {
@@ -80,53 +119,14 @@
       "TypeError"
     ]
   },
-  "_signature_get_partial": {
-    "raises": [
-      "AssertionError"
-    ]
-  },
-  "_signature_bound_method": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "_signature_get_bound_param": {
-    "raises": [
-      "AssertionError"
-    ]
-  },
-  "_signature_strip_non_python_syntax": {
-    "raises": [
-      "AssertionError"
-    ]
-  },
-  "_signature_fromstr": {
-    "raises": [
-      "AssertionError",
-      "ValueError"
-    ]
-  },
-  "_signature_from_builtin": {
-    "raises": [
-      "TypeError",
-      "ValueError"
-    ]
-  },
-  "_signature_from_function": {
+  "getsourcefile": {
     "raises": [
       "TypeError"
     ]
   },
-  "_signature_from_callable": {
+  "getsourcelines": {
     "raises": [
-      "AssertionError",
-      "TypeError",
-      "ValueError"
-    ]
-  },
-  "_main": {
-    "raises": [
-      "SystemExit"
+      "OSError"
     ]
   }
 }

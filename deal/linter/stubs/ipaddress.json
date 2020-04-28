@@ -1,10 +1,16 @@
 {
-  "ip_address": {
+  "_split_optional_netmask": {
     "raises": [
+      "AddressValueError"
+    ]
+  },
+  "collapse_addresses": {
+    "raises": [
+      "TypeError",
       "ValueError"
     ]
   },
-  "ip_network": {
+  "ip_address": {
     "raises": [
       "ValueError"
     ]
@@ -14,18 +20,12 @@
       "ValueError"
     ]
   },
-  "_split_optional_netmask": {
+  "ip_network": {
     "raises": [
-      "AddressValueError"
-    ]
-  },
-  "summarize_address_range": {
-    "raises": [
-      "TypeError",
       "ValueError"
     ]
   },
-  "collapse_addresses": {
+  "summarize_address_range": {
     "raises": [
       "TypeError",
       "ValueError"

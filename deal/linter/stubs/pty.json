@@ -1,10 +1,10 @@
 {
-  "openpty": {
+  "_open_terminal": {
     "raises": [
       "OSError"
     ]
   },
-  "_open_terminal": {
+  "openpty": {
     "raises": [
       "OSError"
     ]

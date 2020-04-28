@@ -1,10 +1,15 @@
 {
-  "new_class": {
+  "_calculate_meta": {
     "raises": [
       "TypeError"
     ]
   },
-  "resolve_bases": {
+  "coroutine": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "new_class": {
     "raises": [
       "TypeError"
     ]
@@ -14,12 +19,7 @@
       "TypeError"
     ]
   },
-  "_calculate_meta": {
-    "raises": [
-      "TypeError"
-    ]
-  },
-  "coroutine": {
+  "resolve_bases": {
     "raises": [
       "TypeError"
     ]

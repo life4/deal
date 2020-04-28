@@ -19,7 +19,7 @@ class StubFile:
         if not self._content:
             return
         with self.path.open(mode='w', encoding='utf8') as stream:
-            json.dump(obj=self._content, fp=stream, indent=2)
+            json.dump(obj=self._content, fp=stream, indent=2, sort_keys=True)
 
     def add(self, func: str, contract: str, value: str) -> None:
         if contract != 'raises':

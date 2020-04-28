@@ -1,10 +1,4 @@
 {
-  "_sum": {
-    "raises": [
-      "AssertionError",
-      "TypeError"
-    ]
-  },
   "_coerce": {
     "raises": [
       "AssertionError",
@@ -14,6 +8,11 @@
   "_exact_ratio": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "_fail_neg": {
+    "raises": [
+      "StatisticsError"
     ]
   },
   "_find_lteq": {
@@ -26,15 +25,16 @@
       "ValueError"
     ]
   },
-  "_fail_neg": {
-    "raises": [
-      "StatisticsError"
-    ]
-  },
-  "mean": {
+  "_ss": {
     "raises": [
       "AssertionError",
       "StatisticsError"
+    ]
+  },
+  "_sum": {
+    "raises": [
+      "AssertionError",
+      "TypeError"
     ]
   },
   "harmonic_mean": {
@@ -44,17 +44,13 @@
       "TypeError"
     ]
   },
+  "mean": {
+    "raises": [
+      "AssertionError",
+      "StatisticsError"
+    ]
+  },
   "median": {
-    "raises": [
-      "StatisticsError"
-    ]
-  },
-  "median_low": {
-    "raises": [
-      "StatisticsError"
-    ]
-  },
-  "median_high": {
     "raises": [
       "StatisticsError"
     ]
@@ -66,20 +62,23 @@
       "ValueError"
     ]
   },
+  "median_high": {
+    "raises": [
+      "StatisticsError"
+    ]
+  },
+  "median_low": {
+    "raises": [
+      "StatisticsError"
+    ]
+  },
   "mode": {
     "raises": [
       "StatisticsError"
     ]
   },
-  "_ss": {
+  "pstdev": {
     "raises": [
-      "AssertionError",
-      "StatisticsError"
-    ]
-  },
-  "variance": {
-    "raises": [
-      "AssertionError",
       "StatisticsError"
     ]
   },
@@ -94,8 +93,9 @@
       "StatisticsError"
     ]
   },
-  "pstdev": {
+  "variance": {
     "raises": [
+      "AssertionError",
       "StatisticsError"
     ]
   }

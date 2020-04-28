@@ -4,6 +4,11 @@
       "TypeError"
     ]
   },
+  "iconcat": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "indexOf": {
     "raises": [
       "ValueError"
@@ -13,11 +18,6 @@
     "raises": [
       "TypeError",
       "ValueError"
-    ]
-  },
-  "iconcat": {
-    "raises": [
-      "TypeError"
     ]
   }
 }

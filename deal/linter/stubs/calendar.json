@@ -1,4 +1,9 @@
 {
+  "main": {
+    "raises": [
+      "SystemExit"
+    ]
+  },
   "monthrange": {
     "raises": [
       "IllegalMonthError"
@@ -7,11 +12,6 @@
   "setfirstweekday": {
     "raises": [
       "IllegalWeekdayError"
-    ]
-  },
-  "main": {
-    "raises": [
-      "SystemExit"
     ]
   }
 }

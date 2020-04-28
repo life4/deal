@@ -1,10 +1,5 @@
 {
-  "get_close_matches": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "unified_diff": {
+  "_check_types": {
     "raises": [
       "TypeError"
     ]
@@ -14,7 +9,12 @@
       "TypeError"
     ]
   },
-  "_check_types": {
+  "get_close_matches": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "unified_diff": {
     "raises": [
       "TypeError"
     ]

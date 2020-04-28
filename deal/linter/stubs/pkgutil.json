@@ -1,13 +1,7 @@
 {
-  "iter_modules": {
+  "_import_imp": {
     "raises": [
-      "ImportError",
-      "ValueError"
-    ]
-  },
-  "iter_importers": {
-    "raises": [
-      "ImportError"
+      "AssertionError"
     ]
   },
   "find_loader": {
@@ -15,9 +9,15 @@
       "ImportError"
     ]
   },
-  "_import_imp": {
+  "iter_importers": {
     "raises": [
-      "AssertionError"
+      "ImportError"
+    ]
+  },
+  "iter_modules": {
+    "raises": [
+      "ImportError",
+      "ValueError"
     ]
   }
 }

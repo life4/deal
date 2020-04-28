@@ -1,7 +1,9 @@
 {
-  "_tokenize": {
+  "_as_int": {
     "raises": [
-      "ValueError"
+      "RuntimeError",
+      "TypeError",
+      "message"
     ]
   },
   "_parse": {
@@ -10,14 +12,14 @@
       "_error"
     ]
   },
-  "c2py": {
+  "_tokenize": {
     "raises": [
       "ValueError"
     ]
   },
-  "translation": {
+  "c2py": {
     "raises": [
-      "FileNotFoundError"
+      "ValueError"
     ]
   },
   "install": {
@@ -25,11 +27,9 @@
       "FileNotFoundError"
     ]
   },
-  "_as_int": {
+  "translation": {
     "raises": [
-      "RuntimeError",
-      "TypeError",
-      "message"
+      "FileNotFoundError"
     ]
   }
 }

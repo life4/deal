@@ -4,13 +4,6 @@
       "ValueError"
     ]
   },
-  "linux_distribution": {
-    "raises": [
-      "RuntimeError",
-      "TypeError",
-      "message"
-    ]
-  },
   "dist": {
     "raises": [
       "RuntimeError",
@@ -18,7 +11,7 @@
       "message"
     ]
   },
-  "popen": {
+  "linux_distribution": {
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -28,6 +21,13 @@
   "platform": {
     "raises": [
       "AssertionError"
+    ]
+  },
+  "popen": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
     ]
   }
 }

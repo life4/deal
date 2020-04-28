@@ -1,10 +1,5 @@
 {
-  "input": {
-    "raises": [
-      "RuntimeError"
-    ]
-  },
-  "nextfile": {
+  "filelineno": {
     "raises": [
       "RuntimeError"
     ]
@@ -14,17 +9,12 @@
       "RuntimeError"
     ]
   },
-  "lineno": {
-    "raises": [
-      "RuntimeError"
-    ]
-  },
-  "filelineno": {
-    "raises": [
-      "RuntimeError"
-    ]
-  },
   "fileno": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "input": {
     "raises": [
       "RuntimeError"
     ]
@@ -35,6 +25,16 @@
     ]
   },
   "isstdin": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "lineno": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "nextfile": {
     "raises": [
       "RuntimeError"
     ]

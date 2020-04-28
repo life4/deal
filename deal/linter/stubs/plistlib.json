@@ -1,5 +1,32 @@
 {
+  "_escape": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "dump": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "dumps": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "load": {
+    "raises": [
+      "InvalidFileException"
+    ]
+  },
   "readPlist": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "readPlistFromBytes": {
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -14,39 +41,12 @@
       "message"
     ]
   },
-  "readPlistFromBytes": {
-    "raises": [
-      "RuntimeError",
-      "TypeError",
-      "message"
-    ]
-  },
   "writePlistToBytes": {
     "raises": [
       "RuntimeError",
       "TypeError",
       "ValueError",
       "message"
-    ]
-  },
-  "_escape": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "load": {
-    "raises": [
-      "InvalidFileException"
-    ]
-  },
-  "dump": {
-    "raises": [
-      "ValueError"
-    ]
-  },
-  "dumps": {
-    "raises": [
-      "ValueError"
     ]
   }
 }
