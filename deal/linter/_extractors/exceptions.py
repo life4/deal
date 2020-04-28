@@ -1,7 +1,7 @@
 # built-in
 import ast
 import builtins
-from typing import Iterator
+from typing import Iterator, Tuple
 
 # external
 import astroid
@@ -123,9 +123,9 @@ def _exceptions_from_stubs(expr, stubs: StubsManager) -> Iterator[Token]:
         col=expr.col_offset,
     )
     for value in guesses:
-        if not isinstance(value, astroid.FunctionDef):
+        if type(value) is not astroid.FunctionDef:
             continue
-        module_name, _, func_name = value.qname().rpartition('.')
+        module_name, func_name = _get_full_name(func=value)
         if not module_name:
             continue
         stub = stubs.get(module_name)
@@ -135,6 +135,15 @@ def _exceptions_from_stubs(expr, stubs: StubsManager) -> Iterator[Token]:
         for name in names:
             name = getattr(builtins, name, name)
             yield Token(value=name, **extra)
+
+
+def _get_full_name(func: astroid.FunctionDef) -> Tuple[str, str]:
+    if func.parent is None:
+        return '', func.name
+    if type(func.parent) is astroid.ClassDef:
+        local_name = func.parent.name + '.' + func.name
+        return func.parent.parent.qname(), local_name
+    return func.parent.qname(), func.name
 
 
 def get_names(expr) -> Iterator:
