@@ -84,6 +84,8 @@ class StubsManager:
     def create(self, path: Path) -> StubFile:
         if path.suffix == '.py':
             path = path.with_suffix('.json')
+        if path.exists():
+            return self.read(path=path)
         module_name = self._get_module_name(path=path)
         if module_name not in self._modules:
             stub = StubFile(path=path)
@@ -111,7 +113,7 @@ def generate_stub(*, path: Path, stubs: StubsManager = None) -> Path:
     for func in _get_all_funcs(path=path):
         if func.name is None:
             continue
-        for token in get_exceptions(body=func.body):
+        for token in get_exceptions(body=func.body, stubs=stubs):
             value = token.value
             if isinstance(value, type):
                 value = value.__name__

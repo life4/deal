@@ -112,7 +112,7 @@ def _exceptions_from_stubs(expr, stubs: StubsManager) -> Iterator[Token]:
         return
     try:
         guesses = tuple(expr.func.infer())
-    except astroid.exceptions.NameInferenceError:
+    except astroid.exceptions.InferenceError:
         return
     extra = dict(
         line=expr.lineno,

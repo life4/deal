@@ -20,7 +20,11 @@ class Checker:
     def __init__(self, tree: ast.Module, file_tokens=None, filename: str = 'stdin'):
         self._tree = tree
         self._filename = filename
-        self._stubs = StubsManager()
+
+        paths = [StubsManager.root]
+        if filename != 'stdin':
+            paths.append(Path(filename).absolute().parent)
+        self._stubs = StubsManager(paths=paths)
 
     @property
     def version(self):
