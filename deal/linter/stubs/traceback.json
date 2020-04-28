@@ -1,7 +1,0 @@
-{
-  "print_last": {
-    "raises": [
-      "ValueError"
-    ]
-  }
-}
