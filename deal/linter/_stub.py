@@ -96,12 +96,31 @@ class StubsManager:
         return self._modules[module_name]
 
 
-def _get_all_funcs(*, path: Path) -> Iterator[astroid.FunctionDef]:
+class PseudoFunc:
+    __slots__ = ['name', 'body']
+
+    def __init__(self, *, name: str, body):
+        self.name = name
+        self.body = body
+
+
+def _get_funcs(*, path: Path) -> Iterator[PseudoFunc]:
     text = path.read_text()
     tree = astroid.parse(code=text, path=str(path))
     for expr in tree.body:
+        # functions
         if type(expr) is astroid.FunctionDef:
-            yield expr  # type: ignore
+            yield PseudoFunc(name=expr.name, body=expr.body)  # type: ignore
+
+        # methods
+        if type(expr) is astroid.ClassDef:
+            for subexpr in expr.body:
+                if type(subexpr) is not astroid.FunctionDef:
+                    continue
+                yield PseudoFunc(
+                    name=expr.name + '.' + subexpr.name,
+                    body=subexpr.body,
+                )
 
 
 def generate_stub(*, path: Path, stubs: StubsManager = None) -> Path:
@@ -113,9 +132,7 @@ def generate_stub(*, path: Path, stubs: StubsManager = None) -> Path:
     if stubs is None:
         stubs = StubsManager()
     stub = stubs.create(path=path)
-    for func in _get_all_funcs(path=path):
-        if func.name is None:
-            continue
+    for func in _get_funcs(path=path):
         for token in get_exceptions(body=func.body, stubs=stubs):
             value = token.value
             if isinstance(value, type):
