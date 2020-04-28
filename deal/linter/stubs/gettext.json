@@ -1,4 +1,10 @@
 {
+  "GNUTranslations._parse": {
+    "raises": [
+      "OSError",
+      "ValueError"
+    ]
+  },
   "_as_int": {
     "raises": [
       "RuntimeError",

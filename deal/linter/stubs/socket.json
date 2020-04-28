@@ -1,0 +1,49 @@
+{
+  "SocketIO.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SocketIO.readable": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SocketIO.readinto": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "SocketIO.seekable": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SocketIO.writable": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "socket.__getstate__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "socket._check_sendfile_params": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "socket._sendfile_use_send": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "socket.makefile": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  }
+}

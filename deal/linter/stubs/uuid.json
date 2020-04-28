@@ -1,4 +1,16 @@
 {
+  "UUID.__init__": {
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "UUID.__setattr__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "getnode": {
     "raises": [
       "AssertionError"

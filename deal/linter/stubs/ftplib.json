@@ -1,4 +1,21 @@
 {
+  "FTP.getline": {
+    "raises": [
+      "EOFError",
+      "Error"
+    ]
+  },
+  "FTP.makeport": {
+    "raises": [
+      "OSError",
+      "err"
+    ]
+  },
+  "FTP.putline": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "ftpcp": {
     "raises": [
       "error_proto"

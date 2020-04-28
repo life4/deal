@@ -1,4 +1,9 @@
 {
+  "Bytecode.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "_get_code_object": {
     "raises": [
       "TypeError"

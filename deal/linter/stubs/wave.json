@@ -1,4 +1,99 @@
 {
+  "Wave_read._read_fmt_chunk": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Wave_read.getmark": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Wave_read.initfp": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Wave_read.setpos": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Wave_write._ensure_header_written": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Wave_write._patchheader": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Wave_write._write_header": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Wave_write.getframerate": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Wave_write.getmark": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Wave_write.getnchannels": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Wave_write.getparams": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Wave_write.getsampwidth": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Wave_write.setcomptype": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Wave_write.setframerate": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Wave_write.setmark": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Wave_write.setnchannels": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Wave_write.setnframes": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Wave_write.setparams": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Wave_write.setsampwidth": {
+    "raises": [
+      "Error"
+    ]
+  },
   "open": {
     "raises": [
       "Error"

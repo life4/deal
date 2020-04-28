@@ -1,0 +1,28 @@
+{
+  "ModuleFinder.determine_parent": {
+    "raises": [
+      "AssertionError",
+      "ImportError"
+    ]
+  },
+  "ModuleFinder.ensure_fromlist": {
+    "raises": [
+      "ImportError"
+    ]
+  },
+  "ModuleFinder.find_head_package": {
+    "raises": [
+      "ImportError"
+    ]
+  },
+  "ModuleFinder.find_module": {
+    "raises": [
+      "ImportError"
+    ]
+  },
+  "ModuleFinder.scan_code": {
+    "raises": [
+      "RuntimeError"
+    ]
+  }
+}

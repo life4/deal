@@ -1,4 +1,136 @@
 {
+  "_Pickler.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_Pickler.dump": {
+    "raises": [
+      "PicklingError"
+    ]
+  },
+  "_Pickler.memoize": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_Pickler.save": {
+    "raises": [
+      "PicklingError"
+    ]
+  },
+  "_Pickler.save_global": {
+    "raises": [
+      "AssertionError",
+      "PicklingError"
+    ]
+  },
+  "_Pickler.save_reduce": {
+    "raises": [
+      "PicklingError"
+    ]
+  },
+  "_Unframer.load_frame": {
+    "raises": [
+      "UnpicklingError"
+    ]
+  },
+  "_Unframer.read": {
+    "raises": [
+      "UnpicklingError"
+    ]
+  },
+  "_Unframer.readline": {
+    "raises": [
+      "UnpicklingError"
+    ]
+  },
+  "_Unpickler.get_extension": {
+    "raises": [
+      "UnpicklingError",
+      "ValueError"
+    ]
+  },
+  "_Unpickler.load": {
+    "raises": [
+      "UnpicklingError"
+    ]
+  },
+  "_Unpickler.load_binbytes": {
+    "raises": [
+      "UnpicklingError"
+    ]
+  },
+  "_Unpickler.load_binbytes8": {
+    "raises": [
+      "UnpicklingError"
+    ]
+  },
+  "_Unpickler.load_binput": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_Unpickler.load_binstring": {
+    "raises": [
+      "UnpicklingError"
+    ]
+  },
+  "_Unpickler.load_binunicode": {
+    "raises": [
+      "UnpicklingError"
+    ]
+  },
+  "_Unpickler.load_binunicode8": {
+    "raises": [
+      "UnpicklingError"
+    ]
+  },
+  "_Unpickler.load_frame": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_Unpickler.load_long4": {
+    "raises": [
+      "UnpicklingError"
+    ]
+  },
+  "_Unpickler.load_long_binput": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_Unpickler.load_proto": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_Unpickler.load_put": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_Unpickler.load_stack_global": {
+    "raises": [
+      "UnpicklingError"
+    ]
+  },
+  "_Unpickler.load_stop": {
+    "raises": [
+      "_Stop"
+    ]
+  },
+  "_Unpickler.load_string": {
+    "raises": [
+      "UnpicklingError"
+    ]
+  },
+  "_Unpickler.persistent_load": {
+    "raises": [
+      "UnpicklingError"
+    ]
+  },
   "_dumps": {
     "raises": [
       "AssertionError"

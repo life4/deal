@@ -1,4 +1,14 @@
 {
+  "Doc.fail": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Helper._gettopic": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "_url_handler": {
     "raises": [
       "TypeError"

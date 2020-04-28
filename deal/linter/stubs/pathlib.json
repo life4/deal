@@ -1,4 +1,92 @@
 {
+  "Path.__new__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Path._raise_closed": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Path.glob": {
+    "raises": [
+      "NotImplementedError",
+      "ValueError"
+    ]
+  },
+  "Path.rglob": {
+    "raises": [
+      "NotImplementedError",
+      "ValueError"
+    ]
+  },
+  "Path.write_text": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "PurePath._parse_args": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "PurePath.as_uri": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "PurePath.match": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "PurePath.relative_to": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "PurePath.with_name": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "PurePath.with_suffix": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "WindowsPath.group": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "WindowsPath.is_mount": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "WindowsPath.owner": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "_PathParents.__getitem__": {
+    "raises": [
+      "IndexError"
+    ]
+  },
+  "_Selector.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_WindowsFlavour.gethomedir": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
   "_make_selector": {
     "raises": [
       "ValueError"

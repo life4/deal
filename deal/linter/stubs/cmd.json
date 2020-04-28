@@ -1,0 +1,7 @@
+{
+  "Cmd.columnize": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

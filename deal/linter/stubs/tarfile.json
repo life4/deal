@@ -1,4 +1,110 @@
 {
+  "TarFile.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "TarFile._check": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "TarFile._find_link_target": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "TarFile.bz2open": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "TarFile.extractfile": {
+    "raises": [
+      "StreamError"
+    ]
+  },
+  "TarFile.getmember": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "TarFile.gzopen": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "TarFile.makedev": {
+    "raises": [
+      "ExtractError"
+    ]
+  },
+  "TarFile.makefifo": {
+    "raises": [
+      "ExtractError"
+    ]
+  },
+  "TarFile.next": {
+    "raises": [
+      "ReadError"
+    ]
+  },
+  "TarFile.open": {
+    "raises": [
+      "CompressionError",
+      "ReadError",
+      "ValueError"
+    ]
+  },
+  "TarFile.taropen": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "TarFile.xzopen": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "TarInfo._posix_split_name": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "TarInfo.create_ustar_header": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "TarInfo.frombuf": {
+    "raises": [
+      "EOFHeaderError",
+      "EmptyHeaderError",
+      "InvalidHeaderError",
+      "TruncatedHeaderError"
+    ]
+  },
+  "TarInfo.tobuf": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_FileInFile.seek": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_Stream._init_read_gz": {
+    "raises": [
+      "CompressionError",
+      "ReadError"
+    ]
+  },
+  "_Stream.seek": {
+    "raises": [
+      "StreamError"
+    ]
+  },
   "filemode": {
     "raises": [
       "RuntimeError",

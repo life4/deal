@@ -1,4 +1,71 @@
 {
+  "Enum.__new__": {
+    "raises": [
+      "exc",
+      "ve_exc"
+    ]
+  },
+  "Enum._missing_": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "EnumMeta.__contains__": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "EnumMeta.__delattr__": {
+    "raises": [
+      "AttributeError"
+    ]
+  },
+  "EnumMeta.__getattr__": {
+    "raises": [
+      "AttributeError"
+    ]
+  },
+  "EnumMeta.__new__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "EnumMeta.__setattr__": {
+    "raises": [
+      "AttributeError"
+    ]
+  },
+  "EnumMeta._get_mixins_": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Flag.__contains__": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "Flag._create_pseudo_member_": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "IntFlag._missing_": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_EnumDict.__setitem__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
   "unique": {
     "raises": [
       "ValueError"

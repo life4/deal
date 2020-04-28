@@ -1,0 +1,12 @@
+{
+  "Symbol.get_namespace": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SymbolTable.get_type": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

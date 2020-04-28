@@ -1,4 +1,9 @@
 {
+  "PathLike.__fspath__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
   "_execvpe": {
     "raises": [
       "ValueError",

@@ -1,0 +1,48 @@
+{
+  "Random._randbelow": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "Random.choices": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "Random.gammavariate": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Random.randrange": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Random.sample": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "Random.setstate": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SystemRandom._notimplemented": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "SystemRandom.getrandbits": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}

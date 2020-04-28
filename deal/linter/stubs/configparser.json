@@ -1,0 +1,113 @@
+{
+  "BasicInterpolation._interpolate_some": {
+    "raises": [
+      "InterpolationDepthError"
+    ]
+  },
+  "BasicInterpolation.before_set": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ConverterMapping.__setitem__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ExtendedInterpolation._interpolate_some": {
+    "raises": [
+      "InterpolationDepthError"
+    ]
+  },
+  "ExtendedInterpolation.before_set": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "LegacyInterpolation.before_get": {
+    "raises": [
+      "InterpolationDepthError"
+    ]
+  },
+  "ParsingError.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ParsingError.filename": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "RawConfigParser.__delitem__": {
+    "raises": [
+      "KeyError",
+      "ValueError"
+    ]
+  },
+  "RawConfigParser.__getitem__": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "RawConfigParser._convert_to_boolean": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "RawConfigParser._read": {
+    "raises": [
+      "DuplicateOptionError",
+      "DuplicateSectionError",
+      "MissingSectionHeaderError",
+      "e"
+    ]
+  },
+  "RawConfigParser._validate_value_types": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "RawConfigParser.add_section": {
+    "raises": [
+      "DuplicateSectionError",
+      "ValueError"
+    ]
+  },
+  "RawConfigParser.popitem": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "RawConfigParser.read_dict": {
+    "raises": [
+      "DuplicateOptionError"
+    ]
+  },
+  "RawConfigParser.readfp": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "SafeConfigParser.__init__": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "SectionProxy.__delitem__": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "SectionProxy.__getitem__": {
+    "raises": [
+      "KeyError"
+    ]
+  }
+}

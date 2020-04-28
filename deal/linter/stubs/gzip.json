@@ -1,4 +1,58 @@
 {
+  "GzipFile.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "GzipFile.filename": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "GzipFile.peek": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "GzipFile.read": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "GzipFile.read1": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "GzipFile.rewind": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "GzipFile.seek": {
+    "raises": [
+      "OSError",
+      "ValueError"
+    ]
+  },
+  "GzipFile.write": {
+    "raises": [
+      "OSError",
+      "ValueError"
+    ]
+  },
+  "_GzipReader._read_eof": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "_GzipReader._read_gzip_header": {
+    "raises": [
+      "OSError"
+    ]
+  },
   "_test": {
     "raises": [
       "TypeError",

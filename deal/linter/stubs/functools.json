@@ -9,6 +9,26 @@
       "TypeError"
     ]
   },
+  "partial.__call__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "partial.__new__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "partial.__setstate__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "partialmethod.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "total_ordering": {
     "raises": [
       "ValueError"

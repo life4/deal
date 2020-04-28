@@ -70,5 +70,161 @@
     "raises": [
       "AssertionError"
     ]
+  },
+  "date.__add__": {
+    "raises": [
+      "OverflowError"
+    ]
+  },
+  "date.__format__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "date._cmp": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "date.fromisoformat": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "datetime.__add__": {
+    "raises": [
+      "OverflowError"
+    ]
+  },
+  "datetime.__repr__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "datetime.__setstate": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "datetime.__sub__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "datetime._cmp": {
+    "raises": [
+      "AssertionError",
+      "TypeError"
+    ]
+  },
+  "datetime._mktime": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "datetime.astimezone": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "datetime.combine": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "datetime.fromisoformat": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "time.__format__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "time.__hash__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "time.__repr__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "time.__setstate": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "time._cmp": {
+    "raises": [
+      "AssertionError",
+      "TypeError"
+    ]
+  },
+  "time.fromisoformat": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "timedelta.__new__": {
+    "raises": [
+      "AssertionError",
+      "OverflowError"
+    ]
+  },
+  "timedelta._cmp": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "timezone.__new__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "timezone.dst": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "timezone.fromutc": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "timezone.tzname": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "timezone.utcoffset": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "tzinfo.dst": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "tzinfo.fromutc": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "tzinfo.tzname": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "tzinfo.utcoffset": {
+    "raises": [
+      "NotImplementedError"
+    ]
   }
 }

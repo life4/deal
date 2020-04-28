@@ -1,4 +1,9 @@
 {
+  "TextWrapper._wrap_chunks": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "dedent": {
     "raises": [
       "AssertionError"

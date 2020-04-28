@@ -1,4 +1,121 @@
 {
+  "IPv4Address.__init__": {
+    "raises": [
+      "AddressValueError"
+    ]
+  },
+  "IPv4Network.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "IPv6Address.__init__": {
+    "raises": [
+      "AddressValueError"
+    ]
+  },
+  "IPv6Network.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_BaseAddress.__lt__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_BaseNetwork.__getitem__": {
+    "raises": [
+      "IndexError"
+    ]
+  },
+  "_BaseNetwork.__lt__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_BaseNetwork._address_class": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "_BaseNetwork.address_exclude": {
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_BaseNetwork.compare_networks": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_BaseNetwork.subnets": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_BaseNetwork.supernet": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_BaseV4._ip_int_from_string": {
+    "raises": [
+      "AddressValueError"
+    ]
+  },
+  "_BaseV4._parse_octet": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_BaseV6._ip_int_from_string": {
+    "raises": [
+      "AddressValueError"
+    ]
+  },
+  "_BaseV6._parse_hextet": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_BaseV6._string_from_ip_int": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_IPAddressBase._check_int_address": {
+    "raises": [
+      "AddressValueError"
+    ]
+  },
+  "_IPAddressBase._check_packed_address": {
+    "raises": [
+      "AddressValueError"
+    ]
+  },
+  "_IPAddressBase._prefix_from_ip_int": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_IPAddressBase._report_invalid_netmask": {
+    "raises": [
+      "NetmaskValueError"
+    ]
+  },
+  "_IPAddressBase._split_addr_prefix": {
+    "raises": [
+      "AddressValueError"
+    ]
+  },
+  "_IPAddressBase.version": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
   "_split_optional_netmask": {
     "raises": [
       "AddressValueError"

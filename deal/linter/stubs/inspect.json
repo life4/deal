@@ -1,4 +1,39 @@
 {
+  "BlockFinder.tokeneater": {
+    "raises": [
+      "EndOfBlock"
+    ]
+  },
+  "Parameter.__init__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "Signature.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Signature._bind": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Signature.from_builtin": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "Signature.from_function": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
   "_getfullargs": {
     "raises": [
       "TypeError"

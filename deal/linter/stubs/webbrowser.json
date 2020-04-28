@@ -1,4 +1,14 @@
 {
+  "BaseBrowser.open": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "UnixBrowser.open": {
+    "raises": [
+      "Error"
+    ]
+  },
   "get": {
     "raises": [
       "Error"

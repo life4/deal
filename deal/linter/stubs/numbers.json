@@ -1,0 +1,207 @@
+{
+  "Complex.__abs__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Complex.__add__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Complex.__eq__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Complex.__mul__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Complex.__neg__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Complex.__pos__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Complex.__pow__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Complex.__radd__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Complex.__rmul__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Complex.__rpow__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Complex.__rtruediv__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Complex.__truediv__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Complex.conjugate": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Complex.imag": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Complex.real": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Integral.__and__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Integral.__int__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Integral.__invert__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Integral.__lshift__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Integral.__or__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Integral.__pow__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Integral.__rand__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Integral.__rlshift__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Integral.__ror__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Integral.__rrshift__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Integral.__rshift__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Integral.__rxor__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Integral.__xor__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Rational.denominator": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Rational.numerator": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Real.__ceil__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Real.__float__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Real.__floor__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Real.__floordiv__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Real.__le__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Real.__lt__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Real.__mod__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Real.__rfloordiv__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Real.__rmod__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Real.__round__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Real.__trunc__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  }
+}

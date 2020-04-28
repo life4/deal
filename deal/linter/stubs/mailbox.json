@@ -1,0 +1,182 @@
+{
+  "Babyl._install_message": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "Babyl.get_bytes": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Babyl.get_message": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "BabylMessage._explain_to": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "BabylMessage.add_label": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "MH.__init__": {
+    "raises": [
+      "NoSuchMailboxError"
+    ]
+  },
+  "MH.remove_folder": {
+    "raises": [
+      "NotEmptyError"
+    ]
+  },
+  "MHMessage._explain_to": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "MHMessage.add_sequence": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Mailbox.__contains__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Mailbox.__len__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Mailbox.__setitem__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Mailbox._dump_message": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "Mailbox.add": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Mailbox.close": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Mailbox.flush": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Mailbox.get_bytes": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Mailbox.get_file": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Mailbox.get_message": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Mailbox.iterkeys": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Mailbox.lock": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Mailbox.popitem": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "Mailbox.remove": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Mailbox.unlock": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Mailbox.update": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "Maildir.__init__": {
+    "raises": [
+      "NoSuchMailboxError"
+    ]
+  },
+  "Maildir._create_tmp": {
+    "raises": [
+      "ExternalClashError"
+    ]
+  },
+  "Maildir.remove_folder": {
+    "raises": [
+      "NotEmptyError"
+    ]
+  },
+  "MaildirMessage._explain_to": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "MaildirMessage.set_info": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "MaildirMessage.set_subdir": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Message.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Message._explain_to": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_mboxMMDFMessage._explain_to": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_singlefileMailbox.flush": {
+    "raises": [
+      "AssertionError",
+      "ExternalClashError"
+    ]
+  }
+}

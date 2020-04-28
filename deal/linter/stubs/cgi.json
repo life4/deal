@@ -1,4 +1,46 @@
 {
+  "FieldStorage.__bool__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "FieldStorage.__contains__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "FieldStorage.__getattr__": {
+    "raises": [
+      "AttributeError"
+    ]
+  },
+  "FieldStorage.__getitem__": {
+    "raises": [
+      "KeyError",
+      "TypeError"
+    ]
+  },
+  "FieldStorage.__init__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "FieldStorage.keys": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "FieldStorage.read_multi": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "FieldStorage.read_urlencoded": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "escape": {
     "raises": [
       "RuntimeError",

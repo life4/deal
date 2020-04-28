@@ -1,4 +1,81 @@
 {
+  "Au_read.getmark": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Au_read.initfp": {
+    "raises": [
+      "EOFError",
+      "Error"
+    ]
+  },
+  "Au_read.rewind": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "Au_read.setpos": {
+    "raises": [
+      "Error",
+      "OSError"
+    ]
+  },
+  "Au_write._ensure_header_written": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Au_write._patchheader": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "Au_write._write_header": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Au_write.getframerate": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Au_write.getnchannels": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Au_write.getsampwidth": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Au_write.setcomptype": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Au_write.setframerate": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Au_write.setnchannels": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Au_write.setnframes": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Au_write.setsampwidth": {
+    "raises": [
+      "Error"
+    ]
+  },
   "_read_u32": {
     "raises": [
       "EOFError"

@@ -1,4 +1,14 @@
 {
+  "DebugRunner.report_failure": {
+    "raises": [
+      "DocTestFailure"
+    ]
+  },
+  "DebugRunner.report_unexpected_exception": {
+    "raises": [
+      "UnexpectedException"
+    ]
+  },
   "DocFileSuite": {
     "raises": [
       "TypeError",
@@ -10,9 +20,59 @@
       "ValueError"
     ]
   },
+  "DocTest.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "DocTestFinder._find": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "DocTestFinder._from_module": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "DocTestFinder.find": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "DocTestParser._check_prefix": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "DocTestParser._check_prompt_blank": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "DocTestParser._find_options": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "DocTestRunner.__run": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "DocTestRunner.summarize": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "DocTestSuite": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "OutputChecker.output_difference": {
+    "raises": [
+      "AssertionError"
     ]
   },
   "_ellipsis_match": {

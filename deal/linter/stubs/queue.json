@@ -1,0 +1,25 @@
+{
+  "Queue.get": {
+    "raises": [
+      "Empty",
+      "ValueError"
+    ]
+  },
+  "Queue.put": {
+    "raises": [
+      "Full",
+      "ValueError"
+    ]
+  },
+  "Queue.task_done": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_PySimpleQueue.get": {
+    "raises": [
+      "Empty",
+      "ValueError"
+    ]
+  }
+}

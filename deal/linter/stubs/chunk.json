@@ -1,0 +1,34 @@
+{
+  "Chunk.__init__": {
+    "raises": [
+      "EOFError"
+    ]
+  },
+  "Chunk.isatty": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Chunk.read": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Chunk.seek": {
+    "raises": [
+      "OSError",
+      "RuntimeError",
+      "ValueError"
+    ]
+  },
+  "Chunk.skip": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Chunk.tell": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

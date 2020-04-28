@@ -1,4 +1,9 @@
 {
+  "Timer.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "main": {
     "raises": [
       "RuntimeError",

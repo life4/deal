@@ -1,4 +1,19 @@
 {
+  "BaseFilter._match": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Snapshot._group_by": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Snapshot.filter_traces": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "take_snapshot": {
     "raises": [
       "RuntimeError"

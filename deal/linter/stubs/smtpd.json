@@ -1,4 +1,106 @@
 {
+  "MailmanProxy.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "PureProxy.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SMTPChannel.__addr": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "SMTPChannel.__conn": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "SMTPChannel.__data": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "SMTPChannel.__fqdn": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "SMTPChannel.__greeting": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "SMTPChannel.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SMTPChannel.__line": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "SMTPChannel.__mailfrom": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "SMTPChannel.__peer": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "SMTPChannel.__rcpttos": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "SMTPChannel.__server": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "SMTPChannel.__state": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "SMTPServer.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SMTPServer.process_message": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
   "parseargs": {
     "raises": [
       "SystemExit"

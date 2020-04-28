@@ -1,4 +1,19 @@
 {
+  "ArgumentDescriptor.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "OpcodeInfo.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "StackObject.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "assure_pickle_consistency": {
     "raises": [
       "ValueError"

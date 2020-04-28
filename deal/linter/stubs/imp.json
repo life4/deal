@@ -1,4 +1,9 @@
 {
+  "NullImporter.__init__": {
+    "raises": [
+      "ImportError"
+    ]
+  },
   "cache_from_source": {
     "raises": [
       "AssertionError"

@@ -1,4 +1,22 @@
 {
+  "BZ2File.__init__": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "BZ2File.readline": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "BZ2File.readlines": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "open": {
     "raises": [
       "ValueError"

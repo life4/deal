@@ -4,6 +4,23 @@
       "FileExistsError"
     ]
   },
+  "SpooledTemporaryFile.__enter__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "TemporaryDirectory.__init__": {
+    "raises": [
+      "FileExistsError"
+    ]
+  },
+  "TemporaryDirectory._cleanup": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
   "_get_default_tempdir": {
     "raises": [
       "FileNotFoundError"

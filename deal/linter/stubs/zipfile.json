@@ -1,7 +1,139 @@
 {
+  "PyZipFile._get_codename": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "PyZipFile.writepy": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "ZipExtFile.__init__": {
+    "raises": [
+      "NotImplementedError",
+      "RuntimeError"
+    ]
+  },
+  "ZipExtFile._read2": {
+    "raises": [
+      "EOFError"
+    ]
+  },
+  "ZipExtFile._update_crc": {
+    "raises": [
+      "BadZipFile"
+    ]
+  },
+  "ZipExtFile.seek": {
+    "raises": [
+      "NotImplementedError",
+      "ValueError"
+    ]
+  },
+  "ZipFile._RealGetContents": {
+    "raises": [
+      "BadZipFile"
+    ]
+  },
+  "ZipFile.__init__": {
+    "raises": [
+      "NotImplementedError",
+      "RuntimeError",
+      "ValueError"
+    ]
+  },
+  "ZipFile._fpclose": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "ZipFile._open_to_write": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ZipFile._write_end_record": {
+    "raises": [
+      "LargeZipFile"
+    ]
+  },
+  "ZipFile._writecheck": {
+    "raises": [
+      "LargeZipFile",
+      "NotImplementedError",
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "ZipFile.close": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ZipFile.comment": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "ZipFile.getinfo": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "ZipFile.open": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "ZipFile.setpassword": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "ZipFile.write": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ZipFile.writestr": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ZipInfo.FileHeader": {
+    "raises": [
+      "LargeZipFile"
+    ]
+  },
+  "ZipInfo.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "_EndRecData64": {
     "raises": [
       "BadZipFile"
+    ]
+  },
+  "_SharedFile.read": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_SharedFile.seek": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_ZipWriteFile.write": {
+    "raises": [
+      "ValueError"
     ]
   },
   "_check_compression": {

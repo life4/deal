@@ -1,4 +1,19 @@
 {
+  "Differ._fancy_replace": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Differ._plain_replace": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Differ.compare": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "_check_types": {
     "raises": [
       "TypeError"

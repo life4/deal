@@ -1,0 +1,42 @@
+{
+  "BinHex._writeinfo": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "BinHex.close_data": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "BinHex.write": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "BinHex.write_rsrc": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "HexBin._checkcrc": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "HexBin.close_data": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "HexBin.read": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "HexBin.read_rsrc": {
+    "raises": [
+      "Error"
+    ]
+  }
+}

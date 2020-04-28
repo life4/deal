@@ -1,4 +1,24 @@
 {
+  "IMAP4.__getattr__": {
+    "raises": [
+      "AttributeError"
+    ]
+  },
+  "IMAP4.append": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "IMAP4.enable": {
+    "raises": [
+      "IMAP4.error"
+    ]
+  },
+  "IMAP4.search": {
+    "raises": [
+      "IMAP4.error"
+    ]
+  },
   "Time2Internaldate": {
     "raises": [
       "ValueError"

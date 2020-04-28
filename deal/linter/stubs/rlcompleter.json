@@ -1,0 +1,7 @@
+{
+  "Completer.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

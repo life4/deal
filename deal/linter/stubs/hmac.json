@@ -1,0 +1,9 @@
+{
+  "HMAC.__init__": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  }
+}

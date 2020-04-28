@@ -1,0 +1,43 @@
+{
+  "Packer.pack_farray": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Packer.pack_fstring": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Unpacker.done": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Unpacker.unpack_double": {
+    "raises": [
+      "EOFError"
+    ]
+  },
+  "Unpacker.unpack_float": {
+    "raises": [
+      "EOFError"
+    ]
+  },
+  "Unpacker.unpack_fstring": {
+    "raises": [
+      "EOFError",
+      "ValueError"
+    ]
+  },
+  "Unpacker.unpack_int": {
+    "raises": [
+      "EOFError"
+    ]
+  },
+  "Unpacker.unpack_uint": {
+    "raises": [
+      "EOFError"
+    ]
+  }
+}

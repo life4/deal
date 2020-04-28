@@ -1,0 +1,7 @@
+{
+  "dircmp.__getattr__": {
+    "raises": [
+      "AttributeError"
+    ]
+  }
+}

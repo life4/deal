@@ -1,4 +1,17 @@
 {
+  "FileInput.__getitem__": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "FileInput.__init__": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
   "filelineno": {
     "raises": [
       "RuntimeError"

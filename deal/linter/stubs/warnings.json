@@ -25,6 +25,16 @@
       "TypeError"
     ]
   },
+  "catch_warnings.__enter__": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "catch_warnings.__exit__": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
   "filterwarnings": {
     "raises": [
       "AssertionError"

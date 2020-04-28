@@ -1,4 +1,9 @@
 {
+  "attrgetter.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "concat": {
     "raises": [
       "TypeError"
@@ -18,6 +23,11 @@
     "raises": [
       "TypeError",
       "ValueError"
+    ]
+  },
+  "methodcaller.__init__": {
+    "raises": [
+      "TypeError"
     ]
   }
 }
