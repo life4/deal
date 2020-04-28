@@ -16,8 +16,10 @@ class StubFile:
             self._content = json.load(stream)
 
     def dump(self) -> None:
+        if not self._content:
+            return
         with self.path.open(mode='w', encoding='utf8') as stream:
-            self._content = json.dump(obj=self._content, fp=stream, indent=2)
+            json.dump(obj=self._content, fp=stream, indent=2)
 
     def add(self, func: str, contract: str, value: str) -> None:
         if contract != 'raises':
@@ -27,6 +29,7 @@ class StubFile:
         values = contracts.setdefault(contract, [])
         if value not in values:
             values.append(value)
+            values.sort()
 
     def get(self, func: str, contract: str) -> FrozenSet[str]:
         values = self._content.get(func, {}).get(contract, [])

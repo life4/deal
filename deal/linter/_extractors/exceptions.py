@@ -81,6 +81,8 @@ def _exceptions_from_funcs(expr) -> Iterator[Token]:
             guesses = tuple(name_node.infer())
         except astroid.exceptions.NameInferenceError:
             continue
+        except RecursionError:
+            continue
 
         extra = dict(
             line=name_node.lineno,
@@ -113,6 +115,8 @@ def _exceptions_from_stubs(expr, stubs: StubsManager) -> Iterator[Token]:
     try:
         guesses = tuple(expr.func.infer())
     except astroid.exceptions.InferenceError:
+        return
+    except RecursionError:
         return
     extra = dict(
         line=expr.lineno,

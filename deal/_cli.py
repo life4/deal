@@ -2,6 +2,8 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Sequence
 
+from .linter._stub import generate_stub, StubsManager
+
 
 def get_parser() -> ArgumentParser:
     parser = ArgumentParser(prog='python3 -m deal')
@@ -15,10 +17,18 @@ def lint(argv: Sequence[str]) -> int:
 
 
 def stub(argv: Sequence[str]) -> int:
-    from .linter._stub import generate_stub
-    for path in argv:
-        path = Path(path)
-        generate_stub(path=path)
+    parser = ArgumentParser(prog='python3 -m deal')
+    parser.add_argument('--iterations', type=int, default=1)
+    parser.add_argument('paths', nargs='+')
+    args = parser.parse_args(argv)
+
+    paths = [Path(path) for path in args.paths]
+    roots = [StubsManager.root] + list(set(paths))
+    stubs = StubsManager(paths=roots)
+
+    for _ in range(args.iterations):
+        for path in paths:
+            generate_stub(path=path, stubs=stubs)
     return 0
 
 
