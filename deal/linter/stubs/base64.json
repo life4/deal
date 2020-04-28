@@ -1,0 +1,47 @@
+{
+  "b64encode": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "b64decode": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "b32decode": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "a85decode": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_input_type_check": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "encodebytes": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "decodebytes": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "main": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "test": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

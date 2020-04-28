@@ -1,0 +1,17 @@
+{
+  "total_ordering": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "lru_cache": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_find_impl": {
+    "raises": [
+      "RuntimeError"
+    ]
+  }
+}

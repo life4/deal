@@ -1,0 +1,50 @@
+{
+  "_dnsname_match": {
+    "raises": [
+      "CertificateError"
+    ]
+  },
+  "_inet_paton": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_ipaddress_match": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "match_hostname": {
+    "raises": [
+      "ValueError",
+      "CertificateError"
+    ]
+  },
+  "create_default_context": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_create_unverified_context": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "wrap_socket": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "PEM_cert_to_DER_cert": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "get_server_certificate": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}

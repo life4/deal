@@ -1,0 +1,18 @@
+{
+  "iter_modules": {
+    "raises": [
+      "ImportError",
+      "ValueError"
+    ]
+  },
+  "iter_importers": {
+    "raises": [
+      "ImportError"
+    ]
+  },
+  "find_loader": {
+    "raises": [
+      "ImportError"
+    ]
+  }
+}

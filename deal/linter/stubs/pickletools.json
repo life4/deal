@@ -1,0 +1,125 @@
+{
+  "read_uint1": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_uint2": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_int4": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_uint4": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_uint8": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_stringnl": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_string1": {
+    "raises": [
+      "ValueError",
+      "AssertionError"
+    ]
+  },
+  "read_string4": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_bytes1": {
+    "raises": [
+      "ValueError",
+      "AssertionError"
+    ]
+  },
+  "read_bytes4": {
+    "raises": [
+      "ValueError",
+      "AssertionError"
+    ]
+  },
+  "read_bytes8": {
+    "raises": [
+      "ValueError",
+      "AssertionError"
+    ]
+  },
+  "read_unicodestringnl": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_unicodestring1": {
+    "raises": [
+      "ValueError",
+      "AssertionError"
+    ]
+  },
+  "read_unicodestring4": {
+    "raises": [
+      "ValueError",
+      "AssertionError"
+    ]
+  },
+  "read_unicodestring8": {
+    "raises": [
+      "ValueError",
+      "AssertionError"
+    ]
+  },
+  "read_decimalnl_short": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_decimalnl_long": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_floatnl": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_float8": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_long1": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_long4": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "assure_pickle_consistency": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "dis": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  }
+}

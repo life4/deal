@@ -1,0 +1,73 @@
+{
+  "_normalize_module": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_load_testfile": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_ellipsis_match": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_module_relative_path": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "testmod": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "testfile": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "set_unittest_reportflags": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "DocTestSuite": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "DocFileTest": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "DocFileSuite": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "testsource": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "debug": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_test": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}

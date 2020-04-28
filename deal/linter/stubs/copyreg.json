@@ -1,0 +1,28 @@
+{
+  "pickle": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "constructor": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_reduce_ex": {
+    "raises": [
+      "AssertionError",
+      "TypeError"
+    ]
+  },
+  "add_extension": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "remove_extension": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

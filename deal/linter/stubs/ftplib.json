@@ -1,0 +1,12 @@
+{
+  "ftpcp": {
+    "raises": [
+      "error_proto"
+    ]
+  },
+  "test": {
+    "raises": [
+      "SystemExit"
+    ]
+  }
+}

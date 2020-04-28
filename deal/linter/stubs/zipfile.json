@@ -1,0 +1,18 @@
+{
+  "_EndRecData64": {
+    "raises": [
+      "BadZipFile"
+    ]
+  },
+  "_check_compression": {
+    "raises": [
+      "RuntimeError",
+      "NotImplementedError"
+    ]
+  },
+  "_get_decompressor": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "create_archive": {
+    "raises": [
+      "ZipAppError"
+    ]
+  },
+  "main": {
+    "raises": [
+      "SystemExit",
+      "ZipAppError"
+    ]
+  }
+}

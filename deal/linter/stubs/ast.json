@@ -1,0 +1,12 @@
+{
+  "dump": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "get_docstring": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

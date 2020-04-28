@@ -1,0 +1,12 @@
+{
+  "getincrementalencoder": {
+    "raises": [
+      "LookupError"
+    ]
+  },
+  "getincrementaldecoder": {
+    "raises": [
+      "LookupError"
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "load_source": {
+    "raises": [
+      "ImportError"
+    ]
+  },
+  "load_compiled": {
+    "raises": [
+      "ImportError"
+    ]
+  },
+  "load_package": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "load_module": {
+    "raises": [
+      "ValueError",
+      "ImportError"
+    ]
+  },
+  "find_module": {
+    "raises": [
+      "TypeError",
+      "RuntimeError",
+      "ImportError"
+    ]
+  }
+}

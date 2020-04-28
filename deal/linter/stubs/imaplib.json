@@ -1,0 +1,7 @@
+{
+  "Time2Internaldate": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

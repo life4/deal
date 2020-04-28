@@ -1,0 +1,7 @@
+{
+  "_get_module_details": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

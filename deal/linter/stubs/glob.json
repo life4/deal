@@ -1,0 +1,17 @@
+{
+  "iglob": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_iglob": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_glob2": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

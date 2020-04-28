@@ -1,0 +1,44 @@
+{
+  "readPlist": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "writePlist": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "readPlistFromBytes": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "writePlistToBytes": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_escape": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "load": {
+    "raises": [
+      "InvalidFileException"
+    ]
+  },
+  "dump": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "dumps": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

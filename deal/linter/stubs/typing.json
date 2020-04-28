@@ -1,0 +1,33 @@
+{
+  "_type_check": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_check_generic": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_remove_dups_flatten": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_get_defaults": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "get_type_hints": {
+    "raises": [
+      "TypeError",
+      "AssertionError"
+    ]
+  },
+  "_overload_dummy": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  }
+}

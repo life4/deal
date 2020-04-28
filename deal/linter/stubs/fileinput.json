@@ -1,0 +1,42 @@
+{
+  "input": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "nextfile": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "filename": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "lineno": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "filelineno": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "fileno": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "isfirstline": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "isstdin": {
+    "raises": [
+      "RuntimeError"
+    ]
+  }
+}

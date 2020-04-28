@@ -1,0 +1,12 @@
+{
+  "_shutdown": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_after_fork": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

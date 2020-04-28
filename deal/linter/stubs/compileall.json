@@ -1,0 +1,7 @@
+{
+  "compile_dir": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

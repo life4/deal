@@ -1,0 +1,7 @@
+{
+  "compact_traceback": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

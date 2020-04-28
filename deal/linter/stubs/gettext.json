@@ -1,0 +1,28 @@
+{
+  "_tokenize": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_parse": {
+    "raises": [
+      "ValueError",
+      "_error"
+    ]
+  },
+  "c2py": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "translation": {
+    "raises": [
+      "FileNotFoundError"
+    ]
+  },
+  "install": {
+    "raises": [
+      "FileNotFoundError"
+    ]
+  }
+}

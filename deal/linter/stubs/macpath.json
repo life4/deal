@@ -1,0 +1,7 @@
+{
+  "normcase": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

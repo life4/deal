@@ -1,0 +1,18 @@
+{
+  "check_call": {
+    "raises": [
+      "CalledProcessError"
+    ]
+  },
+  "check_output": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "run": {
+    "raises": [
+      "ValueError",
+      "CalledProcessError"
+    ]
+  }
+}

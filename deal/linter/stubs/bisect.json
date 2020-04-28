@@ -1,0 +1,22 @@
+{
+  "insort_right": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "bisect_right": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "insort_left": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "bisect_left": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

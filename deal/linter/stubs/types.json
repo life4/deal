@@ -1,0 +1,27 @@
+{
+  "new_class": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "resolve_bases": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "prepare_class": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_calculate_meta": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "coroutine": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

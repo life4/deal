@@ -1,0 +1,12 @@
+{
+  "getnode": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "uuid1": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "_parse_overview_fmt": {
+    "raises": [
+      "NNTPDataError"
+    ]
+  },
+  "_parse_overview": {
+    "raises": [
+      "NNTPDataError"
+    ]
+  }
+}

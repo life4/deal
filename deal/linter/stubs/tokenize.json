@@ -1,0 +1,7 @@
+{
+  "detect_encoding": {
+    "raises": [
+      "SyntaxError"
+    ]
+  }
+}

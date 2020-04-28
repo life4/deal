@@ -1,0 +1,68 @@
+{
+  "copyfile": {
+    "raises": [
+      "SameFileError",
+      "SpecialFileError"
+    ]
+  },
+  "copy": {
+    "raises": [
+      "SameFileError",
+      "SpecialFileError"
+    ]
+  },
+  "copy2": {
+    "raises": [
+      "SameFileError",
+      "SpecialFileError"
+    ]
+  },
+  "copytree": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "move": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "_make_tarball": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "register_archive_format": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_check_unpack_options": {
+    "raises": [
+      "RegistryError",
+      "TypeError"
+    ]
+  },
+  "register_unpack_format": {
+    "raises": [
+      "RegistryError",
+      "TypeError"
+    ]
+  },
+  "_unpack_zipfile": {
+    "raises": [
+      "ReadError"
+    ]
+  },
+  "unpack_archive": {
+    "raises": [
+      "ReadError"
+    ]
+  },
+  "chown": {
+    "raises": [
+      "ValueError",
+      "LookupError"
+    ]
+  }
+}

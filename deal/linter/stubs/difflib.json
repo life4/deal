@@ -1,0 +1,22 @@
+{
+  "get_close_matches": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "unified_diff": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "context_diff": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_check_types": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "_write_string": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "open": {
+    "raises": [
+      "Error"
+    ]
+  }
+}

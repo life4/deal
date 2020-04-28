@@ -1,0 +1,52 @@
+{
+  "_showwarnmsg": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "filterwarnings": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "simplefilter": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_setoption": {
+    "raises": [
+      "_OptionError",
+      "AssertionError"
+    ]
+  },
+  "_getaction": {
+    "raises": [
+      "_OptionError"
+    ]
+  },
+  "_getcategory": {
+    "raises": [
+      "_OptionError"
+    ]
+  },
+  "warn": {
+    "raises": [
+      "TypeError",
+      "message",
+      "RuntimeError"
+    ]
+  },
+  "warn_explicit": {
+    "raises": [
+      "message",
+      "RuntimeError",
+      "TypeError"
+    ]
+  },
+  "_warn_unawaited_coroutine": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

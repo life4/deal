@@ -1,0 +1,17 @@
+{
+  "_bytes_to_codes": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_compile_info": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_code": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

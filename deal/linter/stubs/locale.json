@@ -1,0 +1,43 @@
+{
+  "_grouping_intervals": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "format": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "currency": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_test": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "_parse_localename": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "getlocale": {
+    "raises": [
+      "Error",
+      "TypeError"
+    ]
+  },
+  "resetlocale": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "_print_locale": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

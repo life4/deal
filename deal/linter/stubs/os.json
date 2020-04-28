@@ -1,0 +1,47 @@
+{
+  "walk": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "execvp": {
+    "raises": [
+      "saved_exc",
+      "last_exc"
+    ]
+  },
+  "execvpe": {
+    "raises": [
+      "saved_exc",
+      "last_exc"
+    ]
+  },
+  "_execvpe": {
+    "raises": [
+      "ValueError",
+      "saved_exc",
+      "last_exc"
+    ]
+  },
+  "get_exec_path": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "popen": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "fdopen": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_fspath": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

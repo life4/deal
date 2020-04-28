@@ -1,0 +1,22 @@
+{
+  "parse": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "parse_qs": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "parse_qsl": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "escape": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

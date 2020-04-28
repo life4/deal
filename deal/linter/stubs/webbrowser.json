@@ -1,0 +1,17 @@
+{
+  "get": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "open": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "main": {
+    "raises": [
+      "SystemExit"
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "concat": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "indexOf": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "length_hint": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "iconcat": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

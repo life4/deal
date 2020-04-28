@@ -1,0 +1,12 @@
+{
+  "_read_u32": {
+    "raises": [
+      "EOFError"
+    ]
+  },
+  "open": {
+    "raises": [
+      "Error"
+    ]
+  }
+}

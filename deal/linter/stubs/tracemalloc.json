@@ -1,0 +1,7 @@
+{
+  "take_snapshot": {
+    "raises": [
+      "RuntimeError"
+    ]
+  }
+}

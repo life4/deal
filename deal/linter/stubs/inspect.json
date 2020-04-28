@@ -1,0 +1,127 @@
+{
+  "getfile": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "getsourcefile": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "findsource": {
+    "raises": [
+      "TypeError",
+      "OSError"
+    ]
+  },
+  "getsourcelines": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "getargs": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_getfullargs": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "getargspec": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "formatargspec": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_missing_arguments": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_too_many": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "getcallargs": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "getclosurevars": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "getframeinfo": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "getattr_static": {
+    "raises": [
+      "AttributeError"
+    ]
+  },
+  "getgeneratorlocals": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_signature_get_partial": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_signature_bound_method": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_signature_get_bound_param": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_signature_strip_non_python_syntax": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_signature_fromstr": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "_signature_from_builtin": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_signature_from_function": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_signature_from_callable": {
+    "raises": [
+      "TypeError",
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "_main": {
+    "raises": [
+      "SystemExit"
+    ]
+  }
+}
