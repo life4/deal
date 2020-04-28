@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
-from typing import Any, Dict, FrozenSet, Optional
+from typing import Any, Dict, FrozenSet, Iterator, Optional
+
+import astroid
 
 
 class StubFile:
@@ -15,7 +17,7 @@ class StubFile:
 
     def dump(self) -> None:
         with self.path.open(mode='w', encoding='utf8') as stream:
-            self._content = json.dump(stream)
+            self._content = json.dump(obj=self._content, fp=stream, indent=2)
 
     def add(self, func: str, contract: str, value: str) -> None:
         if contract != 'raises':
@@ -26,7 +28,7 @@ class StubFile:
         if value not in values:
             values.append(value)
 
-    def get(self, func: str, contract: str) -> FrozenSet[str, ...]:
+    def get(self, func: str, contract: str) -> FrozenSet[str]:
         values = self._content.get(func, {}).get(contract, [])
         return frozenset(values)
 
@@ -82,17 +84,23 @@ class StubsManager:
         return self._modules[module_name]
 
 
+def _get_all_funcs(path: Path) -> Iterator[astroid.FunctionDef]:
+    text = path.read_text()
+    tree = astroid.parse(code=text, path=str(path))
+    for expr in tree.body:
+        if type(expr) is astroid.FunctionDef:
+            yield expr  # type: ignore
+
+
 def generate_stub(path: Path) -> Path:
     from ._extractors import get_exceptions
-    from ._func import Func
 
     if path.suffix != '.py':
         raise ValueError('invalid Python file extension: *{}'.format(path.suffix))
 
     manager = StubsManager()
     stub = manager.create(path=path)
-    funcs = Func.from_path(path=path)
-    for func in funcs:
+    for func in _get_all_funcs(path=path):
         if func.name is None:
             continue
         for token in get_exceptions(body=func.body):
