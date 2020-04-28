@@ -1,4 +1,9 @@
 {
+  "_sys_version": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "linux_distribution": {
     "raises": [
       "RuntimeError",
@@ -18,11 +23,6 @@
       "RuntimeError",
       "TypeError",
       "message"
-    ]
-  },
-  "_sys_version": {
-    "raises": [
-      "ValueError"
     ]
   },
   "platform": {

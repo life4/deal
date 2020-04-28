@@ -16,8 +16,8 @@
   },
   "_setoption": {
     "raises": [
-      "_OptionError",
-      "AssertionError"
+      "AssertionError",
+      "_OptionError"
     ]
   },
   "_getaction": {
@@ -32,16 +32,16 @@
   },
   "warn": {
     "raises": [
+      "RuntimeError",
       "TypeError",
-      "message",
-      "RuntimeError"
+      "message"
     ]
   },
   "warn_explicit": {
     "raises": [
-      "message",
       "RuntimeError",
-      "TypeError"
+      "TypeError",
+      "message"
     ]
   },
   "_warn_unawaited_coroutine": {

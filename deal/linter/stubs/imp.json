@@ -1,9 +1,4 @@
 {
-  "cache_from_source": {
-    "raises": [
-      "AssertionError"
-    ]
-  },
   "load_source": {
     "raises": [
       "ImportError"
@@ -30,6 +25,11 @@
       "ImportError",
       "RuntimeError",
       "TypeError"
+    ]
+  },
+  "cache_from_source": {
+    "raises": [
+      "AssertionError"
     ]
   }
 }

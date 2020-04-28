@@ -5,11 +5,6 @@
       "ValueError"
     ]
   },
-  "_import_imp": {
-    "raises": [
-      "AssertionError"
-    ]
-  },
   "iter_importers": {
     "raises": [
       "ImportError"
@@ -18,6 +13,11 @@
   "find_loader": {
     "raises": [
       "ImportError"
+    ]
+  },
+  "_import_imp": {
+    "raises": [
+      "AssertionError"
     ]
   }
 }

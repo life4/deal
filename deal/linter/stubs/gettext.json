@@ -10,13 +10,6 @@
       "_error"
     ]
   },
-  "_as_int": {
-    "raises": [
-      "RuntimeError",
-      "TypeError",
-      "message"
-    ]
-  },
   "c2py": {
     "raises": [
       "ValueError"
@@ -30,6 +23,13 @@
   "install": {
     "raises": [
       "FileNotFoundError"
+    ]
+  },
+  "_as_int": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
     ]
   }
 }

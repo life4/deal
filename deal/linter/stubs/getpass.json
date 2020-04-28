@@ -1,14 +1,14 @@
 {
+  "_raw_input": {
+    "raises": [
+      "EOFError"
+    ]
+  },
   "fallback_getpass": {
     "raises": [
       "RuntimeError",
       "TypeError",
       "message"
-    ]
-  },
-  "_raw_input": {
-    "raises": [
-      "EOFError"
     ]
   }
 }

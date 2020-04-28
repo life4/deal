@@ -29,23 +29,9 @@
       "TypeError"
     ]
   },
-  "encodestring": {
-    "raises": [
-      "RuntimeError",
-      "TypeError",
-      "message"
-    ]
-  },
   "decodebytes": {
     "raises": [
       "TypeError"
-    ]
-  },
-  "decodestring": {
-    "raises": [
-      "RuntimeError",
-      "TypeError",
-      "message"
     ]
   },
   "main": {
@@ -56,6 +42,20 @@
   "test": {
     "raises": [
       "AssertionError"
+    ]
+  },
+  "encodestring": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "decodestring": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
     ]
   }
 }
