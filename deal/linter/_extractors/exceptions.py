@@ -66,6 +66,9 @@ def get_exceptions(body: list, *, dive: bool = True, stubs: StubsManager = None)
         if dive:
             yield from _exceptions_from_funcs(expr=expr)
 
+        if stubs is not None:
+            yield from _exceptions_from_stubs(expr=expr, stubs=stubs)
+
 
 def _exceptions_from_funcs(expr) -> Iterator[Token]:
     for name_node in get_names(expr):
@@ -104,7 +107,33 @@ def _exceptions_from_funcs(expr) -> Iterator[Token]:
                     yield Token(value=name, **extra)
 
 
-def get_names(expr):
+def _exceptions_from_stubs(expr, stubs: StubsManager) -> Iterator[Token]:
+    if type(expr) is not astroid.Call:
+        return
+    try:
+        guesses = tuple(expr.func.infer())
+    except astroid.exceptions.NameInferenceError:
+        return
+    extra = dict(
+        line=expr.lineno,
+        col=expr.col_offset,
+    )
+    for value in guesses:
+        if not isinstance(value, astroid.FunctionDef):
+            continue
+        module_name, _, func_name = value.qname().rpartition('.')
+        if not module_name:
+            continue
+        stub = stubs.get(module_name)
+        if stub is None:
+            continue
+        names = stub.get(func=func_name, contract='raises')
+        for name in names:
+            name = getattr(builtins, name, name)
+            yield Token(value=name, **extra)
+
+
+def get_names(expr) -> Iterator:
     if isinstance(expr, astroid.Assign):
         yield from get_names(expr.value)
     if isinstance(expr, TOKENS.CALL):

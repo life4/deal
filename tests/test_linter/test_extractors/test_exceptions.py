@@ -1,5 +1,6 @@
 # built-in
 import ast
+import json
 from textwrap import dedent
 
 # external
@@ -8,6 +9,7 @@ import pytest
 
 # project
 from deal.linter._extractors import get_exceptions
+from deal.linter._stub import StubsManager
 
 
 @pytest.mark.parametrize('text, expected', [
@@ -144,3 +146,28 @@ def test_inference_subcontracts():
     func_tree = tree.body[-1].body
     returns = tuple(r.value for r in get_exceptions(body=func_tree))
     assert returns == ('SomeError', )
+
+
+def test_from_stubs(tmp_path):
+    root = tmp_path / 'project'
+    root.mkdir()
+    (root / '__init__.py').touch()
+    # (root / 'other.py').touch()
+    stub = {'isnan': {'raises': ['ZeroDivisionError']}}
+    (root / 'math.json').write_text(json.dumps(stub))
+    stubs = StubsManager(paths=[root])
+
+    text = """
+        # from project.other import parent
+        from math import isnan
+
+        @deal.raises()
+        def child():
+            isnan()
+            # parent()
+    """
+    tree = astroid.parse(dedent(text))
+    print(tree.repr_tree())
+    func_tree = tree.body[-1].body
+    returns = tuple(r.value for r in get_exceptions(body=func_tree, stubs=stubs))
+    assert returns == (ZeroDivisionError, )

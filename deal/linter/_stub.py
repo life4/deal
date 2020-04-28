@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from typing import Any, Dict, FrozenSet, Iterator, Optional
+from typing import Any, Dict, FrozenSet, Iterator, Optional, Sequence
 
 import astroid
 
@@ -36,8 +36,12 @@ class StubFile:
 class StubsManager:
     root = Path(__file__).parent / 'stubs'
 
-    def __init__(self):
+    def __init__(self, paths: Sequence[Path] = None):
         self._modules = dict()
+        if paths is None:
+            self.paths = (self.root, )
+        else:
+            self.paths = tuple(paths)
 
     def read(self, path: Path) -> StubFile:
         if path.suffix != '.json':
@@ -66,12 +70,15 @@ class StubsManager:
         return path.stem
 
     def get(self, module_name: str) -> Optional[StubFile]:
+        # cached
         stub = self._modules.get(module_name)
         if stub is not None:
             return stub
-        path = self.root / (module_name + '.json')
-        if path.exists():
-            self.read(path)
+        # in the root
+        for root in self.paths:
+            path = root / (module_name + '.json')
+            if path.exists():
+                return self.read(path)
         return None
 
     def create(self, path: Path) -> StubFile:
@@ -84,7 +91,7 @@ class StubsManager:
         return self._modules[module_name]
 
 
-def _get_all_funcs(path: Path) -> Iterator[astroid.FunctionDef]:
+def _get_all_funcs(*, path: Path) -> Iterator[astroid.FunctionDef]:
     text = path.read_text()
     tree = astroid.parse(code=text, path=str(path))
     for expr in tree.body:
@@ -92,14 +99,15 @@ def _get_all_funcs(path: Path) -> Iterator[astroid.FunctionDef]:
             yield expr  # type: ignore
 
 
-def generate_stub(path: Path) -> Path:
+def generate_stub(*, path: Path, stubs: StubsManager = None) -> Path:
     from ._extractors import get_exceptions
 
     if path.suffix != '.py':
         raise ValueError('invalid Python file extension: *{}'.format(path.suffix))
 
-    manager = StubsManager()
-    stub = manager.create(path=path)
+    if stubs is None:
+        stubs = StubsManager()
+    stub = stubs.create(path=path)
     for func in _get_all_funcs(path=path):
         if func.name is None:
             continue
