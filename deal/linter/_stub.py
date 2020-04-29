@@ -67,12 +67,11 @@ class StubsManager:
             self._modules[module_name] = stub
         return self._modules[module_name]
 
-    def _get_module_name(self, path: Path) -> str:
+    @staticmethod
+    def _get_module_name(path: Path) -> str:
+        path = path.resolve()
         # built-in stubs
         if path.parent == CPYTHON_ROOT:
-            return path.stem
-        # name is a full path to a module
-        if '.' in path.stem:
             return path.stem
         # walk up by the tree as pytest does
         if not (path.parent / '__init__.py').exists():
@@ -81,7 +80,7 @@ class StubsManager:
             if not (parent / '__init__.py').exists():
                 parts = path.relative_to(parent).with_suffix('').parts
                 return '.'.join(parts)
-        return path.stem
+        raise RuntimeError('unreachable: __init__.py files up to root?')  # pragma: no cover
 
     def get(self, module_name: str) -> Optional[StubFile]:
         # cached
@@ -98,11 +97,11 @@ class StubsManager:
     def create(self, path: Path) -> StubFile:
         if path.suffix == '.py':
             path = path.with_suffix(EXTENSION)
-        if path.exists():
-            return self.read(path=path)
         module_name = self._get_module_name(path=path)
         if module_name not in self._modules:
             stub = StubFile(path=path)
+            if path.exists():
+                stub.load()
             self._modules[module_name] = stub
         return self._modules[module_name]
 
@@ -119,19 +118,22 @@ def _get_funcs(*, path: Path) -> Iterator[PseudoFunc]:
     text = path.read_text()
     tree = astroid.parse(code=text, path=str(path))
     for expr in tree.body:
-        # functions
-        if type(expr) is astroid.FunctionDef:
-            yield PseudoFunc(name=expr.name, body=expr.body)  # type: ignore
+        yield from _get_funcs_from_expr(expr=expr)
 
-        # methods
-        if type(expr) is astroid.ClassDef:
-            for subexpr in expr.body:
-                if type(subexpr) is not astroid.FunctionDef:
-                    continue
-                yield PseudoFunc(
-                    name=expr.name + '.' + subexpr.name,
-                    body=subexpr.body,
-                )
+
+def _get_funcs_from_expr(expr, prefix='') -> Iterator[PseudoFunc]:
+    name = getattr(expr, 'name', '')
+    if prefix:
+        name = prefix + '.' + name
+
+    # functions
+    if type(expr) is astroid.FunctionDef:
+        yield PseudoFunc(name=name, body=expr.body)  # type: ignore
+
+    # methods
+    if type(expr) is astroid.ClassDef:
+        for subexpr in expr.body:
+            yield from _get_funcs_from_expr(expr=subexpr, prefix=name)
 
 
 def generate_stub(*, path: Path, stubs: StubsManager = None) -> Path:
