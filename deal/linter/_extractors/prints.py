@@ -6,7 +6,7 @@ from typing import Iterator
 import astroid
 
 # app
-from .common import TOKENS, Token, get_name, traverse, infer
+from .common import TOKENS, Token, get_name, infer, traverse
 
 
 def get_prints(body: list) -> Iterator[Token]:

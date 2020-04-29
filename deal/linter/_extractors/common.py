@@ -2,10 +2,11 @@
 import ast
 from contextlib import suppress
 from types import SimpleNamespace
-from typing import NamedTuple, Iterator, List, Optional, Union
+from typing import Iterator, List, NamedTuple, Optional, Union
 
 # external
 import astroid
+
 
 AstroidNode = astroid.node_classes.NodeNG
 Node = Union[ast.AST, AstroidNode]

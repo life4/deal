@@ -7,7 +7,9 @@ import astroid
 
 # project
 from deal.linter._func import Func
-from deal.linter._rules import rules, CheckImports, CheckPrints, CheckRaises, CheckReturns, CheckPure
+from deal.linter._rules import (
+    CheckImports, CheckPrints, CheckPure, CheckRaises, CheckReturns, rules
+)
 
 
 def test_error_codes():

@@ -1,8 +1,10 @@
+# built-in
 from argparse import ArgumentParser
 from pathlib import Path
 from typing import Sequence
 
-from .linter._stub import generate_stub, StubsManager
+# app
+from .linter._stub import StubsManager, generate_stub
 
 
 def get_parser() -> ArgumentParser:

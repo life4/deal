@@ -1,15 +1,15 @@
 # built-in
 import builtins
 from pathlib import Path
-from typing import Iterator, Optional, Tuple, List
+from typing import Iterator, List, Optional, Tuple
 
 # external
 import astroid
 
 # app
-from .common import Token, traverse, infer, Node, AstroidNode
 from .._contract import Category
-from .._stub import StubsManager, StubFile, EXTENSION
+from .._stub import EXTENSION, StubFile, StubsManager
+from .common import AstroidNode, Node, Token, infer, traverse
 
 
 def get_exceptions_stubs(body: List[Node], *, dive: bool = True, stubs: StubsManager) -> Iterator[Token]:

@@ -7,7 +7,10 @@ from typing import Iterator
 # app
 from ._contract import Category, Contract
 from ._error import Error
-from ._extractors import get_exceptions, get_exceptions_stubs, get_imports, get_prints, get_returns, get_globals
+from ._extractors import (
+    get_exceptions, get_exceptions_stubs, get_globals,
+    get_imports, get_prints, get_returns
+)
 from ._func import Func
 from ._stub import StubsManager
 

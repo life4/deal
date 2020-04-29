@@ -23,7 +23,7 @@ __license__ = 'MIT'
 # app
 from ._aliases import (
     chain, ensure, inv, invariant, offline, post,
-    pre, pure, raises, reason, require, safe, silent,
+    pre, pure, raises, reason, require, safe, silent
 )
 from ._exceptions import *  # noQA
 from ._imports import activate, module_load

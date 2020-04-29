@@ -1,11 +1,14 @@
+# built-in
 import json
 from importlib import import_module
 from pathlib import Path
 
+# external
 import pytest
 
+# project
 from deal.linter._contract import Category
-from deal.linter._stub import generate_stub, StubFile, _get_funcs, StubsManager
+from deal.linter._stub import StubFile, StubsManager, _get_funcs, generate_stub
 
 
 def test_generate_stub(tmp_path: Path):

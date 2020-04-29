@@ -1,10 +1,13 @@
+# built-in
 import json
 from itertools import chain
 from pathlib import Path
-from typing import Any, Dict, FrozenSet, Iterator, Optional, Sequence, NamedTuple
+from typing import Any, Dict, FrozenSet, Iterator, NamedTuple, Optional, Sequence
 
+# external
 import astroid
 
+# app
 from ._contract import Category
 
 
