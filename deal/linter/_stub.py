@@ -98,12 +98,18 @@ class StubsManager:
         if path.suffix == '.py':
             path = path.with_suffix(EXTENSION)
         module_name = self._get_module_name(path=path)
-        if module_name not in self._modules:
-            stub = StubFile(path=path)
-            if path.exists():
-                stub.load()
-            self._modules[module_name] = stub
-        return self._modules[module_name]
+
+        # if the stub for file is somewhere in the paths, use this instead.
+        stub = self.get(module_name=module_name)
+        if stub is not None:
+            return stub
+
+        # create new stub and load it from disk if the file exists
+        stub = StubFile(path=path)
+        if path.exists():
+            stub.load()
+        self._modules[module_name] = stub
+        return stub
 
 
 class PseudoFunc:
