@@ -15,3 +15,15 @@ def test_generate_stub(tmp_path: Path):
     assert stub_path.name == 'example.json'
     assert stub_path.parent == root
     assert content == {'func': {'raises': ['ZeroDivisionError']}}
+
+
+def test_do_not_dump_empty_stub(tmp_path: Path):
+    root = tmp_path / 'project'
+    root.mkdir()
+    (root / '__init__.py').touch()
+    source_path = (root / 'example.py')
+    source_path.write_text("def func(): return 1")
+    stub_path = generate_stub(path=source_path)
+    assert not stub_path.exists()
+    assert stub_path.name == 'example.json'
+    assert stub_path.parent == root

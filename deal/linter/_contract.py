@@ -6,9 +6,6 @@ import enum
 # external
 import astroid
 
-# app
-from ._extractors import get_name
-
 
 TEMPLATE = """
 contract = PLACEHOLDER
@@ -54,6 +51,8 @@ class Contract:
 
     @property
     def exceptions(self) -> list:
+        from ._extractors import get_name
+
         excs = []
         for expr in self.args:
             name = get_name(expr)

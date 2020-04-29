@@ -8,6 +8,7 @@ import astroid
 
 # app
 from .common import Token, traverse
+from .._contract import Category
 from .._stub import StubsManager, StubFile, EXTENSION
 
 
@@ -32,7 +33,7 @@ def get_exceptions_stubs(body: list, *, dive: bool = True, stubs: StubsManager) 
             stub = _get_stub(module_name=module_name, expr=value, stubs=stubs)
             if stub is None:
                 continue
-            names = stub.get(func=func_name, contract='raises')
+            names = stub.get(func=func_name, contract=Category.RAISES)
             for name in names:
                 name = getattr(builtins, name, name)
                 yield Token(value=name, **extra)

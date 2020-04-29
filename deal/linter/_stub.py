@@ -5,6 +5,8 @@ from typing import Any, Dict, FrozenSet, Iterator, Optional, Sequence
 
 import astroid
 
+from ._contract import Category
+
 
 EXTENSION = '.json'
 ROOT = Path(__file__).parent / 'stubs'
@@ -27,18 +29,19 @@ class StubFile:
         with self.path.open(mode='w', encoding='utf8') as stream:
             json.dump(obj=self._content, fp=stream, indent=2, sort_keys=True)
 
-    def add(self, func: str, contract: str, value: str) -> None:
-        if contract != 'raises':
+    def add(self, func: str, contract: Category, value: str) -> None:
+        if contract != Category.RAISES:
             raise ValueError('only raises contract is supported yet')
-
         contracts = self._content.setdefault(func, dict())
-        values = contracts.setdefault(contract, [])
+        values = contracts.setdefault(contract.value, [])
         if value not in values:
             values.append(value)
             values.sort()
 
-    def get(self, func: str, contract: str) -> FrozenSet[str]:
-        values = self._content.get(func, {}).get(contract, [])
+    def get(self, func: str, contract: Category) -> FrozenSet[str]:
+        if contract != Category.RAISES:
+            raise ValueError('only raises contract is supported yet')
+        values = self._content.get(func, {}).get(contract.value, [])
         return frozenset(values)
 
 
@@ -149,6 +152,6 @@ def generate_stub(*, path: Path, stubs: StubsManager = None) -> Path:
             value = token.value
             if isinstance(value, type):
                 value = value.__name__
-            stub.add(func=func.name, contract='raises', value=str(value))
+            stub.add(func=func.name, contract=Category.RAISES, value=str(value))
     stub.dump()
     return stub.path
