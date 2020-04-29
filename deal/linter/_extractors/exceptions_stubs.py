@@ -1,32 +1,26 @@
 # built-in
 import builtins
 from pathlib import Path
-from typing import Iterator, Optional, Tuple
+from typing import Iterator, Optional, Tuple, List
 
 # external
 import astroid
 
 # app
-from .common import Token, traverse
+from .common import Token, traverse, infer, Node, AstroidNode
 from .._contract import Category
 from .._stub import StubsManager, StubFile, EXTENSION
 
 
-def get_exceptions_stubs(body: list, *, dive: bool = True, stubs: StubsManager) -> Iterator[Token]:
+def get_exceptions_stubs(body: List[Node], *, dive: bool = True, stubs: StubsManager) -> Iterator[Token]:
     for expr in traverse(body):
         if type(expr) is not astroid.Call:
-            return
-        try:
-            guesses = tuple(expr.func.infer())
-        except astroid.exceptions.InferenceError:
-            return
-        except RecursionError:
             return
         extra = dict(
             line=expr.lineno,
             col=expr.col_offset,
         )
-        for value in guesses:
+        for value in infer(expr=expr.func):
             if type(value) is not astroid.FunctionDef:
                 continue
             module_name, func_name = _get_full_name(expr=value)
@@ -39,7 +33,7 @@ def get_exceptions_stubs(body: list, *, dive: bool = True, stubs: StubsManager) 
                 yield Token(value=name, **extra)
 
 
-def _get_stub(module_name, expr, stubs: StubsManager) -> StubFile:
+def _get_stub(module_name: Optional[str], expr: astroid.FunctionDef, stubs: StubsManager) -> StubFile:
     if not module_name:
         return None
     stub = stubs.get(module_name)
@@ -55,7 +49,7 @@ def _get_stub(module_name, expr, stubs: StubsManager) -> StubFile:
     return stubs.read(path=path)
 
 
-def _get_module(expr) -> Optional[astroid.Module]:
+def _get_module(expr: AstroidNode) -> Optional[astroid.Module]:
     if type(expr) is astroid.Module:
         return expr
     if expr.parent is None:
@@ -63,7 +57,7 @@ def _get_module(expr) -> Optional[astroid.Module]:
     return _get_module(expr.parent)
 
 
-def _get_full_name(expr) -> Tuple[str, str]:
+def _get_full_name(expr: AstroidNode) -> Tuple[str, str]:
     if expr.parent is None:
         return '', expr.name
 

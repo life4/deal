@@ -7,7 +7,7 @@ from typing import Iterator
 import astroid
 
 # app
-from .common import TOKENS, Token, get_name, traverse
+from .common import TOKENS, Token, get_name, traverse, infer
 from .contracts import get_contracts
 
 
@@ -72,19 +72,11 @@ def _exceptions_from_funcs(expr) -> Iterator[Token]:
         if type(name_node) is not astroid.Name:
             continue
 
-        # get possible definitions
-        try:
-            guesses = tuple(name_node.infer())
-        except astroid.exceptions.NameInferenceError:
-            continue
-        except RecursionError:  # pragma: no coverage
-            continue            # pragma: no coverage
-
         extra = dict(
             line=name_node.lineno,
             col=name_node.col_offset,
         )
-        for value in guesses:
+        for value in infer(name_node):
             if type(value) is not astroid.FunctionDef:
                 continue
 

@@ -1,13 +1,15 @@
 # built-in
 import ast
+from contextlib import suppress
 from types import SimpleNamespace
-from typing import NamedTuple, Optional, Iterator, List, Union
+from typing import NamedTuple, Iterator, List, Optional, Union
 
 # external
 import astroid
 
+AstroidNode = astroid.node_classes.NodeNG
+Node = Union[ast.AST, AstroidNode]
 
-NodeType = Union[ast.AST, astroid.node_classes.NodeNG]
 TOKENS = SimpleNamespace(
     ASSERT=(ast.Assert, astroid.Assert),
     ATTR=(ast.Attribute, astroid.Attribute),
@@ -34,7 +36,7 @@ class Token(NamedTuple):
     col: int
 
 
-def traverse(body: List[NodeType]) -> Iterator[NodeType]:
+def traverse(body: List[Node]) -> Iterator[Node]:
     for expr in body:
         # breaking apart
         if isinstance(expr, TOKENS.EXPR):
@@ -77,3 +79,9 @@ def get_name(expr) -> Optional[str]:
         return left + '.' + expr.attr
 
     return None
+
+
+def infer(expr: astroid.node_classes.NodeNG) -> tuple:
+    with suppress(astroid.exceptions.InferenceError, RecursionError):
+        return tuple(expr.infer())
+    return tuple()

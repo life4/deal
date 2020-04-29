@@ -6,7 +6,7 @@ from typing import Iterator
 import astroid
 
 # app
-from .common import TOKENS, Token, get_name, traverse
+from .common import TOKENS, Token, get_name, traverse, infer
 
 
 def get_prints(body: list) -> Iterator[Token]:
@@ -76,11 +76,7 @@ def _is_pathlib_write(expr) -> bool:
         if not _is_open_to_write(expr):
             return False
 
-    try:
-        guesses = tuple(expr.func.expr.infer())
-    except astroid.exceptions.NameInferenceError:
-        return False
-    for value in guesses:
+    for value in infer(expr.func.expr):
         if isinstance(value, astroid.Instance):
             if value.pytype().startswith('pathlib.'):
                 return True
