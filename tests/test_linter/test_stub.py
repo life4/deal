@@ -1,4 +1,5 @@
 import json
+from importlib import import_module
 from pathlib import Path
 
 import pytest
@@ -88,6 +89,19 @@ def test_get_module_name(tmp_path: Path):
 
     (root / '__init__.py').touch()
     assert StubsManager._get_module_name(path=path) == 'project.example'
+
+
+@pytest.mark.parametrize('given, expected', [
+    ('deal.linter', 'deal.linter.__init__'),
+    ('deal._state', 'deal._state'),
+    ('pytest', 'pytest.__init__'),
+    ('json', 'json.__init__'),
+    ('typing', 'typing'),
+])
+def test_get_module_name_for_real_modules(tmp_path: Path, given, expected):
+    module = import_module(given)
+    path = Path(module.__file__)
+    assert StubsManager._get_module_name(path=path) == expected
 
 
 def test_stubs_manager(tmp_path: Path):
