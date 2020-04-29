@@ -27,7 +27,6 @@ def test_stubs_in_the_root(tmp_path):
         @deal.raises()
         def child():
             isnan()
-            # parent()
     """
     tree = astroid.parse(dedent(text))
     print(tree.repr_tree())
@@ -61,6 +60,23 @@ def test_stubs_next_to_imported_module(tmp_path):
         assert returns == (ZeroDivisionError, )
     finally:
         sys.path = sys.path[:-1]
+
+
+def test_built_in_stubs(tmp_path):
+    stubs = StubsManager()
+
+    text = """
+        from inspect import getfile
+
+        @deal.raises()
+        def child():
+            getfile(1)
+    """
+    tree = astroid.parse(dedent(text))
+    print(tree.repr_tree())
+    func_tree = tree.body[-1].body
+    returns = tuple(r.value for r in get_exceptions_stubs(body=func_tree, stubs=stubs))
+    assert returns == (TypeError, )
 
 
 def test_get_full_name_func():

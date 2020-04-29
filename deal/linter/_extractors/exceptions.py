@@ -77,8 +77,8 @@ def _exceptions_from_funcs(expr) -> Iterator[Token]:
             guesses = tuple(name_node.infer())
         except astroid.exceptions.NameInferenceError:
             continue
-        except RecursionError:
-            continue
+        except RecursionError:  # pragma: no coverage
+            continue            # pragma: no coverage
 
         extra = dict(
             line=name_node.lineno,
