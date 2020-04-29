@@ -13,7 +13,7 @@ command = "flake8"
 [tool.dephell.pytest]
 from = {format = "poetry", path = "pyproject.toml"}
 envs = ["main", "tests"]
-command = "pytest --cov=deal tests/"
+command = "pytest tests/"
 
 [tool.dephell.docs]
 from = {format = "poetry", path = "pyproject.toml"}
