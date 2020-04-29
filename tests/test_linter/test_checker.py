@@ -23,9 +23,9 @@ def test2():
 """.strip()
 
 EXPECTED = [
-    (6, 11, 'DEAL011: post contract error (-1)', Checker),
-    (11, 8, 'DEAL012: raises contract error (ZeroDivisionError)', Checker),
-    (13, 10, 'DEAL012: raises contract error (KeyError)', Checker),
+    (6, 11, 'DEAL011 post contract error (-1)', Checker),
+    (11, 8, 'DEAL012 raises contract error (ZeroDivisionError)', Checker),
+    (13, 10, 'DEAL012 raises contract error (KeyError)', Checker),
 ]
 
 
