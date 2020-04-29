@@ -1,0 +1,27 @@
+{
+  "BaseBrowser.open": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "UnixBrowser.open": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "get": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "main": {
+    "raises": [
+      "SystemExit"
+    ]
+  },
+  "open": {
+    "raises": [
+      "Error"
+    ]
+  }
+}
