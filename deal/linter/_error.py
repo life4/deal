@@ -33,3 +33,6 @@ class Error:
             name=type(self).__name__,
             content=self.__dict__,
         )
+
+    def __hash__(self):
+        return hash((self.row, self.col, self.code))

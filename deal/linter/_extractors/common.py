@@ -28,14 +28,26 @@ TOKENS = SimpleNamespace(
 
 
 class Token:
+    __slots__ = ['value', 'line', 'col']
+
     def __init__(self, value, line: int, col: int):
         self.value = value
         self.line = line
         self.col = col
 
+    def __repr__(self) -> str:
+        return '{name}(value={value!r}, line={line}, col={col})'.format(
+            name=type(self).__name__,
+            value=self.value,
+            line=self.line,
+            col=self.col,
+        )
+
 
 def traverse(body):
     for expr in body:
+
+        # breaking apart
         if isinstance(expr, TOKENS.EXPR):
             yield expr.value
             continue
@@ -49,8 +61,12 @@ def traverse(body):
             if hasattr(expr, 'finalbody'):
                 yield from traverse(body=expr.finalbody)
             continue
+
+        # extracting things
         if isinstance(expr, TOKENS.WITH):
             yield from traverse(body=expr.body)
+        if isinstance(expr, TOKENS.RETURN):
+            yield expr.value
         yield expr
 
 

@@ -45,11 +45,17 @@ class Checker:
             return Func.from_ast(tree=self._tree)
 
     def get_errors(self) -> typing.Iterator[Error]:
+        reported = set()
         for func in self.get_funcs():
             for rule in self._rules:
                 if rule.required != Required.FUNC:
                     continue
-                yield from rule(func=func, stubs=self._stubs)
+                for error in rule(func=func, stubs=self._stubs):
+                    hs = hash(error)
+                    if hs in reported:
+                        continue
+                    reported.add(hs)
+                    yield error
 
         for rule in self._rules:
             if rule.required != Required.MODULE:
