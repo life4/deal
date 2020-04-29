@@ -1,12 +1,13 @@
 # built-in
 import ast
 import enum
+from itertools import chain
 from typing import Iterator
 
 # app
 from ._contract import Category, Contract
 from ._error import Error
-from ._extractors import get_exceptions, get_imports, get_prints, get_returns, get_globals
+from ._extractors import get_exceptions, get_exceptions_stubs, get_imports, get_prints, get_returns, get_globals
 from ._func import Func
 from ._stub import StubsManager
 
@@ -90,7 +91,11 @@ class CheckRaises:
     def _check(self, func: Func, contract: Contract, stubs: StubsManager = None) -> Iterator[Error]:
         allowed = contract.exceptions
         allowed_types = tuple(exc for exc in allowed if type(exc) is not str)
-        for token in get_exceptions(body=func.body, stubs=stubs):
+        tokens = chain(
+            get_exceptions(body=func.body),
+            get_exceptions_stubs(body=func.body, stubs=stubs),
+        )
+        for token in tokens:
             if token.value in allowed:
                 continue
             if issubclass(token.value, allowed_types):
