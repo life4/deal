@@ -1,6 +1,7 @@
 # built-in
 import json
 import sys
+from pathlib import Path
 from textwrap import dedent
 
 # external
@@ -12,7 +13,7 @@ from deal.linter._extractors.exceptions_stubs import _get_full_name
 from deal.linter._stub import StubsManager
 
 
-def test_stubs_in_the_root(tmp_path):
+def test_stubs_in_the_root(tmp_path: Path):
     root = tmp_path / 'project'
     root.mkdir()
     (root / '__init__.py').touch()
@@ -35,7 +36,7 @@ def test_stubs_in_the_root(tmp_path):
     assert returns == (ZeroDivisionError, )
 
 
-def test_stubs_next_to_imported_module(tmp_path):
+def test_stubs_next_to_imported_module(tmp_path: Path):
     root = tmp_path / 'project'
     root.mkdir()
     (root / '__init__.py').touch()
@@ -62,7 +63,7 @@ def test_stubs_next_to_imported_module(tmp_path):
         sys.path = sys.path[:-1]
 
 
-def test_built_in_stubs(tmp_path):
+def test_built_in_stubs():
     stubs = StubsManager()
 
     text = """
@@ -77,6 +78,28 @@ def test_built_in_stubs(tmp_path):
     func_tree = tree.body[-1].body
     returns = tuple(r.value for r in get_exceptions_stubs(body=func_tree, stubs=stubs))
     assert returns == (TypeError, )
+
+
+def test_infer_junk():
+    stubs = StubsManager()
+
+    text = """
+        def another():
+            return 2
+
+        number = 3
+
+        @deal.raises()
+        def child():
+            another()
+            number()
+            return unknown()  # uninferrable
+    """
+    tree = astroid.parse(dedent(text))
+    print(tree.repr_tree())
+    func_tree = tree.body[-1].body
+    returns = tuple(r.value for r in get_exceptions_stubs(body=func_tree, stubs=stubs))
+    assert returns == ()
 
 
 def test_get_full_name_func():

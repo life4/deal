@@ -1,12 +1,13 @@
 # built-in
 import ast
 from types import SimpleNamespace
-from typing import NamedTuple, Optional
+from typing import NamedTuple, Optional, Iterator, List, Union
 
 # external
 import astroid
 
 
+NodeType = Union[ast.AST, astroid.node_classes.NodeNG]
 TOKENS = SimpleNamespace(
     ASSERT=(ast.Assert, astroid.Assert),
     ATTR=(ast.Attribute, astroid.Attribute),
@@ -33,9 +34,8 @@ class Token(NamedTuple):
     col: int
 
 
-def traverse(body):
+def traverse(body: List[NodeType]) -> Iterator[NodeType]:
     for expr in body:
-
         # breaking apart
         if isinstance(expr, TOKENS.EXPR):
             yield expr.value
