@@ -21,7 +21,7 @@ class Checker:
         self._tree = tree
         self._filename = filename
 
-        paths = [StubsManager.root]
+        paths = list(StubsManager.default_paths)
         if filename != 'stdin':
             paths.append(Path(filename).absolute().parent)
         self._stubs = StubsManager(paths=paths)

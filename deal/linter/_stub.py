@@ -7,6 +7,8 @@ import astroid
 
 
 EXTENSION = '.json'
+ROOT = Path(__file__).parent / 'stubs'
+CPYTHON_ROOT = ROOT / 'cpython'
 
 
 class StubFile:
@@ -41,12 +43,12 @@ class StubFile:
 
 
 class StubsManager:
-    root = Path(__file__).parent / 'stubs'
+    default_paths = (ROOT, CPYTHON_ROOT)
 
     def __init__(self, paths: Sequence[Path] = None):
         self._modules = dict()
         if paths is None:
-            self.paths = (self.root, )
+            self.paths = self.default_paths
         else:
             self.paths = tuple(paths)
 
@@ -64,7 +66,7 @@ class StubsManager:
 
     def _get_module_name(self, path: Path) -> str:
         # built-in stubs
-        if path.parent == self.root:
+        if path.parent == CPYTHON_ROOT:
             return path.stem
         # name is a full path to a module
         if '.' in path.stem:

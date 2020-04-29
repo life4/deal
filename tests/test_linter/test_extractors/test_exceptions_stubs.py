@@ -98,3 +98,10 @@ def test_get_full_name_deep_method():
     print(tree.repr_tree())
     func = tree.body[0].body[0].body[0]
     assert _get_full_name(expr=func) == ('', 'A.B.f')
+
+
+def test_get_full_name_func_in_func():
+    tree = astroid.parse("def outer():\n def inner(): pass")
+    print(tree.repr_tree())
+    func = tree.body[0].body[0]
+    assert _get_full_name(expr=func) == ('', 'outer.inner')

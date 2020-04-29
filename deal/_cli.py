@@ -23,7 +23,7 @@ def stub(argv: Sequence[str]) -> int:
     args = parser.parse_args(argv)
 
     paths = [Path(path) for path in args.paths]
-    roots = [StubsManager.root] + list(set(paths))
+    roots = list(StubsManager.default_paths) + list(set(paths))
     stubs = StubsManager(paths=roots)
 
     for _ in range(args.iterations):
