@@ -5,6 +5,9 @@ from typing import Any, Dict, FrozenSet, Iterator, Optional, Sequence
 import astroid
 
 
+EXTENSION = '.json'
+
+
 class StubFile:
 
     def __init__(self, path: Path) -> None:
@@ -47,7 +50,9 @@ class StubsManager:
             self.paths = tuple(paths)
 
     def read(self, path: Path) -> StubFile:
-        if path.suffix != '.json':
+        if path.suffix == '.py':
+            path = path.with_suffix(EXTENSION)
+        if path.suffix != EXTENSION:
             raise ValueError('invalid stub file extension: *{}'.format(path.suffix))
         module_name = self._get_module_name(path=path)
         if module_name not in self._modules:
@@ -79,14 +84,14 @@ class StubsManager:
             return stub
         # in the root
         for root in self.paths:
-            path = root / (module_name + '.json')
+            path = root / (module_name + EXTENSION)
             if path.exists():
                 return self.read(path)
         return None
 
     def create(self, path: Path) -> StubFile:
         if path.suffix == '.py':
-            path = path.with_suffix('.json')
+            path = path.with_suffix(EXTENSION)
         if path.exists():
             return self.read(path=path)
         module_name = self._get_module_name(path=path)

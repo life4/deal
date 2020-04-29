@@ -1,7 +1,8 @@
 # built-in
 import ast
 import builtins
-from typing import Iterator, Tuple
+from pathlib import Path
+from typing import Iterator, Optional, Tuple
 
 # external
 import astroid
@@ -9,7 +10,7 @@ import astroid
 # app
 from .common import TOKENS, Token, get_name, traverse
 from .contracts import get_contracts
-from .._stub import StubsManager
+from .._stub import StubsManager, StubFile, EXTENSION
 
 
 def get_exceptions(body: list, *, dive: bool = True, stubs: StubsManager = None) -> Iterator[Token]:
@@ -126,15 +127,37 @@ def _exceptions_from_stubs(expr, stubs: StubsManager) -> Iterator[Token]:
         if type(value) is not astroid.FunctionDef:
             continue
         module_name, func_name = _get_full_name(expr=value)
-        if not module_name:
-            continue
-        stub = stubs.get(module_name)
+        stub = _get_stub(module_name=module_name, expr=value, stubs=stubs)
         if stub is None:
             continue
         names = stub.get(func=func_name, contract='raises')
         for name in names:
             name = getattr(builtins, name, name)
             yield Token(value=name, **extra)
+
+
+def _get_stub(module_name, expr, stubs: StubsManager) -> StubFile:
+    if not module_name:
+        return None
+    stub = stubs.get(module_name)
+    if stub is not None:
+        return stub
+
+    module = _get_module(expr=expr)
+    if module.file is None:
+        return None
+    path = Path(module.file).with_suffix(EXTENSION)
+    if not path.exists():
+        return None
+    return stubs.read(path=path)
+
+
+def _get_module(expr) -> Optional[astroid.Module]:
+    if type(expr) is astroid.Module:
+        return expr
+    if expr.parent is None:
+        return None
+    return _get_module(expr.parent)
 
 
 def _get_full_name(expr) -> Tuple[str, str]:
