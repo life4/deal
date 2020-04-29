@@ -14,6 +14,7 @@ from ._stub import StubsManager
 
 
 class Checker:
+    __slots__ = ('_tree', '_filename', '_stubs')
     name = 'deal'
     _rules = rules
 

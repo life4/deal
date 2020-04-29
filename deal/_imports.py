@@ -29,6 +29,8 @@ class DealFinder(PathFinder):
 
 
 class DealLoader:
+    __slots__ = ('_loader', )
+
     def __init__(self, loader):
         self._loader = loader
 

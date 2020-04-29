@@ -1,7 +1,7 @@
 import json
 from itertools import chain
 from pathlib import Path
-from typing import Any, Dict, FrozenSet, Iterator, Optional, Sequence
+from typing import Any, Dict, FrozenSet, Iterator, Optional, Sequence, NamedTuple
 
 import astroid
 
@@ -14,6 +14,7 @@ CPYTHON_ROOT = ROOT / 'cpython'
 
 
 class StubFile:
+    __slots__ = ('path', '_content')
 
     def __init__(self, path: Path) -> None:
         self.path = path
@@ -46,6 +47,7 @@ class StubFile:
 
 
 class StubsManager:
+    __slots__ = ('paths', '_modules')
     default_paths = (ROOT, CPYTHON_ROOT)
 
     def __init__(self, paths: Sequence[Path] = None):
@@ -110,12 +112,9 @@ class StubsManager:
         return stub
 
 
-class PseudoFunc:
-    __slots__ = ['name', 'body']
-
-    def __init__(self, *, name: str, body):
-        self.name = name
-        self.body = body
+class PseudoFunc(NamedTuple):
+    name: str
+    body: list
 
 
 def _get_funcs(*, path: Path) -> Iterator[PseudoFunc]:

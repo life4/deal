@@ -1,7 +1,7 @@
 # built-in
 import ast
 from types import SimpleNamespace
-from typing import Optional
+from typing import NamedTuple, Optional
 
 # external
 import astroid
@@ -27,21 +27,10 @@ TOKENS = SimpleNamespace(
 )
 
 
-class Token:
-    __slots__ = ['value', 'line', 'col']
-
-    def __init__(self, value, line: int, col: int):
-        self.value = value
-        self.line = line
-        self.col = col
-
-    def __repr__(self) -> str:
-        return '{name}(value={value!r}, line={line}, col={col})'.format(
-            name=type(self).__name__,
-            value=self.value,
-            line=self.line,
-            col=self.col,
-        )
+class Token(NamedTuple):
+    value: object
+    line: int
+    col: int
 
 
 def traverse(body):

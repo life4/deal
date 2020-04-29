@@ -6,7 +6,7 @@ ERROR_FORMAT = 'DEAL{code:03d} {text}'
 
 
 class Error:
-    __slots__ = ['row', 'col', 'code', 'text', 'value']
+    __slots__ = ('row', 'col', 'code', 'text', 'value')
 
     def __init__(self, *, row: int, col: int, code: int, text: str, value: str = None):
         self.row = row

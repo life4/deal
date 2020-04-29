@@ -21,6 +21,8 @@ class Category(enum.Enum):
 
 
 class Contract:
+    __slots__ = ('args', 'category')
+
     def __init__(self, args, category: Category):
         self.args = args
         self.category = category

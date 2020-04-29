@@ -1,6 +1,8 @@
 
 
 class _State:
+    __slots__ = ('main', 'debug')
+
     def __init__(self):
         self.reset()
 

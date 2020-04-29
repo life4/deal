@@ -27,6 +27,7 @@ def register(rule):
 
 @register
 class CheckImports:
+    __slots__ = ()
     code = 1
     message = 'do not use `from deal import ...`, use `import deal` instead'
     required = Required.MODULE
@@ -45,6 +46,7 @@ class CheckImports:
 
 @register
 class CheckReturns:
+    __slots__ = ()
     code = 11
     message = 'post contract error'
     required = Required.FUNC
@@ -78,6 +80,7 @@ class CheckReturns:
 
 @register
 class CheckRaises:
+    __slots__ = ()
     code = 12
     message = 'raises contract error'
     required = Required.FUNC
@@ -114,6 +117,7 @@ class CheckRaises:
 
 @register
 class CheckPrints:
+    __slots__ = ()
     code = 13
     message = 'silent contract error'
     required = Required.FUNC
@@ -139,6 +143,7 @@ class CheckPrints:
 
 @register
 class CheckPure:
+    __slots__ = ()
     code = 14
     message = 'pure contract error'
     required = Required.FUNC
