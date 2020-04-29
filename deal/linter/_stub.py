@@ -31,7 +31,7 @@ class StubFile:
 
     def add(self, func: str, contract: Category, value: str) -> None:
         if contract != Category.RAISES:
-            raise ValueError('only raises contract is supported yet')
+            raise ValueError('unsupported contract')
         contracts = self._content.setdefault(func, dict())
         values = contracts.setdefault(contract.value, [])
         if value not in values:
@@ -40,7 +40,7 @@ class StubFile:
 
     def get(self, func: str, contract: Category) -> FrozenSet[str]:
         if contract != Category.RAISES:
-            raise ValueError('only raises contract is supported yet')
+            raise ValueError('unsupported contract')
         values = self._content.get(func, {}).get(contract.value, [])
         return frozenset(values)
 
