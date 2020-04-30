@@ -64,14 +64,16 @@ def handle_unary_op(expr) -> Optional[Token]:
     token_info = dict(line=expr.lineno, col=expr.col_offset)
     is_minus = type(expr.op) is ast.USub or expr.op == '-'
     if is_minus:
-        if type(expr.operand) is ast.Num:
+        # in Python 3.8 it is ast.Constant but it is subclass of ast.Num
+        if isinstance(expr.operand, ast.Num):
             return Token(value=-expr.operand.n, **token_info)
         if type(expr.operand) is astroid.Const:
             return Token(value=-expr.operand.value, **token_info)
 
     is_plus = type(expr.op) is ast.UAdd or expr.op == '+'
     if is_plus:
-        if type(expr.operand) is ast.Num:
+        # in Python 3.8 it is ast.Constant but it is subclass of ast.Num
+        if isinstance(expr.operand, ast.Num):
             return Token(value=expr.operand.n, **token_info)
         if type(expr.operand) is astroid.Const:
             return Token(value=expr.operand.value, **token_info)
