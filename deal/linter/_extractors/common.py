@@ -114,5 +114,5 @@ class Extractor:
                 continue
             if type(token) is Token:
                 yield token
-            else:
-                yield from token
+                continue
+            yield from token
