@@ -48,7 +48,7 @@ def get_exceptions(body: List, *, dive: bool = True) -> Iterator[Token]:
                         yield Token(value=ZeroDivisionError, **token_info)
                         break
                     continue
-                if type(expr.right) is ast.Num and expr.right.n == 0:
+                if isinstance(expr.right, ast.Num) and expr.right.n == 0:
                     token_info['col'] = expr.right.col_offset
                     yield Token(value=ZeroDivisionError, **token_info)
                     continue
