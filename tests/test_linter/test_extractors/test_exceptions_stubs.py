@@ -80,6 +80,23 @@ def test_built_in_stubs():
     assert returns == (TypeError, )
 
 
+def test_no_stubs_for_module():
+    stubs = StubsManager()
+
+    text = """
+        from astroid import inference_tip
+
+        @deal.raises()
+        def child():
+            inference_tip()
+    """
+    tree = astroid.parse(dedent(text))
+    print(tree.repr_tree())
+    func_tree = tree.body[-1].body
+    returns = tuple(r.value for r in get_exceptions_stubs(body=func_tree, stubs=stubs))
+    assert returns == ()
+
+
 def test_infer_junk():
     stubs = StubsManager()
 

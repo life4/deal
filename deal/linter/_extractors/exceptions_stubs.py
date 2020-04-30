@@ -9,10 +9,10 @@ import astroid
 # app
 from .._contract import Category
 from .._stub import EXTENSION, StubFile, StubsManager
-from .common import AstroidNode, Node, Token, infer, traverse
+from .common import Token, infer, traverse
 
 
-def get_exceptions_stubs(body: List[Node], *, dive: bool = True, stubs: StubsManager) -> Iterator[Token]:
+def get_exceptions_stubs(body: List, *, dive: bool = True, stubs: StubsManager) -> Iterator[Token]:
     for expr in traverse(body):
         if type(expr) is not astroid.Call:
             return
@@ -42,14 +42,14 @@ def _get_stub(module_name: Optional[str], expr: astroid.FunctionDef, stubs: Stub
 
     module = _get_module(expr=expr)
     if module.file is None:
-        return None
+        return None  # pragma: no coverage
     path = Path(module.file).with_suffix(EXTENSION)
     if not path.exists():
         return None
     return stubs.read(path=path)
 
 
-def _get_module(expr: AstroidNode) -> Optional[astroid.Module]:
+def _get_module(expr) -> Optional[astroid.Module]:
     if type(expr) is astroid.Module:
         return expr
     if expr.parent is None:
@@ -57,7 +57,7 @@ def _get_module(expr: AstroidNode) -> Optional[astroid.Module]:
     return _get_module(expr.parent)
 
 
-def _get_full_name(expr: AstroidNode) -> Tuple[str, str]:
+def _get_full_name(expr) -> Tuple[str, str]:
     if expr.parent is None:
         return '', expr.name
 
