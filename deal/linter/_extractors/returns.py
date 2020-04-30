@@ -66,7 +66,7 @@ def handle_num(expr) -> Optional[Token]:
 def handle_unary_op(expr: ast.UnaryOp) -> Optional[Token]:
     # in Python 3.8 it is ast.Constant but it is subclass of ast.Num.
     if not isinstance(expr.operand, ast.Num):
-        return
+        return None
 
     token_info = dict(line=expr.lineno, col=expr.col_offset)
     value = expr.operand.n
