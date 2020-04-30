@@ -25,7 +25,7 @@ def handle_returns(expr) -> Optional[Token]:
     if hasattr(expr.value, 'infer'):
         for value in infer(expr.value):
             if isinstance(value, astroid.Const):
-                token_info = dict(line=expr.lineno, col=expr.col_offset)
+                token_info = dict(line=expr.lineno, col=expr.value.col_offset)
                 return Token(value=value.value, **token_info)
     return None
 
@@ -67,14 +67,10 @@ def handle_unary_op(expr) -> Optional[Token]:
         # in Python 3.8 it is ast.Constant but it is subclass of ast.Num
         if isinstance(expr.operand, ast.Num):
             return Token(value=-expr.operand.n, **token_info)
-        if type(expr.operand) is astroid.Const:
-            return Token(value=-expr.operand.value, **token_info)
 
     is_plus = type(expr.op) is ast.UAdd or expr.op == '+'
     if is_plus:
         # in Python 3.8 it is ast.Constant but it is subclass of ast.Num
         if isinstance(expr.operand, ast.Num):
             return Token(value=expr.operand.n, **token_info)
-        if type(expr.operand) is astroid.Const:
-            return Token(value=expr.operand.value, **token_info)
     return None
