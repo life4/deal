@@ -97,22 +97,21 @@ class CheckRaises:
     def _check(self, func: Func, contract: Contract, stubs: StubsManager = None) -> Iterator[Error]:
         allowed = contract.exceptions
         allowed_types = tuple(exc for exc in allowed if type(exc) is not str)
-        tokens = chain(
-            get_exceptions(body=func.body),
-            get_exceptions_stubs(body=func.body, stubs=stubs),
-        )
-        for token in tokens:
+        tokens = [get_exceptions(body=func.body)]
+        if stubs is not None:
+            tokens.append(get_exceptions_stubs(body=func.body, stubs=stubs))
+        for token in chain(*tokens):
             if token.value in allowed:
                 continue
-            if issubclass(token.value, allowed_types):
-                continue
             exc = token.value
-            if not isinstance(exc, str):
+            if isinstance(exc, type):
+                if issubclass(exc, allowed_types):
+                    continue
                 exc = exc.__name__
             yield Error(
                 code=self.code,
                 text=self.message,
-                value=exc,
+                value=str(exc),
                 row=token.line,
                 col=token.col,
             )

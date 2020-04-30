@@ -33,7 +33,9 @@ def get_exceptions_stubs(body: List, *, dive: bool = True, stubs: StubsManager) 
                 yield Token(value=name, **extra)
 
 
-def _get_stub(module_name: Optional[str], expr: astroid.FunctionDef, stubs: StubsManager) -> StubFile:
+def _get_stub(
+    module_name: Optional[str], expr: astroid.FunctionDef, stubs: StubsManager,
+) -> Optional[StubFile]:
     if not module_name:
         return None
     stub = stubs.get(module_name)
@@ -41,7 +43,7 @@ def _get_stub(module_name: Optional[str], expr: astroid.FunctionDef, stubs: Stub
         return stub
 
     module = _get_module(expr=expr)
-    if module.file is None:
+    if module is None or module.file is None:
         return None  # pragma: no coverage
     path = Path(module.file).with_suffix(EXTENSION)
     if not path.exists():

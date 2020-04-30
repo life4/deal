@@ -2,7 +2,7 @@
 import json
 from itertools import chain
 from pathlib import Path
-from typing import Any, Dict, FrozenSet, Iterator, NamedTuple, Optional, Sequence
+from typing import Any, Dict, FrozenSet, Iterator, NamedTuple, Optional, Sequence, Tuple
 
 # external
 import astroid
@@ -54,9 +54,9 @@ class StubsManager:
     default_paths = (ROOT, CPYTHON_ROOT)
 
     def __init__(self, paths: Sequence[Path] = None):
-        self._modules = dict()
+        self._modules = dict()  # type: Dict[str, StubFile]
         if paths is None:
-            self.paths = self.default_paths
+            self.paths = self.default_paths  # type: Tuple[Path, ...]
         else:
             self.paths = tuple(paths)
 
