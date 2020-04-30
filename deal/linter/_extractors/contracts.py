@@ -5,7 +5,7 @@ from typing import Iterator, List, Tuple
 import astroid
 
 # app
-from .common import TOKENS, get_name, Node
+from .common import TOKENS, Node, get_name
 
 
 SUPPORTED_CONTRACTS = {'deal.post', 'deal.raises', 'deal.silent', 'deal.pure'}

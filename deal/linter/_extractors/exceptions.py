@@ -7,7 +7,7 @@ from typing import Iterator, List
 import astroid
 
 # app
-from .common import TOKENS, Token, get_name, infer, traverse, Node
+from .common import TOKENS, Node, Token, get_name, infer, traverse, AstroidNode
 from .contracts import get_contracts
 
 
@@ -39,11 +39,16 @@ def get_exceptions(body: List[Node], *, dive: bool = True) -> Iterator[Token]:
         # division by zero
         if isinstance(expr, TOKENS.BIN_OP):
             if isinstance(expr.op, ast.Div) or expr.op == '/':
-                if isinstance(expr.right, astroid.Const) and expr.right.value == 0:
+                if isinstance(expr.right, AstroidNode):
+                    guesses = infer(expr=expr.right)
                     token_info['col'] = expr.right.col_offset
-                    yield Token(value=ZeroDivisionError, **token_info)
+                    for guess in guesses:
+                        if type(guess) is not astroid.Const:
+                            continue
+                        yield Token(value=ZeroDivisionError, **token_info)
+                        break
                     continue
-                if isinstance(expr.right, ast.Num) and expr.right.n == 0:
+                if type(expr.right) is ast.Num and expr.right.n == 0:
                     token_info['col'] = expr.right.col_offset
                     yield Token(value=ZeroDivisionError, **token_info)
                     continue
@@ -97,7 +102,7 @@ def _exceptions_from_funcs(expr) -> Iterator[Token]:
                     yield Token(value=name, **extra)
 
 
-def get_names(expr) -> Iterator:
+def get_names(expr: Node) -> Iterator[Node]:
     if isinstance(expr, astroid.Assign):
         yield from get_names(expr.value)
     if isinstance(expr, TOKENS.CALL):
