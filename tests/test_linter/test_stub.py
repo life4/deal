@@ -137,3 +137,9 @@ def test_stubs_manager(tmp_path: Path):
     new_stub = stubs.create(path)
     assert new_stub is not old_stub
     assert new_stub._content == {'fname': {'raises': ['TypeError']}}
+
+    # test read with non-stub extensions
+    stub = stubs.read(path=path)
+    assert stub.path.name == 'example.json'
+    with pytest.raises(ValueError, match='invalid stub file extension.*'):
+        stubs.read(path=path.with_suffix('.cpp'))
