@@ -62,10 +62,17 @@ def handle_num(expr) -> Optional[Token]:
 @inner_extractor.register(*TOKENS.UNARY_OP)
 def handle_unary_op(expr) -> Optional[Token]:
     token_info = dict(line=expr.lineno, col=expr.col_offset)
-    is_minus = isinstance(expr.op, ast.USub) or expr.op == '-'
+    is_minus = type(expr.op) is ast.USub or expr.op == '-'
     if is_minus:
-        if isinstance(expr.operand, ast.Num):
+        if type(expr.operand) is ast.Num:
             return Token(value=-expr.operand.n, **token_info)
-        if isinstance(expr.operand, astroid.Const):
+        if type(expr.operand) is astroid.Const:
             return Token(value=-expr.operand.value, **token_info)
+
+    is_plus = type(expr.op) is ast.UAdd or expr.op == '+'
+    if is_plus:
+        if type(expr.operand) is ast.Num:
+            return Token(value=expr.operand.n, **token_info)
+        if type(expr.operand) is astroid.Const:
+            return Token(value=expr.operand.value, **token_info)
     return None

@@ -94,10 +94,10 @@ class Extractor:
 
     def _register(self, types: Tuple[type], handler: Callable) -> Callable:
         for tp in types:
+            # it's here to have `getattr` to get nodes from `ast` module
+            # that are available only in some Python versions.
             if tp is None:
-                continue
-            if tp in self.handlers:
-                raise ValueError('hadler for type is already registered', tp)
+                continue  # pragma: no coverage
             self.handlers[tp] = handler
         return handler
 
