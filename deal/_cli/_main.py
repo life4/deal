@@ -1,23 +1,24 @@
 # built-in
 from argparse import ArgumentParser
-from typing import Sequence
+from types import MappingProxyType
+from typing import Callable, Mapping, Sequence
 
 # app
 from ._lint import lint_command
 from ._stub import stub_command
 
 
-def get_parser() -> ArgumentParser:
+CommandsType = Mapping[str, Callable[[Sequence[str]], int]]
+COMMANDS: CommandsType = MappingProxyType(dict(
+    lint=lint_command,
+    stub=stub_command,
+))
+
+
+def main(argv: Sequence[str], *, commands: CommandsType = COMMANDS) -> int:
     parser = ArgumentParser(prog='python3 -m deal')
-    parser.add_argument('command', choices=['lint', 'stub'])
-    return parser
+    parser.add_argument('command', choices=sorted(commands))
 
-
-COMMANDS = dict(lint=lint_command, stub=stub_command)
-
-
-def main(argv: Sequence[str]) -> int:
-    parser = get_parser()
-    args, unknown = parser.parse_known_args(argv)
-    command = COMMANDS[args.command]
-    return command(unknown)
+    args, unknown_argv = parser.parse_known_args(argv)
+    command = commands[args.command]
+    return command(unknown_argv)
