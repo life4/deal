@@ -2,7 +2,7 @@
 import ast
 from contextlib import suppress
 from types import SimpleNamespace
-from typing import Iterator, List, NamedTuple, Optional, Union
+from typing import Iterator, List, NamedTuple, Optional, Tuple, Union
 
 # external
 import astroid
@@ -62,7 +62,7 @@ def traverse(body: List[Node]) -> Iterator[Node]:
         yield expr
 
 
-def get_name(expr) -> Optional[str]:
+def get_name(expr: Node) -> Optional[str]:
     if isinstance(expr, ast.Name):
         return expr.id
     if isinstance(expr, astroid.Name):
@@ -82,7 +82,7 @@ def get_name(expr) -> Optional[str]:
     return None
 
 
-def infer(expr: astroid.node_classes.NodeNG) -> tuple:
+def infer(expr: AstroidNode) -> Tuple[AstroidNode, ...]:
     with suppress(astroid.exceptions.InferenceError, RecursionError):
-        return tuple(expr.infer())
+        return tuple(g for g in expr.infer() if type(g) is not astroid.Uninferable)
     return tuple()
