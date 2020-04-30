@@ -120,48 +120,48 @@ def test_infer_junk():
 
 
 def test_get_full_name_func():
-    tree = astroid.parse("def f(): pass")
+    tree = astroid.parse('def f(): pass')
     print(tree.repr_tree())
     func = tree.body[0]
     assert _get_full_name(expr=func) == ('', 'f')
 
 
 def test_get_full_name_method():
-    tree = astroid.parse("class C:\n  def f(): pass")
+    tree = astroid.parse('class C:\n  def f(): pass')
     print(tree.repr_tree())
     func = tree.body[0].body[0]
     assert _get_full_name(expr=func) == ('', 'C.f')
 
 
 def test_get_full_name_deep_method():
-    tree = astroid.parse("class A:\n  class B:\n    def f(): pass")
+    tree = astroid.parse('class A:\n  class B:\n    def f(): pass')
     print(tree.repr_tree())
     func = tree.body[0].body[0].body[0]
     assert _get_full_name(expr=func) == ('', 'A.B.f')
 
 
 def test_get_full_name_func_in_func():
-    tree = astroid.parse("def outer():\n def inner(): pass")
+    tree = astroid.parse('def outer():\n def inner(): pass')
     print(tree.repr_tree())
     func = tree.body[0].body[0]
     assert _get_full_name(expr=func) == ('', 'outer.inner')
 
 
 def test_get_full_name_not_a_func():
-    tree = astroid.parse("try:\n pass\nexcept E as e:\n def f(): pass")
+    tree = astroid.parse('try:\n pass\nexcept E as e:\n def f(): pass')
     print(tree.repr_tree())
     func = tree.body[0].handlers[0].body[0]
     assert _get_full_name(expr=func) == ('', 'f')
 
 
 def test_get_full_name_no_parent():
-    tree = astroid.parse("def f(): pass")
+    tree = astroid.parse('def f(): pass')
     print(tree.repr_tree())
     assert _get_full_name(expr=tree) == ('', '')
 
 
 def test_get_module():
-    tree = astroid.parse("def f(): pass")
+    tree = astroid.parse('def f(): pass')
     print(tree.repr_tree())
     assert _get_module(expr=tree) is tree
     assert _get_module(expr=tree.body[0]) is tree
