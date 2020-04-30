@@ -1,0 +1,7 @@
+{
+  "test": {
+    "raises": [
+      "SystemExit"
+    ]
+  }
+}

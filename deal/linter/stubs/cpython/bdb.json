@@ -1,0 +1,37 @@
+{
+  "Bdb.dispatch_call": {
+    "raises": [
+      "BdbQuit"
+    ]
+  },
+  "Bdb.dispatch_exception": {
+    "raises": [
+      "BdbQuit"
+    ]
+  },
+  "Bdb.dispatch_line": {
+    "raises": [
+      "BdbQuit"
+    ]
+  },
+  "Bdb.dispatch_return": {
+    "raises": [
+      "BdbQuit"
+    ]
+  },
+  "Bdb.do_clear": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Bdb.get_bpbynumber": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Bdb.runcall": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

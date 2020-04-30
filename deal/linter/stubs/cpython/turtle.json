@@ -1,0 +1,67 @@
+{
+  "RawTurtle.__init__": {
+    "raises": [
+      "TurtleGraphicsError"
+    ]
+  },
+  "RawTurtle._cc": {
+    "raises": [
+      "TurtleGraphicsError"
+    ]
+  },
+  "RawTurtle.clone": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "RawTurtle.shape": {
+    "raises": [
+      "TurtleGraphicsError"
+    ]
+  },
+  "RawTurtle.shapesize": {
+    "raises": [
+      "TurtleGraphicsError"
+    ]
+  },
+  "RawTurtle.shapetransform": {
+    "raises": [
+      "TurtleGraphicsError"
+    ]
+  },
+  "Shape.__init__": {
+    "raises": [
+      "TurtleGraphicsError"
+    ]
+  },
+  "Shape.addcomponent": {
+    "raises": [
+      "TurtleGraphicsError"
+    ]
+  },
+  "TurtleScreen._color": {
+    "raises": [
+      "TurtleGraphicsError"
+    ]
+  },
+  "TurtleScreen._colorstr": {
+    "raises": [
+      "TurtleGraphicsError"
+    ]
+  },
+  "TurtleScreen._incrementudc": {
+    "raises": [
+      "Terminator"
+    ]
+  },
+  "TurtleScreen.mode": {
+    "raises": [
+      "TurtleGraphicsError"
+    ]
+  },
+  "TurtleScreen.register_shape": {
+    "raises": [
+      "TurtleGraphicsError"
+    ]
+  }
+}

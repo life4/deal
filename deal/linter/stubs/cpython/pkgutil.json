@@ -1,0 +1,42 @@
+{
+  "ImpImporter.__init__": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "ImpLoader.__init__": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "ImpLoader._fix_name": {
+    "raises": [
+      "ImportError"
+    ]
+  },
+  "_import_imp": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "find_loader": {
+    "raises": [
+      "ImportError"
+    ]
+  },
+  "iter_importers": {
+    "raises": [
+      "ImportError"
+    ]
+  },
+  "iter_modules": {
+    "raises": [
+      "ImportError",
+      "ValueError"
+    ]
+  }
+}

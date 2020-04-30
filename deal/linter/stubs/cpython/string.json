@@ -1,0 +1,32 @@
+{
+  "Formatter._vformat": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Formatter.convert_field": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Formatter.format": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Template._invalid": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Template.safe_substitute": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Template.substitute": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

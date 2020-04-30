@@ -1,0 +1,12 @@
+{
+  "PrettyPrinter.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "PrettyPrinter._pprint_str": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

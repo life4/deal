@@ -1,0 +1,67 @@
+{
+  "SMTP.__init__": {
+    "raises": [
+      "SMTPConnectError"
+    ]
+  },
+  "SMTP.auth": {
+    "raises": [
+      "SMTPAuthenticationError"
+    ]
+  },
+  "SMTP.data": {
+    "raises": [
+      "SMTPDataError"
+    ]
+  },
+  "SMTP.ehlo": {
+    "raises": [
+      "AssertionError",
+      "SMTPServerDisconnected"
+    ]
+  },
+  "SMTP.ehlo_or_helo_if_needed": {
+    "raises": [
+      "SMTPHeloError"
+    ]
+  },
+  "SMTP.login": {
+    "raises": [
+      "SMTPException",
+      "SMTPNotSupportedError",
+      "last_exception"
+    ]
+  },
+  "SMTP.mail": {
+    "raises": [
+      "SMTPNotSupportedError"
+    ]
+  },
+  "SMTP.send": {
+    "raises": [
+      "SMTPServerDisconnected"
+    ]
+  },
+  "SMTP.send_message": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SMTP.sendmail": {
+    "raises": [
+      "SMTPDataError",
+      "SMTPRecipientsRefused",
+      "SMTPSenderRefused"
+    ]
+  },
+  "SMTP.starttls": {
+    "raises": [
+      "RuntimeError",
+      "SMTPNotSupportedError",
+      "SMTPResponseException",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "_add_method": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "crypt": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "mksalt": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}

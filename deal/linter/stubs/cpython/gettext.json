@@ -1,0 +1,41 @@
+{
+  "GNUTranslations._parse": {
+    "raises": [
+      "OSError",
+      "ValueError"
+    ]
+  },
+  "_as_int": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_parse": {
+    "raises": [
+      "ValueError",
+      "_error"
+    ]
+  },
+  "_tokenize": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "c2py": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "install": {
+    "raises": [
+      "FileNotFoundError"
+    ]
+  },
+  "translation": {
+    "raises": [
+      "FileNotFoundError"
+    ]
+  }
+}

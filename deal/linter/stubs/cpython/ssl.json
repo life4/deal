@@ -1,0 +1,171 @@
+{
+  "PEM_cert_to_DER_cert": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SSLContext.load_default_certs": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "SSLContext.set_alpn_protocols": {
+    "raises": [
+      "SSLError"
+    ]
+  },
+  "SSLContext.set_npn_protocols": {
+    "raises": [
+      "SSLError"
+    ]
+  },
+  "SSLContext.set_servername_callback": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "SSLObject.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "SSLSocket.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "SSLSocket._create": {
+    "raises": [
+      "NotImplementedError",
+      "ValueError"
+    ]
+  },
+  "SSLSocket._real_connect": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SSLSocket.dup": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "SSLSocket.get_channel_binding": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SSLSocket.read": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SSLSocket.recv": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SSLSocket.recv_into": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SSLSocket.recvfrom": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SSLSocket.recvfrom_into": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SSLSocket.recvmsg": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "SSLSocket.recvmsg_into": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "SSLSocket.send": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SSLSocket.sendall": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SSLSocket.sendmsg": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "SSLSocket.sendto": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SSLSocket.unwrap": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SSLSocket.verify_client_post_handshake": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SSLSocket.write": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_create_unverified_context": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_dnsname_match": {
+    "raises": [
+      "CertificateError"
+    ]
+  },
+  "_inet_paton": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_ipaddress_match": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "create_default_context": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "get_server_certificate": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "match_hostname": {
+    "raises": [
+      "CertificateError",
+      "ValueError"
+    ]
+  },
+  "wrap_socket": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

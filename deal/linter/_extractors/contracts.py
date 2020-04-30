@@ -1,5 +1,5 @@
 # built-in
-from typing import Iterator, Tuple
+from typing import Iterator, List, Tuple
 
 # external
 import astroid
@@ -12,7 +12,7 @@ SUPPORTED_CONTRACTS = {'deal.post', 'deal.raises', 'deal.silent', 'deal.pure'}
 SUPPORTED_MARKERS = {'deal.silent', 'deal.pure'}
 
 
-def get_contracts(decorators: list) -> Iterator[Tuple[str, list]]:
+def get_contracts(decorators: List) -> Iterator[Tuple[str, list]]:
     for contract in decorators:
         if isinstance(contract, TOKENS.ATTR):
             name = get_name(contract)

@@ -1,0 +1,140 @@
+{
+  "ArgumentDescriptor.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "OpcodeInfo.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "StackObject.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "assure_pickle_consistency": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "dis": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "read_bytes1": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "read_bytes4": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "read_bytes8": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "read_decimalnl_long": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_decimalnl_short": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_float8": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_floatnl": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_int4": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_long1": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_long4": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_string1": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "read_string4": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_stringnl": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_uint1": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_uint2": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_uint4": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_uint8": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_unicodestring1": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "read_unicodestring4": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "read_unicodestring8": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "read_unicodestringnl": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

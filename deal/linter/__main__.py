@@ -2,8 +2,8 @@
 import sys
 
 # app
-from ._cli import main
+from .._cli._lint import lint_command
 
 
 if __name__ == '__main__':
-    exit(main(sys.argv[1:]))
+    exit(lint_command(sys.argv[1:]))

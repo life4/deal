@@ -1,0 +1,49 @@
+{
+  "CompletedProcess.check_returncode": {
+    "raises": [
+      "CalledProcessError"
+    ]
+  },
+  "Popen.__del__": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "Popen.__init__": {
+    "raises": [
+      "RuntimeError",
+      "SubprocessError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "Popen._check_timeout": {
+    "raises": [
+      "TimeoutExpired"
+    ]
+  },
+  "Popen.communicate": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "check_call": {
+    "raises": [
+      "CalledProcessError"
+    ]
+  },
+  "check_output": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "run": {
+    "raises": [
+      "CalledProcessError",
+      "ValueError"
+    ]
+  }
+}

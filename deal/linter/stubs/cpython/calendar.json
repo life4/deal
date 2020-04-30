@@ -1,0 +1,27 @@
+{
+  "Calendar.itermonthdays": {
+    "raises": [
+      "IllegalMonthError"
+    ]
+  },
+  "Calendar.itermonthdays3": {
+    "raises": [
+      "IllegalMonthError"
+    ]
+  },
+  "main": {
+    "raises": [
+      "SystemExit"
+    ]
+  },
+  "monthrange": {
+    "raises": [
+      "IllegalMonthError"
+    ]
+  },
+  "setfirstweekday": {
+    "raises": [
+      "IllegalWeekdayError"
+    ]
+  }
+}

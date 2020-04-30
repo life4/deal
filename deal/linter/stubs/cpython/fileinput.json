@@ -1,0 +1,55 @@
+{
+  "FileInput.__getitem__": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "FileInput.__init__": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "filelineno": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "filename": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "fileno": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "input": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "isfirstline": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "isstdin": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "lineno": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "nextfile": {
+    "raises": [
+      "RuntimeError"
+    ]
+  }
+}

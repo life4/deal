@@ -1,0 +1,52 @@
+{
+  "BufferedIncrementalDecoder._buffer_decode": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "BufferedIncrementalEncoder._buffer_encode": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Codec.decode": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "Codec.encode": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "IncrementalDecoder.decode": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "IncrementalEncoder.encode": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "StreamReader.__next__": {
+    "raises": [
+      "StopIteration"
+    ]
+  },
+  "StreamReader.decode": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "getincrementaldecoder": {
+    "raises": [
+      "LookupError"
+    ]
+  },
+  "getincrementalencoder": {
+    "raises": [
+      "LookupError"
+    ]
+  }
+}

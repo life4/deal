@@ -1,9 +1,15 @@
+# python
 *.pyc
 __pycache__/
 *.egg-info/
 dist/
+
+# coverage
 .coverage*
+coverage.xml
 htmlcov/
+
+# other
 README.rst
 docs/build/
 /setup.py

@@ -1,13 +1,18 @@
 # built-in
 import ast
 import enum
+from itertools import chain
 from typing import Iterator
 
 # app
 from ._contract import Category, Contract
 from ._error import Error
-from ._extractors import get_exceptions, get_imports, get_prints, get_returns, get_globals
+from ._extractors import (
+    get_exceptions, get_exceptions_stubs, get_globals,
+    get_imports, get_prints, get_returns,
+)
 from ._func import Func
+from ._stub import StubsManager
 
 
 rules = []
@@ -25,6 +30,7 @@ def register(rule):
 
 @register
 class CheckImports:
+    __slots__ = ()
     code = 1
     message = 'do not use `from deal import ...`, use `import deal` instead'
     required = Required.MODULE
@@ -43,11 +49,12 @@ class CheckImports:
 
 @register
 class CheckReturns:
+    __slots__ = ()
     code = 11
     message = 'post contract error'
     required = Required.FUNC
 
-    def __call__(self, func: Func) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         for contract in func.contracts:
             if contract.category != Category.POST:
                 continue
@@ -76,31 +83,35 @@ class CheckReturns:
 
 @register
 class CheckRaises:
+    __slots__ = ()
     code = 12
     message = 'raises contract error'
     required = Required.FUNC
 
-    def __call__(self, func: Func) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         for contract in func.contracts:
             if contract.category != Category.RAISES:
                 continue
-            yield from self._check(func=func, contract=contract)
+            yield from self._check(func=func, contract=contract, stubs=stubs)
 
-    def _check(self, func: Func, contract: Contract) -> Iterator[Error]:
+    def _check(self, func: Func, contract: Contract, stubs: StubsManager = None) -> Iterator[Error]:
         allowed = contract.exceptions
         allowed_types = tuple(exc for exc in allowed if type(exc) is not str)
-        for token in get_exceptions(body=func.body):
+        tokens = [get_exceptions(body=func.body)]
+        if stubs is not None:
+            tokens.append(get_exceptions_stubs(body=func.body, stubs=stubs))
+        for token in chain(*tokens):
             if token.value in allowed:
                 continue
-            if issubclass(token.value, allowed_types):
-                continue
             exc = token.value
-            if not isinstance(exc, str):
+            if isinstance(exc, type):
+                if issubclass(exc, allowed_types):
+                    continue
                 exc = exc.__name__
             yield Error(
                 code=self.code,
                 text=self.message,
-                value=exc,
+                value=str(exc),
                 row=token.line,
                 col=token.col,
             )
@@ -108,11 +119,12 @@ class CheckRaises:
 
 @register
 class CheckPrints:
+    __slots__ = ()
     code = 13
     message = 'silent contract error'
     required = Required.FUNC
 
-    def __call__(self, func: Func) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         for contract in func.contracts:
             if contract.category != Category.SILENT:
                 continue
@@ -120,7 +132,7 @@ class CheckPrints:
             # if `@deal.silent` is duplicated, check the function only once
             return
 
-    def _check(self, func: Func) -> Iterator[Error]:
+    def _check(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         for token in get_prints(body=func.body):
             yield Error(
                 code=self.code,
@@ -133,18 +145,19 @@ class CheckPrints:
 
 @register
 class CheckPure:
+    __slots__ = ()
     code = 14
     message = 'pure contract error'
     required = Required.FUNC
 
-    def __call__(self, func: Func) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         for contract in func.contracts:
             if contract.category != Category.PURE:
                 continue
             yield from self._check(func=func)
             return
 
-    def _check(self, func: Func) -> Iterator[Error]:
+    def _check(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         for token in get_globals(body=func.body):
             yield Error(
                 code=self.code,

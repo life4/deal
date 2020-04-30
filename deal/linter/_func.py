@@ -18,9 +18,12 @@ result = contract(*args, **kwargs)
 
 
 class Func:
-    def __init__(self, body: list, contracts: Iterable[Contract]):
+    __slots__ = ('body', 'contracts', 'name')
+
+    def __init__(self, *, body: list, contracts: Iterable[Contract], name: str = None):
         self.body = body
         self.contracts = contracts
+        self.name = name
 
     @classmethod
     def from_path(cls, path: Path) -> List['Func']:
@@ -45,7 +48,11 @@ class Func:
                 contracts.append(contract)
             if not contracts:
                 continue
-            funcs.append(cls(body=expr.body, contracts=contracts))
+            funcs.append(cls(
+                name=expr.name,
+                body=expr.body,
+                contracts=contracts,
+            ))
         return funcs
 
     @classmethod
@@ -62,7 +69,11 @@ class Func:
                 contracts.append(contract)
             if not contracts:
                 continue
-            funcs.append(cls(body=expr.body, contracts=contracts))
+            funcs.append(cls(
+                name=expr.name,
+                body=expr.body,
+                contracts=contracts,
+            ))
         return funcs
 
     def __repr__(self) -> str:

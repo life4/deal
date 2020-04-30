@@ -1,0 +1,27 @@
+{
+  "Bytecode.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_get_code_object": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_test": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "dis": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "get_instructions": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

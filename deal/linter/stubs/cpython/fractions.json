@@ -1,0 +1,31 @@
+{
+  "Fraction.__new__": {
+    "raises": [
+      "TypeError",
+      "ValueError",
+      "ZeroDivisionError"
+    ]
+  },
+  "Fraction.from_decimal": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Fraction.from_float": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Fraction.limit_denominator": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "gcd": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  }
+}

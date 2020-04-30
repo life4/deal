@@ -1,0 +1,53 @@
+{
+  "PathLike.__fspath__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "_execvpe": {
+    "raises": [
+      "ValueError",
+      "last_exc",
+      "saved_exc"
+    ]
+  },
+  "_fspath": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "execvp": {
+    "raises": [
+      "last_exc",
+      "saved_exc"
+    ]
+  },
+  "execvpe": {
+    "raises": [
+      "last_exc",
+      "saved_exc"
+    ]
+  },
+  "fdopen": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "get_exec_path": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "popen": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "walk": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

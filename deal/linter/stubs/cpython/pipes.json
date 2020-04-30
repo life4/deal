@@ -1,0 +1,29 @@
+{
+  "Template.append": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "Template.open": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Template.open_r": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Template.open_w": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Template.prepend": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}

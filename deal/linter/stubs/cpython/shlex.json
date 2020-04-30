@@ -1,0 +1,7 @@
+{
+  "shlex.__next__": {
+    "raises": [
+      "StopIteration"
+    ]
+  }
+}

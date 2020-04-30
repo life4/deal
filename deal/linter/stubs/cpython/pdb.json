@@ -1,0 +1,32 @@
+{
+  "Pdb._select_frame": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Pdb.do_run": {
+    "raises": [
+      "Restart"
+    ]
+  },
+  "Pdb.sigint_handler": {
+    "raises": [
+      "KeyboardInterrupt"
+    ]
+  },
+  "main": {
+    "raises": [
+      "SystemExit"
+    ]
+  },
+  "pm": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "post_mortem": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

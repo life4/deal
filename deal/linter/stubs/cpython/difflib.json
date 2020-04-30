@@ -1,0 +1,37 @@
+{
+  "Differ._fancy_replace": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Differ._plain_replace": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Differ.compare": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_check_types": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "context_diff": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "get_close_matches": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "unified_diff": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

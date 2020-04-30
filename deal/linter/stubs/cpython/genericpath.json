@@ -1,0 +1,7 @@
+{
+  "_check_arg_types": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

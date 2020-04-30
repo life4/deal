@@ -1,0 +1,12 @@
+{
+  "Stats.load_stats": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Stats.sort_stats": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

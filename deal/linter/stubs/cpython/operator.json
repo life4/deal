@@ -1,0 +1,33 @@
+{
+  "attrgetter.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "concat": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "iconcat": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "indexOf": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "length_hint": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "methodcaller.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

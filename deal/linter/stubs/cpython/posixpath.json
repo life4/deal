@@ -1,0 +1,17 @@
+{
+  "commonpath": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "normcase": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "relpath": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

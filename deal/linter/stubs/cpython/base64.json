@@ -1,0 +1,61 @@
+{
+  "_input_type_check": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "a85decode": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "b32decode": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "b64decode": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "b64encode": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "decodebytes": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "decodestring": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "encodebytes": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "encodestring": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "main": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "test": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

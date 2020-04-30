@@ -6,9 +6,6 @@ import enum
 # external
 import astroid
 
-# app
-from ._extractors import get_name
-
 
 TEMPLATE = """
 contract = PLACEHOLDER
@@ -24,6 +21,8 @@ class Category(enum.Enum):
 
 
 class Contract:
+    __slots__ = ('args', 'category')
+
     def __init__(self, args, category: Category):
         self.args = args
         self.category = category
@@ -54,6 +53,8 @@ class Contract:
 
     @property
     def exceptions(self) -> list:
+        from ._extractors import get_name
+
         excs = []
         for expr in self.args:
             name = get_name(expr)

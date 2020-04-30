@@ -1,0 +1,114 @@
+{
+  "Data.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_BinaryPlistParser._read_ints": {
+    "raises": [
+      "InvalidFileException"
+    ]
+  },
+  "_BinaryPlistParser._read_object": {
+    "raises": [
+      "InvalidFileException"
+    ]
+  },
+  "_BinaryPlistWriter._flatten": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_BinaryPlistWriter._write_object": {
+    "raises": [
+      "OverflowError",
+      "TypeError"
+    ]
+  },
+  "_DumbXMLWriter.end_element": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_DumbXMLWriter.simple_element": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_PlistParser.add_object": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_PlistParser.end_dict": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_PlistParser.end_key": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_PlistWriter.write_dict": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_PlistWriter.write_value": {
+    "raises": [
+      "OverflowError",
+      "TypeError"
+    ]
+  },
+  "_escape": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "dump": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "dumps": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "load": {
+    "raises": [
+      "InvalidFileException"
+    ]
+  },
+  "readPlist": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "readPlistFromBytes": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "writePlist": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "writePlistToBytes": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  }
+}

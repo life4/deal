@@ -1,0 +1,50 @@
+{
+  "_get_field": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_hash_exception": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_init_fn": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_process_class": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "asdict": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "astuple": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "field": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "make_dataclass": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "replace": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}

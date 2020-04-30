@@ -1,0 +1,83 @@
+{
+  "_NNTPBase._getline": {
+    "raises": [
+      "EOFError",
+      "NNTPDataError"
+    ]
+  },
+  "_NNTPBase._getoverviewfmt": {
+    "raises": [
+      "NNTPDataError"
+    ]
+  },
+  "_NNTPBase._getresp": {
+    "raises": [
+      "NNTPPermanentError",
+      "NNTPProtocolError",
+      "NNTPTemporaryError"
+    ]
+  },
+  "_NNTPBase._post": {
+    "raises": [
+      "NNTPReplyError"
+    ]
+  },
+  "_NNTPBase._statparse": {
+    "raises": [
+      "NNTPReplyError"
+    ]
+  },
+  "_NNTPBase.date": {
+    "raises": [
+      "NNTPDataError",
+      "NNTPReplyError"
+    ]
+  },
+  "_NNTPBase.group": {
+    "raises": [
+      "NNTPReplyError"
+    ]
+  },
+  "_NNTPBase.login": {
+    "raises": [
+      "NNTPPermanentError",
+      "NNTPReplyError",
+      "ValueError"
+    ]
+  },
+  "_NNTPBase.newgroups": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_NNTPBase.newnews": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_NNTPBase.xgtitle": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_NNTPBase.xpath": {
+    "raises": [
+      "NNTPReplyError",
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_parse_overview": {
+    "raises": [
+      "NNTPDataError"
+    ]
+  },
+  "_parse_overview_fmt": {
+    "raises": [
+      "NNTPDataError"
+    ]
+  }
+}

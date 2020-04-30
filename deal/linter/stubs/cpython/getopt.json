@@ -1,0 +1,19 @@
+{
+  "do_longs": {
+    "raises": [
+      "AssertionError",
+      "GetoptError"
+    ]
+  },
+  "long_has_args": {
+    "raises": [
+      "AssertionError",
+      "GetoptError"
+    ]
+  },
+  "short_has_arg": {
+    "raises": [
+      "GetoptError"
+    ]
+  }
+}

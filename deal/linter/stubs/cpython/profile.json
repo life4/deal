@@ -1,0 +1,32 @@
+{
+  "Profile._calibrate_inner": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Profile.calibrate": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Profile.runcall": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Profile.trace_dispatch_call": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Profile.trace_dispatch_return": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "main": {
+    "raises": [
+      "SystemExit"
+    ]
+  }
+}

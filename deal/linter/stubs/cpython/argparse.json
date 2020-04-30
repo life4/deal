@@ -1,0 +1,82 @@
+{
+  "Action.__call__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "ArgumentParser._check_value": {
+    "raises": [
+      "ArgumentError"
+    ]
+  },
+  "ArgumentParser._get_value": {
+    "raises": [
+      "ArgumentError"
+    ]
+  },
+  "ArgumentParser._match_argument": {
+    "raises": [
+      "ArgumentError"
+    ]
+  },
+  "ArgumentParser.parse_known_intermixed_args": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "FileType.__call__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "HelpFormatter._dedent": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "HelpFormatter._format_usage": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_ActionsContainer._add_container_actions": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_ActionsContainer._get_optional_kwargs": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_ActionsContainer._get_positional_kwargs": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_ActionsContainer._handle_conflict_error": {
+    "raises": [
+      "ArgumentError"
+    ]
+  },
+  "_ActionsContainer.add_argument": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_AppendAction.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_MutuallyExclusiveGroup._add_action": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_StoreAction.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "Barrier._enter": {
+    "raises": [
+      "AssertionError",
+      "BrokenBarrierError"
+    ]
+  },
+  "Barrier._wait": {
+    "raises": [
+      "AssertionError",
+      "BrokenBarrierError"
+    ]
+  },
+  "BoundedSemaphore.release": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Condition.notify": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "Condition.wait": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "Semaphore.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Semaphore.acquire": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Thread.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Thread.__repr__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Thread._stop": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Thread._wait_for_tstate_lock": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Thread.daemon": {
+    "raises": [
+      "AssertionError",
+      "RuntimeError"
+    ]
+  },
+  "Thread.ident": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Thread.isAlive": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "Thread.is_alive": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Thread.join": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "Thread.name": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Thread.start": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_DummyThread.is_alive": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_DummyThread.join": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_RLock._release_save": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_RLock.release": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_after_fork": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_shutdown": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

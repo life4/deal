@@ -1,0 +1,12 @@
+{
+  "Profile.runcall": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "main": {
+    "raises": [
+      "SystemExit"
+    ]
+  }
+}

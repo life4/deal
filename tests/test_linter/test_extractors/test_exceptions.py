@@ -43,15 +43,18 @@ def test_inference_simple():
             raise ValueError  # explicit raise
 
         def subf2():
-            1 / 0  # implicit raise
+            c = 1 - 1
+            1 / c   # implicit raise
+            d = [1, 2, 3]
+            1 / d   # resolved into not a constant
             a = b
 
         @deal.raises(KeyError)
         def f():
             a = 1
-            a()  # resolved not in a function
-            unknown()  # cannot resolve
-            subf()  # resolve
+            a()         # resolved not in a function
+            unknown()   # cannot resolve
+            subf()      # resolve
             subf2()
     """
     tree = astroid.parse(dedent(text))

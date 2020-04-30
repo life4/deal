@@ -1,7 +1,8 @@
 # built-in
 import ast
+from contextlib import suppress
 from types import SimpleNamespace
-from typing import Optional
+from typing import Iterator, List, NamedTuple, Optional, Tuple
 
 # external
 import astroid
@@ -27,15 +28,15 @@ TOKENS = SimpleNamespace(
 )
 
 
-class Token:
-    def __init__(self, value, line: int, col: int):
-        self.value = value
-        self.line = line
-        self.col = col
+class Token(NamedTuple):
+    value: object
+    line: int
+    col: int
 
 
-def traverse(body):
+def traverse(body: List) -> Iterator:
     for expr in body:
+        # breaking apart
         if isinstance(expr, TOKENS.EXPR):
             yield expr.value
             continue
@@ -49,8 +50,12 @@ def traverse(body):
             if hasattr(expr, 'finalbody'):
                 yield from traverse(body=expr.finalbody)
             continue
+
+        # extracting things
         if isinstance(expr, TOKENS.WITH):
             yield from traverse(body=expr.body)
+        if isinstance(expr, TOKENS.RETURN):
+            yield expr.value
         yield expr
 
 
@@ -72,3 +77,9 @@ def get_name(expr) -> Optional[str]:
         return left + '.' + expr.attr
 
     return None
+
+
+def infer(expr) -> Tuple:
+    with suppress(astroid.exceptions.InferenceError, RecursionError):
+        return tuple(g for g in expr.infer() if type(g) is not astroid.Uninferable)
+    return tuple()

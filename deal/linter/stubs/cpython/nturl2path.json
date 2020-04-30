@@ -1,0 +1,12 @@
+{
+  "pathname2url": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "url2pathname": {
+    "raises": [
+      "OSError"
+    ]
+  }
+}

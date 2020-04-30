@@ -1,0 +1,13 @@
+{
+  "LZMAFile.__init__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "open": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

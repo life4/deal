@@ -7,7 +7,7 @@ from textwrap import dedent, indent
 from typing import Iterable, Iterator, Sequence, Union
 
 # app
-from ._checker import Checker
+from ..linter import Checker
 
 
 COLORS = dict(
@@ -61,13 +61,13 @@ def get_errors(paths: Iterable[Union[str, Path]]) -> Iterator[dict]:
 
 
 def get_parser() -> ArgumentParser:
-    parser = ArgumentParser()
+    parser = ArgumentParser(prog='python3 -m deal lint')
     parser.add_argument('--json', action='store_true', help='json output')
     parser.add_argument('paths', nargs='*', default='.')
     return parser
 
 
-def main(argv: Sequence[str]) -> int:
+def lint_command(argv: Sequence[str]) -> int:
     parser = get_parser()
     args = parser.parse_args(argv)
     prev = None

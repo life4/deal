@@ -1,0 +1,22 @@
+{
+  "async_chat.collect_incoming_data": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "async_chat.found_terminator": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "async_chat.push": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "async_chat.set_terminator": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

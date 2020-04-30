@@ -1,0 +1,7 @@
+{
+  "__get_builtin_constructor": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

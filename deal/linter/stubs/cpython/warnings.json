@@ -1,0 +1,62 @@
+{
+  "_getaction": {
+    "raises": [
+      "_OptionError"
+    ]
+  },
+  "_getcategory": {
+    "raises": [
+      "_OptionError"
+    ]
+  },
+  "_setoption": {
+    "raises": [
+      "AssertionError",
+      "_OptionError"
+    ]
+  },
+  "_showwarnmsg": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_warn_unawaited_coroutine": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "catch_warnings.__enter__": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "catch_warnings.__exit__": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "filterwarnings": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "simplefilter": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "warn": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "warn_explicit": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  }
+}

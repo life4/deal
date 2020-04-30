@@ -1,0 +1,32 @@
+{
+  "WeakKeyDictionary.__deepcopy__": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "WeakValueDictionary.__getitem__": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "WeakValueDictionary.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "WeakValueDictionary.pop": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "WeakValueDictionary.update": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "finalize.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

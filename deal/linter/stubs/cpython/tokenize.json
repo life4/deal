@@ -1,0 +1,12 @@
+{
+  "Untokenizer.add_whitespace": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "detect_encoding": {
+    "raises": [
+      "SyntaxError"
+    ]
+  }
+}

@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 # project
-from deal.linter._cli import get_errors, get_paths, main
+from deal._cli._lint import get_errors, get_paths, lint_command
 
 
 TEXT = """
@@ -42,9 +42,9 @@ def test_get_errors(tmp_path: Path):
     assert errors[0]['content'] == '    return -1'
 
 
-def test_main(tmp_path: Path, capsys):
+def test_lint_command(tmp_path: Path, capsys):
     (tmp_path / 'example.py').write_text(TEXT)
-    count = main([str(tmp_path)])
+    count = lint_command([str(tmp_path)])
     assert count == 1
 
     captured = capsys.readouterr()
@@ -53,9 +53,9 @@ def test_main(tmp_path: Path, capsys):
     assert '^' in captured.out
 
 
-def test_main_json(tmp_path: Path, capsys):
+def test_lint_command_json(tmp_path: Path, capsys):
     (tmp_path / 'example.py').write_text(TEXT)
-    count = main(['--json', str(tmp_path)])
+    count = lint_command(['--json', str(tmp_path)])
     assert count == 1
 
     captured = capsys.readouterr()

@@ -1,0 +1,167 @@
+{
+  "BlockFinder.tokeneater": {
+    "raises": [
+      "EndOfBlock"
+    ]
+  },
+  "Parameter.__init__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "Signature.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Signature._bind": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Signature.from_builtin": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "Signature.from_function": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_getfullargs": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_main": {
+    "raises": [
+      "SystemExit"
+    ]
+  },
+  "_missing_arguments": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_signature_bound_method": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_signature_from_builtin": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_signature_from_callable": {
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_signature_from_function": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_signature_fromstr": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "_signature_get_bound_param": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_signature_get_partial": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_signature_strip_non_python_syntax": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_too_many": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "findsource": {
+    "raises": [
+      "OSError",
+      "TypeError"
+    ]
+  },
+  "formatargspec": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "getargs": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "getargspec": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "getattr_static": {
+    "raises": [
+      "AttributeError"
+    ]
+  },
+  "getcallargs": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "getclosurevars": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "getfile": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "getframeinfo": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "getgeneratorlocals": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "getsourcefile": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "getsourcelines": {
+    "raises": [
+      "OSError"
+    ]
+  }
+}

@@ -85,7 +85,7 @@ def get_examples(func: typing.Callable, kwargs: typing.Dict[str, typing.Any],
     def example_generator(ex: ArgsKwargsType) -> None:
         examples.append(ex)
 
-    example_generator()
+    example_generator()  # pylint: disable=no-value-for-parameter
     return examples
 
 

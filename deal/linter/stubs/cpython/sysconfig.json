@@ -1,0 +1,9 @@
+{
+  "get_config_var": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  }
+}

@@ -1,17 +1,17 @@
 # built-in
 import ast
 import builtins
-from typing import Iterator
+from typing import Iterator, List
 
 # external
 import astroid
 
 # app
-from .common import TOKENS, Token, get_name, traverse
+from .common import TOKENS, Token, get_name, infer, traverse
 from .contracts import get_contracts
 
 
-def get_exceptions(body: list, *, dive: bool = True) -> Iterator[Token]:
+def get_exceptions(body: List, *, dive: bool = True) -> Iterator[Token]:
     for expr in traverse(body):
         token_info = dict(line=expr.lineno, col=expr.col_offset)
 
@@ -39,9 +39,14 @@ def get_exceptions(body: list, *, dive: bool = True) -> Iterator[Token]:
         # division by zero
         if isinstance(expr, TOKENS.BIN_OP):
             if isinstance(expr.op, ast.Div) or expr.op == '/':
-                if isinstance(expr.right, astroid.Const) and expr.right.value == 0:
+                if isinstance(expr.right, astroid.node_classes.NodeNG):
+                    guesses = infer(expr=expr.right)
                     token_info['col'] = expr.right.col_offset
-                    yield Token(value=ZeroDivisionError, **token_info)
+                    for guess in guesses:
+                        if type(guess) is not astroid.Const:
+                            continue
+                        yield Token(value=ZeroDivisionError, **token_info)
+                        break
                     continue
                 if isinstance(expr.right, ast.Num) and expr.right.n == 0:
                     token_info['col'] = expr.right.col_offset
@@ -72,17 +77,11 @@ def _exceptions_from_funcs(expr) -> Iterator[Token]:
         if type(name_node) is not astroid.Name:
             continue
 
-        # get possible definitions
-        try:
-            guesses = tuple(name_node.infer())
-        except astroid.exceptions.NameInferenceError:
-            continue
-
         extra = dict(
             line=name_node.lineno,
             col=name_node.col_offset,
         )
-        for value in guesses:
+        for value in infer(name_node):
             if type(value) is not astroid.FunctionDef:
                 continue
 
@@ -103,7 +102,7 @@ def _exceptions_from_funcs(expr) -> Iterator[Token]:
                     yield Token(value=name, **extra)
 
 
-def get_names(expr):
+def get_names(expr) -> Iterator:
     if isinstance(expr, astroid.Assign):
         yield from get_names(expr.value)
     if isinstance(expr, TOKENS.CALL):

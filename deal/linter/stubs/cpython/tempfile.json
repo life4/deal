@@ -1,0 +1,54 @@
+{
+  "NamedTemporaryFile": {
+    "raises": [
+      "FileExistsError"
+    ]
+  },
+  "SpooledTemporaryFile.__enter__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "TemporaryDirectory.__init__": {
+    "raises": [
+      "FileExistsError"
+    ]
+  },
+  "TemporaryDirectory._cleanup": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_get_default_tempdir": {
+    "raises": [
+      "FileNotFoundError"
+    ]
+  },
+  "_infer_return_type": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_mkstemp_inner": {
+    "raises": [
+      "FileExistsError"
+    ]
+  },
+  "_sanitize_params": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "mkdtemp": {
+    "raises": [
+      "FileExistsError"
+    ]
+  },
+  "mktemp": {
+    "raises": [
+      "FileExistsError"
+    ]
+  }
+}

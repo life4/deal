@@ -1,0 +1,127 @@
+{
+  "Aifc_read._read_comm_chunk": {
+    "raises": [
+      "Error",
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "Aifc_read.getmark": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Aifc_read.initfp": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Aifc_read.setpos": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Aifc_write._ensure_header_written": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Aifc_write._write_header": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Aifc_write._writemarkers": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Aifc_write.aifc": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Aifc_write.aiff": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Aifc_write.getframerate": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Aifc_write.getmark": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Aifc_write.getnchannels": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Aifc_write.getparams": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Aifc_write.getsampwidth": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Aifc_write.setcomptype": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Aifc_write.setframerate": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Aifc_write.setmark": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Aifc_write.setnchannels": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Aifc_write.setnframes": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Aifc_write.setparams": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "Aifc_write.setsampwidth": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "_write_string": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "open": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "openfp": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  }
+}

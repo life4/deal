@@ -1,6 +1,7 @@
 # built-in
 import ast
 from pathlib import Path
+from textwrap import dedent
 
 # project
 from deal.linter import Checker
@@ -23,9 +24,9 @@ def test2():
 """.strip()
 
 EXPECTED = [
-    (6, 11, 'DEAL011: post contract error (-1)', Checker),
-    (11, 8, 'DEAL012: raises contract error (ZeroDivisionError)', Checker),
-    (13, 10, 'DEAL012: raises contract error (KeyError)', Checker),
+    (6, 11, 'DEAL011 post contract error (-1)', Checker),
+    (11, 8, 'DEAL012 raises contract error (ZeroDivisionError)', Checker),
+    (13, 10, 'DEAL012 raises contract error (KeyError)', Checker),
 ]
 
 
@@ -59,3 +60,22 @@ def test_get_funcs_invalid_syntax(tmp_path: Path):
 def test_version():
     version = Checker(tree=None, filename='stdin').version
     assert not set(version) - set('0123456789.')
+
+
+def test_remove_duplicates(tmp_path):
+    text = """
+        import deal
+
+        def inner():
+            raise TypeError
+            raise TypeError
+
+        @deal.raises()
+        def outer():
+            return inner()
+    """
+    path = tmp_path / 'test.py'
+    path.write_text(dedent(text))
+    checker = Checker(tree=ast.parse(TEXT), filename=str(path))
+    errors = list(checker.run())
+    assert len(errors) == 1

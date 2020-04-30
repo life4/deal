@@ -1,0 +1,17 @@
+{
+  "Telnet.expect": {
+    "raises": [
+      "EOFError"
+    ]
+  },
+  "Telnet.rawq_getchar": {
+    "raises": [
+      "EOFError"
+    ]
+  },
+  "Telnet.read_very_lazy": {
+    "raises": [
+      "EOFError"
+    ]
+  }
+}

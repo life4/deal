@@ -1,0 +1,14 @@
+{
+  "_ModifiedArgv0.__enter__": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_get_module_details": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  }
+}

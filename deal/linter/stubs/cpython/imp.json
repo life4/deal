@@ -1,0 +1,40 @@
+{
+  "NullImporter.__init__": {
+    "raises": [
+      "ImportError"
+    ]
+  },
+  "cache_from_source": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "find_module": {
+    "raises": [
+      "ImportError",
+      "RuntimeError",
+      "TypeError"
+    ]
+  },
+  "load_compiled": {
+    "raises": [
+      "ImportError"
+    ]
+  },
+  "load_module": {
+    "raises": [
+      "ImportError",
+      "ValueError"
+    ]
+  },
+  "load_package": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "load_source": {
+    "raises": [
+      "ImportError"
+    ]
+  }
+}

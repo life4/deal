@@ -1,0 +1,141 @@
+{
+  "ForwardRef.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "ForwardRef._evaluate": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Generic.__class_getitem__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Generic.__init_subclass__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Generic.__new__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "NamedTuple.__new__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "NamedTupleMeta.__new__": {
+    "raises": [
+      "AttributeError",
+      "TypeError"
+    ]
+  },
+  "TypeVar.__init__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_Final.__init_subclass__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_GenericAlias.__call__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_GenericAlias.__getattr__": {
+    "raises": [
+      "AttributeError"
+    ]
+  },
+  "_GenericAlias.__getitem__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_GenericAlias.__subclasscheck__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_ProtocolMeta.__instancecheck__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_SpecialForm.__call__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_SpecialForm.__getitem__": {
+    "raises": [
+      "AssertionError",
+      "TypeError"
+    ]
+  },
+  "_SpecialForm.__instancecheck__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_SpecialForm.__new__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_SpecialForm.__subclasscheck__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_VariadicGenericAlias.__getitem__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_VariadicGenericAlias.__getitem_inner__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_check_generic": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_get_defaults": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_overload_dummy": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "_remove_dups_flatten": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_type_check": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "get_type_hints": {
+    "raises": [
+      "AssertionError",
+      "TypeError"
+    ]
+  }
+}

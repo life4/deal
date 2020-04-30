@@ -1,0 +1,8 @@
+{
+  "_compile": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}

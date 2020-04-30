@@ -1,0 +1,22 @@
+{
+  "compact_traceback": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "dispatcher.connect": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "dispatcher.handle_connect_event": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "dispatcher.handle_error": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

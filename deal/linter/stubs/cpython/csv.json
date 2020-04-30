@@ -1,0 +1,17 @@
+{
+  "DictWriter.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "DictWriter._dict_to_list": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Sniffer.sniff": {
+    "raises": [
+      "Error"
+    ]
+  }
+}
