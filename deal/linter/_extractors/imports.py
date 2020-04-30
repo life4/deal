@@ -5,7 +5,7 @@ import ast
 import astroid
 
 # app
-from .common import Token, Extractor
+from .common import Extractor, Token
 
 
 get_imports = Extractor()

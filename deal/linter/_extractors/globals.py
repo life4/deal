@@ -6,7 +6,7 @@ from typing import Optional
 import astroid
 
 # app
-from .common import TOKENS, Token, Extractor
+from .common import TOKENS, Extractor, Token
 
 
 get_globals = Extractor()

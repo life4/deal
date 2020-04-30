@@ -7,7 +7,7 @@ from typing import Iterator, Optional, Union
 import astroid
 
 # app
-from .common import TOKENS, Token, get_name, infer, Extractor
+from .common import TOKENS, Extractor, Token, get_name, infer
 from .contracts import get_contracts
 
 

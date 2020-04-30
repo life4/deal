@@ -6,7 +6,7 @@ from typing import Optional
 import astroid
 
 # app
-from .common import TOKENS, Token, Extractor, infer
+from .common import TOKENS, Extractor, Token, infer
 
 
 get_returns = Extractor()

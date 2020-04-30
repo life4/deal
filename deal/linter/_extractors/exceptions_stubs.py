@@ -9,7 +9,7 @@ import astroid
 # app
 from .._contract import Category
 from .._stub import EXTENSION, StubFile, StubsManager
-from .common import Token, infer, Extractor
+from .common import Extractor, Token, infer
 
 
 get_exceptions_stubs = Extractor()
