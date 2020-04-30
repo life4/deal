@@ -15,6 +15,7 @@ from deal.linter._extractors import get_returns
     ('return 3.14', (3.14, )),
     ('return +3.14', (3.14, )),     # ignore unary plus
     ('return -3.14', (-3.14, )),    # handle unary minus
+    ('return +a', ()),              # ignore uninferrable value inside of unary op
     ('return "lol"', ('lol', )),
     ('return b"lol"', (b'lol', )),
     ('return True', (True, )),

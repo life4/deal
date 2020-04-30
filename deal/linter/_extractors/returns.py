@@ -37,6 +37,7 @@ def handle_const(expr: astroid.Const) -> Optional[Token]:
     return Token(value=expr.value, **token_info)
 
 
+# Python <3.8
 # string, binary string
 @inner_extractor.register(ast.Str, ast.Bytes)
 def handle_str(expr) -> Optional[Token]:
@@ -44,6 +45,7 @@ def handle_str(expr) -> Optional[Token]:
     return Token(value=expr.s, **token_info)
 
 
+# Python <3.8
 # True, False, None
 @inner_extractor.register(ast.NameConstant)
 def handle_name_constant(expr: ast.NameConstant) -> Optional[Token]:
@@ -59,18 +61,19 @@ def handle_num(expr) -> Optional[Token]:
 
 
 # negative number
-@inner_extractor.register(*TOKENS.UNARY_OP)
-def handle_unary_op(expr) -> Optional[Token]:
-    token_info = dict(line=expr.lineno, col=expr.col_offset)
-    is_minus = type(expr.op) is ast.USub or expr.op == '-'
-    if is_minus:
-        # in Python 3.8 it is ast.Constant but it is subclass of ast.Num
-        if isinstance(expr.operand, ast.Num):
-            return Token(value=-expr.operand.n, **token_info)
+# No need to handle astroid here, it can be inferred later.
+@inner_extractor.register(ast.UnaryOp)
+def handle_unary_op(expr: ast.UnaryOp) -> Optional[Token]:
+    # in Python 3.8 it is ast.Constant but it is subclass of ast.Num.
+    if not isinstance(expr.operand, ast.Num):
+        return
 
+    token_info = dict(line=expr.lineno, col=expr.col_offset)
+    value = expr.operand.n
+    is_minus = type(expr.op) is ast.USub or expr.op == '-'
     is_plus = type(expr.op) is ast.UAdd or expr.op == '+'
-    if is_plus:
-        # in Python 3.8 it is ast.Constant but it is subclass of ast.Num
-        if isinstance(expr.operand, ast.Num):
-            return Token(value=expr.operand.n, **token_info)
+    if is_minus:
+        value = -value
+    if is_minus or is_plus:
+        return Token(value=value, **token_info)
     return None
