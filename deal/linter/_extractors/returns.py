@@ -32,7 +32,7 @@ def handle_returns(expr) -> Optional[Token]:
 
 # any constant value in astroid
 @inner_extractor.register(astroid.Const)
-def handle_const(expr) -> Optional[Token]:
+def handle_const(expr: astroid.Const) -> Optional[Token]:
     token_info = dict(line=expr.lineno, col=expr.col_offset)
     return Token(value=expr.value, **token_info)
 
@@ -46,7 +46,7 @@ def handle_str(expr) -> Optional[Token]:
 
 # True, False, None
 @inner_extractor.register(ast.NameConstant)
-def handle_name_constant(expr) -> Optional[Token]:
+def handle_name_constant(expr: ast.NameConstant) -> Optional[Token]:
     token_info = dict(line=expr.lineno, col=expr.col_offset)
     return Token(value=expr.value, **token_info)
 
@@ -68,3 +68,4 @@ def handle_unary_op(expr) -> Optional[Token]:
             return Token(value=-expr.operand.n, **token_info)
         if isinstance(expr.operand, astroid.Const):
             return Token(value=-expr.operand.value, **token_info)
+    return None

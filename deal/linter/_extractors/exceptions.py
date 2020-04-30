@@ -53,6 +53,8 @@ def handle_bin_op(expr, **kwargs) -> Optional[Token]:
         if isinstance(expr.right, ast.Num) and expr.right.n == 0:
             token_info['col'] = expr.right.col_offset
             return Token(value=ZeroDivisionError, **token_info)
+    return None
+
 
 # exit()
 @get_exceptions.register(*TOKENS.CALL)
@@ -69,13 +71,14 @@ def handle_call(expr, dive: bool = True) -> Optional[Union[Token, Iterator[Token
     # infer function call and check the function body for raises
     if dive:
         return _exceptions_from_funcs(expr=expr)
+    return None
 
 
 @get_exceptions.register(astroid.Assign)
 def handle_assign(expr: astroid.Assign, dive: bool = True) -> Iterator[Token]:
     # infer function call and check the function body for raises
     if dive:
-        return _exceptions_from_funcs(expr=expr)
+        yield from _exceptions_from_funcs(expr=expr)
 
 
 def _exceptions_from_funcs(expr) -> Iterator[Token]:
@@ -107,6 +110,7 @@ def _exceptions_from_funcs(expr) -> Iterator[Token]:
                     if name is None:
                         continue
                     yield Token(value=name, **extra)
+    return None
 
 
 def get_names(expr) -> Iterator:
