@@ -59,7 +59,7 @@ def _get_module(expr: AstroidNode) -> Optional[astroid.Module]:
 
 def _get_full_name(expr: AstroidNode) -> Tuple[str, str]:
     if expr.parent is None:
-        return '', expr.name  # pragma: no cover
+        return '', expr.name
 
     if type(expr.parent) is astroid.Module:
         return expr.parent.qname(), expr.name
