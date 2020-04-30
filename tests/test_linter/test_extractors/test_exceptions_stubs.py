@@ -128,3 +128,10 @@ def test_get_full_name_func_in_func():
     print(tree.repr_tree())
     func = tree.body[0].body[0]
     assert _get_full_name(expr=func) == ('', 'outer.inner')
+
+
+def test_get_full_name_not_a_func():
+    tree = astroid.parse("try:\n pass\nexcept E as e:\n def f(): pass")
+    print(tree.repr_tree())
+    func = tree.body[0].handlers[0].body[0]
+    assert _get_full_name(expr=func) == ('', 'f')
