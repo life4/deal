@@ -1,5 +1,7 @@
+# external
 import pytest
 
+# project
 from deal._cli import main
 
 

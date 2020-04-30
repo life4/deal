@@ -42,6 +42,7 @@ balanced_wrapping = true
 lines_after_imports = 2
 not_skip = "__init__.py"
 multi_line_output = 5
+include_trailing_comma = true
 
 import_heading_stdlib = "built-in"
 import_heading_thirdparty = "external"
