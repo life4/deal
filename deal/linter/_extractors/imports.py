@@ -1,22 +1,27 @@
 # built-in
 import ast
-from typing import Iterator
 
 # external
 import astroid
 
 # app
-from .common import Token, traverse
+from .common import Token, Extractor
 
 
-def get_imports(body: list) -> Iterator[Token]:
-    for expr in traverse(body):
-        token_info = dict(line=expr.lineno, col=expr.col_offset)
-        if isinstance(expr, astroid.ImportFrom):
-            dots = '.' * (expr.level or 0)
-            name = expr.modname or ''
-            yield Token(value=dots + name, **token_info)
-        if isinstance(expr, ast.ImportFrom):
-            dots = '.' * expr.level
-            name = expr.module or ''
-            yield Token(value=dots + name, **token_info)
+get_imports = Extractor()
+
+
+@get_imports.register(astroid.ImportFrom)
+def handle_astroid(expr: astroid.ImportFrom) -> Token:
+    token_info = dict(line=expr.lineno, col=expr.col_offset)
+    dots = '.' * (expr.level or 0)
+    name = expr.modname or ''
+    return Token(value=dots + name, **token_info)
+
+
+@get_imports.register(ast.ImportFrom)
+def handle_ast(expr: ast.ImportFrom) -> Token:
+    token_info = dict(line=expr.lineno, col=expr.col_offset)
+    dots = '.' * expr.level
+    name = expr.module or ''
+    return Token(value=dots + name, **token_info)
