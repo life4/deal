@@ -20,7 +20,7 @@ result = contract(*args, **kwargs)
 class Func:
     __slots__ = ('body', 'contracts', 'name')
 
-    def __init__(self, *, body: list, contracts: Iterable[Contract], name: str = None):
+    def __init__(self, *, body: list, contracts: Iterable[Contract], name: str):
         self.body = body
         self.contracts = contracts
         self.name = name
