@@ -17,7 +17,7 @@ from deal.linter._extractors import get_asserts
 
     ('assert 0', (0, )),
     ('assert False', (False, )),
-    ('assert ""', ("", )),
+    ('assert ""', ('', )),
 ])
 def test_get_asserts_simple(text, expected):
     tree = astroid.parse(text)

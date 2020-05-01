@@ -6,7 +6,6 @@ from datetime import date
 from pathlib import Path
 
 # external
-import sphinx
 import sphinx_rtd_theme
 from m2r import MdInclude
 from recommonmark.transform import AutoStructify
