@@ -46,8 +46,6 @@ class Func:
             for category, args in get_contracts(expr.decorator_list):
                 contract = Contract(args=args, category=Category(category))
                 contracts.append(contract)
-            if not contracts:
-                continue
             funcs.append(cls(
                 name=expr.name,
                 body=expr.body,
@@ -61,14 +59,11 @@ class Func:
         for expr in tree.body:
             if not isinstance(expr, astroid.FunctionDef):
                 continue
-            if not expr.decorators:
-                continue
             contracts = []
-            for category, args in get_contracts(expr.decorators.nodes):
-                contract = Contract(args=args, category=Category(category))
-                contracts.append(contract)
-            if not contracts:
-                continue
+            if expr.decorators:
+                for category, args in get_contracts(expr.decorators.nodes):
+                    contract = Contract(args=args, category=Category(category))
+                    contracts.append(contract)
             funcs.append(cls(
                 name=expr.name,
                 body=expr.body,

@@ -32,19 +32,19 @@ def k(x):
 
 def test_from_text():
     funcs = Func.from_text(TEXT)
-    assert len(funcs) == 1
+    assert len(funcs) == 3
     assert len(funcs[0].contracts) == 2
 
 
 def test_from_ast():
     funcs = Func.from_ast(ast.parse(TEXT))
-    assert len(funcs) == 1
+    assert len(funcs) == 3
     assert len(funcs[0].contracts) == 2
 
 
 def test_from_astroid():
     funcs = Func.from_astroid(astroid.parse(TEXT))
-    assert len(funcs) == 1
+    assert len(funcs) == 3
     assert len(funcs[0].contracts) == 2
 
 

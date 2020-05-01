@@ -31,14 +31,6 @@ def test_get_asserts_simple(text, expected):
     assert returns == expected
 
 
-# def test_ast_uninferrable_unary():
-#     tree = ast.parse('return ~4')
-#     print(ast.dump(tree))
-#     returns = tuple(r.value for r in get_asserts(body=tree.body))
-#     assert returns == ()
-#
-#
-
 @pytest.mark.parametrize('text, expected', [
     ('assert 3 - 2', ()),
     ('assert a', ()),           # ignore uninferrable names

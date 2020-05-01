@@ -9,7 +9,7 @@ from ._contract import Category, Contract
 from ._error import Error
 from ._extractors import (
     get_exceptions, get_exceptions_stubs, get_globals,
-    get_imports, get_prints, get_returns,
+    get_imports, get_prints, get_returns, get_asserts,
 )
 from ._func import Func
 from ._stub import StubsManager
@@ -159,6 +159,24 @@ class CheckPure:
 
     def _check(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         for token in get_globals(body=func.body):
+            yield Error(
+                code=self.code,
+                text=self.message,
+                value=str(token.value),
+                row=token.line,
+                col=token.col,
+            )
+
+
+@register
+class CheckAsserts:
+    __slots__ = ()
+    code = 15
+    message = 'assert error'
+    required = Required.FUNC
+
+    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+        for token in get_asserts(body=func.body):
             yield Error(
                 code=self.code,
                 text=self.message,
