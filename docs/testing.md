@@ -3,8 +3,8 @@
 Deal can automatically test your functions. First of all, your function has to be prepared:
 
 1. All function arguments are type-annotated.
-1. All exceptions that function can raise are specified in [@deal.raises](decorators/raises.html).
-1. All pre-conditions are specified with [@deal.pre](decorators/pre.html).
+1. All exceptions that function can raise are specified in [@deal.raises](decorators/raises).
+1. All pre-conditions are specified with [@deal.pre](decorators/pre).
 
 Then use `deal.cases` to get test cases for the function. Every case is a callable object that gets no arguments. Calling it will call the original function with suppressing allowed exceptions.
 
