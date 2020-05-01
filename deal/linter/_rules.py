@@ -176,6 +176,9 @@ class CheckAsserts:
     required = Required.FUNC
 
     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+        # do not validate asserts in tests
+        if func.name.startswith('test_'):
+            return
         for token in get_asserts(body=func.body):
             yield Error(
                 code=self.code,
