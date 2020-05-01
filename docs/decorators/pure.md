@@ -1,6 +1,6 @@
 # pure
 
-Pure function cannot do network requests, write anything into stdout or raise any exceptions. It gets some parameters and returns some result. That's all. In runtime, it does the same checks as `chain(safe, silent, offline)`. However, [linter](../linter.html) checks a bit more, like no `import`, `global`, `nonlocal`, etc.
+Pure function cannot do network requests, write anything into stdout or raise any exceptions. It gets some parameters and returns some result. That's all. In runtime, it does the same checks as `chain(safe, silent, offline)`. However, [linter](../commands/lint) checks a bit more, like no `import`, `global`, `nonlocal`, etc.
 
 ```python
 @deal.pure

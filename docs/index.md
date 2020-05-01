@@ -12,6 +12,13 @@
 
 .. toctree::
     :maxdepth: 1
+    :caption: CLI
+
+    commands/lint
+    commands/stub
+
+.. toctree::
+    :maxdepth: 1
     :caption: Main info
 
     exceptions
@@ -19,8 +26,8 @@
     chaining
     validators
     testing
-    linter
     recipes
+
 
 .. toctree::
     :maxdepth: 1

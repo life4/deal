@@ -8,7 +8,7 @@ import astroid
 # project
 from deal.linter._func import Func
 from deal.linter._rules import (
-    CheckImports, CheckPrints, CheckPure, CheckRaises, CheckReturns, rules,
+    CheckImports, CheckPrints, CheckPure, CheckRaises, CheckReturns, rules, CheckAsserts,
 )
 
 
@@ -154,6 +154,21 @@ def test_check_pure():
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
         expected = [(3, 4, 'DEAL014 pure contract error (global)')]
+        assert actual == expected
+
+
+def test_check_asserts():
+    checker = CheckAsserts()
+    text = """
+    def test(a):
+        assert False, "oh no!"
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    for func in (funcs1[0], funcs2[0]):
+        actual = [tuple(err) for err in checker(func)]
+        expected = [(2, 11, 'DEAL015 assert error (False)')]
         assert actual == expected
 
 

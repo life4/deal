@@ -69,8 +69,8 @@ def test_resolve_func():
     """
     text = dedent(text).strip()
     funcs = Func.from_astroid(astroid.parse(text))
-    assert len(funcs) == 1
-    func = funcs[0]
+    assert len(funcs) == 2
+    func = funcs[-1]
     assert len(func.contracts) == 1
     c = func.contracts[0]
     assert c.run(1) is True
