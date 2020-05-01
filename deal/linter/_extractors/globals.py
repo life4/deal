@@ -1,36 +1,42 @@
 # built-in
 import ast
-from typing import Iterator
+from typing import Optional
 
 # external
 import astroid
 
 # app
-from .common import TOKENS, Token, traverse
+from .common import TOKENS, Extractor, Token
 
 
-def get_globals(body: list) -> Iterator[Token]:
-    for expr in traverse(body):
-        if isinstance(expr, TOKENS.GLOBAL):
-            yield Token(value='global', line=expr.lineno, col=expr.col_offset)
-            continue
+get_globals = Extractor()
 
-        if isinstance(expr, TOKENS.NONLOCAL):
-            yield Token(value='nonlocal', line=expr.lineno, col=expr.col_offset)
-            continue
 
-        if type(expr) is ast.Import:
-            yield Token(value='import', line=expr.lineno, col=expr.col_offset)
-            continue
+@get_globals.register(*TOKENS.GLOBAL)
+def handle_global(expr) -> Optional[Token]:
+    return Token(value='global', line=expr.lineno, col=expr.col_offset)
 
-        if type(expr) is astroid.Import:
-            yield Token(value='import', line=expr.lineno, col=expr.col_offset)
-            continue
 
-        if type(expr) is ast.ImportFrom:
-            yield Token(value='import', line=expr.lineno, col=expr.col_offset)
-            continue
+@get_globals.register(*TOKENS.NONLOCAL)
+def handle_nonlocal(expr) -> Optional[Token]:
+    return Token(value='nonlocal', line=expr.lineno, col=expr.col_offset)
 
-        if type(expr) is astroid.ImportFrom:
-            yield Token(value='import', line=expr.lineno, col=expr.col_offset)
-            continue
+
+@get_globals.register(ast.Import)
+def handle_ast_import(expr: ast.Import) -> Optional[Token]:
+    return Token(value='import', line=expr.lineno, col=expr.col_offset)
+
+
+@get_globals.register(astroid.Import)
+def handle_astroid_import(expr: astroid.Import) -> Optional[Token]:
+    return Token(value='import', line=expr.lineno, col=expr.col_offset)
+
+
+@get_globals.register(ast.ImportFrom)
+def handle_ast_import_from(expr: ast.ImportFrom) -> Optional[Token]:
+    return Token(value='import', line=expr.lineno, col=expr.col_offset)
+
+
+@get_globals.register(astroid.ImportFrom)
+def handle_astroid_import_from(expr: astroid.ImportFrom) -> Optional[Token]:
+    return Token(value='import', line=expr.lineno, col=expr.col_offset)

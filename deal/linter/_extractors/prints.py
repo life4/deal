@@ -1,47 +1,51 @@
 # built-in
 import ast
-from typing import Iterator
+from typing import Optional
 
 # external
 import astroid
 
 # app
-from .common import TOKENS, Token, get_name, infer, traverse
+from .common import TOKENS, Extractor, Token, get_name, infer
 
 
-def get_prints(body: list) -> Iterator[Token]:
-    for expr in traverse(body):
-        token_info = dict(line=expr.lineno, col=expr.col_offset)
-        if isinstance(expr, TOKENS.CALL):
-            name = get_name(expr.func)
-            if name in ('print', 'sys.stdout', 'sys.stderr'):
-                yield Token(value=name, **token_info)
-                continue
-            if name in ('sys.stdout.write', 'sys.stderr.write'):
-                yield Token(value=name[:-6], **token_info)
-                continue
-            if name == 'open':
-                if _is_open_to_write(expr):
-                    yield Token(value='open', **token_info)
-                continue
+get_prints = Extractor()
 
-        if _is_pathlib_write(expr):
-            yield Token(value='Path.open', **token_info)
 
-        if isinstance(expr, TOKENS.WITH):
-            for item in expr.items:
-                if isinstance(item, ast.withitem):
-                    item = item.context_expr
-                else:
-                    item = item[0]
-                if _is_pathlib_write(item):
-                    yield Token(value='Path.open', **token_info)
-                if not isinstance(item, TOKENS.CALL):
-                    continue
-                name = get_name(item.func)
-                if name == 'open':
-                    if _is_open_to_write(item):
-                        yield Token(value='open', **token_info)
+@get_prints.register(*TOKENS.CALL)
+def handle_call(expr) -> Optional[Token]:
+    token_info = dict(line=expr.lineno, col=expr.col_offset)
+    name = get_name(expr.func)
+    if name in ('print', 'sys.stdout', 'sys.stderr'):
+        return Token(value=name, **token_info)
+    if name in ('sys.stdout.write', 'sys.stderr.write'):
+        return Token(value=name[:-6], **token_info)
+    if name == 'open':
+        if _is_open_to_write(expr):
+            return Token(value='open', **token_info)
+
+    if _is_pathlib_write(expr):
+        return Token(value='Path.open', **token_info)
+    return None
+
+
+@get_prints.register(*TOKENS.WITH)
+def handle_with(expr) -> Optional[Token]:
+    token_info = dict(line=expr.lineno, col=expr.col_offset)
+    for item in expr.items:
+        if isinstance(item, ast.withitem):
+            item = item.context_expr
+        else:
+            item = item[0]
+        if _is_pathlib_write(item):
+            return Token(value='Path.open', **token_info)
+        if not isinstance(item, TOKENS.CALL):
+            continue
+        name = get_name(item.func)
+        if name == 'open':
+            if _is_open_to_write(item):
+                return Token(value='open', **token_info)
+    return None
 
 
 def _is_open_to_write(expr) -> bool:

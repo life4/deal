@@ -13,7 +13,9 @@ from deal.linter._extractors import get_returns
     ('return 1', (1, )),
     ('return -1', (-1, )),
     ('return 3.14', (3.14, )),
-    ('return -3.14', (-3.14, )),
+    ('return +3.14', (3.14, )),     # ignore unary plus
+    ('return -3.14', (-3.14, )),    # handle unary minus
+    ('return +a', ()),              # ignore uninferrable value inside of unary op
     ('return "lol"', ('lol', )),
     ('return b"lol"', (b'lol', )),
     ('return True', (True, )),
@@ -38,9 +40,17 @@ def test_get_returns_simple(text, expected):
     assert returns == expected
 
 
+def test_ast_uninferrable_unary():
+    tree = ast.parse('return ~4')
+    print(ast.dump(tree))
+    returns = tuple(r.value for r in get_returns(body=tree.body))
+    assert returns == ()
+
+
 @pytest.mark.parametrize('text, expected', [
-    ('return 1 + 2', (3, )),
-    ('return a', ()),
+    ('return 1 + 2', (3, )),    # do a simple arithmetic
+    ('return a', ()),           # ignore uninferrable names
+    ('return ~4', (-5, )),      # handle unary bitwise NOT
 ])
 def test_get_returns_inference(text, expected):
     tree = astroid.parse(text)

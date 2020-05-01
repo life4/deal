@@ -1,74 +1,84 @@
 # built-in
 import ast
 import builtins
-from typing import Iterator, List
+from typing import Iterator, Optional, Union
 
 # external
 import astroid
 
 # app
-from .common import TOKENS, Token, get_name, infer, traverse
+from .common import TOKENS, Extractor, Token, get_name, infer
 from .contracts import get_contracts
 
 
-def get_exceptions(body: List, *, dive: bool = True) -> Iterator[Token]:
-    for expr in traverse(body):
-        token_info = dict(line=expr.lineno, col=expr.col_offset)
+get_exceptions = Extractor()
 
-        # assert
-        if isinstance(expr, TOKENS.ASSERT):
-            yield Token(value=AssertionError, **token_info)
-            continue
 
-        # explicit raise
-        if isinstance(expr, TOKENS.RAISE):
-            name = get_name(expr.exc)
-            if not name:
-                # raised a value, too tricky
-                if not isinstance(expr.exc, TOKENS.CALL):
-                    continue
-                # raised an instance of an exception
-                name = get_name(expr.exc.func)
-                if not name or name[0].islower():
-                    continue
-            exc = getattr(builtins, name, name)
-            token_info['col'] = expr.exc.col_offset
-            yield Token(value=exc, **token_info)
-            continue
+@get_exceptions.register(*TOKENS.ASSERT)
+def handle_assert(expr, **kwargs) -> Optional[Token]:
+    token_info = dict(line=expr.lineno, col=expr.col_offset)
+    return Token(value=AssertionError, **token_info)
 
-        # division by zero
-        if isinstance(expr, TOKENS.BIN_OP):
-            if isinstance(expr.op, ast.Div) or expr.op == '/':
-                if isinstance(expr.right, astroid.node_classes.NodeNG):
-                    guesses = infer(expr=expr.right)
-                    token_info['col'] = expr.right.col_offset
-                    for guess in guesses:
-                        if type(guess) is not astroid.Const:
-                            continue
-                        yield Token(value=ZeroDivisionError, **token_info)
-                        break
-                    continue
-                if isinstance(expr.right, ast.Num) and expr.right.n == 0:
-                    token_info['col'] = expr.right.col_offset
-                    yield Token(value=ZeroDivisionError, **token_info)
-                    continue
 
-        # exit()
-        if isinstance(expr, TOKENS.CALL):
-            name = get_name(expr.func)
-            if name and name == 'exit':
-                yield Token(value=SystemExit, **token_info)
-                continue
-            # sys.exit()
-            if isinstance(expr.func, TOKENS.ATTR):
-                name = get_name(expr.func)
-                if name and name == 'sys.exit':
-                    yield Token(value=SystemExit, **token_info)
-                    continue
+# explicit raise
+@get_exceptions.register(*TOKENS.RAISE)
+def handle_raise(expr, **kwargs) -> Optional[Token]:
+    token_info = dict(line=expr.lineno, col=expr.col_offset)
+    name = get_name(expr.exc)
+    if not name:
+        # raised a value, too tricky
+        if not isinstance(expr.exc, TOKENS.CALL):
+            return None
+        # raised an instance of an exception
+        name = get_name(expr.exc.func)
+        if not name or name[0].islower():
+            return None
+    exc = getattr(builtins, name, name)
+    token_info['col'] = expr.exc.col_offset
+    return Token(value=exc, **token_info)
 
-        # infer function call and check the function body for raises
-        if dive:
-            yield from _exceptions_from_funcs(expr=expr)
+
+# division by zero
+@get_exceptions.register(*TOKENS.BIN_OP)
+def handle_bin_op(expr, **kwargs) -> Optional[Token]:
+    token_info = dict(line=expr.lineno, col=expr.col_offset)
+    if isinstance(expr.op, ast.Div) or expr.op == '/':
+        if isinstance(expr.right, astroid.node_classes.NodeNG):
+            guesses = infer(expr=expr.right)
+            token_info['col'] = expr.right.col_offset
+            for guess in guesses:
+                if type(guess) is not astroid.Const:
+                    continue
+                return Token(value=ZeroDivisionError, **token_info)
+        if isinstance(expr.right, ast.Num) and expr.right.n == 0:
+            token_info['col'] = expr.right.col_offset
+            return Token(value=ZeroDivisionError, **token_info)
+    return None
+
+
+# exit()
+@get_exceptions.register(*TOKENS.CALL)
+def handle_call(expr, dive: bool = True) -> Optional[Union[Token, Iterator[Token]]]:
+    token_info = dict(line=expr.lineno, col=expr.col_offset)
+    name = get_name(expr.func)
+    if name and name == 'exit':
+        return Token(value=SystemExit, **token_info)
+    # sys.exit()
+    if isinstance(expr.func, TOKENS.ATTR):
+        name = get_name(expr.func)
+        if name and name == 'sys.exit':
+            return Token(value=SystemExit, **token_info)
+    # infer function call and check the function body for raises
+    if dive:
+        return _exceptions_from_funcs(expr=expr)
+    return None
+
+
+@get_exceptions.register(astroid.Assign)
+def handle_assign(expr: astroid.Assign, dive: bool = True) -> Iterator[Token]:
+    # infer function call and check the function body for raises
+    if dive:
+        yield from _exceptions_from_funcs(expr=expr)
 
 
 def _exceptions_from_funcs(expr) -> Iterator[Token]:
@@ -100,6 +110,7 @@ def _exceptions_from_funcs(expr) -> Iterator[Token]:
                     if name is None:
                         continue
                     yield Token(value=name, **extra)
+    return None
 
 
 def get_names(expr) -> Iterator:

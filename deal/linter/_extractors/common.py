@@ -1,8 +1,9 @@
 # built-in
 import ast
 from contextlib import suppress
+from functools import partial
 from types import SimpleNamespace
-from typing import Iterator, List, NamedTuple, Optional, Tuple
+from typing import Callable, Iterator, List, NamedTuple, Optional, Tuple
 
 # external
 import astroid
@@ -83,3 +84,35 @@ def infer(expr) -> Tuple:
     with suppress(astroid.exceptions.InferenceError, RecursionError):
         return tuple(g for g in expr.infer() if type(g) is not astroid.Uninferable)
     return tuple()
+
+
+class Extractor:
+    __slots__ = ('handlers', )
+
+    def __init__(self):
+        self.handlers = dict()
+
+    def _register(self, types: Tuple[type], handler: Callable) -> Callable:
+        for tp in types:
+            # it's here to have `getattr` to get nodes from `ast` module
+            # that are available only in some Python versions.
+            if tp is None:
+                continue  # pragma: no coverage
+            self.handlers[tp] = handler
+        return handler
+
+    def register(self, *types):
+        return partial(self._register, types)
+
+    def __call__(self, body: List, **kwargs) -> Iterator[Token]:
+        for expr in traverse(body=body):
+            handler = self.handlers.get(type(expr))
+            if not handler:
+                continue
+            token = handler(expr=expr, **kwargs)
+            if token is None:
+                continue
+            if type(token) is Token:
+                yield token
+                continue
+            yield from token

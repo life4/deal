@@ -1,7 +1,7 @@
 # built-in
 import builtins
 from pathlib import Path
-from typing import Iterator, List, Optional, Tuple
+from typing import Optional, Tuple
 
 # external
 import astroid
@@ -9,28 +9,30 @@ import astroid
 # app
 from .._contract import Category
 from .._stub import EXTENSION, StubFile, StubsManager
-from .common import Token, infer, traverse
+from .common import Extractor, Token, infer
 
 
-def get_exceptions_stubs(body: List, *, dive: bool = True, stubs: StubsManager) -> Iterator[Token]:
-    for expr in traverse(body):
-        if type(expr) is not astroid.Call:
-            return
-        extra = dict(
-            line=expr.lineno,
-            col=expr.col_offset,
-        )
-        for value in infer(expr=expr.func):
-            if type(value) is not astroid.FunctionDef:
-                continue
-            module_name, func_name = _get_full_name(expr=value)
-            stub = _get_stub(module_name=module_name, expr=value, stubs=stubs)
-            if stub is None:
-                continue
-            names = stub.get(func=func_name, contract=Category.RAISES)
-            for name in names:
-                name = getattr(builtins, name, name)
-                yield Token(value=name, **extra)
+get_exceptions_stubs = Extractor()
+
+
+@get_exceptions_stubs.register(astroid.Call)
+def handle_astroid_call(expr: astroid.Call, *, dive: bool = True, stubs: StubsManager) -> Optional[Token]:
+    extra = dict(
+        line=expr.lineno,
+        col=expr.col_offset,
+    )
+    for value in infer(expr=expr.func):
+        if type(value) is not astroid.FunctionDef:
+            continue
+        module_name, func_name = _get_full_name(expr=value)
+        stub = _get_stub(module_name=module_name, expr=value, stubs=stubs)
+        if stub is None:
+            continue
+        names = stub.get(func=func_name, contract=Category.RAISES)
+        for name in names:
+            name = getattr(builtins, name, name)
+            return Token(value=name, **extra)
+    return None
 
 
 def _get_stub(

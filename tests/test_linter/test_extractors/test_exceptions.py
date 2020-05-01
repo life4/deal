@@ -147,3 +147,20 @@ def test_inference_subcontracts():
     func_tree = tree.body[-1].body
     returns = tuple(r.value for r in get_exceptions(body=func_tree))
     assert returns == ('SomeError', )
+
+
+def test_inference_doesnt_have_exceptions():
+    text = """
+        def subf():
+            something()
+            return 1
+
+        @deal.raises(KeyError)
+        def f():
+            b = subf()
+    """
+    tree = astroid.parse(dedent(text))
+    print(tree.repr_tree())
+    func_tree = tree.body[-1].body
+    returns = tuple(r.value for r in get_exceptions(body=func_tree))
+    assert returns == ()
