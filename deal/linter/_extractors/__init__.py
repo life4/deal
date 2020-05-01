@@ -1,4 +1,5 @@
 # app
+from .asserts import get_asserts
 from .common import get_name
 from .contracts import get_contracts
 from .exceptions import get_exceptions
@@ -10,6 +11,7 @@ from .returns import get_returns
 
 
 __all__ = [
+    'get_asserts',
     'get_contracts',
     'get_exceptions',
     'get_exceptions_stubs',
