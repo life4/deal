@@ -18,12 +18,14 @@ result = contract(*args, **kwargs)
 
 
 class Func:
-    __slots__ = ('body', 'contracts', 'name')
+    __slots__ = ('body', 'contracts', 'name', 'line', 'col')
 
-    def __init__(self, *, body: list, contracts: Iterable[Contract], name: str):
+    def __init__(self, *, body: list, contracts: Iterable[Contract], name: str, line: int, col: int):
         self.body = body
         self.contracts = contracts
         self.name = name
+        self.line = line
+        self.col = col
 
     @classmethod
     def from_path(cls, path: Path) -> List['Func']:
@@ -50,6 +52,8 @@ class Func:
                 name=expr.name,
                 body=expr.body,
                 contracts=contracts,
+                line=expr.lineno,
+                col=expr.col_offset,
             ))
         return funcs
 
@@ -68,6 +72,8 @@ class Func:
                 name=expr.name,
                 body=expr.body,
                 contracts=contracts,
+                line=expr.lineno,
+                col=expr.col_offset,
             ))
         return funcs
 

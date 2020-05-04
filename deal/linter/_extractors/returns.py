@@ -6,11 +6,18 @@ from typing import Optional
 import astroid
 
 # app
-from .common import TOKENS, Extractor, Token, infer
+from .common import TOKENS, Extractor, Token, infer, traverse
 
 
 get_returns = Extractor()
 inner_extractor = Extractor()
+
+
+def has_returns(body: list) -> bool:
+    for expr in traverse(body=body):
+        if isinstance(expr, TOKENS.RETURN + TOKENS.YIELD):
+            return True
+    return False
 
 
 @get_returns.register(*TOKENS.RETURN)

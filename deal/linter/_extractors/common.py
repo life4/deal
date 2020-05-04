@@ -26,6 +26,7 @@ TOKENS = SimpleNamespace(
     TRY=(ast.Try, astroid.TryExcept, astroid.TryFinally),
     UNARY_OP=(ast.UnaryOp, astroid.UnaryOp),
     WITH=(ast.With, astroid.With),
+    YIELD=(ast.Yield, astroid.Yield),
 )
 
 

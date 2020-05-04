@@ -147,6 +147,7 @@ def test_check_pure():
     @deal.pure
     def test(a):
         global b
+        return b
     """
     text = dedent(text).strip()
     funcs1 = Func.from_ast(ast.parse(text))
