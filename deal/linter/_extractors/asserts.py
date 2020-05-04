@@ -15,11 +15,9 @@ inner_extractor = Extractor()
 
 @get_asserts.register(*TOKENS.ASSERT)
 def handle_assert(expr) -> Optional[Token]:
-    handler = inner_extractor.handlers.get(type(expr.test))
-    if handler:
-        token = handler(expr=expr.test)
-        if token is not None:
-            return token
+    # inner_extractor
+    for token in inner_extractor.handle(expr=expr.test):
+        return token
 
     # astroid inference
     if hasattr(expr.test, 'infer'):

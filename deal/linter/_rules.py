@@ -10,6 +10,7 @@ from ._error import Error
 from ._extractors import (
     get_exceptions, get_exceptions_stubs, get_globals,
     get_imports, get_prints, get_returns, get_asserts,
+    has_returns,
 )
 from ._func import Func
 from ._stub import StubsManager
@@ -158,6 +159,14 @@ class CheckPure:
             return
 
     def _check(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+        if not has_returns(body=func.body):
+            yield Error(
+                code=self.code,
+                text=self.message,
+                value='no return',
+                row=func.line,
+                col=func.col,
+            )
         for token in get_globals(body=func.body):
             yield Error(
                 code=self.code,

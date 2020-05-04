@@ -6,20 +6,25 @@ from typing import Optional
 import astroid
 
 # app
-from .common import TOKENS, Extractor, Token, infer
+from .common import TOKENS, Extractor, Token, infer, traverse
 
 
 get_returns = Extractor()
 inner_extractor = Extractor()
 
 
+def has_returns(body: list) -> bool:
+    for expr in traverse(body=body):
+        if isinstance(expr, TOKENS.RETURN + TOKENS.YIELD):
+            return True
+    return False
+
+
 @get_returns.register(*TOKENS.RETURN)
 def handle_returns(expr) -> Optional[Token]:
-    handler = inner_extractor.handlers.get(type(expr.value))
-    if handler:
-        token = handler(expr=expr.value)
-        if token is not None:
-            return token
+    # inner_extractor
+    for token in inner_extractor.handle(expr=expr.value):
+        return token
 
     # astroid inference
     if hasattr(expr.value, 'infer'):

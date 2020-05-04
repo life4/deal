@@ -6,7 +6,7 @@ import astroid
 import pytest
 
 # project
-from deal.linter._extractors import get_returns
+from deal.linter._extractors import get_returns, has_returns
 
 
 @pytest.mark.parametrize('text, expected', [
@@ -57,3 +57,21 @@ def test_get_returns_inference(text, expected):
     print(tree.repr_tree())
     returns = tuple(r.value for r in get_returns(body=tree.body))
     assert returns == expected
+
+
+@pytest.mark.parametrize('text, expected', [
+    ('return', True),
+    ('return 1', True),
+    ('if b:\n  return 1', True),
+    ('yield 1', True),
+    ('if b:\n  yield 1', True),
+    ('1 + 2', False),
+])
+def test_has_returns(text, expected):
+    tree = ast.parse(text)
+    print(ast.dump(tree))
+    assert has_returns(body=tree.body) is expected
+
+    tree = astroid.parse(text)
+    print(tree.repr_tree())
+    assert has_returns(body=tree.body) is expected
