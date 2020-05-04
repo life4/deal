@@ -163,7 +163,7 @@ class CheckPure:
             yield Error(
                 code=self.code,
                 text=self.message,
-                value='return',
+                value='no return',
                 row=func.line,
                 col=func.col,
             )

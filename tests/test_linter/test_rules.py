@@ -158,6 +158,23 @@ def test_check_pure():
         assert actual == expected
 
 
+def test_check_pure_no_returns():
+    checker = CheckPure()
+    text = """
+    @deal.pure
+    def test(a):
+        a + 3
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    for func in (funcs1[0], funcs2[0]):
+        actual = [tuple(err) for err in checker(func)]
+        assert len(actual) == 1
+        expected = 'DEAL014 pure contract error (no return)'
+        assert actual[0][2] == expected
+
+
 def test_check_asserts():
     checker = CheckAsserts()
     text = """
