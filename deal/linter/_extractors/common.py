@@ -104,15 +104,18 @@ class Extractor:
     def register(self, *types):
         return partial(self._register, types)
 
+    def handle(self, expr, **kwargs):
+        handler = self.handlers.get(type(expr))
+        if not handler:
+            return
+        token = handler(expr=expr, **kwargs)
+        if token is None:
+            return
+        if type(token) is Token:
+            yield token
+            return
+        yield from token
+
     def __call__(self, body: List, **kwargs) -> Iterator[Token]:
         for expr in traverse(body=body):
-            handler = self.handlers.get(type(expr))
-            if not handler:
-                continue
-            token = handler(expr=expr, **kwargs)
-            if token is None:
-                continue
-            if type(token) is Token:
-                yield token
-                continue
-            yield from token
+            yield from self.handle(expr=expr, **kwargs)

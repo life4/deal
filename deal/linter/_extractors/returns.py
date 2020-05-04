@@ -15,11 +15,9 @@ inner_extractor = Extractor()
 
 @get_returns.register(*TOKENS.RETURN)
 def handle_returns(expr) -> Optional[Token]:
-    handler = inner_extractor.handlers.get(type(expr.value))
-    if handler:
-        token = handler(expr=expr.value)
-        if token is not None:
-            return token
+    # inner_extractor
+    for token in inner_extractor.handle(expr=expr.value):
+        return token
 
     # astroid inference
     if hasattr(expr.value, 'infer'):
