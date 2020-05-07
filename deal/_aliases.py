@@ -95,12 +95,12 @@ def offline(
     exception: ExceptionType = None,
     debug: bool = False,
 ) -> Callable[[_CallableType], _CallableType]:
-    pass
+    pass  # pragma: no cover
 
 
 @overload
 def offline(_func: _CallableType) -> _CallableType:
-    pass
+    pass  # pragma: no cover
 
 
 def offline(
@@ -126,12 +126,12 @@ def safe(
     exception: ExceptionType = None,
     debug: bool = False,
 ) -> Callable[[_CallableType], _CallableType]:
-    pass
+    pass  # pragma: no cover
 
 
 @overload
 def safe(_func: _CallableType) -> _CallableType:
-    pass
+    pass  # pragma: no cover
 
 
 def safe(
@@ -157,12 +157,12 @@ def silent(
     exception: ExceptionType = None,
     debug: bool = False,
 ) -> Callable[[_CallableType], _CallableType]:
-    pass
+    pass  # pragma: no cover
 
 
 @overload
 def silent(_func: _CallableType) -> _CallableType:
-    pass
+    pass  # pragma: no cover
 
 
 def silent(
