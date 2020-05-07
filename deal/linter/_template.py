@@ -1,8 +1,13 @@
 from deal import ContractError
 from deal._decorators.base import Base
 
+# will be filled from the linter
 contract = ...
+func = ...
+
 base = Base(validator=contract)
+if func is not Ellipsis:
+    base.function = func
 
 try:
     base.validate(*args, **kwargs)  # noqa: F821

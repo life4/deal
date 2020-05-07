@@ -19,14 +19,15 @@ class Category(enum.Enum):
 
 
 class Contract:
-    __slots__ = ('args', 'category')
+    __slots__ = ('args', 'category', 'func_args')
 
-    def __init__(self, args, category: Category):
+    def __init__(self, args, category: Category, func_args: ast.arguments = None):
         self.args = args
         self.category = category
+        self.func_args = func_args
 
     @property
-    def body(self):
+    def body(self) -> ast.AST:
         contract = self.args[0]
         # convert astroid node to ast node
         if hasattr(contract, 'as_string'):
@@ -65,6 +66,14 @@ class Contract:
     @property
     def bytecode(self):
         module = ast.parse(TEMPLATE)
+
+        # inject function signature
+        if self.func_args is not None:
+            func = ast.parse('lambda:0').body[0].value
+            func.args = self.func_args
+            module.body[3].value = func
+
+        # inject contract
         contract = self.body
         if isinstance(contract, ast.FunctionDef):
             # if contract is function, add it's definition and assign it's name
@@ -80,6 +89,7 @@ class Contract:
             if isinstance(contract, ast.Expr):
                 contract = contract.value
             module.body[2].value = contract
+
         return compile(module, filename='<ast>', mode='exec')
 
     def run(self, *args, **kwargs):
