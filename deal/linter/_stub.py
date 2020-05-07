@@ -38,9 +38,10 @@ class StubFile:
             raise ValueError('unsupported contract')
         contracts = self._content.setdefault(func, dict())
         values = contracts.setdefault(contract.value, [])
-        if value not in values:
-            values.append(value)
-            values.sort()
+        if value in values:
+            return
+        values.append(value)
+        values.sort()
 
     def get(self, func: str, contract: Category) -> FrozenSet[str]:
         if contract != Category.RAISES:
