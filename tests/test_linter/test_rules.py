@@ -108,6 +108,22 @@ def test_check_raises_without_allowed():
         assert actual == expected
 
 
+def test_check_raises_unknown():
+    checker = CheckRaises()
+    text = """
+    @deal.raises()
+    def test(a):
+        raise UnknownError
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    for func in (funcs1[0], funcs2[0]):
+        actual = [tuple(err) for err in checker(func)]
+        expected = [(3, 10, 'DEAL012 raises contract error (UnknownError)')]
+        assert actual == expected
+
+
 def test_check_raises_inherited():
     checker = CheckRaises()
     text = """
