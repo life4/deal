@@ -2,15 +2,13 @@
 import ast
 import builtins
 import enum
+from pathlib import Path
 
 # external
 import astroid
 
 
-TEMPLATE = """
-contract = PLACEHOLDER
-result = contract(*args, **kwargs)
-"""
+TEMPLATE = (Path(__file__).parent / '_template.py').read_text()
 
 
 class Category(enum.Enum):
@@ -21,14 +19,15 @@ class Category(enum.Enum):
 
 
 class Contract:
-    __slots__ = ('args', 'category')
+    __slots__ = ('args', 'category', 'func_args')
 
-    def __init__(self, args, category: Category):
+    def __init__(self, args, category: Category, func_args: ast.arguments = None):
         self.args = args
         self.category = category
+        self.func_args = func_args
 
     @property
-    def body(self):
+    def body(self) -> ast.AST:
         contract = self.args[0]
         # convert astroid node to ast node
         if hasattr(contract, 'as_string'):
@@ -67,12 +66,20 @@ class Contract:
     @property
     def bytecode(self):
         module = ast.parse(TEMPLATE)
+
+        # inject function signature
+        if self.func_args is not None:
+            func = ast.parse('lambda:0').body[0].value
+            func.args = self.func_args
+            module.body[3].value = func
+
+        # inject contract
         contract = self.body
         if isinstance(contract, ast.FunctionDef):
             # if contract is function, add it's definition and assign it's name
             # to `contract` variable.
             module.body = [contract] + module.body
-            module.body[1].value = ast.Name(
+            module.body[3].value = ast.Name(
                 id=contract.name,
                 lineno=1,
                 col_offset=1,
@@ -81,7 +88,8 @@ class Contract:
         else:
             if isinstance(contract, ast.Expr):
                 contract = contract.value
-            module.body[0].value = contract
+            module.body[2].value = contract
+
         return compile(module, filename='<ast>', mode='exec')
 
     def run(self, *args, **kwargs):

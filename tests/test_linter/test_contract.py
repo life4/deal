@@ -95,3 +95,43 @@ def test_resolve_lambda():
     c = func.contracts[0]
     assert c.run(1) is True
     assert c.run(-1) is False
+
+
+def test_return_message():
+    text = """
+    import deal
+
+    @deal.post(lambda x: x > 0 or 'oh no!')
+    def f(x):
+        return x
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    assert len(funcs1) == 1
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    assert len(funcs2) == 1
+    for func in (funcs1[0], funcs2[0]):
+        assert len(func.contracts) == 1
+        c = func.contracts[0]
+        assert c.run(1) is True
+        assert c.run(-1) == 'oh no!'
+
+
+def test_simplified_signature():
+    text = """
+    import deal
+
+    @deal.post(lambda _: _.a > _.b)
+    def f(a, b):
+        return a + b
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    assert len(funcs1) == 1
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    assert len(funcs2) == 1
+    for func in (funcs1[0], funcs2[0]):
+        assert len(func.contracts) == 1
+        c = func.contracts[0]
+        assert c.run(3, 2) is True
+        assert c.run(2, 3) is False

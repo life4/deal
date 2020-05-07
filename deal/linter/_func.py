@@ -1,7 +1,7 @@
 # built-in
 import ast
 from pathlib import Path
-from typing import Iterable, List
+from typing import Iterable, List, NamedTuple
 
 # external
 import astroid
@@ -11,21 +11,14 @@ from ._contract import Category, Contract
 from ._extractors import get_contracts
 
 
-TEMPLATE = """
-contract = PLACEHOLDER
-result = contract(*args, **kwargs)
-"""
+class Func(NamedTuple):
+    name: str
+    args: ast.arguments
+    body: list
+    contracts: Iterable[Contract]
 
-
-class Func:
-    __slots__ = ('body', 'contracts', 'name', 'line', 'col')
-
-    def __init__(self, *, body: list, contracts: Iterable[Contract], name: str, line: int, col: int):
-        self.body = body
-        self.contracts = contracts
-        self.name = name
-        self.line = line
-        self.col = col
+    line: int
+    col: int
 
     @classmethod
     def from_path(cls, path: Path) -> List['Func']:
@@ -46,10 +39,15 @@ class Func:
                 continue
             contracts = []
             for category, args in get_contracts(expr.decorator_list):
-                contract = Contract(args=args, category=Category(category))
+                contract = Contract(
+                    args=args,
+                    category=Category(category),
+                    func_args=expr.args,
+                )
                 contracts.append(contract)
             funcs.append(cls(
                 name=expr.name,
+                args=expr.args,
                 body=expr.body,
                 contracts=contracts,
                 line=expr.lineno,
@@ -63,13 +61,25 @@ class Func:
         for expr in tree.body:
             if not isinstance(expr, astroid.FunctionDef):
                 continue
+
+            # make signature
+            code = 'def f({}):0'.format(expr.args.as_string())
+            func_args = ast.parse(code).body[0].args  # type: ignore
+
+            # collect contracts
             contracts = []
             if expr.decorators:
                 for category, args in get_contracts(expr.decorators.nodes):
-                    contract = Contract(args=args, category=Category(category))
+                    contract = Contract(
+                        args=args,
+                        func_args=func_args,
+                        category=Category(category),
+                    )
                     contracts.append(contract)
+
             funcs.append(cls(
                 name=expr.name,
+                args=func_args,
                 body=expr.body,
                 contracts=contracts,
                 line=expr.lineno,
