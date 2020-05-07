@@ -2,15 +2,13 @@
 import ast
 import builtins
 import enum
+from pathlib import Path
 
 # external
 import astroid
 
 
-TEMPLATE = """
-contract = PLACEHOLDER
-result = contract(*args, **kwargs)
-"""
+TEMPLATE = (Path(__file__).parent / '_template.py').read_text()
 
 
 class Category(enum.Enum):
@@ -72,7 +70,7 @@ class Contract:
             # if contract is function, add it's definition and assign it's name
             # to `contract` variable.
             module.body = [contract] + module.body
-            module.body[1].value = ast.Name(
+            module.body[3].value = ast.Name(
                 id=contract.name,
                 lineno=1,
                 col_offset=1,
@@ -81,7 +79,7 @@ class Contract:
         else:
             if isinstance(contract, ast.Expr):
                 contract = contract.value
-            module.body[0].value = contract
+            module.body[2].value = contract
         return compile(module, filename='<ast>', mode='exec')
 
     def run(self, *args, **kwargs):
