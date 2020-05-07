@@ -41,7 +41,7 @@ def handle_const(expr: astroid.Const) -> Optional[Token]:
 # Python <3.8
 # string, binary string
 @inner_extractor.register(ast.Str, ast.Bytes)
-def handle_str(expr) -> Optional[Token]:
+def handle_str(expr) -> Optional[Token]:  # pragma: py>=38
     if expr.s:
         return None
     return Token(value=expr.s, line=expr.lineno, col=expr.col_offset)
@@ -50,7 +50,7 @@ def handle_str(expr) -> Optional[Token]:
 # Python <3.8
 # True, False, None
 @inner_extractor.register(ast.NameConstant)
-def handle_name_constant(expr: ast.NameConstant) -> Optional[Token]:
+def handle_name_constant(expr: ast.NameConstant) -> Optional[Token]:  # pragma: py>=38
     if expr.value:
         return None
     return Token(value=expr.value, line=expr.lineno, col=expr.col_offset)

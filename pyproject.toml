@@ -81,13 +81,16 @@ typeguard = "*"
 vaa = ">=0.2.1"
 
 [tool.poetry.dev-dependencies]
-# tests
+# coverage squad
 coverage = "*"
+coverage-conditional-plugin = "*"
+pytest-cov = "*"
+
+# tests
 isort = {extras = ["pyproject"], version = "*"}
 marshmallow = "*"
 mypy = "*"
 pytest = "*"
-pytest-cov = "*"
 urllib3 = "*"
 
 # docs
@@ -97,7 +100,10 @@ sphinx = "*"
 sphinx-rtd-theme = "*"
 
 [tool.poetry.extras]
-tests = ["coverage", "isort", "marshmallow", "mypy", "pytest", "pytest-cov", "urllib3"]
+tests = [
+    "coverage", "coverage-conditional-plugin", "pytest-cov",
+    "isort", "marshmallow", "mypy", "pytest", "urllib3",
+]
 docs = ["m2r", "recommonmark", "sphinx", "sphinx-rtd-theme", "urllib3"]
 
 [tool.poetry.plugins."flake8.extension"]
