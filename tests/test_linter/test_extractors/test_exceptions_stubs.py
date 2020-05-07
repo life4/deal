@@ -41,7 +41,7 @@ def test_stubs_next_to_imported_module(tmp_path: Path):
     root.mkdir()
     (root / '__init__.py').touch()
     (root / 'other.py').write_text('def parent(): pass')
-    stub = {'parent': {'raises': ['ZeroDivisionError']}}
+    stub = {'parent': {'raises': ['ZeroDivisionError', 'SomeError']}}
     (root / 'other.json').write_text(json.dumps(stub))
     stubs = StubsManager()
 
@@ -58,7 +58,7 @@ def test_stubs_next_to_imported_module(tmp_path: Path):
         print(tree.repr_tree())
         func_tree = tree.body[-1].body
         returns = tuple(r.value for r in get_exceptions_stubs(body=func_tree, stubs=stubs))
-        assert returns == (ZeroDivisionError, )
+        assert set(returns) == {ZeroDivisionError, 'SomeError'}
     finally:
         sys.path = sys.path[:-1]
 
