@@ -23,7 +23,7 @@ TOKENS = SimpleNamespace(
     NONLOCAL=(ast.Nonlocal, astroid.Nonlocal),
     RAISE=(ast.Raise, astroid.Raise),
     RETURN=(ast.Return, astroid.Return),
-    TRY=(ast.Try, astroid.TryExcept, astroid.TryFinally),
+    # TRY=(ast.Try, astroid.TryExcept, astroid.TryFinally),
     UNARY_OP=(ast.UnaryOp, astroid.UnaryOp),
     WITH=(ast.With, astroid.With),
     YIELD=(ast.Yield, astroid.Yield),
@@ -46,11 +46,13 @@ def traverse(body: List) -> Iterator:
             yield from traverse(body=expr.body)
             yield from traverse(body=expr.orelse)
             continue
-        if isinstance(expr, TOKENS.TRY):
-            if hasattr(expr, 'orelse'):
-                yield from traverse(body=expr.orelse)
-            if hasattr(expr, 'finalbody'):
-                yield from traverse(body=expr.finalbody)
+
+        if isinstance(expr, (ast.Try, astroid.TryExcept)):
+            for handler in expr.handlers:
+                yield from traverse(body=handler.body)
+            yield from traverse(body=expr.orelse)
+        if isinstance(expr, (ast.Try, astroid.TryFinally)):
+            yield from traverse(body=expr.finalbody)
             continue
 
         # extracting things

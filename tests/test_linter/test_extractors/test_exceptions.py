@@ -25,6 +25,11 @@ from deal.linter._extractors import get_exceptions
     ('sys.exit(13)', (SystemExit, )),
     ('something.exit(13)', ()),
 
+    # try-except
+    ('try:\n raise AError\nexcept Exception:\n pass', ()),
+    ('try:\n raise AError\nexcept AError:\n raise BError', ('BError', )),
+    ('try:\n pass\nfinally:\n raise KeyError', (KeyError, )),
+
     ('if True: raise KeyError', (KeyError, )),
     ('for i in lst: raise KeyError', (KeyError, )),
 ])
