@@ -64,7 +64,7 @@ class Func(NamedTuple):
 
             # make signature
             code = 'def f({}):0'.format(expr.args.as_string())
-            func_args = ast.parse(code).body[0].args
+            func_args = ast.parse(code).body[0].args  # type: ignore
 
             # collect contracts
             contracts = []

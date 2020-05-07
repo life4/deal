@@ -9,12 +9,12 @@ from deal._decorators.base import Base
 contract = ...
 func = ...
 
-base = Base(validator=contract)
+base = Base(validator=contract)  # type: ignore
 if func is not Ellipsis:
     base.function = func
 
 try:
-    base.validate(*args, **kwargs)  # noqa: F821
+    base.validate(*args, **kwargs)  # type: ignore  # noqa: F821
 except ContractError as exc:
     result = False
     if exc.args:
