@@ -5,4 +5,4 @@ class Scheme:
         self.data = data
 
     def is_valid(self) -> bool:
-        raise NotImplementedError  # pragma: no cover
+        raise NotImplementedError
