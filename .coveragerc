@@ -1,0 +1,5 @@
+# https://coverage.readthedocs.io/en/coverage-5.0.4/config.html
+[run]
+# branch = True
+omit =
+    deal/linter/_template.py

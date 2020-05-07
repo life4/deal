@@ -1,3 +1,5 @@
+# This file is excluded from coverage.
+
 from deal import ContractError
 from deal._decorators.base import Base
 

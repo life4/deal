@@ -5,7 +5,7 @@ __pycache__/
 dist/
 
 # coverage
-.coverage*
+.coverage
 coverage.xml
 htmlcov/
 
