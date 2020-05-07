@@ -19,8 +19,11 @@ from deal.linter._extractors import get_exceptions
     ('raise 1 + 2', ()),
     ('assert False', (AssertionError, )),
     ('12 / 0', (ZeroDivisionError, )),
+    ('12 + 0', ()),
+    ('exit()', (SystemExit, )),
     ('exit(13)', (SystemExit, )),
     ('sys.exit(13)', (SystemExit, )),
+    ('something.exit(13)', ()),
 
     ('if True: raise KeyError', (KeyError, )),
     ('for i in lst: raise KeyError', (KeyError, )),
