@@ -1,7 +1,9 @@
 # This file is excluded from coverage.
 
+# project
 from deal import ContractError
 from deal._decorators.base import Base
+
 
 # will be filled from the linter
 contract = ...

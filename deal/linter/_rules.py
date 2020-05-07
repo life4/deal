@@ -8,9 +8,8 @@ from typing import Iterator
 from ._contract import Category, Contract
 from ._error import Error
 from ._extractors import (
-    get_exceptions, get_exceptions_stubs, get_globals,
-    get_imports, get_prints, get_returns, get_asserts,
-    has_returns,
+    get_asserts, get_exceptions, get_exceptions_stubs, get_globals,
+    get_imports, get_prints, get_returns, has_returns,
 )
 from ._func import Func
 from ._stub import StubsManager
