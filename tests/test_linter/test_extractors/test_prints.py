@@ -15,7 +15,11 @@ from deal.linter._extractors import get_prints
     ('open("fpath", "w")', ('open', )),
     ('open("fpath", mode="w")', ('open', )),
     ('with open("fpath", "w") as f: ...', ('open', )),
+
     ('with something: ...', ()),
+    ('with open("fpath") as f: ...', ()),
+    ('with open("fpath", "r") as f: ...', ()),
+    ('with open("fpath", mode="r") as f: ...', ()),
     ('open("fpath", "r")', ()),
     ('open("fpath")', ()),
     ('open("fpath", encoding="utf8")', ()),
@@ -36,10 +40,14 @@ def test_get_prints_simple(text, expected):
     ('from pathlib import Path\np = Path()\np.write_text("lol")', ('Path.open', )),
     ('from pathlib import Path\np = Path()\np.open("w")', ('Path.open', )),
     ('from pathlib import Path\np = Path()\nwith p.open("w"): ...', ('Path.open', )),
-    ('from pathlib import Path\np = Path()\np.read_text()', ()),
-    ('from pathlib import Path\np = Path()\np.open()', ()),
-    ('with something.open("w"): ...', ()),
-    ('something = file\nwith something.open("w"): ...', ()),
+
+    ('from pathlib import Path\np = Path()\np.open("r")', ()),          # allowed mode
+    ('from pathlib import Path\np = Path()\np.open(mode="r")', ()),     # allowed mode
+    ('from pathlib import Path\np = Path()\np.read_text()', ()),    # read, not write
+    ('from pathlib import Path\np = Path()\np.open()', ()),         # implicit read
+    ('with something.open("w"): ...', ()),                          # not pathlib
+    ('something = file\nwith something.open("w"): ...', ()),        # not pathlib
+    ('class Path:\n def write_text(): pass\np = Path()\np.write_text()', ()),   # not pathlib
 ])
 def test_get_prints_infer(text, expected):
     tree = astroid.parse(text)
