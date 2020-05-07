@@ -88,7 +88,7 @@ class Base(Generic[_CallableType]):
 
         # Flatten single error without field to one simple str message.
         # This is for better readability of simple validators.
-        if type(errors) is list:
+        if type(errors) is list:  # pragma: no cover
             if type(errors[0]) is vaa.Error:
                 if len(errors) == 1:
                     if errors[0].field is None:
