@@ -23,7 +23,7 @@ class DealFinder(PathFinder):
     @classmethod
     def find_spec(cls, *args, **kwargs):
         spec = super().find_spec(*args, **kwargs)
-        if spec is not None:
+        if spec is not None:  # pragma: no cover
             spec.loader = DealLoader(spec.loader)
         return spec
 
