@@ -1,0 +1,7 @@
+{
+  "USTimeZone.dst": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

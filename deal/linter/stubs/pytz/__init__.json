@@ -1,0 +1,53 @@
+{
+  "UTC.localize": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "UTC.normalize": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_CountryNameDict._fill": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_CountryTimezoneDict._fill": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_FixedOffset.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_FixedOffset.localize": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_FixedOffset.normalize": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_test": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "open_resource": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "timezone": {
+    "raises": [
+      "UnknownTimeZoneError",
+      "ValueError"
+    ]
+  }
+}
