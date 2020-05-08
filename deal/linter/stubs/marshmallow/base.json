@@ -1,0 +1,42 @@
+{
+  "FieldABC._deserialize": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "FieldABC._serialize": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "FieldABC.deserialize": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "FieldABC.serialize": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "SchemaABC.dump": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "SchemaABC.dumps": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "SchemaABC.load": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "SchemaABC.loads": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  }
+}

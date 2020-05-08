@@ -1,0 +1,41 @@
+{
+  "Schema.__init__": {
+    "raises": [
+      "StringNotCollectionError"
+    ]
+  },
+  "Schema._bind_field": {
+    "raises": [
+      "TypeError",
+      "error"
+    ]
+  },
+  "Schema._deserialize": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Schema._do_load": {
+    "raises": [
+      "exc"
+    ]
+  },
+  "Schema._init_fields": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Schema._invoke_field_validators": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SchemaOpts.__init__": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  }
+}
