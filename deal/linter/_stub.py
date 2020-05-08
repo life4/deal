@@ -96,6 +96,9 @@ class StubsManager:
             path = root / (module_name + EXTENSION)
             if path.exists():
                 return self.read(path=path, module_name=module_name)
+            path = root.joinpath(*module_name.split('.')).with_suffix(EXTENSION)
+            if path.exists():
+                return self.read(path=path, module_name=module_name)
         return None
 
     def create(self, path: Path) -> StubFile:

@@ -119,6 +119,23 @@ def test_infer_junk():
     assert returns == ()
 
 
+def test_marhsmallow_stubs():
+    stubs = StubsManager()
+
+    text = """
+        from marshmallow.utils import from_iso_datetime
+
+        @deal.raises()
+        def child():
+            return from_iso_datetime('example')
+    """
+    tree = astroid.parse(dedent(text))
+    print(tree.repr_tree())
+    func_tree = tree.body[-1].body
+    returns = tuple(r.value for r in get_exceptions_stubs(body=func_tree, stubs=stubs))
+    assert returns == (ValueError,)
+
+
 def test_get_full_name_func():
     tree = astroid.parse('def f(): pass')
     print(tree.repr_tree())
