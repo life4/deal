@@ -32,7 +32,7 @@ def test_exceptions():
 
 
 def test_repr():
-    c = Contract(category=Category.RAISES, args=[])
+    c = Contract(category=Category.RAISES, args=[], func_args=None)
     assert repr(c) == 'Contract(raises)'
 
 

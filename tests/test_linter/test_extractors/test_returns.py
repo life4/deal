@@ -48,9 +48,11 @@ def test_ast_uninferrable_unary():
 
 
 @pytest.mark.parametrize('text, expected', [
-    ('return 1 + 2', (3, )),    # do a simple arithmetic
-    ('return a', ()),           # ignore uninferrable names
-    ('return ~4', (-5, )),      # handle unary bitwise NOT
+    ('return 1 + 2', (3, )),        # do a simple arithmetic
+    ('return a', ()),               # ignore uninferrable names
+    ('return ~4', (-5, )),          # handle unary bitwise NOT
+    ('a = 4\nreturn a', (4, )),    # infer variables
+    ('a = str\nreturn a', ()),     # ignore not constants
 ])
 def test_get_returns_inference(text, expected):
     tree = astroid.parse(text)

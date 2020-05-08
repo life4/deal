@@ -62,8 +62,9 @@ def get_examples(func: typing.Callable, kwargs: typing.Dict[str, typing.Any],
                  count: int) -> typing.List[ArgsKwargsType]:
     kwargs = kwargs.copy()
     for name, value in kwargs.items():
-        if not isinstance(value, hypothesis.strategies.SearchStrategy):
-            kwargs[name] = hypothesis.strategies.just(value)
+        if isinstance(value, hypothesis.strategies.SearchStrategy):
+            continue
+        kwargs[name] = hypothesis.strategies.just(value)
 
     def pass_along_variables(*args, **kwargs) -> ArgsKwargsType:
         return args, kwargs

@@ -2,6 +2,7 @@
 from typing import NoReturn
 
 # external
+import hypothesis
 import pytest
 
 # project
@@ -67,4 +68,17 @@ def test_explicit_kwargs():
         assert b == 4
 
     for case in deal.cases(div, kwargs=dict(b=4), count=20):
+        case()
+
+
+def test_explicit_strategy():
+    def div(a: int, b: int):
+        assert 0 <= b <= 4
+
+    cases = deal.cases(
+        div,
+        kwargs=dict(b=hypothesis.strategies.integers(min_value=0, max_value=4)),
+        count=20,
+    )
+    for case in cases:
         case()

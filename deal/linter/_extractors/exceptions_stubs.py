@@ -1,7 +1,7 @@
 # built-in
 import builtins
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Iterator, Optional, Tuple
 
 # external
 import astroid
@@ -16,7 +16,7 @@ get_exceptions_stubs = Extractor()
 
 
 @get_exceptions_stubs.register(astroid.Call)
-def handle_astroid_call(expr: astroid.Call, *, dive: bool = True, stubs: StubsManager) -> Optional[Token]:
+def handle_astroid_call(expr: astroid.Call, *, dive: bool = True, stubs: StubsManager) -> Iterator[Token]:
     extra = dict(
         line=expr.lineno,
         col=expr.col_offset,
@@ -31,8 +31,7 @@ def handle_astroid_call(expr: astroid.Call, *, dive: bool = True, stubs: StubsMa
         names = stub.get(func=func_name, contract=Category.RAISES)
         for name in names:
             name = getattr(builtins, name, name)
-            return Token(value=name, **extra)
-    return None
+            yield Token(value=name, **extra)
 
 
 def _get_stub(

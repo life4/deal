@@ -52,6 +52,10 @@ def test_stub_file(tmp_path: Path):
         stub.add(func='fname', contract=Category.POST, value='SyntaxError')
     assert stub._content == {'fname': {'raises': ['TypeError']}}
 
+    # do not add twice
+    stub.add(func='fname', contract=Category.RAISES, value='TypeError')
+    assert stub._content == {'fname': {'raises': ['TypeError']}}
+
     # get
     assert stub.get(func='fname', contract=Category.RAISES) == frozenset({'TypeError'})
     with pytest.raises(ValueError, match='unsupported contract'):
@@ -127,6 +131,11 @@ def test_stubs_manager(tmp_path: Path):
     old_stub = stubs.get('example')
     old_stub.dump()
     new_stub = stubs.create(path)
+    assert new_stub is old_stub
+    assert stubs.get('example') is old_stub
+
+    # the same but path leads to stub, not code
+    new_stub = stubs.create(path.with_suffix('.json'))
     assert new_stub is old_stub
     assert stubs.get('example') is old_stub
 

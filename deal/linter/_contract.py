@@ -21,7 +21,7 @@ class Category(enum.Enum):
 class Contract:
     __slots__ = ('args', 'category', 'func_args')
 
-    def __init__(self, args, category: Category, func_args: ast.arguments = None):
+    def __init__(self, args, category: Category, func_args: ast.arguments):
         self.args = args
         self.category = category
         self.func_args = func_args
@@ -68,10 +68,9 @@ class Contract:
         module = ast.parse(TEMPLATE)
 
         # inject function signature
-        if self.func_args is not None:
-            func = ast.parse('lambda:0').body[0].value
-            func.args = self.func_args
-            module.body[3].value = func
+        func = ast.parse('lambda:0').body[0].value
+        func.args = self.func_args
+        module.body[3].value = func
 
         # inject contract
         contract = self.body
