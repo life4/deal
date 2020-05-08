@@ -1,0 +1,50 @@
+{
+  "_rrulestr._handle_BYWEEKDAY": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_rrulestr._handle_UNTIL": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_rrulestr._parse_date_value": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_rrulestr._parse_rfc": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_rrulestr._parse_rfc_rrule": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "rrule.__construct_byset": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "rrule.__init__": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "rrulebase.__getitem__": {
+    "raises": [
+      "IndexError"
+    ]
+  },
+  "weekday.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

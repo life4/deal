@@ -1,0 +1,42 @@
+{
+  "isoparser.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "isoparser._calculate_weekdate": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "isoparser._parse_isodate_common": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "isoparser._parse_isodate_uncommon": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "isoparser._parse_isotime": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "isoparser._parse_tzstr": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "isoparser.isoparse": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "isoparser.parse_isodate": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

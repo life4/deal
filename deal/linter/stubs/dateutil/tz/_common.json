@@ -1,0 +1,18 @@
+{
+  "_tzinfo._fromutc": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "tzrangebase.__init__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "tzrangebase.fromutc": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}
