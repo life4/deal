@@ -27,6 +27,11 @@ from deal.linter._extractors import get_returns, has_returns
     ('try:\n lol()\nexcept:\n 1\nelse:\n return 3', (3, )),
     ('try:\n lol()\nexcept:\n 1\nfinally:\n return 3', (3, )),
     ('with lol():\n return 3', (3, )),
+
+    ('yield 1', (1, )),
+    ('yield -1', (-1, )),
+    ('yield True', (True, )),
+    ('yield a', ()),
 ])
 def test_get_returns_simple(text, expected):
     tree = astroid.parse(text)

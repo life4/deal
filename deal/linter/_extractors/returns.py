@@ -23,3 +23,11 @@ def handle_return(expr) -> Optional[Token]:
     if value is UNKNOWN:
         return None
     return Token(value=value, line=expr.lineno, col=expr.value.col_offset)
+
+
+@get_returns.register(*TOKENS.YIELD)
+def handle_yield(expr) -> Optional[Token]:
+    value = get_value(expr=expr.value)
+    if value is UNKNOWN:
+        return None
+    return Token(value=value, line=expr.lineno, col=expr.value.col_offset)
