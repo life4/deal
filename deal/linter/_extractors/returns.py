@@ -3,7 +3,7 @@ from typing import Optional
 
 # app
 from .common import TOKENS, Extractor, Token, traverse
-from .value import get_value, UNKNOWN
+from .value import UNKNOWN, get_value
 
 
 get_returns = Extractor()
