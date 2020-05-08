@@ -1,0 +1,12 @@
+{
+  "Session.get_adapter": {
+    "raises": [
+      "InvalidSchema"
+    ]
+  },
+  "Session.send": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

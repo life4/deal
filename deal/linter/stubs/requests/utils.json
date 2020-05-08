@@ -1,0 +1,48 @@
+{
+  "check_header_validity": {
+    "raises": [
+      "InvalidHeader"
+    ]
+  },
+  "from_key_val_list": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "get_encodings_from_content": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "get_unicode_from_response": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "rewind_body": {
+    "raises": [
+      "UnrewindableBodyError"
+    ]
+  },
+  "super_len": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "to_key_val_list": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "unquote_unreserved": {
+    "raises": [
+      "InvalidURL"
+    ]
+  }
+}

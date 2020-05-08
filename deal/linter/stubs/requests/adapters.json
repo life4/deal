@@ -1,0 +1,39 @@
+{
+  "BaseAdapter.close": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "BaseAdapter.send": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "HTTPAdapter.cert_verify": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "HTTPAdapter.get_connection": {
+    "raises": [
+      "InvalidProxyURL"
+    ]
+  },
+  "HTTPAdapter.proxy_manager_for": {
+    "raises": [
+      "InvalidSchema"
+    ]
+  },
+  "HTTPAdapter.send": {
+    "raises": [
+      "ConnectTimeout",
+      "ConnectionError",
+      "InvalidURL",
+      "ProxyError",
+      "ReadTimeout",
+      "RetryError",
+      "SSLError",
+      "ValueError"
+    ]
+  }
+}

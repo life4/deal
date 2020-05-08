@@ -1,0 +1,14 @@
+{
+  "_check_cryptography": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "check_compatibility": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}
