@@ -1,0 +1,12 @@
+{
+  "RequestMethods.request_encode_body": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "RequestMethods.urlopen": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  }
+}

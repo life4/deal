@@ -50,6 +50,11 @@ The command above will produce `/path/to/a/file.json` stub. On the next runs lin
 
 ## Built-in stubs
 
-Deal comes with some pre-generated stubs that are automatically used:
+Deal comes with a few pre-generated stubs that are automatically used by the linter:
 
 + Standard library (CPython 3.7)
++ [marshmallow](https://pypi.org/project/marshmallow/)
++ [python-dateutil](https://pypi.org/project/python-dateutil/)
++ [pytz](https://pypi.org/project/pytz/)
++ [requests](https://pypi.org/project/requests/)
++ [urllib3](https://pypi.org/project/urllib3/)

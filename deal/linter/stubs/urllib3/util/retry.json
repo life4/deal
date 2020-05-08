@@ -1,0 +1,12 @@
+{
+  "Retry.increment": {
+    "raises": [
+      "MaxRetryError"
+    ]
+  },
+  "Retry.parse_retry_after": {
+    "raises": [
+      "InvalidHeader"
+    ]
+  }
+}

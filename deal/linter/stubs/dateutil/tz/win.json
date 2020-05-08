@@ -1,0 +1,12 @@
+{
+  "tzres.name_from_string": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "tzwinbase.__init__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  }
+}

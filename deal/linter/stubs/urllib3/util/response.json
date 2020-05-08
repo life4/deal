@@ -1,0 +1,13 @@
+{
+  "assert_header_parsing": {
+    "raises": [
+      "HeaderParsingError",
+      "TypeError"
+    ]
+  },
+  "is_fp_closed": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

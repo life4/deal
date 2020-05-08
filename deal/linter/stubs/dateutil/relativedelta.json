@@ -1,0 +1,15 @@
+{
+  "relativedelta.__add__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "relativedelta.__init__": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  }
+}

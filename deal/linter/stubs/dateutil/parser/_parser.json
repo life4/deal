@@ -1,0 +1,59 @@
+{
+  "_timelex.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_timelex.__next__": {
+    "raises": [
+      "StopIteration"
+    ]
+  },
+  "_ymd._resolve_from_stridxs": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_ymd.append": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_ymd.resolve_ymd": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "parser._ampm_valid": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "parser._build_tzaware": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "parser._build_tzinfo": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "parser._parse_numeric_token": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "parser.parse": {
+    "raises": [
+      "ParserError"
+    ]
+  },
+  "parserinfo.convertyear": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

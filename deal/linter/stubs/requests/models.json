@@ -1,0 +1,47 @@
+{
+  "PreparedRequest._get_idna_encoded_host": {
+    "raises": [
+      "UnicodeError"
+    ]
+  },
+  "PreparedRequest.prepare_body": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "PreparedRequest.prepare_url": {
+    "raises": [
+      "InvalidURL",
+      "MissingSchema"
+    ]
+  },
+  "RequestEncodingMixin._encode_files": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "RequestHooksMixin.register_hook": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Response.content": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "Response.iter_content": {
+    "raises": [
+      "ChunkedEncodingError",
+      "ConnectionError",
+      "ContentDecodingError",
+      "StreamConsumedError",
+      "TypeError"
+    ]
+  },
+  "Response.raise_for_status": {
+    "raises": [
+      "HTTPError"
+    ]
+  }
+}

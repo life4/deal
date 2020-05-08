@@ -1,0 +1,17 @@
+{
+  "HTTPHeaderDict.extend": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "HTTPHeaderDict.from_httplib": {
+    "raises": [
+      "InvalidHeader"
+    ]
+  },
+  "RecentlyUsedContainer.__iter__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  }
+}

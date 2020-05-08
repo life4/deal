@@ -1,0 +1,43 @@
+{
+  "datetime_ambiguous": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "datetime_exists": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "tzfile._read_tzfile": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "tzfile.fromutc": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "tzical._parse_offset": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "tzical._parse_rfc": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "tzical.get": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "tzstr.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

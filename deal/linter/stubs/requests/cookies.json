@@ -1,0 +1,43 @@
+{
+  "MockRequest.add_header": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "RequestsCookieJar._find": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "RequestsCookieJar._find_no_duplicates": {
+    "raises": [
+      "CookieConflictError",
+      "KeyError"
+    ]
+  },
+  "RequestsCookieJar.set": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "cookiejar_from_dict": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "create_cookie": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "merge_cookies": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "morsel_to_cookie": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

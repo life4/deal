@@ -1,6 +1,9 @@
 # ![Deal](https://raw.githubusercontent.com/life4/deal/master/logo.png)
 
-[![Build Status](https://travis-ci.org/life4/deal.svg?branch=master)](https://travis-ci.org/life4/deal) [![Coverage Status](https://coveralls.io/repos/github/life4/deal/badge.svg)](https://coveralls.io/github/life4/deal) [![PyPI version](https://img.shields.io/pypi/v/deal.svg)](https://pypi.python.org/pypi/deal) [![Development Status](https://img.shields.io/pypi/status/deal.svg)](https://pypi.python.org/pypi/deal) [![Code size](https://img.shields.io/github/languages/code-size/life4/deal.svg)](https://github.com/life4/deal)
+[![Build Status](https://travis-ci.org/life4/deal.svg?branch=master)](https://travis-ci.org/life4/deal)
+[![Coverage Status](https://coveralls.io/repos/github/life4/deal/badge.svg)](https://coveralls.io/github/life4/deal)
+[![PyPI version](https://img.shields.io/pypi/v/deal.svg)](https://pypi.python.org/pypi/deal)
+[![Development Status](https://img.shields.io/pypi/status/deal.svg)](https://pypi.python.org/pypi/deal)
 
 **Deal** -- python library for [design by contract](https://en.wikipedia.org/wiki/Design_by_contract) (DbC) programming.
 

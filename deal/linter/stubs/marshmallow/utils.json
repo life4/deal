@@ -1,0 +1,37 @@
+{
+  "callable_or_raise": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "from_iso_date": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "from_iso_datetime": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "from_iso_time": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "resolve_field_instance": {
+    "raises": [
+      "FieldInstanceResolutionError"
+    ]
+  },
+  "rfcformat": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "set_value": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

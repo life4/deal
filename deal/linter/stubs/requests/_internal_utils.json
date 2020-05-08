@@ -1,0 +1,7 @@
+{
+  "unicode_is_ascii": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

@@ -152,3 +152,9 @@ def test_stubs_manager(tmp_path: Path):
     assert stub.path.name == 'example.json'
     with pytest.raises(ValueError, match='invalid stub file extension.*'):
         stubs.read(path=path.with_suffix('.cpp'))
+
+
+def test_marshmallow_get_stubs():
+    stubs = StubsManager()
+    stub = stubs.get('marshmallow.utils')
+    assert stub is not None

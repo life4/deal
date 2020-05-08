@@ -1,0 +1,17 @@
+{
+  "Timeout._validate_timeout": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Timeout.get_connect_duration": {
+    "raises": [
+      "TimeoutStateError"
+    ]
+  },
+  "Timeout.start_connect": {
+    "raises": [
+      "TimeoutStateError"
+    ]
+  }
+}

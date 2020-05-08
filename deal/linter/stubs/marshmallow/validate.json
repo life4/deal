@@ -1,0 +1,52 @@
+{
+  "ContainsOnly.__call__": {
+    "raises": [
+      "ValidationError"
+    ]
+  },
+  "Email.__call__": {
+    "raises": [
+      "ValidationError"
+    ]
+  },
+  "Equal.__call__": {
+    "raises": [
+      "ValidationError"
+    ]
+  },
+  "Length.__call__": {
+    "raises": [
+      "ValidationError"
+    ]
+  },
+  "Length.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "OneOf.__call__": {
+    "raises": [
+      "ValidationError"
+    ]
+  },
+  "Predicate.__call__": {
+    "raises": [
+      "ValidationError"
+    ]
+  },
+  "Range.__call__": {
+    "raises": [
+      "ValidationError"
+    ]
+  },
+  "Regexp.__call__": {
+    "raises": [
+      "ValidationError"
+    ]
+  },
+  "URL.__call__": {
+    "raises": [
+      "ValidationError"
+    ]
+  }
+}

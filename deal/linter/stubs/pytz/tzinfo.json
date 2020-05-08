@@ -1,0 +1,35 @@
+{
+  "DstTzInfo.fromutc": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "DstTzInfo.localize": {
+    "raises": [
+      "AmbiguousTimeError",
+      "AssertionError",
+      "NonExistentTimeError",
+      "ValueError"
+    ]
+  },
+  "DstTzInfo.normalize": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "StaticTzInfo.fromutc": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "StaticTzInfo.localize": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "StaticTzInfo.normalize": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

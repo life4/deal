@@ -1,0 +1,22 @@
+{
+  "WrappedSocket.recv": {
+    "raises": [
+      "SocketError"
+    ]
+  },
+  "WrappedSocket.recv_into": {
+    "raises": [
+      "SocketError"
+    ]
+  },
+  "_validate_dependencies_met": {
+    "raises": [
+      "ImportError"
+    ]
+  },
+  "inject_into_urllib3": {
+    "raises": [
+      "ImportError"
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "HTTPResponse._decode": {
+    "raises": [
+      "DecodeError"
+    ]
+  },
+  "HTTPResponse.fileno": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "HTTPResponse.read": {
+    "raises": [
+      "IncompleteRead"
+    ]
+  },
+  "HTTPResponse.read_chunked": {
+    "raises": [
+      "BodyNotHttplibCompatible",
+      "ResponseNotChunked"
+    ]
+  }
+}

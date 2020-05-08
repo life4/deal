@@ -1,0 +1,13 @@
+{
+  "SOCKSConnection._new_conn": {
+    "raises": [
+      "ConnectTimeoutError",
+      "NewConnectionError"
+    ]
+  },
+  "SOCKSProxyManager.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

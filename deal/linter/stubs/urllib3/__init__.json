@@ -1,0 +1,7 @@
+{
+  "disable_warnings": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}
