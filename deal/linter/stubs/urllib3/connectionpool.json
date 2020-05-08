@@ -1,0 +1,40 @@
+{
+  "ConnectionPool.__init__": {
+    "raises": [
+      "LocationValueError"
+    ]
+  },
+  "HTTPConnectionPool._get_conn": {
+    "raises": [
+      "ClosedPoolError",
+      "EmptyPoolError"
+    ]
+  },
+  "HTTPConnectionPool._make_request": {
+    "raises": [
+      "ReadTimeoutError"
+    ]
+  },
+  "HTTPConnectionPool._raise_timeout": {
+    "raises": [
+      "ReadTimeoutError"
+    ]
+  },
+  "HTTPConnectionPool.urlopen": {
+    "raises": [
+      "HostChangedError"
+    ]
+  },
+  "HTTPSConnectionPool._new_conn": {
+    "raises": [
+      "SSLError"
+    ]
+  },
+  "HTTPSConnectionPool._validate_conn": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  }
+}

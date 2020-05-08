@@ -1,0 +1,14 @@
+{
+  "rewind_body": {
+    "raises": [
+      "UnrewindableBodyError",
+      "ValueError"
+    ]
+  },
+  "set_file_position": {
+    "raises": [
+      "UnrewindableBodyError",
+      "ValueError"
+    ]
+  }
+}

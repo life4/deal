@@ -1,0 +1,7 @@
+{
+  "NTLMConnectionPool._new_conn": {
+    "raises": [
+      "Exception"
+    ]
+  }
+}

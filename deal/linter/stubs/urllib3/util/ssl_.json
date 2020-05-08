@@ -1,0 +1,15 @@
+{
+  "assert_fingerprint": {
+    "raises": [
+      "SSLError"
+    ]
+  },
+  "ssl_wrap_socket": {
+    "raises": [
+      "RuntimeError",
+      "SSLError",
+      "TypeError",
+      "message"
+    ]
+  }
+}

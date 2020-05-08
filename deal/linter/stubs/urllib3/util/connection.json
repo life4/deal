@@ -1,0 +1,7 @@
+{
+  "create_connection": {
+    "raises": [
+      "err"
+    ]
+  }
+}

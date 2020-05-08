@@ -1,0 +1,20 @@
+{
+  "HTTPConnection._new_conn": {
+    "raises": [
+      "ConnectTimeoutError",
+      "NewConnectionError"
+    ]
+  },
+  "HTTPConnection.putrequest": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "HTTPSConnection.connect": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  }
+}

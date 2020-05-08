@@ -1,0 +1,27 @@
+{
+  "SecureTransportContext.load_verify_locations": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SecureTransportContext.set_ciphers": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SecureTransportContext.wrap_socket": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "WrappedSocket._raise_on_error": {
+    "raises": [
+      "exception"
+    ]
+  },
+  "WrappedSocket.getpeercert": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}
