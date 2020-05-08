@@ -22,10 +22,9 @@ before_install:
 install:
   - dephell venv create --env=$ENV --python="/opt/python/$TRAVIS_PYTHON_VERSION/bin/python"
   - dephell deps install --env=$ENV
-  - pip install coveralls
 script:
   - dephell venv run --env=$ENV
-  - coveralls
+  - dephell venv run --env=$ENV coveralls
 
 # run tests
 env: ENV=pytest

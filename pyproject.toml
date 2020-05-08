@@ -83,6 +83,7 @@ vaa = ">=0.2.1"
 [tool.poetry.dev-dependencies]
 # coverage squad
 coverage = "*"
+coveralls = "*"
 coverage-conditional-plugin = "*"
 pytest-cov = "*"
 
@@ -101,7 +102,7 @@ sphinx-rtd-theme = "*"
 
 [tool.poetry.extras]
 tests = [
-    "coverage", "coverage-conditional-plugin", "pytest-cov",
+    "coverage", "coveralls", "coverage-conditional-plugin", "pytest-cov",
     "isort", "marshmallow", "mypy", "pytest", "urllib3",
 ]
 docs = ["m2r", "recommonmark", "sphinx", "sphinx-rtd-theme", "urllib3"]
