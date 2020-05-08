@@ -40,6 +40,17 @@ def get_value(expr):
     return UNKNOWN
 
 
-@inner_extractor.register(astroid.Const)
-def handle_const(expr: astroid.Const):
-    return expr.value
+@inner_extractor.register(astroid.List, astroid.Set, astroid.Tuple)
+def handle_collections(expr):
+    result = []
+    for element_expr in expr.elts:
+        value = get_value(expr=element_expr)
+        if value is UNKNOWN:
+            return UNKNOWN
+        result.append(value)
+
+    if type(expr) is astroid.Tuple:
+        return tuple(result)
+    if type(expr) is astroid.Set:
+        return set(result)
+    return result
