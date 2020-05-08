@@ -52,7 +52,7 @@ import_heading_localfolder = "app"
 
 [tool.poetry]
 name = "deal"
-version = "3.8.0"
+version = "3.8.1"
 description = "Programming by contract"
 license = "MIT"
 authors = ["Gram <master_fess@mail.ru>"]
@@ -101,10 +101,7 @@ sphinx = "*"
 sphinx-rtd-theme = "*"
 
 [tool.poetry.extras]
-tests = [
-    "coverage", "coveralls", "coverage-conditional-plugin", "pytest-cov",
-    "isort", "marshmallow", "mypy", "pytest", "urllib3",
-]
+tests = ["coverage", "coverage-conditional-plugin", "coveralls", "isort", "marshmallow", "mypy", "pytest", "pytest-cov", "urllib3"]
 docs = ["m2r", "recommonmark", "sphinx", "sphinx-rtd-theme", "urllib3"]
 
 [tool.poetry.plugins."flake8.extension"]
