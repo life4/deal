@@ -55,6 +55,11 @@ class CheckPre:
     required = Required.FUNC
 
     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+        # We test only contracted functions because of poor performance.
+        # Inferring every called function in the whole project
+        # is a really expensive operation.
+        if not func.contracts:
+            return
         for token in get_pre(body=func.body):
             yield Error(
                 code=self.code,

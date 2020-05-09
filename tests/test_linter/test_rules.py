@@ -30,15 +30,21 @@ def test_check_pre():
     def example(x):
         return -x
 
+    @deal.raises()
+    def caller():
+        return example(-3)
+
+    # ignore funcs without contracts
     def caller():
         return example(-3)
     """
     text = dedent(text).strip()
     funcs = Func.from_astroid(astroid.parse(text))
-    assert len(funcs) == 2
-    func = funcs[-1]
-    actual = [tuple(err) for err in checker(func)]
-    expected = [(6, 11, 'DEAL011 pre contract error (-3)')]
+    assert len(funcs) == 3
+    actual = []
+    for func in funcs:
+        actual.extend(tuple(err) for err in checker(func))
+    expected = [(7, 11, 'DEAL011 pre contract error (-3)')]
     assert actual == expected
 
 
