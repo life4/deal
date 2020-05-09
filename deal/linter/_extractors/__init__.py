@@ -8,6 +8,7 @@ from .globals import get_globals
 from .imports import get_imports
 from .prints import get_prints
 from .returns import get_returns, has_returns
+from .value import get_value
 
 
 __all__ = [
@@ -20,5 +21,6 @@ __all__ = [
     'get_name',
     'get_prints',
     'get_returns',
+    'get_value',
     'has_returns',
 ]
