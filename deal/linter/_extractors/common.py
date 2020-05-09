@@ -97,7 +97,10 @@ def infer(expr) -> Tuple:
     if not isinstance(expr, astroid.node_classes.NodeNG):
         return tuple()
     with suppress(astroid.exceptions.InferenceError, RecursionError):
-        return tuple(g for g in expr.infer() if type(g) is not astroid.Uninferable)
+        guesses = expr.infer()
+        if guesses is astroid.Uninferable:  # pragma: no cover
+            return tuple()
+        return tuple(g for g in guesses if type(g) is not astroid.Uninferable)
     return tuple()
 
 
