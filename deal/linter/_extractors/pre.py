@@ -8,7 +8,7 @@ import astroid
 # app
 from .common import Extractor, Token, infer
 from .contracts import get_contracts
-from .value import get_value, UNKNOWN
+from .value import UNKNOWN, get_value
 
 
 get_pre = Extractor()
