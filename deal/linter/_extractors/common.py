@@ -93,7 +93,7 @@ def get_name(expr) -> Optional[str]:
     return None
 
 
-def infer(expr) -> Tuple:
+def infer(expr) -> Tuple[astroid.node_classes.NodeNG, ...]:
     if not isinstance(expr, astroid.node_classes.NodeNG):
         return tuple()
     with suppress(astroid.exceptions.InferenceError, RecursionError):
