@@ -1,6 +1,6 @@
 # built-in
 import ast
-from typing import Iterator
+from typing import Iterator, Tuple
 
 # external
 import astroid
@@ -15,7 +15,7 @@ get_pre = Extractor()
 
 
 @get_pre.register(astroid.Call)
-def handle_call(expr: astroid.Call, dive: bool = True) -> Iterator[Token]:
+def handle_call(expr: astroid.Call) -> Iterator[Token]:
     from .._contract import Contract, Category
 
     args = []
@@ -32,30 +32,36 @@ def handle_call(expr: astroid.Call, dive: bool = True) -> Iterator[Token]:
             return
         kwargs[subnode.arg] = value
 
-    code = 'def f({}):0'.format(expr.args.as_string())
-    func_args = ast.parse(code).body[0].args  # type: ignore
-
-    for contract_args in _get_pre_contracts(expr=expr):
-        contract = Contract(
-            args=contract_args,
-            category=Category.PRE,
-            func_args=func_args,
-        )
-        try:
-            result = contract.run(*args, **kwargs)
-        except NameError:
+    for func in infer(expr.func):
+        if type(func) is not astroid.FunctionDef:
             continue
-        if result is False or type(result) is str:
-            yield Token(value=(args, kwargs), line=expr.lineno, col=expr.col_offset)
-
-
-def _get_pre_contracts(expr: astroid.Call):
-    for value in infer(expr.func):
-        if type(value) is not astroid.FunctionDef:
+        if not func.decorators:
             continue
-        if not value.decorators:
-            continue
-        for category, args in get_contracts(value.decorators.nodes):
+        code = 'def f({}):0'.format(func.args.as_string())
+        func_args = ast.parse(code).body[0].args  # type: ignore
+
+        for category, contract_args in get_contracts(func.decorators.nodes):
             if category != 'pre':
                 continue
-            yield args
+
+            contract = Contract(
+                args=contract_args,
+                category=Category.PRE,
+                func_args=func_args,
+            )
+            try:
+                result = contract.run(*args, **kwargs)
+            except NameError:
+                continue
+            if result is False or type(result) is str:
+                msg = _format_message(args, kwargs)
+                yield Token(value=msg, line=expr.lineno, col=expr.col_offset)
+
+
+def _format_message(args: list, kwargs: dict) -> str:
+    sep = ', '
+    args_s = sep.join(map(repr, args))
+    kwargs_s = sep.join(['{}={!r}'.format(k, v) for k, v in kwargs.items()])
+    if args and kwargs:
+        return args_s + sep + kwargs_s
+    return args_s + kwargs_s
