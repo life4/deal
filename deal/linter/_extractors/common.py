@@ -24,7 +24,6 @@ TOKENS = SimpleNamespace(
     NONLOCAL=(ast.Nonlocal, astroid.Nonlocal),
     RAISE=(ast.Raise, astroid.Raise),
     RETURN=(ast.Return, astroid.Return),
-    # TRY=(ast.Try, astroid.TryExcept, astroid.TryFinally),
     UNARY_OP=(ast.UnaryOp, astroid.UnaryOp),
     WITH=(ast.With, astroid.With),
     YIELD=(ast.Yield, astroid.Yield),
