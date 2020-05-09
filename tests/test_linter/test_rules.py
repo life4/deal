@@ -31,14 +31,14 @@ def test_check_pre():
         return -x
 
     def caller():
-        example(-3)
+        return example(-3)
     """
     text = dedent(text).strip()
     funcs = Func.from_astroid(astroid.parse(text))
     assert len(funcs) == 2
     func = funcs[-1]
     actual = [tuple(err) for err in checker(func)]
-    expected = [(6, 4, 'DEAL011 pre contract error (-3)')]
+    expected = [(6, 11, 'DEAL011 pre contract error (-3)')]
     assert actual == expected
 
 
