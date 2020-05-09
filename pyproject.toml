@@ -52,7 +52,7 @@ import_heading_localfolder = "app"
 
 [tool.poetry]
 name = "deal"
-version = "3.8.1"
+version = "3.9.0"
 description = "Programming by contract"
 license = "MIT"
 authors = ["Gram <master_fess@mail.ru>"]
