@@ -70,56 +70,28 @@ def handle_call(expr, dive: bool = True) -> Optional[Union[Token, Iterator[Token
             return Token(value=SystemExit, **token_info)
     # infer function call and check the function body for raises
     if dive:
-        return _exceptions_from_funcs(expr=expr)
+        return _exceptions_from_func(expr=expr)
     return None
 
 
-@get_exceptions.register(astroid.Assign)
-def handle_assign(expr: astroid.Assign, dive: bool = True) -> Iterator[Token]:
-    # infer function call and check the function body for raises
-    if dive:
-        yield from _exceptions_from_funcs(expr=expr)
-
-
-def _exceptions_from_funcs(expr) -> Iterator[Token]:
-    for name_node in get_names(expr):
-        # node have to be a name
-        if type(name_node) is not astroid.Name:
+def _exceptions_from_func(expr) -> Iterator[Token]:
+    for value in infer(expr.func):
+        if type(value) is not astroid.FunctionDef:
             continue
 
-        extra = dict(
-            line=name_node.lineno,
-            col=name_node.col_offset,
-        )
-        for value in infer(name_node):
-            if type(value) is not astroid.FunctionDef:
-                continue
+        # recursively infer exceptions from the function body
+        for error in get_exceptions(body=value.body, dive=False):
+            yield Token(value=error.value, line=expr.lineno, col=expr.col_offset)
 
-            # recursively infer exceptions from the function body
-            for error in get_exceptions(body=value.body, dive=False):
-                yield Token(value=error.value, **extra)
-
-            # get explicitly specified exceptions from `@deal.raises`
-            if not value.decorators:
+        # get explicitly specified exceptions from `@deal.raises`
+        if not value.decorators:
+            continue
+        for category, args in get_contracts(value.decorators.nodes):
+            if category != 'raises':
                 continue
-            for category, args in get_contracts(value.decorators.nodes):
-                if category != 'raises':
+            for arg in args:
+                name = get_name(arg)
+                if name is None:
                     continue
-                for arg in args:
-                    name = get_name(arg)
-                    if name is None:
-                        continue
-                    yield Token(value=name, **extra)
+                yield Token(value=name, line=expr.lineno, col=expr.col_offset)
     return None
-
-
-def get_names(expr) -> Iterator:
-    if isinstance(expr, astroid.Assign):
-        yield from get_names(expr.value)
-    if isinstance(expr, TOKENS.CALL):
-        if isinstance(expr.func, TOKENS.NAME):
-            yield expr.func
-        for subnode in expr.args:
-            yield from get_names(subnode)
-        for subnode in (expr.keywords or ()):
-            yield from get_names(subnode.value)
