@@ -19,9 +19,11 @@ def get_value(expr):
             return ast.literal_eval(expr)
 
     if isinstance(expr, astroid.node_classes.NodeNG):
-        renderred = expr.as_string()
-        with suppress(ValueError, SyntaxError):
-            return ast.literal_eval(renderred)
+        # AttributeError: 'AsStringVisitor3' object has no attribute 'visit_unknown'
+        with suppress(AttributeError):  # pragma: no cover
+            renderred = expr.as_string()
+            with suppress(ValueError, SyntaxError):
+                return ast.literal_eval(renderred)
 
     handler = inner_extractor.handlers.get(type(expr))
     if handler:

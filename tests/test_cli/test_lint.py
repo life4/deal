@@ -38,7 +38,7 @@ def test_get_errors(tmp_path: Path):
     (tmp_path / 'example.py').write_text(TEXT)
     errors = list(get_errors(paths=[tmp_path]))
     assert len(errors) == 1
-    assert errors[0]['code'] == 11
+    assert errors[0]['code'] == 12
     assert errors[0]['content'] == '    return -1'
 
 

@@ -11,6 +11,7 @@ import astroid
 
 TOKENS = SimpleNamespace(
     ASSERT=(ast.Assert, astroid.Assert),
+    ASSIGN=(ast.Assign, astroid.Assign),
     ATTR=(ast.Attribute, astroid.Attribute),
     BIN_OP=(ast.BinOp, astroid.BinOp),
     CALL=(ast.Call, astroid.Call),
@@ -23,7 +24,6 @@ TOKENS = SimpleNamespace(
     NONLOCAL=(ast.Nonlocal, astroid.Nonlocal),
     RAISE=(ast.Raise, astroid.Raise),
     RETURN=(ast.Return, astroid.Return),
-    # TRY=(ast.Try, astroid.TryExcept, astroid.TryFinally),
     UNARY_OP=(ast.UnaryOp, astroid.UnaryOp),
     WITH=(ast.With, astroid.With),
     YIELD=(ast.Yield, astroid.Yield),
@@ -38,15 +38,17 @@ class Token(NamedTuple):
 
 def traverse(body: List) -> Iterator:
     for expr in body:
-        # breaking apart
+        # breaking apart statements
         if isinstance(expr, TOKENS.EXPR):
             yield expr.value
+            yield from _travers_expr(expr=expr.value)
             continue
         if isinstance(expr, TOKENS.IF + TOKENS.FOR):
             yield from traverse(body=expr.body)
             yield from traverse(body=expr.orelse)
             continue
 
+        # breaking apart try-except
         if isinstance(expr, (ast.Try, astroid.TryExcept)):
             for handler in expr.handlers:
                 yield from traverse(body=handler.body)
@@ -58,9 +60,17 @@ def traverse(body: List) -> Iterator:
         # extracting things
         if isinstance(expr, TOKENS.WITH):
             yield from traverse(body=expr.body)
-        if isinstance(expr, TOKENS.RETURN):
+        elif isinstance(expr, TOKENS.RETURN + TOKENS.ASSIGN):
             yield expr.value
         yield expr
+
+
+def _travers_expr(expr):
+    if isinstance(expr, TOKENS.CALL):
+        for subnode in expr.args:
+            yield from traverse(body=[subnode])
+        for subnode in (expr.keywords or ()):
+            yield from traverse(body=[subnode.value])
 
 
 def get_name(expr) -> Optional[str]:
@@ -83,9 +93,14 @@ def get_name(expr) -> Optional[str]:
     return None
 
 
-def infer(expr) -> Tuple:
+def infer(expr) -> Tuple[astroid.node_classes.NodeNG, ...]:
+    if not isinstance(expr, astroid.node_classes.NodeNG):
+        return tuple()
     with suppress(astroid.exceptions.InferenceError, RecursionError):
-        return tuple(g for g in expr.infer() if type(g) is not astroid.Uninferable)
+        guesses = expr.infer()
+        if guesses is astroid.Uninferable:  # pragma: no cover
+            return tuple()
+        return tuple(g for g in guesses if type(g) is not astroid.Uninferable)
     return tuple()
 
 
