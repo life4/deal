@@ -1,6 +1,6 @@
 # built-in
 import ast
-from typing import Iterator, Tuple
+from typing import Iterator
 
 # external
 import astroid

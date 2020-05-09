@@ -9,7 +9,7 @@ from ._contract import Category, Contract
 from ._error import Error
 from ._extractors import (
     get_asserts, get_exceptions, get_exceptions_stubs, get_globals,
-    get_imports, get_prints, get_returns, has_returns,
+    get_imports, get_prints, get_returns, has_returns, get_pre
 )
 from ._func import Func
 from ._stub import StubsManager
@@ -48,9 +48,27 @@ class CheckImports:
 
 
 @register
-class CheckReturns:
+class CheckPre:
     __slots__ = ()
     code = 11
+    message = 'pre contract error'
+    required = Required.FUNC
+
+    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+        for token in get_pre(body=func.body):
+            yield Error(
+                code=self.code,
+                text=self.message,
+                value=token.value,
+                row=token.line,
+                col=token.col,
+            )
+
+
+@register
+class CheckReturns:
+    __slots__ = ()
+    code = 12
     message = 'post contract error'
     required = Required.FUNC
 
@@ -84,7 +102,7 @@ class CheckReturns:
 @register
 class CheckRaises:
     __slots__ = ()
-    code = 12
+    code = 21
     message = 'raises contract error'
     required = Required.FUNC
 
@@ -120,7 +138,7 @@ class CheckRaises:
 @register
 class CheckPrints:
     __slots__ = ()
-    code = 13
+    code = 22
     message = 'silent contract error'
     required = Required.FUNC
 
@@ -146,7 +164,7 @@ class CheckPrints:
 @register
 class CheckPure:
     __slots__ = ()
-    code = 14
+    code = 23
     message = 'pure contract error'
     required = Required.FUNC
 
@@ -179,7 +197,7 @@ class CheckPure:
 @register
 class CheckAsserts:
     __slots__ = ()
-    code = 15
+    code = 31
     message = 'assert error'
     required = Required.FUNC
 

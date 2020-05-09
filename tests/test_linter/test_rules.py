@@ -37,7 +37,7 @@ def test_check_returns():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(6, 15, 'DEAL011 post contract error (-1)')]
+        expected = [(6, 15, 'DEAL012 post contract error (-1)')]
         assert actual == expected
 
 
@@ -56,7 +56,7 @@ def test_check_returns_with_message():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(6, 15, 'DEAL011 oh no! (-1)')]
+        expected = [(6, 15, 'DEAL012 oh no! (-1)')]
         assert actual == expected
 
 
@@ -88,7 +88,7 @@ def test_check_raises():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(4, 10, 'DEAL012 raises contract error (KeyError)')]
+        expected = [(4, 10, 'DEAL021 raises contract error (KeyError)')]
         assert actual == expected
 
 
@@ -104,7 +104,7 @@ def test_check_raises_without_allowed():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(3, 10, 'DEAL012 raises contract error (ValueError)')]
+        expected = [(3, 10, 'DEAL021 raises contract error (ValueError)')]
         assert actual == expected
 
 
@@ -120,7 +120,7 @@ def test_check_raises_unknown():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(3, 10, 'DEAL012 raises contract error (UnknownError)')]
+        expected = [(3, 10, 'DEAL021 raises contract error (UnknownError)')]
         assert actual == expected
 
 
@@ -137,7 +137,7 @@ def test_check_raises_inherited():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(4, 10, 'DEAL012 raises contract error (ValueError)')]
+        expected = [(4, 10, 'DEAL021 raises contract error (ValueError)')]
         assert actual == expected
 
 
@@ -153,7 +153,7 @@ def test_check_prints():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(3, 4, 'DEAL013 silent contract error (print)')]
+        expected = [(3, 4, 'DEAL022 silent contract error (print)')]
         assert actual == expected
 
 
@@ -170,7 +170,7 @@ def test_check_pure():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(3, 4, 'DEAL014 pure contract error (global)')]
+        expected = [(3, 4, 'DEAL023 pure contract error (global)')]
         assert actual == expected
 
 
@@ -187,7 +187,7 @@ def test_check_pure_no_returns():
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
         assert len(actual) == 1
-        expected = 'DEAL014 pure contract error (no return)'
+        expected = 'DEAL023 pure contract error (no return)'
         assert actual[0][2] == expected
 
 
@@ -202,7 +202,7 @@ def test_check_asserts():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(2, 11, 'DEAL015 assert error (False)')]
+        expected = [(2, 11, 'DEAL031 assert error (False)')]
         assert actual == expected
 
 
