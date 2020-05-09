@@ -59,7 +59,7 @@ class CheckPre:
             yield Error(
                 code=self.code,
                 text=self.message,
-                value=token.value,
+                value=token.value,  # type: ignore
                 row=token.line,
                 col=token.col,
             )
