@@ -9,6 +9,7 @@ import astroid
 from deal.linter._func import Func
 from deal.linter._rules import (
     CheckAsserts, CheckImports, CheckPrints, CheckPure, CheckRaises, CheckReturns, rules,
+    CheckPre,
 )
 
 
@@ -20,6 +21,25 @@ def test_error_codes():
 def test_error_messages():
     messages = [rule.message for rule in rules]
     assert len(messages) == len(set(messages))
+
+
+def test_check_pre():
+    checker = CheckPre()
+    text = """
+    @deal.pre(lambda x: x > 0)
+    def example(x):
+        return -x
+
+    def caller():
+        example(-3)
+    """
+    text = dedent(text).strip()
+    funcs = Func.from_astroid(astroid.parse(text))
+    assert len(funcs) == 2
+    func = funcs[-1]
+    actual = [tuple(err) for err in checker(func)]
+    expected = [(6, 4, 'DEAL011 pre contract error (-3)')]
+    assert actual == expected
 
 
 def test_check_returns():
