@@ -123,5 +123,5 @@ def offline(_func: Callable = None, **kwargs):
 
 def silent(_func: Callable = None, **kwargs):
     if _func is None:
-        return has('netwrok', **kwargs)
+        return has('network', **kwargs)
     return has('network')(_func)

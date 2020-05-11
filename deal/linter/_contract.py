@@ -12,6 +12,7 @@ TEMPLATE = (Path(__file__).parent / '_template.py').read_text()
 
 
 class Category(enum.Enum):
+    HAS = 'HAS'
     PRE = 'pre'
     POST = 'post'
     RAISES = 'raises'

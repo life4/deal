@@ -2,7 +2,7 @@
 import sys
 from io import StringIO
 import socket
-from typing import Callable, TypeVar, Set, Type
+from typing import Callable, FrozenSet, TypeVar, Type
 
 # app
 from .._exceptions import OfflineContractError, SilentContractError
@@ -31,12 +31,13 @@ class PatchedSocket:
 
 class Has(Base[_CallableType]):
     exception: ExceptionType = None
+    markers: FrozenSet[str]
 
     def __init__(self, *markers, message: str = None, exception: ExceptionType = None, debug: bool = False):
         """
         Step 1. Set allowed markers.
         """
-        self.markers: Set[str] = set(markers)
+        self.markers = frozenset(markers)
         self.message = message
         self.exception = exception
         self.debug = debug
@@ -76,7 +77,7 @@ class Has(Base[_CallableType]):
                 self.unpatch()
             yield result
 
-    # chacks
+    # known markers
 
     @property
     def has_network(self) -> bool:
@@ -102,21 +103,37 @@ class Has(Base[_CallableType]):
     def has_stderr(self) -> bool:
         if 'io' in self.markers:
             return True
-        if 'print' in self.markers:
-            return True
         if 'stderr' in self.markers:
             return True
         return False
 
-    def _get_exception(self, default: Type[Exception]) -> ExceptionType:
-        if self.exception is None:
-            if self.message is None:
-                return default
-            return default(self.message)
+    @property
+    def has_import(self) -> bool:
+        return 'import' in self.markers
 
-        if self.message is None:
-            return self.exception
-        return self.exception(self.message)
+    @property
+    def has_global(self) -> bool:
+        if 'global' in self.markers:
+            return True
+        if 'nonlocal' in self.markers:
+            return True
+        return False
+
+    @property
+    def has_read(self) -> bool:
+        if 'io' in self.markers:
+            return True
+        if 'read' in self.markers:
+            return True
+        return False
+
+    @property
+    def has_write(self) -> bool:
+        if 'io' in self.markers:
+            return True
+        if 'read' in self.markers:
+            return True
+        return False
 
     # patching
 
@@ -144,3 +161,13 @@ class Has(Base[_CallableType]):
             sys.stdout = self.true_stdout
         if not self.has_stderr:
             sys.stderr = self.true_stderr
+
+    def _get_exception(self, default: Type[Exception]) -> ExceptionType:
+        if self.exception is None:
+            if self.message is None:
+                return default
+            return default(self.message)
+
+        if self.message is None:
+            return self.exception
+        return self.exception(self.message)

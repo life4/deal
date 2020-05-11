@@ -1,4 +1,3 @@
-# built-in
 import ast
 from typing import Optional
 
@@ -9,27 +8,64 @@ import astroid
 from .common import TOKENS, Extractor, Token, get_name, infer
 
 
-get_prints = Extractor()
+get_markers = Extractor()
 
 
-@get_prints.register(*TOKENS.CALL)
+@get_markers.register(*TOKENS.GLOBAL)
+def handle_global(expr) -> Optional[Token]:
+    return Token(marker='global', line=expr.lineno, col=expr.col_offset)
+
+
+@get_markers.register(*TOKENS.NONLOCAL)
+def handle_nonlocal(expr) -> Optional[Token]:
+    return Token(marker='global', line=expr.lineno, col=expr.col_offset)
+
+
+@get_markers.register(ast.Import)
+def handle_ast_import(expr: ast.Import) -> Optional[Token]:
+    return Token(marker='import', line=expr.lineno, col=expr.col_offset)
+
+
+@get_markers.register(astroid.Import)
+def handle_astroid_import(expr: astroid.Import) -> Optional[Token]:
+    return Token(marker='import', line=expr.lineno, col=expr.col_offset)
+
+
+@get_markers.register(ast.ImportFrom)
+def handle_ast_import_from(expr: ast.ImportFrom) -> Optional[Token]:
+    return Token(marker='import', line=expr.lineno, col=expr.col_offset)
+
+
+@get_markers.register(astroid.ImportFrom)
+def handle_astroid_import_from(expr: astroid.ImportFrom) -> Optional[Token]:
+    return Token(marker='import', line=expr.lineno, col=expr.col_offset)
+
+
+@get_markers.register(*TOKENS.CALL)
 def handle_call(expr) -> Optional[Token]:
     token_info = dict(line=expr.lineno, col=expr.col_offset)
     name = get_name(expr.func)
-    if name in ('print', 'sys.stdout', 'sys.stderr'):
-        return Token(value=name, **token_info)
-    if name in ('sys.stdout.write', 'sys.stderr.write'):
-        return Token(value=name[:-6], **token_info)
+
+    # stdout and stderr
+    if name == 'print':
+        return Token(marker='stdout', value='print', **token_info)
+    if name in ('print', 'sys.stdout', 'sys.stdout.write'):
+        return Token(marker='stdout', value='sys.stdout', **token_info)
+    if name in ('sys.stderr', 'sys.stderr.write'):
+        return Token(marker='stderr', value='sys.stderr', **token_info)
+
+    # read and write
     if name == 'open':
         if _is_open_to_write(expr):
-            return Token(value='open', **token_info)
-
+            return Token(marker='write', value='open', **token_info)
+        return Token(marker='read', value='open', **token_info)
     if _is_pathlib_write(expr):
-        return Token(value='Path.open', **token_info)
+        return Token(marker='write', value='Path.open', **token_info)
+
     return None
 
 
-@get_prints.register(*TOKENS.WITH)
+@get_markers.register(*TOKENS.WITH)
 def handle_with(expr) -> Optional[Token]:
     token_info = dict(line=expr.lineno, col=expr.col_offset)
     for item in expr.items:
@@ -38,13 +74,14 @@ def handle_with(expr) -> Optional[Token]:
         else:
             item = item[0]
         if _is_pathlib_write(item):
-            return Token(value='Path.open', **token_info)
+            return Token(marker='write', value='Path.open', **token_info)
         if not isinstance(item, TOKENS.CALL):
             continue
         name = get_name(item.func)
         if name == 'open':
             if _is_open_to_write(item):
-                return Token(value='open', **token_info)
+                return Token(marker='write', value='open', **token_info)
+            return Token(marker='read', value='open', **token_info)
     return None
 
 

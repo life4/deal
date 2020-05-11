@@ -8,7 +8,7 @@ import astroid
 from .common import TOKENS, get_name
 
 
-SUPPORTED_CONTRACTS = {'deal.pre', 'deal.post', 'deal.raises', 'deal.silent', 'deal.pure'}
+SUPPORTED_CONTRACTS = {'deal.pre', 'deal.post', 'deal.raises', 'deal.silent', 'deal.pure', 'deal.has'}
 SUPPORTED_MARKERS = {'deal.silent', 'deal.pure'}
 
 

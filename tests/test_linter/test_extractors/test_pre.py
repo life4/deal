@@ -23,7 +23,7 @@ def test_check_contract():
     print(tree.repr_tree())
     func = tree.body[-1]
     messages = [tuple(r) for r in get_pre(body=func.body)]
-    assert messages == [('1, right=2', 7, 4), ('2, 3', 8, 4)]
+    assert messages == [(7, 4, '1, right=2', None), (8, 4, '2, 3', None)]
 
 
 def test_cannot_infer():

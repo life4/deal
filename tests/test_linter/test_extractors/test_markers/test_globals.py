@@ -6,15 +6,15 @@ import astroid
 import pytest
 
 # project
-from deal.linter._extractors import get_globals
+from deal.linter._extractors import get_markers
 
 
 @pytest.mark.parametrize('text, expected', [
     ('global a', ('global', )),
     ('global a, b, c', ('global', )),
 
-    ('nonlocal a', ('nonlocal', )),
-    ('nonlocal a, b, c', ('nonlocal', )),
+    ('nonlocal a', ('global', )),
+    ('nonlocal a, b, c', ('global', )),
 
     ('import a', ('import', )),
     ('import a as b', ('import', )),
@@ -26,10 +26,12 @@ from deal.linter._extractors import get_globals
 def test_get_globals_simple(text, expected):
     tree = astroid.parse(text)
     print(tree.repr_tree())
-    globals = tuple(r.value for r in get_globals(body=tree.body))
-    assert globals == expected
+    tokens = list(get_markers(body=tree.body))
+    markers = tuple(t.marker for t in tokens)
+    assert markers == expected
 
     tree = ast.parse(text)
     print(ast.dump(tree))
-    globals = tuple(r.value for r in get_globals(body=tree.body))
-    assert globals == expected
+    tokens = list(get_markers(body=tree.body))
+    markers = tuple(t.marker for t in tokens)
+    assert markers == expected

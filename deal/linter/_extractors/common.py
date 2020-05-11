@@ -31,9 +31,10 @@ TOKENS = SimpleNamespace(
 
 
 class Token(NamedTuple):
-    value: object
     line: int
     col: int
+    value: object = None
+    marker: str = None
 
 
 def traverse(body: List) -> Iterator:

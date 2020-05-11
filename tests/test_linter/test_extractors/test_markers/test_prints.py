@@ -6,34 +6,37 @@ import astroid
 import pytest
 
 # project
-from deal.linter._extractors import get_prints
+from deal.linter._extractors import get_markers
 
 
 @pytest.mark.parametrize('text, expected', [
-    ('print(1)', ('print', )),
-    ('sys.stdout.write(1)', ('sys.stdout', )),
-    ('open("fpath", "w")', ('open', )),
-    ('open("fpath", mode="w")', ('open', )),
-    ('with open("fpath", "w") as f: ...', ('open', )),
+    ('print(1)', ('stdout', )),
+    ('sys.stdout.write(1)', ('stdout', )),
+    ('open("fpath", "w")', ('write', )),
+    ('open("fpath", mode="w")', ('write', )),
+    ('with open("fpath", "w") as f: ...', ('write', )),
 
     ('with something: ...', ()),
-    ('with open("fpath") as f: ...', ()),
-    ('with open("fpath", "r") as f: ...', ()),
-    ('with open("fpath", mode="r") as f: ...', ()),
-    ('open("fpath", "r")', ()),
-    ('open("fpath")', ()),
-    ('open("fpath", encoding="utf8")', ()),
+
+    ('with open("fpath") as f: ...', ('read', )),
+    ('with open("fpath", "r") as f: ...', ('read', )),
+    ('with open("fpath", mode="r") as f: ...', ('read', )),
+    ('open("fpath", "r")', ('read', )),
+    ('open("fpath")', ('read', )),
+    ('open("fpath", encoding="utf8")', ('read', )),
 ])
-def test_get_prints_simple(text, expected):
+def test_get_markers_simple(text, expected):
     tree = astroid.parse(text)
     print(tree.repr_tree())
-    returns = tuple(r.value for r in get_prints(body=tree.body))
-    assert returns == expected
+    tokens = list(get_markers(body=tree.body))
+    markers = tuple(t.marker for t in tokens)
+    assert markers == expected
 
     tree = ast.parse(text)
     print(ast.dump(tree))
-    returns = tuple(r.value for r in get_prints(body=tree.body))
-    assert returns == expected
+    tokens = list(get_markers(body=tree.body))
+    markers = tuple(t.marker for t in tokens)
+    assert markers == expected
 
 
 @pytest.mark.parametrize('text, expected', [
@@ -49,8 +52,11 @@ def test_get_prints_simple(text, expected):
     ('something = file\nwith something.open("w"): ...', ()),        # not pathlib
     ('class Path:\n def write_text(): pass\np = Path()\np.write_text()', ()),   # not pathlib
 ])
-def test_get_prints_infer(text, expected):
+def test_get_markers_infer(text, expected):
     tree = astroid.parse(text)
     print(tree.repr_tree())
-    returns = tuple(r.value for r in get_prints(body=tree.body))
-    assert returns == expected
+    tokens = list(get_markers(body=tree.body))
+    for token in tokens:
+        assert token.marker in ('read', 'write', 'stdout', 'stderr', 'import')
+    values = tuple(t.value for t in tokens if t.marker != 'import')
+    assert values == expected

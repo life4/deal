@@ -2,17 +2,19 @@
 import ast
 import enum
 from itertools import chain
+from types import MappingProxyType
 from typing import Iterator
 
 # app
 from ._contract import Category, Contract
 from ._error import Error
 from ._extractors import (
-    get_asserts, get_exceptions, get_exceptions_stubs, get_globals,
-    get_imports, get_pre, get_prints, get_returns, has_returns,
+    get_asserts, get_exceptions, get_exceptions_stubs,
+    get_imports, get_pre, get_markers, get_returns, has_returns,
 )
 from ._func import Func
 from ._stub import StubsManager
+from .._decorators import Has
 
 
 rules = []
@@ -156,7 +158,7 @@ class CheckPrints:
             return
 
     def _check(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
-        for token in get_prints(body=func.body):
+        for token in get_markers(body=func.body):
             yield Error(
                 code=self.code,
                 text=self.message,
@@ -189,14 +191,62 @@ class CheckPure:
                 row=func.line,
                 col=func.col,
             )
-        for token in get_globals(body=func.body):
+        for token in get_markers(body=func.body):
             yield Error(
                 code=self.code,
                 text=self.message,
-                value=str(token.value),
+                value=str(token.marker),
                 row=token.line,
                 col=token.col,
             )
+
+
+# @register
+# class CheckMarkers:
+#     __slots__ = ()
+#     code = 40
+#     message = 'missed marker'
+#     required = Required.FUNC
+#
+#     codes = MappingProxyType({
+#         'global': 41,
+#         'import': 42,
+#     })
+#     messages = MappingProxyType({
+#         'global': 'missed `global` marker',
+#         'import': 'missed `import` marker',
+#     })
+#
+#     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+#         for contract in func.contracts:
+#             if contract.category != Category.HAS:
+#                 continue
+#             markers = [ast.literal_eval(arg) for arg in contract.args]
+#             yield from self._check(func=func, has=Has(*markers))
+#             return
+#
+#     @classmethod
+#     def _check(cls, func: Func, has: Has) -> Iterator[Error]:
+#         if not has.has_global:
+#             for token in get_globals(body=func.body):
+#                 if token.value not in ('global', 'nonlocal'):
+#                     continue
+#                 yield Error(
+#                     code=cls.codes['global'],
+#                     text=cls.messages['global'],
+#                     row=token.line,
+#                     col=token.col,
+#                 )
+#         if not has.has_import:
+#             for token in get_globals(body=func.body):
+#                 if token.value != 'import':
+#                     continue
+#                 yield Error(
+#                     code=cls.codes['import'],
+#                     text=cls.messages['import'],
+#                     row=token.line,
+#                     col=token.col,
+#                 )
 
 
 @register
