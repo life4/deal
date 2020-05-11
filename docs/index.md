@@ -16,6 +16,7 @@
 
     commands/lint
     commands/stub
+    commands/test
 
 .. toctree::
     :maxdepth: 1
