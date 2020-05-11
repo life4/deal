@@ -6,12 +6,14 @@ from typing import Callable, Mapping, Sequence
 # app
 from ._lint import lint_command
 from ._stub import stub_command
+from ._test import test_command
 
 
 CommandsType = Mapping[str, Callable[[Sequence[str]], int]]
 COMMANDS: CommandsType = MappingProxyType(dict(
     lint=lint_command,
     stub=stub_command,
+    test=test_command,
 ))
 
 
