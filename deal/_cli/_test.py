@@ -85,8 +85,10 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
 
 
 def test_command(
-    argv: Sequence[str], root: Path = Path(), stream: TextIO = sys.stdout,
+    argv: Sequence[str], root: Path = None, stream: TextIO = sys.stdout,
 ) -> int:
+    if root is None:  # pragma: no cover
+        root = Path()
     parser = ArgumentParser(prog='python3 -m deal test')
     parser.add_argument('--count', type=int, default=50)
     parser.add_argument('paths', nargs='+')
