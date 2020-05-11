@@ -8,8 +8,8 @@ import astroid
 # project
 from deal.linter._func import Func
 from deal.linter._rules import (
-    CheckAsserts, CheckImports, CheckPre, CheckPrints,
-    CheckPure, CheckRaises, CheckReturns, rules,
+    CheckAsserts, CheckImports, CheckPre, CheckMarkers,
+    CheckRaises, rules, CheckReturns
 )
 
 
@@ -168,23 +168,24 @@ def test_check_raises_inherited():
 
 
 def test_check_prints():
-    checker = CheckPrints()
+    checker = CheckMarkers()
     text = """
     @deal.silent
     def test(a):
         print(1)
+        return 1
     """
     text = dedent(text).strip()
     funcs1 = Func.from_ast(ast.parse(text))
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(3, 4, 'DEAL022 silent contract error (print)')]
+        expected = [(3, 4, 'DEAL046 missed marker (stdout)')]
         assert actual == expected
 
 
 def test_check_pure():
-    checker = CheckPure()
+    checker = CheckMarkers()
     text = """
     @deal.pure
     def test(a):
@@ -196,12 +197,12 @@ def test_check_pure():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(3, 4, 'DEAL023 pure contract error (global)')]
+        expected = [(3, 4, 'DEAL041 missed marker (global)')]
         assert actual == expected
 
 
 def test_check_pure_no_returns():
-    checker = CheckPure()
+    checker = CheckMarkers()
     text = """
     @deal.pure
     def test(a):
@@ -213,7 +214,7 @@ def test_check_pure_no_returns():
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
         assert len(actual) == 1
-        expected = 'DEAL023 pure contract error (no return)'
+        expected = 'DEAL043 missed marker (io)'
         assert actual[0][2] == expected
 
 

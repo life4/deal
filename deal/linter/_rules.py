@@ -143,113 +143,6 @@ class CheckRaises:
 
 
 @register
-class CheckPrints:
-    __slots__ = ()
-    code = 22
-    message = 'silent contract error'
-    required = Required.FUNC
-
-    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
-        for contract in func.contracts:
-            if contract.category != Category.SILENT:
-                continue
-            yield from self._check(func=func)
-            # if `@deal.silent` is duplicated, check the function only once
-            return
-
-    def _check(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
-        for token in get_markers(body=func.body):
-            yield Error(
-                code=self.code,
-                text=self.message,
-                value=str(token.value),
-                row=token.line,
-                col=token.col,
-            )
-
-
-@register
-class CheckPure:
-    __slots__ = ()
-    code = 23
-    message = 'pure contract error'
-    required = Required.FUNC
-
-    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
-        for contract in func.contracts:
-            if contract.category != Category.PURE:
-                continue
-            yield from self._check(func=func)
-            return
-
-    def _check(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
-        if not has_returns(body=func.body):
-            yield Error(
-                code=self.code,
-                text=self.message,
-                value='no return',
-                row=func.line,
-                col=func.col,
-            )
-        for token in get_markers(body=func.body):
-            yield Error(
-                code=self.code,
-                text=self.message,
-                value=str(token.marker),
-                row=token.line,
-                col=token.col,
-            )
-
-
-# @register
-# class CheckMarkers:
-#     __slots__ = ()
-#     code = 40
-#     message = 'missed marker'
-#     required = Required.FUNC
-#
-#     codes = MappingProxyType({
-#         'global': 41,
-#         'import': 42,
-#     })
-#     messages = MappingProxyType({
-#         'global': 'missed `global` marker',
-#         'import': 'missed `import` marker',
-#     })
-#
-#     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
-#         for contract in func.contracts:
-#             if contract.category != Category.HAS:
-#                 continue
-#             markers = [ast.literal_eval(arg) for arg in contract.args]
-#             yield from self._check(func=func, has=Has(*markers))
-#             return
-#
-#     @classmethod
-#     def _check(cls, func: Func, has: Has) -> Iterator[Error]:
-#         if not has.has_global:
-#             for token in get_globals(body=func.body):
-#                 if token.value not in ('global', 'nonlocal'):
-#                     continue
-#                 yield Error(
-#                     code=cls.codes['global'],
-#                     text=cls.messages['global'],
-#                     row=token.line,
-#                     col=token.col,
-#                 )
-#         if not has.has_import:
-#             for token in get_globals(body=func.body):
-#                 if token.value != 'import':
-#                     continue
-#                 yield Error(
-#                     code=cls.codes['import'],
-#                     text=cls.messages['import'],
-#                     row=token.line,
-#                     col=token.col,
-#                 )
-
-
-@register
 class CheckAsserts:
     __slots__ = ()
     code = 31
@@ -265,6 +158,59 @@ class CheckAsserts:
                 code=self.code,
                 text=self.message,
                 value=str(token.value),
+                row=token.line,
+                col=token.col,
+            )
+
+
+@register
+class CheckMarkers:
+    __slots__ = ()
+    code = 40
+    message = 'missed marker'
+    required = Required.FUNC
+
+    codes = MappingProxyType({
+        'global': 41,
+        'import': 42,
+        'io': 43,
+        'read': 44,
+        'write': 45,
+        'stdout': 46,
+        'stderr': 47,
+        'network': 48,
+    })
+
+    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+        for contract in func.contracts:
+            if contract.category == Category.HAS:
+                markers = [ast.literal_eval(arg) for arg in contract.args]
+            elif contract.category in (Category.PURE, Category.SILENT):
+                markers = []
+            else:
+                continue
+            yield from self._check(func=func, has=Has(*markers))
+            return
+
+    @classmethod
+    def _check(cls, func: Func, has: Has) -> Iterator[Error]:
+        # function without IO must return something
+        if not has.has_io and not has_returns(body=func.body):
+            yield Error(
+                code=cls.codes['io'],
+                text=cls.message,
+                value='io',
+                row=func.line,
+                col=func.col,
+            )
+
+        for token in get_markers(body=func.body):
+            if getattr(has, 'has_{}'.format(token.marker)):
+                continue
+            yield Error(
+                code=cls.codes[token.marker],
+                text=cls.message,
+                value=token.marker,
                 row=token.line,
                 col=token.col,
             )

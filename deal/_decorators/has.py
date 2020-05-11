@@ -90,6 +90,20 @@ class Has(Base[_CallableType]):
         return False
 
     @property
+    def has_io(self) -> bool:
+        if self.has_read:
+            return True
+        if self.has_write:
+            return True
+        if self.has_stdout:
+            return True
+        if self.has_stderr:
+            return True
+        if self.has_network:
+            return True
+        return False
+
+    @property
     def has_stdout(self) -> bool:
         if 'io' in self.markers:
             return True
@@ -131,7 +145,7 @@ class Has(Base[_CallableType]):
     def has_write(self) -> bool:
         if 'io' in self.markers:
             return True
-        if 'read' in self.markers:
+        if 'write' in self.markers:
             return True
         return False
 
