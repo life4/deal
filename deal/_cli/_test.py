@@ -1,6 +1,7 @@
 # built-in
 import sys
 from argparse import ArgumentParser
+from contextlib import contextmanager
 from importlib import import_module
 from pathlib import Path
 from traceback import format_exception
@@ -22,6 +23,17 @@ COLORS = dict(
     magenta='\033[95m',
     end='\033[0m',
 )
+
+
+@contextmanager
+def sys_path(path: Path):
+    path = str(path)
+    sys.path.insert(0, path)
+    try:
+        yield
+    finally:
+        if sys.path[0] == path:
+            del sys.path[0]
 
 
 def has_pure_contract(func: Func) -> bool:
@@ -50,7 +62,8 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
         return 0
     print('{magenta}running {path}{end}'.format(path=path, **COLORS), file=stream)
     module_name = '.'.join(path.relative_to(root).with_suffix('').parts)
-    module = import_module(module_name)
+    with sys_path(path=root):
+        module = import_module(module_name)
     failed = 0
     for func_name in names:
         print('  {blue}running {name}{end}'.format(name=func_name, **COLORS), file=stream)
@@ -71,7 +84,9 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
     return failed
 
 
-def test_command(argv: Sequence[str], root: Path = Path()) -> int:
+def test_command(
+    argv: Sequence[str], root: Path = Path(), stream: TextIO = sys.stdout,
+) -> int:
     parser = ArgumentParser(prog='python3 -m deal test')
     parser.add_argument('--count', type=int, default=50)
     parser.add_argument('paths', nargs='+')
@@ -83,5 +98,6 @@ def test_command(argv: Sequence[str], root: Path = Path()) -> int:
             path=Path(path),
             root=root,
             count=args.count,
+            stream=stream,
         )
     return failed
