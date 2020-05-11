@@ -10,7 +10,7 @@ from .helpers import run_sync
 
 
 def test_raises_expects_function_to_raise_error():
-    func = deal.raises(ZeroDivisionError)(lambda x: 1 / x)
+    func = deal.raises(ZeroDivisionError, ValueError)(lambda x: 1 / x)
     with pytest.raises(ZeroDivisionError):
         func(0)
     func(2)

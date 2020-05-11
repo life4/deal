@@ -46,15 +46,23 @@ def ensure(
 
 
 def raises(
-    validator,
-    *,
+    *exceptions,
     message: str = None,
     exception: ExceptionType = None,
     debug: bool = False,
 ) -> Callable[[_CallableType], _CallableType]:
-    return _decorators.Raises[_CallableType](
-        validator, message=message, exception=exception, debug=debug,
-    )
+    cls = _decorators.Raises[_CallableType]
+    return cls(*exceptions, message=message, exception=exception, debug=debug)
+
+
+def has(
+    *markers,
+    message: str = None,
+    exception: ExceptionType = None,
+    debug: bool = False,
+) -> Callable[[_CallableType], _CallableType]:
+    cls = _decorators.Has[_CallableType]
+    return cls(*markers, message=message, exception=exception, debug=debug)
 
 
 def reason(
@@ -74,51 +82,6 @@ require = pre
 inv = invariant = _decorators.Invariant
 
 
-# makes braces for decorator are optional
-def _optional(
-    _contract,
-    _func: Callable = None,
-    *,
-    message: str = None,
-    exception: ExceptionType = None,
-    debug: bool = False,
-):
-    if _func is not None:
-        return _contract()(_func)
-    return _contract(message=message, exception=exception, debug=debug)
-
-
-@overload
-def offline(
-    *,
-    message: str = None,
-    exception: ExceptionType = None,
-    debug: bool = False,
-) -> Callable[[_CallableType], _CallableType]:
-    pass  # pragma: no cover
-
-
-@overload
-def offline(_func: _CallableType) -> _CallableType:
-    pass  # pragma: no cover
-
-
-def offline(
-    _func=None,
-    *,
-    message=None,
-    exception=None,
-    debug=False,
-):
-    return _optional(
-        _decorators.Offline,
-        _func,
-        message=message,
-        exception=exception,
-        debug=debug,
-    )
-
-
 @overload
 def safe(
     *,
@@ -134,51 +97,10 @@ def safe(_func: _CallableType) -> _CallableType:
     pass  # pragma: no cover
 
 
-def safe(
-    _func=None,
-    *,
-    message=None,
-    exception=None,
-    debug=False,
-):
-    return _optional(
-        _decorators.Raises,
-        _func,
-        message=message,
-        exception=exception,
-        debug=debug,
-    )
-
-
-@overload
-def silent(
-    *,
-    message: str = None,
-    exception: ExceptionType = None,
-    debug: bool = False,
-) -> Callable[[_CallableType], _CallableType]:
-    pass  # pragma: no cover
-
-
-@overload
-def silent(_func: _CallableType) -> _CallableType:
-    pass  # pragma: no cover
-
-
-def silent(
-    _func=None,
-    *,
-    message=None,
-    exception=None,
-    debug=False,
-):
-    return _optional(
-        _decorators.Silent,
-        _func,
-        message=message,
-        exception=exception,
-        debug=debug,
-    )
+def safe(_func=None, **kwargs):
+    if _func is None:
+        return raises(**kwargs)
+    return raises()(_func)
 
 
 def chain(*contracts) -> Callable[[_CallableType], _CallableType]:
@@ -190,4 +112,16 @@ def chain(*contracts) -> Callable[[_CallableType], _CallableType]:
 
 
 def pure(_func: _CallableType) -> _CallableType:
-    return chain(offline, safe, silent)(_func)
+    return chain(has(), safe)(_func)
+
+
+def offline(_func: Callable = None, **kwargs):
+    if _func is None:
+        return has('print', **kwargs)
+    return has('print')(_func)
+
+
+def silent(_func: Callable = None, **kwargs):
+    if _func is None:
+        return has('netwrok', **kwargs)
+    return has('network')(_func)
