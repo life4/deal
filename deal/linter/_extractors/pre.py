@@ -1,6 +1,6 @@
 # built-in
 import ast
-from typing import Iterator
+from typing import Iterator, Sequence
 
 # external
 import astroid
@@ -58,7 +58,7 @@ def handle_call(expr: astroid.Call) -> Iterator[Token]:
                 yield Token(value=msg, line=expr.lineno, col=expr.col_offset)
 
 
-def format_call_args(args: list, kwargs: dict) -> str:
+def format_call_args(args: Sequence, kwargs: dict) -> str:
     sep = ', '
     args_s = sep.join(map(repr, args))
     kwargs_s = sep.join(['{}={!r}'.format(k, v) for k, v in kwargs.items()])
