@@ -9,6 +9,7 @@ from textwrap import indent
 
 # app
 from ..linter._contract import Category
+from ..linter._extractors.pre import format_call_args
 from ..linter._func import Func
 from .._testing import cases
 
@@ -58,6 +59,12 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
             try:
                 case()
             except Exception:
+                line = '    {yellow}{name}({args}){end}'.format(
+                    name=func_name,
+                    args=format_call_args(args=case.args, kwargs=case.kwargs),
+                    **COLORS,
+                )
+                print(line, file=stream)
                 print_exception(stream=stream)
                 failed += 1
                 break
