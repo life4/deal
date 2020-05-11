@@ -5,7 +5,7 @@ from pathlib import Path
 from textwrap import dedent
 
 # project
-from deal._cli._test import test_command as command, sys_path
+from deal._cli._test import sys_path, test_command as command
 
 
 def test_safe_violation(tmp_path: Path, capsys):

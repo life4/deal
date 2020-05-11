@@ -4,15 +4,15 @@ from argparse import ArgumentParser
 from contextlib import contextmanager
 from importlib import import_module
 from pathlib import Path
+from textwrap import indent
 from traceback import format_exception
 from typing import Iterator, Sequence, TextIO
-from textwrap import indent
 
 # app
+from .._testing import cases
 from ..linter._contract import Category
 from ..linter._extractors.pre import format_call_args
 from ..linter._func import Func
-from .._testing import cases
 
 
 COLORS = dict(
