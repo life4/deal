@@ -9,9 +9,6 @@ def concat(left: str, right: str) -> str:
     return left + right
 
 
-# TESTS
-
-
 @pytest.mark.parametrize('case', deal.cases(concat))
 def test_concat(case):
     case()
