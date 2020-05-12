@@ -1,10 +1,40 @@
 # Side-effects
 
-## Custom markers
+# deal.has
 
+`@deal.has` is a way to specify markers for a function. Markers are tags about kinds of side-effects which the function has. For example:
 
+```python
+@deal.has('stdout', 'database')
+def say_hello(id: int) -> None:
+    user = get_user(id=id)
+    print(f'Hello, {user.name}')
+```
+
+You can use any markers you want, and Deal will check that if you call a function with some markers, they are specified for the calling function as well. In the example above, `print` function has marker `stdout`, so it must be specified in markers of `say_hello` as well.
+
+## Motivation
+
+Every application has side-effects. It needs to store data, to communicate with users. However, every side-effect makes testing and debugging much harder: it should be mocked, intercepted, cleaned after every test. The best solution is to have [functional core and imperative shell](https://www.destroyallsoftware.com/screencasts/catalog/functional-core-imperative-shell). So, the function above can be refactored to be pure:
+
+```python
+# now this is pure
+@deal.has()
+def make_hello(user) -> str:
+    return f'Hello, {user.name}'
+
+# and the main function takes care of all impure things
+@deal.has('stdout', 'database')
+def main(stream=sys.stdout):
+    ...
+    user = get_user(id=id)
+    hello = make_hello(user=user)
+    print(make_hello, file=stream)
+```
 
 ## Built-in markers
+
+
 
 | code    | marker          | allows                    |
 | ------- | --------------- | ------------------------- |
