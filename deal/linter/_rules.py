@@ -10,7 +10,7 @@ from ._contract import Category, Contract
 from ._error import Error
 from ._extractors import (
     get_asserts, get_exceptions, get_exceptions_stubs,
-    get_imports, get_pre, get_markers, get_returns, has_returns,
+    get_imports, get_pre, get_markers, get_returns, has_returns, get_value
 )
 from ._func import Func
 from ._stub import StubsManager
@@ -184,7 +184,7 @@ class CheckMarkers:
     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         for contract in func.contracts:
             if contract.category == Category.HAS:
-                markers = [ast.literal_eval(arg) for arg in contract.args]
+                markers = [get_value(arg) for arg in contract.args]
             elif contract.category in (Category.PURE, Category.SILENT):
                 markers = []
             else:

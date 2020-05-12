@@ -11,7 +11,9 @@ from deal.linter._extractors import get_markers
 
 @pytest.mark.parametrize('text, expected', [
     ('print(1)', ('stdout', )),
-    ('sys.stdout.write(1)', ('stdout', )),
+    ('import sys\nsys.stdout.write(1)', ('stdout', )),
+    ('import sys\nsys.stderr.write(1)', ('stderr', )),
+
     ('open("fpath", "w")', ('write', )),
     ('open("fpath", mode="w")', ('write', )),
     ('with open("fpath", "w") as f: ...', ('write', )),
@@ -29,13 +31,13 @@ def test_get_markers_simple(text, expected):
     tree = astroid.parse(text)
     print(tree.repr_tree())
     tokens = list(get_markers(body=tree.body))
-    markers = tuple(t.marker for t in tokens)
+    markers = tuple(t.marker for t in tokens if t.marker != 'import')
     assert markers == expected
 
     tree = ast.parse(text)
     print(ast.dump(tree))
     tokens = list(get_markers(body=tree.body))
-    markers = tuple(t.marker for t in tokens)
+    markers = tuple(t.marker for t in tokens if t.marker != 'import')
     assert markers == expected
 
 
@@ -60,3 +62,31 @@ def test_get_markers_infer(text, expected):
         assert token.marker in ('read', 'write', 'stdout', 'stderr', 'import')
     values = tuple(t.value for t in tokens if t.marker != 'import')
     assert values == expected
+
+
+@pytest.mark.parametrize('text, expected', [
+    ('global a', ('global', )),
+    ('global a, b, c', ('global', )),
+
+    ('nonlocal a', ('global', )),
+    ('nonlocal a, b, c', ('global', )),
+
+    ('import a', ('import', )),
+    ('import a as b', ('import', )),
+    ('import a as b, c', ('import', )),
+
+    ('from a import b', ('import', )),
+    ('from a import b as c', ('import', )),
+])
+def test_get_globals_simple(text, expected):
+    tree = astroid.parse(text)
+    print(tree.repr_tree())
+    tokens = list(get_markers(body=tree.body))
+    markers = tuple(t.marker for t in tokens)
+    assert markers == expected
+
+    tree = ast.parse(text)
+    print(ast.dump(tree))
+    tokens = list(get_markers(body=tree.body))
+    markers = tuple(t.marker for t in tokens)
+    assert markers == expected

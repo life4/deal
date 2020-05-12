@@ -218,6 +218,44 @@ def test_check_pure_no_returns():
         assert actual[0][2] == expected
 
 
+def test_check_has_io():
+    checker = CheckMarkers()
+    text = """
+    @deal.pre(lambda a: len(a) > 2)
+    @deal.has('io')
+    @deal.post(lambda result: result is not None)
+    def test(a):
+        import sys
+        sys.stdout.write(a)
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    for func in (funcs1[0], funcs2[0]):
+        actual = [tuple(err) for err in checker(func)]
+        assert len(actual) == 1
+        expected = 'DEAL042 missed marker (import)'
+        assert actual[0][2] == expected
+
+
+def test_check_has_no_has():
+    checker = CheckMarkers()
+    text = """
+    @deal.pre(lambda a: len(a) > 2)
+    @deal.post(lambda result: result is not None)
+    @deal.raises(ValueError)
+    def test(a):
+        import sys
+        sys.stdout.write(a)
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    for func in (funcs1[0], funcs2[0]):
+        actual = [tuple(err) for err in checker(func)]
+        assert actual == []
+
+
 def test_check_asserts():
     checker = CheckAsserts()
     text = """
