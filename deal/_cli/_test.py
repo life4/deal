@@ -40,6 +40,8 @@ def has_pure_contract(func: Func) -> bool:
     for contract in func.contracts:
         if contract.category == Category.PURE:
             return True
+        if contract.category == Category.HAS and not contract.args:
+            return True
     return False
 
 
