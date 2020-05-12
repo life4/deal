@@ -70,6 +70,7 @@ class Base(Generic[_CallableType]):
             while hasattr(function, '__wrapped__'):
                 function = function.__wrapped__     # type: ignore
             # assign *args to real names
+            kwargs.pop('result', None)
             params.update(inspect.getcallargs(function, *args, **kwargs))
             # drop args-kwargs, we already put them on the right places
             for bad_name in ('args', 'kwargs'):
