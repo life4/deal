@@ -88,6 +88,7 @@
   },
   "SMTPChannel.__init__": {
     "has": [
+      "network",
       "stdout"
     ],
     "raises": [

@@ -39,6 +39,11 @@
       "network"
     ]
   },
+  "getfqdn": {
+    "has": [
+      "network"
+    ]
+  },
   "socket.__getstate__": {
     "raises": [
       "TypeError"
@@ -55,6 +60,11 @@
       "ValueError"
     ]
   },
+  "socket.accept": {
+    "has": [
+      "network"
+    ]
+  },
   "socket.connect": {
     "has": [
       "network"
@@ -64,6 +74,11 @@
     "raises": [
       "AssertionError",
       "ValueError"
+    ]
+  },
+  "socket.sendfile": {
+    "has": [
+      "network"
     ]
   }
 }

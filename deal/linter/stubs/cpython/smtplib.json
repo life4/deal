@@ -1,5 +1,8 @@
 {
   "SMTP.__init__": {
+    "has": [
+      "network"
+    ],
     "raises": [
       "SMTPConnectError"
     ]
