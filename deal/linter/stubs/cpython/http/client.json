@@ -1,0 +1,147 @@
+{
+  "HTTPConnection._get_hostport": {
+    "raises": [
+      "InvalidURL"
+    ]
+  },
+  "HTTPConnection._read_readable": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "HTTPConnection._send_output": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "HTTPConnection._send_request": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "UnicodeEncodeError"
+    ]
+  },
+  "HTTPConnection._tunnel": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "HTTPConnection._validate_host": {
+    "raises": [
+      "InvalidURL"
+    ]
+  },
+  "HTTPConnection._validate_path": {
+    "raises": [
+      "InvalidURL"
+    ]
+  },
+  "HTTPConnection.connect": {
+    "has": [
+      "network"
+    ],
+    "raises": [
+      "err"
+    ]
+  },
+  "HTTPConnection.endheaders": {
+    "raises": [
+      "CannotSendHeader"
+    ]
+  },
+  "HTTPConnection.getresponse": {
+    "raises": [
+      "ResponseNotReady"
+    ]
+  },
+  "HTTPConnection.putheader": {
+    "raises": [
+      "CannotSendHeader",
+      "ValueError"
+    ]
+  },
+  "HTTPConnection.putrequest": {
+    "raises": [
+      "CannotSendRequest",
+      "ValueError"
+    ]
+  },
+  "HTTPConnection.send": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "NotConnected",
+      "TypeError"
+    ]
+  },
+  "HTTPConnection.set_tunnel": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "HTTPResponse._get_chunk_left": {
+    "raises": [
+      "IncompleteRead"
+    ]
+  },
+  "HTTPResponse._read1_chunked": {
+    "raises": [
+      "IncompleteRead"
+    ]
+  },
+  "HTTPResponse._read_next_chunk_size": {
+    "raises": [
+      "LineTooLong"
+    ]
+  },
+  "HTTPResponse._read_status": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "BadStatusLine",
+      "LineTooLong",
+      "RemoteDisconnected"
+    ]
+  },
+  "HTTPResponse._readall_chunked": {
+    "raises": [
+      "AssertionError",
+      "IncompleteRead"
+    ]
+  },
+  "HTTPResponse._readinto_chunked": {
+    "raises": [
+      "AssertionError",
+      "IncompleteRead"
+    ]
+  },
+  "HTTPResponse.begin": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "UnknownProtocol"
+    ]
+  },
+  "HTTPResponse.getheader": {
+    "raises": [
+      "ResponseNotReady"
+    ]
+  },
+  "HTTPResponse.getheaders": {
+    "raises": [
+      "ResponseNotReady"
+    ]
+  },
+  "_encode": {
+    "raises": [
+      "UnicodeEncodeError"
+    ]
+  }
+}

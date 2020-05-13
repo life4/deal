@@ -1,0 +1,32 @@
+{
+  "BaseCookie.__parse_string": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Morsel.__setitem__": {
+    "raises": [
+      "CookieError"
+    ]
+  },
+  "Morsel.set": {
+    "raises": [
+      "CookieError"
+    ]
+  },
+  "Morsel.setdefault": {
+    "raises": [
+      "CookieError"
+    ]
+  },
+  "Morsel.update": {
+    "raises": [
+      "CookieError"
+    ]
+  },
+  "_getdate": {
+    "has": [
+      "import"
+    ]
+  }
+}

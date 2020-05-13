@@ -1,0 +1,60 @@
+{
+  "BaseHTTPRequestHandler.log_message": {
+    "has": [
+      "stderr"
+    ]
+  },
+  "CGIHTTPRequestHandler.is_python": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "CGIHTTPRequestHandler.run_cgi": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "Error"
+    ]
+  },
+  "HTTPServer.server_bind": {
+    "has": [
+      "network"
+    ]
+  },
+  "SimpleHTTPRequestHandler.guess_type": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "SimpleHTTPRequestHandler.list_directory": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "SimpleHTTPRequestHandler.send_head": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "SimpleHTTPRequestHandler.translate_path": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "nobody_uid": {
+    "has": [
+      "global"
+    ]
+  },
+  "test": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "SystemExit"
+    ]
+  }
+}

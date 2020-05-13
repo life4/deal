@@ -1,0 +1,250 @@
+{
+  "Cookie.__init__": {
+    "raises": [
+      "Error",
+      "ValueError"
+    ]
+  },
+  "CookieJar._cookie_from_cookie_tuple": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "CookieJar._cookies_for_domain": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "CookieJar._normalized_cookie_tuples": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "CookieJar.add_cookie_header": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "CookieJar.clear": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "CookieJar.extract_cookies": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "CookieJar.make_cookies": {
+    "has": [
+      "import"
+    ]
+  },
+  "CookiePolicy.return_ok": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "CookiePolicy.set_ok": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "DefaultCookiePolicy.domain_return_ok": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "DefaultCookiePolicy.path_return_ok": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "DefaultCookiePolicy.return_ok": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "DefaultCookiePolicy.return_ok_domain": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "DefaultCookiePolicy.return_ok_expires": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "DefaultCookiePolicy.return_ok_port": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "DefaultCookiePolicy.return_ok_secure": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "DefaultCookiePolicy.return_ok_verifiability": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "DefaultCookiePolicy.return_ok_version": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "DefaultCookiePolicy.set_ok": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "DefaultCookiePolicy.set_ok_domain": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "DefaultCookiePolicy.set_ok_name": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "DefaultCookiePolicy.set_ok_path": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "DefaultCookiePolicy.set_ok_port": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "DefaultCookiePolicy.set_ok_verifiability": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "DefaultCookiePolicy.set_ok_version": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "FileCookieJar.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "FileCookieJar.load": {
+    "has": [
+      "read"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "FileCookieJar.revert": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "FileCookieJar.save": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "LWPCookieJar._really_load": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "LoadError"
+    ]
+  },
+  "LWPCookieJar.save": {
+    "has": [
+      "write"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "MozillaCookieJar._really_load": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "LoadError"
+    ]
+  },
+  "MozillaCookieJar.save": {
+    "has": [
+      "write"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_debug": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "_warn_unhandled_exception": {
+    "has": [
+      "import",
+      "stdout"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "escape_path": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "request_path": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "request_port": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "split_header_words": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}
