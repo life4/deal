@@ -43,7 +43,7 @@ class StubFile:
         values.sort()
 
     def get(self, func: str, contract: Category) -> FrozenSet[str]:
-        if contract != Category.RAISES:
+        if contract not in (Category.RAISES, Category.HAS):
             raise ValueError('unsupported contract')
         values = self._content.get(func, {}).get(contract.value, [])
         return frozenset(values)
