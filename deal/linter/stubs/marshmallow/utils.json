@@ -19,6 +19,11 @@
       "ValueError"
     ]
   },
+  "pprint": {
+    "has": [
+      "stdout"
+    ]
+  },
   "resolve_field_instance": {
     "raises": [
       "FieldInstanceResolutionError"
