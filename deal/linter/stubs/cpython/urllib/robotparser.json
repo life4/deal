@@ -1,0 +1,18 @@
+{
+  "RobotFileParser.can_fetch": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "RobotFileParser.modified": {
+    "has": [
+      "import"
+    ]
+  },
+  "RuleLine.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

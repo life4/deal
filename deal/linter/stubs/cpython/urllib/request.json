@@ -1,0 +1,392 @@
+{
+  "AbstractBasicAuthHandler._parse_realm": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "AbstractBasicAuthHandler.http_error_auth_reqed": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "AbstractDigestAuthHandler.get_algorithm_impls": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "AbstractDigestAuthHandler.get_authorization": {
+    "raises": [
+      "URLError"
+    ]
+  },
+  "AbstractDigestAuthHandler.http_error_auth_reqed": {
+    "raises": [
+      "HTTPError",
+      "ValueError"
+    ]
+  },
+  "AbstractHTTPHandler.do_open": {
+    "raises": [
+      "URLError"
+    ]
+  },
+  "AbstractHTTPHandler.do_request_": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "TypeError",
+      "URLError",
+      "ValueError"
+    ]
+  },
+  "DataHandler.data_open": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "FTPHandler.ftp_open": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "TypeError",
+      "URLError",
+      "ValueError"
+    ]
+  },
+  "FancyURLopener.prompt_user_passwd": {
+    "has": [
+      "import",
+      "stdout"
+    ]
+  },
+  "FancyURLopener.redirect_internal": {
+    "raises": [
+      "HTTPError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "FancyURLopener.retry_http_basic_auth": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "FancyURLopener.retry_https_basic_auth": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "FancyURLopener.retry_proxy_http_basic_auth": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "FancyURLopener.retry_proxy_https_basic_auth": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "FileHandler.file_open": {
+    "raises": [
+      "URLError"
+    ]
+  },
+  "FileHandler.open_local_file": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "OSError",
+      "URLError"
+    ]
+  },
+  "HTTPCookieProcessor.__init__": {
+    "has": [
+      "import"
+    ]
+  },
+  "HTTPDefaultErrorHandler.http_error_default": {
+    "raises": [
+      "HTTPError"
+    ]
+  },
+  "HTTPPasswordMgr.reduce_uri": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "HTTPRedirectHandler.http_error_302": {
+    "raises": [
+      "HTTPError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "HTTPRedirectHandler.redirect_request": {
+    "raises": [
+      "HTTPError"
+    ]
+  },
+  "OpenerDirector.add_handler": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "ProxyHandler.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "ProxyHandler.proxy_open": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Request._parse": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "URLopener.__init__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError",
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "URLopener._open_generic_http": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "OSError",
+      "TypeError",
+      "URLError",
+      "ValueError"
+    ]
+  },
+  "URLopener.http_error_default": {
+    "raises": [
+      "HTTPError"
+    ]
+  },
+  "URLopener.open": {
+    "has": [
+      "global",
+      "read"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "URLopener.open_data": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "OSError",
+      "URLError"
+    ]
+  },
+  "URLopener.open_file": {
+    "raises": [
+      "URLError",
+      "ValueError"
+    ]
+  },
+  "URLopener.open_ftp": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "TypeError",
+      "URLError",
+      "ValueError"
+    ]
+  },
+  "URLopener.open_local_file": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "OSError",
+      "TypeError",
+      "URLError",
+      "ValueError"
+    ]
+  },
+  "URLopener.open_unknown": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "OSError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "URLopener.open_unknown_proxy": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "OSError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "URLopener.retrieve": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "ContentTooShortError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "UnknownHandler.unknown_open": {
+    "raises": [
+      "URLError"
+    ]
+  },
+  "_parse_proxy": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_proxy_bypass_macosx_sysconf": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "ftperrors": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "ftpwrapper.init": {
+    "has": [
+      "import"
+    ]
+  },
+  "ftpwrapper.retrfile": {
+    "has": [
+      "import"
+    ]
+  },
+  "install_opener": {
+    "has": [
+      "global"
+    ]
+  },
+  "localhost": {
+    "has": [
+      "global"
+    ]
+  },
+  "noheaders": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "proxy_bypass_environment": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "thishost": {
+    "has": [
+      "global"
+    ]
+  },
+  "urlcleanup": {
+    "has": [
+      "global"
+    ]
+  },
+  "urlopen": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "urlretrieve": {
+    "has": [
+      "global",
+      "read"
+    ],
+    "raises": [
+      "ContentTooShortError",
+      "FileExistsError",
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "_NetlocResultMixinBase.port": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_checknetloc": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_coerce_args": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "parse_qs": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "parse_qsl": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "quote": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "quote_from_bytes": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "quote_plus": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "splithost": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "splitport": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "splittype": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "to_bytes": {
+    "raises": [
+      "UnicodeError"
+    ]
+  },
+  "unquote_to_bytes": {
+    "has": [
+      "global"
+    ]
+  },
+  "urldefrag": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "urljoin": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "urlparse": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "urlsplit": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "urlunparse": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "urlunsplit": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}
