@@ -10,6 +10,9 @@
     ]
   },
   "ProxyManager._validate_proxy_scheme_url_selection": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "ProxySchemeUnsupported",
       "RuntimeError",

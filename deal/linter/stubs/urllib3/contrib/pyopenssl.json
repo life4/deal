@@ -1,4 +1,10 @@
 {
+  "WrappedSocket.getpeercert": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
   "WrappedSocket.recv": {
     "raises": [
       "SocketError"
@@ -9,12 +15,23 @@
       "SocketError"
     ]
   },
+  "_dnsname_to_stdlib": {
+    "has": [
+      "import"
+    ]
+  },
   "_validate_dependencies_met": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "ImportError"
     ]
   },
   "inject_into_urllib3": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "ImportError"
     ]

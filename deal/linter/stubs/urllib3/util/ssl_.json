@@ -1,10 +1,18 @@
 {
+  "_is_key_file_encrypted": {
+    "has": [
+      "read"
+    ]
+  },
   "assert_fingerprint": {
     "raises": [
       "SSLError"
     ]
   },
   "ssl_wrap_socket": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "SSLError",

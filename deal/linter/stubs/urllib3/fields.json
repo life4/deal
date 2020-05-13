@@ -1,0 +1,8 @@
+{
+  "_replace_multiple": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}
