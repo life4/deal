@@ -1,6 +1,5 @@
 # built-in
 import json
-from itertools import chain
 from pathlib import Path
 from typing import Any, Dict, FrozenSet, Iterator, NamedTuple, Optional, Sequence, Tuple
 
@@ -147,7 +146,7 @@ def _get_funcs_from_expr(expr, prefix='') -> Iterator[PseudoFunc]:
 
 
 def generate_stub(*, path: Path, stubs: StubsManager = None) -> Path:
-    from ._extractors import get_exceptions, get_exceptions_stubs
+    from ._extractors import get_exceptions
 
     if path.suffix != '.py':
         raise ValueError('invalid Python file extension: *{}'.format(path.suffix))
@@ -156,11 +155,7 @@ def generate_stub(*, path: Path, stubs: StubsManager = None) -> Path:
         stubs = StubsManager()
     stub = stubs.create(path=path)
     for func in _get_funcs(path=path):
-        tokens = chain(
-            get_exceptions(body=func.body),
-            get_exceptions_stubs(body=func.body, stubs=stubs),
-        )
-        for token in tokens:
+        for token in get_exceptions(body=func.body, stubs=stubs):
             value = token.value
             if isinstance(value, type):
                 value = value.__name__

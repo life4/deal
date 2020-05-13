@@ -1,14 +1,16 @@
 # built-in
 import ast
 import builtins
-from typing import Iterator, Optional, Union
+from typing import Iterator, Optional
 
 # external
 import astroid
 
 # app
-from .common import TOKENS, Extractor, Token, get_name, infer
+from .common import TOKENS, Extractor, Token, get_name, infer, get_full_name, get_stub
 from .contracts import get_contracts
+from .._contract import Category
+from .._stub import StubsManager
 
 
 get_exceptions = Extractor()
@@ -58,20 +60,41 @@ def handle_bin_op(expr, **kwargs) -> Optional[Token]:
 
 # exit()
 @get_exceptions.register(*TOKENS.CALL)
-def handle_call(expr, dive: bool = True) -> Optional[Union[Token, Iterator[Token]]]:
+def handle_call(expr, dive: bool = True, stubs: StubsManager = None) -> Iterator[Token]:
     token_info = dict(line=expr.lineno, col=expr.col_offset)
     name = get_name(expr.func)
     if name and name == 'exit':
-        return Token(value=SystemExit, **token_info)
+        yield Token(value=SystemExit, **token_info)
     # sys.exit()
     if isinstance(expr.func, TOKENS.ATTR):
         name = get_name(expr.func)
         if name and name == 'sys.exit':
-            return Token(value=SystemExit, **token_info)
-    # infer function call and check the function body for raises
-    if dive:
-        return _exceptions_from_func(expr=expr)
-    return None
+            yield Token(value=SystemExit, **token_info)
+
+    stubs_found = False
+    if type(expr) is astroid.Call and stubs is not None:
+        for token in _exceptions_from_stubs(expr=expr, stubs=stubs):
+            stubs_found = True
+            yield token
+
+    # Infer function call and check the function body for raises.
+    # Do not dive into called function if we already found stubs for it.
+    if not stubs_found and dive:
+        yield from _exceptions_from_func(expr=expr)
+
+
+def _exceptions_from_stubs(expr: astroid.Call, stubs: StubsManager) -> Iterator[Token]:
+    for value in infer(expr=expr.func):
+        if type(value) is not astroid.FunctionDef:
+            continue
+        module_name, func_name = get_full_name(expr=value)
+        stub = get_stub(module_name=module_name, expr=value, stubs=stubs)
+        if stub is None:
+            continue
+        names = stub.get(func=func_name, contract=Category.RAISES)
+        for name in names:
+            name = getattr(builtins, name, name)
+            yield Token(value=name, line=expr.lineno, col=expr.col_offset)
 
 
 def _exceptions_from_func(expr) -> Iterator[Token]:

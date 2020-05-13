@@ -3,7 +3,6 @@ from .asserts import get_asserts
 from .common import get_name
 from .contracts import get_contracts
 from .exceptions import get_exceptions
-from .exceptions_stubs import get_exceptions_stubs
 from .imports import get_imports
 from .pre import get_pre
 from .markers import get_markers
@@ -14,7 +13,6 @@ from .value import get_value
 __all__ = [
     'get_asserts',
     'get_contracts',
-    'get_exceptions_stubs',
     'get_exceptions',
     'get_imports',
     'get_markers',

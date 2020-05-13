@@ -1,7 +1,6 @@
 # built-in
 import ast
 import enum
-from itertools import chain
 from types import MappingProxyType
 from typing import Iterator
 
@@ -9,7 +8,7 @@ from typing import Iterator
 from ._contract import Category, Contract
 from ._error import Error
 from ._extractors import (
-    get_asserts, get_exceptions, get_exceptions_stubs,
+    get_asserts, get_exceptions,
     get_imports, get_pre, get_markers, get_returns, has_returns, get_value
 )
 from ._func import Func
@@ -122,10 +121,7 @@ class CheckRaises:
     def _check(self, func: Func, contract: Contract, stubs: StubsManager = None) -> Iterator[Error]:
         allowed = contract.exceptions
         allowed_types = tuple(exc for exc in allowed if type(exc) is not str)
-        tokens = [get_exceptions(body=func.body)]
-        if stubs is not None:
-            tokens.append(get_exceptions_stubs(body=func.body, stubs=stubs))
-        for token in chain(*tokens):
+        for token in get_exceptions(body=func.body, stubs=stubs):
             if token.value in allowed:
                 continue
             exc = token.value
