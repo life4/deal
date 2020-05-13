@@ -85,7 +85,7 @@ def handle_call(expr, dive: bool = True, stubs: StubsManager = None) -> Optional
 
 
 @get_markers.register(*TOKENS.WITH)
-def handle_with(expr) -> Optional[Token]:
+def handle_with(expr, **kwargs) -> Optional[Token]:
     token_info = dict(line=expr.lineno, col=expr.col_offset)
     for item in expr.items:
         if isinstance(item, ast.withitem):
@@ -153,7 +153,7 @@ def _markers_from_stubs(expr: astroid.Call, stubs: StubsManager) -> Iterator[Tok
             continue
         names = stub.get(func=func_name, contract=Category.HAS)
         for name in names:
-            yield Token(value=name, line=expr.lineno, col=expr.col_offset)
+            yield Token(marker=name, line=expr.lineno, col=expr.col_offset)
 
 
 def _markers_from_func(expr) -> Iterator[Token]:
@@ -162,8 +162,13 @@ def _markers_from_func(expr) -> Iterator[Token]:
             continue
 
         # recursively infer markers from the function body
-        for error in get_markers(body=value.body, dive=False):
-            yield Token(value=error.value, line=expr.lineno, col=expr.col_offset)
+        for token in get_markers(body=value.body, dive=False):
+            yield Token(
+                marker=token.marker,
+                value=token.value,
+                line=expr.lineno,
+                col=expr.col_offset,
+            )
 
         # get explicitly specified markers from `@deal.has`
         if not value.decorators:
@@ -175,5 +180,5 @@ def _markers_from_func(expr) -> Iterator[Token]:
                 value = get_value(arg)
                 if type(value) is not str:
                     continue
-                yield Token(value=value, line=expr.lineno, col=expr.col_offset)
+                yield Token(marker=value, line=expr.lineno, col=expr.col_offset)
     return None

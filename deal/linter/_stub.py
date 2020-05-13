@@ -33,7 +33,7 @@ class StubFile:
             json.dump(obj=self._content, fp=stream, indent=2, sort_keys=True)
 
     def add(self, func: str, contract: Category, value: str) -> None:
-        if contract != Category.RAISES:
+        if contract not in (Category.RAISES, Category.HAS):
             raise ValueError('unsupported contract')
         contracts = self._content.setdefault(func, dict())
         values = contracts.setdefault(contract.value, [])
@@ -146,7 +146,7 @@ def _get_funcs_from_expr(expr, prefix='') -> Iterator[PseudoFunc]:
 
 
 def generate_stub(*, path: Path, stubs: StubsManager = None) -> Path:
-    from ._extractors import get_exceptions
+    from ._extractors import get_exceptions, get_markers
 
     if path.suffix != '.py':
         raise ValueError('invalid Python file extension: *{}'.format(path.suffix))
@@ -160,5 +160,7 @@ def generate_stub(*, path: Path, stubs: StubsManager = None) -> Path:
             if isinstance(value, type):
                 value = value.__name__
             stub.add(func=func.name, contract=Category.RAISES, value=str(value))
+        for token in get_markers(body=func.body, stubs=stubs):
+            stub.add(func=func.name, contract=Category.HAS, value=token.marker)
     stub.dump()
     return stub.path
