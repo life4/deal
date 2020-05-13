@@ -4,23 +4,43 @@
       "InvalidHeader"
     ]
   },
+  "extract_zipped_paths": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
   "from_key_val_list": {
     "raises": [
       "ValueError"
     ]
   },
   "get_encodings_from_content": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "get_unicode_from_response": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
       "message"
     ]
   },
-  "get_unicode_from_response": {
+  "guess_filename": {
     "raises": [
-      "RuntimeError",
-      "TypeError",
-      "message"
+      "TypeError"
     ]
   },
   "rewind_body": {
@@ -29,6 +49,9 @@
     ]
   },
   "super_len": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",

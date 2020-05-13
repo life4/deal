@@ -1,5 +1,8 @@
 {
   "_check_cryptography": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",

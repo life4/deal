@@ -20,6 +20,16 @@
       "TypeError"
     ]
   },
+  "RequestsCookieJar.update": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "_copy_cookie_jar": {
+    "raises": [
+      "Error"
+    ]
+  },
   "cookiejar_from_dict": {
     "raises": [
       "TypeError"

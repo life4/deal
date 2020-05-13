@@ -1,12 +1,16 @@
 {
   "PreparedRequest._get_idna_encoded_host": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "UnicodeError"
     ]
   },
   "PreparedRequest.prepare_body": {
     "raises": [
-      "NotImplementedError"
+      "NotImplementedError",
+      "ValueError"
     ]
   },
   "PreparedRequest.prepare_url": {
