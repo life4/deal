@@ -1,4 +1,15 @@
 {
+  "NNTP.__init__": {
+    "raises": [
+      "err"
+    ]
+  },
+  "_NNTPBase._getdescriptions": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
   "_NNTPBase._getline": {
     "raises": [
       "EOFError",
@@ -59,7 +70,14 @@
     "raises": [
       "RuntimeError",
       "TypeError",
+      "ValueError",
       "message"
+    ]
+  },
+  "_NNTPBase.xhdr": {
+    "raises": [
+      "TypeError",
+      "ValueError"
     ]
   },
   "_NNTPBase.xpath": {

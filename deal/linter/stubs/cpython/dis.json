@@ -16,7 +16,13 @@
   },
   "dis": {
     "raises": [
+      "RuntimeError",
       "TypeError"
+    ]
+  },
+  "distb": {
+    "raises": [
+      "RuntimeError"
     ]
   },
   "get_instructions": {

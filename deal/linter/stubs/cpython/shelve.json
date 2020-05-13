@@ -1,4 +1,9 @@
 {
+  "DbfilenameShelf.__init__": {
+    "raises": [
+      "ImportError"
+    ]
+  },
   "_ClosedDict.closed": {
     "raises": [
       "ValueError"

@@ -1,6 +1,7 @@
 {
   "GzipFile.__init__": {
     "raises": [
+      "TypeError",
       "ValueError"
     ]
   },

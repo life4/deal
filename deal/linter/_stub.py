@@ -160,7 +160,7 @@ def generate_stub(*, path: Path, stubs: StubsManager = None) -> Path:
             if isinstance(value, type):
                 value = value.__name__
             stub.add(func=func.name, contract=Category.RAISES, value=str(value))
-        for token in get_markers(body=func.body, stubs=stubs):
-            stub.add(func=func.name, contract=Category.HAS, value=token.marker)
+        # for token in get_markers(body=func.body, stubs=stubs):
+        #     stub.add(func=func.name, contract=Category.HAS, value=token.marker)
     stub.dump()
     return stub.path

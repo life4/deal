@@ -1,7 +1,8 @@
 {
   "Profile._calibrate_inner": {
     "raises": [
-      "ValueError"
+      "ValueError",
+      "ZeroDivisionError"
     ]
   },
   "Profile.calibrate": {
@@ -14,9 +15,19 @@
       "TypeError"
     ]
   },
+  "Profile.simulate_call": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "Profile.trace_dispatch_call": {
     "raises": [
       "AssertionError"
+    ]
+  },
+  "Profile.trace_dispatch_mac": {
+    "raises": [
+      "ZeroDivisionError"
     ]
   },
   "Profile.trace_dispatch_return": {
@@ -26,7 +37,8 @@
   },
   "main": {
     "raises": [
-      "SystemExit"
+      "SystemExit",
+      "TypeError"
     ]
   }
 }

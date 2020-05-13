@@ -10,5 +10,10 @@
       "TypeError",
       "message"
     ]
+  },
+  "_run_module_as_main": {
+    "raises": [
+      "SystemExit"
+    ]
   }
 }

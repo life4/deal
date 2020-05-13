@@ -4,7 +4,13 @@
       "RuntimeError",
       "TypeError",
       "ValueError",
+      "ZeroDivisionError",
       "message"
+    ]
+  },
+  "Random.choice": {
+    "raises": [
+      "IndexError"
     ]
   },
   "Random.choices": {
@@ -31,6 +37,7 @@
   },
   "Random.setstate": {
     "raises": [
+      "TypeError",
       "ValueError"
     ]
   },

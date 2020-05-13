@@ -1,5 +1,16 @@
 {
+  "_main": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "_readmodule": {
+    "raises": [
+      "ImportError",
+      "ValueError"
+    ]
+  },
+  "readmodule_ex": {
     "raises": [
       "ImportError"
     ]

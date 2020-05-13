@@ -6,7 +6,8 @@
   },
   "main": {
     "raises": [
-      "SystemExit"
+      "SystemExit",
+      "TypeError"
     ]
   }
 }

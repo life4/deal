@@ -46,6 +46,11 @@
       "AssertionError"
     ]
   },
+  "_format_time": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "_ord2ymd": {
     "raises": [
       "AssertionError"
@@ -81,6 +86,11 @@
       "TypeError"
     ]
   },
+  "date.__new__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "date._cmp": {
     "raises": [
       "AssertionError"
@@ -88,12 +98,18 @@
   },
   "date.fromisoformat": {
     "raises": [
-      "TypeError"
+      "TypeError",
+      "ValueError"
     ]
   },
   "datetime.__add__": {
     "raises": [
       "OverflowError"
+    ]
+  },
+  "datetime.__new__": {
+    "raises": [
+      "ValueError"
     ]
   },
   "datetime.__repr__": {
@@ -134,7 +150,14 @@
   },
   "datetime.fromisoformat": {
     "raises": [
-      "TypeError"
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "datetime.strptime": {
+    "raises": [
+      "TypeError",
+      "ValueError"
     ]
   },
   "time.__format__": {
@@ -145,6 +168,11 @@
   "time.__hash__": {
     "raises": [
       "AssertionError"
+    ]
+  },
+  "time.__new__": {
+    "raises": [
+      "ValueError"
     ]
   },
   "time.__repr__": {
@@ -165,7 +193,8 @@
   },
   "time.fromisoformat": {
     "raises": [
-      "TypeError"
+      "TypeError",
+      "ValueError"
     ]
   },
   "timedelta.__new__": {
@@ -177,6 +206,11 @@
   "timedelta._cmp": {
     "raises": [
       "AssertionError"
+    ]
+  },
+  "timedelta.total_seconds": {
+    "raises": [
+      "ZeroDivisionError"
     ]
   },
   "timezone.__new__": {

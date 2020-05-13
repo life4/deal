@@ -1,9 +1,68 @@
 {
+  "_expand_vars": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_generate_posix_vars": {
+    "raises": [
+      "OSError",
+      "TypeError"
+    ]
+  },
+  "_init_non_posix": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_main": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "_parse_makefile": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_subst_vars": {
+    "raises": [
+      "AttributeError"
+    ]
+  },
+  "get_config_h_filename": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "get_config_var": {
     "raises": [
       "RuntimeError",
       "TypeError",
       "message"
+    ]
+  },
+  "get_config_vars": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "get_makefile_filename": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "get_platform": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "parse_config_h": {
+    "raises": [
+      "TypeError",
+      "ValueError"
     ]
   }
 }

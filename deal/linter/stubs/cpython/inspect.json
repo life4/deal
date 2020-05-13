@@ -24,7 +24,15 @@
     "raises": [
       "RuntimeError",
       "TypeError",
+      "ValueError",
       "message"
+    ]
+  },
+  "Signature.from_callable": {
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ValueError"
     ]
   },
   "Signature.from_function": {
@@ -56,6 +64,7 @@
   },
   "_signature_from_builtin": {
     "raises": [
+      "AssertionError",
       "TypeError",
       "ValueError"
     ]
@@ -85,7 +94,8 @@
   },
   "_signature_get_partial": {
     "raises": [
-      "AssertionError"
+      "AssertionError",
+      "ValueError"
     ]
   },
   "_signature_strip_non_python_syntax": {
@@ -101,7 +111,8 @@
   "findsource": {
     "raises": [
       "OSError",
-      "TypeError"
+      "TypeError",
+      "ValueError"
     ]
   },
   "formatargspec": {
@@ -109,6 +120,11 @@
       "RuntimeError",
       "TypeError",
       "message"
+    ]
+  },
+  "getabsfile": {
+    "raises": [
+      "TypeError"
     ]
   },
   "getargs": {
@@ -149,7 +165,17 @@
       "TypeError"
     ]
   },
+  "getfullargspec": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "getgeneratorlocals": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "getmodulename": {
     "raises": [
       "TypeError"
     ]

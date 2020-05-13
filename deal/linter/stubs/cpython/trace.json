@@ -1,6 +1,38 @@
 {
+  "CoverageResults.write_results": {
+    "raises": [
+      "SyntaxError",
+      "TypeError"
+    ]
+  },
+  "Trace.localtrace_trace": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Trace.localtrace_trace_and_count": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "Trace.runfunc": {
     "raises": [
+      "TypeError"
+    ]
+  },
+  "_fullmodname": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_modname": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "main": {
+    "raises": [
+      "SystemExit",
       "TypeError"
     ]
   }

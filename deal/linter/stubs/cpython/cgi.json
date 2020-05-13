@@ -31,6 +31,11 @@
       "TypeError"
     ]
   },
+  "FieldStorage.make_file": {
+    "raises": [
+      "FileExistsError"
+    ]
+  },
   "FieldStorage.read_multi": {
     "raises": [
       "ValueError"
@@ -64,6 +69,7 @@
     "raises": [
       "RuntimeError",
       "TypeError",
+      "ValueError",
       "message"
     ]
   }

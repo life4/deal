@@ -88,6 +88,7 @@
   },
   "openfp": {
     "raises": [
+      "Error",
       "RuntimeError",
       "TypeError",
       "message"

@@ -6,6 +6,11 @@
       "message"
     ]
   },
+  "ImpImporter.iter_modules": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "ImpLoader.__init__": {
     "raises": [
       "RuntimeError",
@@ -18,9 +23,25 @@
       "ImportError"
     ]
   },
+  "_get_spec": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
   "_import_imp": {
     "raises": [
-      "AssertionError"
+      "AssertionError",
+      "TypeError"
+    ]
+  },
+  "_iter_file_finder_modules": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "extend_path": {
+    "raises": [
+      "TypeError"
     ]
   },
   "find_loader": {
@@ -28,9 +49,22 @@
       "ImportError"
     ]
   },
-  "iter_importers": {
+  "get_data": {
+    "raises": [
+      "ModuleNotFoundError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "get_loader": {
     "raises": [
       "ImportError"
+    ]
+  },
+  "iter_importers": {
+    "raises": [
+      "ImportError",
+      "TypeError"
     ]
   },
   "iter_modules": {

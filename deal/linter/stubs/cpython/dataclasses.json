@@ -1,4 +1,14 @@
 {
+  "_asdict_inner": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "_astuple_inner": {
+    "raises": [
+      "Error"
+    ]
+  },
   "_get_field": {
     "raises": [
       "TypeError",
@@ -34,6 +44,11 @@
   "field": {
     "raises": [
       "ValueError"
+    ]
+  },
+  "fields": {
+    "raises": [
+      "TypeError"
     ]
   },
   "make_dataclass": {

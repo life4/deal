@@ -1,4 +1,9 @@
 {
+  "_build_localename": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "_grouping_intervals": {
     "raises": [
       "ValueError"
@@ -26,16 +31,31 @@
   },
   "format": {
     "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "getdefaultlocale": {
+    "raises": [
       "ValueError"
     ]
   },
   "getlocale": {
     "raises": [
       "Error",
-      "TypeError"
+      "TypeError",
+      "ValueError"
     ]
   },
   "resetlocale": {
+    "raises": [
+      "Error",
+      "TypeError"
+    ]
+  },
+  "setlocale": {
     "raises": [
       "Error"
     ]

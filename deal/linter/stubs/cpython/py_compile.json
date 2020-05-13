@@ -1,7 +1,12 @@
 {
   "compile": {
     "raises": [
-      "FileExistsError"
+      "AssertionError",
+      "FileExistsError",
+      "NotImplementedError",
+      "TypeError",
+      "ValueError",
+      "py_exc"
     ]
   }
 }

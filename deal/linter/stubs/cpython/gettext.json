@@ -28,6 +28,11 @@
       "ValueError"
     ]
   },
+  "find": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "install": {
     "raises": [
       "FileNotFoundError"
@@ -35,6 +40,7 @@
   },
   "translation": {
     "raises": [
+      "Error",
       "FileNotFoundError"
     ]
   }

@@ -1,4 +1,9 @@
 {
+  "_glob1": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "_glob2": {
     "raises": [
       "AssertionError"
@@ -6,7 +11,13 @@
   },
   "_iglob": {
     "raises": [
-      "AssertionError"
+      "AssertionError",
+      "TypeError"
+    ]
+  },
+  "escape": {
+    "raises": [
+      "TypeError"
     ]
   },
   "iglob": {

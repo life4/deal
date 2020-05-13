@@ -1,6 +1,7 @@
 {
   "FileInput.__getitem__": {
     "raises": [
+      "IndexError",
       "RuntimeError"
     ]
   },
@@ -10,6 +11,11 @@
       "TypeError",
       "ValueError",
       "message"
+    ]
+  },
+  "FileInput._readline": {
+    "raises": [
+      "TypeError"
     ]
   },
   "filelineno": {
@@ -25,6 +31,12 @@
   "fileno": {
     "raises": [
       "RuntimeError"
+    ]
+  },
+  "hook_compressed": {
+    "raises": [
+      "TypeError",
+      "ValueError"
     ]
   },
   "input": {

@@ -1,7 +1,16 @@
 {
   "Aifc_read._read_comm_chunk": {
     "raises": [
+      "EOFError",
       "Error",
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "Aifc_read._readmark": {
+    "raises": [
+      "EOFError",
       "RuntimeError",
       "TypeError",
       "message"
@@ -107,6 +116,31 @@
       "Error"
     ]
   },
+  "_read_float": {
+    "raises": [
+      "EOFError"
+    ]
+  },
+  "_read_long": {
+    "raises": [
+      "EOFError"
+    ]
+  },
+  "_read_short": {
+    "raises": [
+      "EOFError"
+    ]
+  },
+  "_read_ulong": {
+    "raises": [
+      "EOFError"
+    ]
+  },
+  "_read_ushort": {
+    "raises": [
+      "EOFError"
+    ]
+  },
   "_write_string": {
     "raises": [
       "ValueError"
@@ -119,6 +153,7 @@
   },
   "openfp": {
     "raises": [
+      "Error",
       "RuntimeError",
       "TypeError",
       "message"

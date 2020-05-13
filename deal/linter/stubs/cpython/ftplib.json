@@ -1,4 +1,9 @@
 {
+  "FTP.connect": {
+    "raises": [
+      "err"
+    ]
+  },
   "FTP.getline": {
     "raises": [
       "EOFError",
@@ -11,6 +16,11 @@
       "err"
     ]
   },
+  "FTP.ntransfercmd": {
+    "raises": [
+      "err"
+    ]
+  },
   "FTP.putline": {
     "raises": [
       "ValueError"
@@ -19,6 +29,18 @@
   "ftpcp": {
     "raises": [
       "error_proto"
+    ]
+  },
+  "parse150": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "parse227": {
+    "raises": [
+      "TypeError",
+      "ValueError"
     ]
   },
   "test": {

@@ -94,6 +94,12 @@
       "ValueError"
     ]
   },
+  "OptionParser._match_long_opt": {
+    "raises": [
+      "AmbiguousOptionError",
+      "BadOptionError"
+    ]
+  },
   "OptionParser._process_short_opts": {
     "raises": [
       "BadOptionError"
@@ -110,6 +116,11 @@
       "SystemExit"
     ]
   },
+  "OptionParser.get_prog_name": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "Values._update": {
     "raises": [
       "ValueError"
@@ -119,6 +130,11 @@
     "raises": [
       "AmbiguousOptionError",
       "BadOptionError"
+    ]
+  },
+  "check_builtin": {
+    "raises": [
+      "OptionValueError"
     ]
   },
   "check_choice": {

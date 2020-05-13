@@ -1,4 +1,9 @@
 {
+  "check": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "process_tokens": {
     "raises": [
       "NannyNag"

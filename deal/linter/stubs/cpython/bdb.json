@@ -1,4 +1,9 @@
 {
+  "Bdb.canonic": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "Bdb.dispatch_call": {
     "raises": [
       "BdbQuit"
@@ -32,6 +37,16 @@
   "Bdb.runcall": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "bar": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "foo": {
+    "raises": [
+      "ZeroDivisionError"
     ]
   }
 }

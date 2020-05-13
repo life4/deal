@@ -23,7 +23,8 @@
   },
   "_get_default_tempdir": {
     "raises": [
-      "FileNotFoundError"
+      "FileNotFoundError",
+      "TypeError"
     ]
   },
   "_infer_return_type": {
@@ -33,7 +34,8 @@
   },
   "_mkstemp_inner": {
     "raises": [
-      "FileExistsError"
+      "FileExistsError",
+      "TypeError"
     ]
   },
   "_sanitize_params": {
@@ -43,12 +45,19 @@
   },
   "mkdtemp": {
     "raises": [
+      "FileExistsError",
+      "TypeError"
+    ]
+  },
+  "mkstemp": {
+    "raises": [
       "FileExistsError"
     ]
   },
   "mktemp": {
     "raises": [
-      "FileExistsError"
+      "FileExistsError",
+      "TypeError"
     ]
   }
 }

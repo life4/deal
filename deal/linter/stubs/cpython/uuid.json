@@ -11,6 +11,23 @@
       "TypeError"
     ]
   },
+  "_load_system_functions": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_popen": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_windll_getnode": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "getnode": {
     "raises": [
       "AssertionError"

@@ -1,6 +1,7 @@
 {
   "BaseSelector.get_key": {
     "raises": [
+      "KeyError",
       "RuntimeError"
     ]
   },
@@ -24,10 +25,30 @@
       "NotImplementedError"
     ]
   },
+  "_BaseSelectorImpl.modify": {
+    "raises": [
+      "KeyError"
+    ]
+  },
   "_BaseSelectorImpl.register": {
     "raises": [
       "KeyError",
       "ValueError"
+    ]
+  },
+  "_BaseSelectorImpl.unregister": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "_PollLikeSelector.modify": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "_SelectorMapping.__getitem__": {
+    "raises": [
+      "KeyError"
     ]
   },
   "_fileobj_to_fd": {

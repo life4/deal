@@ -4,6 +4,11 @@
       "Error"
     ]
   },
+  "WeakMethod.__new__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "WeakValueDictionary.__getitem__": {
     "raises": [
       "KeyError"

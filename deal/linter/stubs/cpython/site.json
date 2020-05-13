@@ -1,7 +1,33 @@
 {
   "_script": {
     "raises": [
+      "AssertionError",
       "SystemExit"
+    ]
+  },
+  "addpackage": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "getsitepackages": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "makepath": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "setcopyright": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "venv": {
+    "raises": [
+      "TypeError"
     ]
   }
 }

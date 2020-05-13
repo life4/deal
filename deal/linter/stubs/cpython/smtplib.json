@@ -4,9 +4,20 @@
       "SMTPConnectError"
     ]
   },
+  "SMTP._get_socket": {
+    "raises": [
+      "err"
+    ]
+  },
   "SMTP.auth": {
     "raises": [
-      "SMTPAuthenticationError"
+      "SMTPAuthenticationError",
+      "TypeError"
+    ]
+  },
+  "SMTP.connect": {
+    "raises": [
+      "OSError"
     ]
   },
   "SMTP.data": {
@@ -44,6 +55,8 @@
   },
   "SMTP.send_message": {
     "raises": [
+      "Error",
+      "SMTPNotSupportedError",
       "ValueError"
     ]
   },

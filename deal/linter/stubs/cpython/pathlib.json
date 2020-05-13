@@ -77,6 +77,11 @@
       "IndexError"
     ]
   },
+  "_PosixFlavour.gethomedir": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
   "_Selector.__init__": {
     "raises": [
       "ValueError"

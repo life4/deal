@@ -17,12 +17,29 @@
   },
   "ModuleFinder.find_module": {
     "raises": [
-      "ImportError"
+      "ImportError",
+      "RuntimeError",
+      "TypeError"
+    ]
+  },
+  "ModuleFinder.load_file": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "ModuleFinder.replace_paths_in_code": {
+    "raises": [
+      "TypeError"
     ]
   },
   "ModuleFinder.scan_code": {
     "raises": [
       "RuntimeError"
+    ]
+  },
+  "test": {
+    "raises": [
+      "TypeError"
     ]
   }
 }

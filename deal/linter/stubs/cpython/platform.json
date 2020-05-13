@@ -1,4 +1,14 @@
 {
+  "_follow_symlinks": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_mac_ver_xml": {
+    "raises": [
+      "InvalidFileException"
+    ]
+  },
   "_sys_version": {
     "raises": [
       "ValueError"
@@ -11,6 +21,11 @@
       "message"
     ]
   },
+  "libc_ver": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "linux_distribution": {
     "raises": [
       "RuntimeError",
@@ -20,13 +35,16 @@
   },
   "platform": {
     "raises": [
-      "AssertionError"
+      "AssertionError",
+      "TypeError",
+      "ValueError"
     ]
   },
   "popen": {
     "raises": [
       "RuntimeError",
       "TypeError",
+      "ValueError",
       "message"
     ]
   }

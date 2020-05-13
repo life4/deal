@@ -14,6 +14,11 @@
       "TypeError"
     ]
   },
+  "_normalize_filename": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "take_snapshot": {
     "raises": [
       "RuntimeError"

@@ -9,6 +9,28 @@
       "IllegalMonthError"
     ]
   },
+  "LocaleHTMLCalendar.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "LocaleTextCalendar.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "different_locale.__enter__": {
+    "raises": [
+      "Error",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "different_locale.__exit__": {
+    "raises": [
+      "Error"
+    ]
+  },
   "main": {
     "raises": [
       "SystemExit"

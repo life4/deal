@@ -14,6 +14,11 @@
       "InvalidFileException"
     ]
   },
+  "_BinaryPlistParser.parse": {
+    "raises": [
+      "InvalidFileException"
+    ]
+  },
   "_BinaryPlistWriter._flatten": {
     "raises": [
       "TypeError"
@@ -81,8 +86,14 @@
       "InvalidFileException"
     ]
   },
+  "loads": {
+    "raises": [
+      "InvalidFileException"
+    ]
+  },
   "readPlist": {
     "raises": [
+      "InvalidFileException",
       "RuntimeError",
       "TypeError",
       "message"
@@ -90,6 +101,7 @@
   },
   "readPlistFromBytes": {
     "raises": [
+      "InvalidFileException",
       "RuntimeError",
       "TypeError",
       "message"

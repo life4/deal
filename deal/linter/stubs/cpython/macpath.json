@@ -1,4 +1,9 @@
 {
+  "join": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "normcase": {
     "raises": [
       "TypeError"

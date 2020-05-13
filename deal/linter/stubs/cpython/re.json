@@ -1,5 +1,24 @@
 {
+  "Scanner.__init__": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
   "_compile": {
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "compile": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "template": {
     "raises": [
       "TypeError",
       "ValueError"

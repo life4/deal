@@ -4,8 +4,19 @@
       "NotImplementedError"
     ]
   },
+  "_Environ.__delitem__": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "_Environ.__getitem__": {
+    "raises": [
+      "KeyError"
+    ]
+  },
   "_execvpe": {
     "raises": [
+      "TypeError",
       "ValueError",
       "last_exc",
       "saved_exc"
@@ -39,10 +50,25 @@
       "ValueError"
     ]
   },
+  "makedirs": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "popen": {
     "raises": [
       "TypeError",
       "ValueError"
+    ]
+  },
+  "removedirs": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "renames": {
+    "raises": [
+      "TypeError"
     ]
   },
   "walk": {

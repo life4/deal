@@ -17,6 +17,7 @@
   },
   "DocFileTest": {
     "raises": [
+      "TypeError",
       "ValueError"
     ]
   },
@@ -30,6 +31,12 @@
       "ValueError"
     ]
   },
+  "DocTestFinder._find_lineno": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
   "DocTestFinder._from_module": {
     "raises": [
       "ValueError"
@@ -37,6 +44,7 @@
   },
   "DocTestFinder.find": {
     "raises": [
+      "TypeError",
       "ValueError"
     ]
   },
@@ -72,7 +80,8 @@
   },
   "OutputChecker.output_difference": {
     "raises": [
-      "AssertionError"
+      "AssertionError",
+      "TypeError"
     ]
   },
   "_ellipsis_match": {
@@ -116,6 +125,7 @@
   },
   "testfile": {
     "raises": [
+      "TypeError",
       "ValueError"
     ]
   },

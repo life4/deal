@@ -9,6 +9,11 @@
       "TypeError"
     ]
   },
+  "_GeneratorContextManager.__enter__": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
   "_GeneratorContextManager.__exit__": {
     "raises": [
       "RuntimeError"

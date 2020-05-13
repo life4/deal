@@ -1,4 +1,11 @@
 {
+  "Pdb._runmodule": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
   "Pdb._select_frame": {
     "raises": [
       "AssertionError"
@@ -9,14 +16,33 @@
       "Restart"
     ]
   },
+  "Pdb.lookupmodule": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "Pdb.sigint_handler": {
     "raises": [
       "KeyboardInterrupt"
     ]
   },
+  "find_function": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "getsourcelines": {
+    "raises": [
+      "OSError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
   "main": {
     "raises": [
-      "SystemExit"
+      "SystemExit",
+      "TypeError"
     ]
   },
   "pm": {

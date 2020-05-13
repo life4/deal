@@ -1,13 +1,44 @@
 {
+  "_basename": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "_check_unpack_options": {
     "raises": [
       "RegistryError",
       "TypeError"
     ]
   },
+  "_destinsrc": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_ensure_directory": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "_make_tarball": {
     "raises": [
+      "TypeError",
       "ValueError"
+    ]
+  },
+  "_make_zipfile": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_rmtree_safe_fd": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_unpack_tarfile": {
+    "raises": [
+      "ReadError"
     ]
   },
   "_unpack_zipfile": {
@@ -24,13 +55,15 @@
   "copy": {
     "raises": [
       "SameFileError",
-      "SpecialFileError"
+      "SpecialFileError",
+      "TypeError"
     ]
   },
   "copy2": {
     "raises": [
       "SameFileError",
-      "SpecialFileError"
+      "SpecialFileError",
+      "TypeError"
     ]
   },
   "copyfile": {
@@ -41,12 +74,20 @@
   },
   "copytree": {
     "raises": [
-      "Error"
+      "Error",
+      "TypeError"
+    ]
+  },
+  "make_archive": {
+    "raises": [
+      "TypeError",
+      "ValueError"
     ]
   },
   "move": {
     "raises": [
-      "Error"
+      "Error",
+      "TypeError"
     ]
   },
   "register_archive_format": {
@@ -62,7 +103,14 @@
   },
   "unpack_archive": {
     "raises": [
-      "ReadError"
+      "ReadError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "which": {
+    "raises": [
+      "TypeError"
     ]
   }
 }

@@ -1,7 +1,22 @@
 {
+  "cmpfiles": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "dircmp.__getattr__": {
     "raises": [
       "AttributeError"
+    ]
+  },
+  "dircmp.phase2": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "dircmp.phase4": {
+    "raises": [
+      "TypeError"
     ]
   }
 }

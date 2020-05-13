@@ -37,7 +37,9 @@
   },
   "filterwarnings": {
     "raises": [
-      "AssertionError"
+      "AssertionError",
+      "TypeError",
+      "ValueError"
     ]
   },
   "simplefilter": {

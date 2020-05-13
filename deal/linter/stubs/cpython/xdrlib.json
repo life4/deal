@@ -9,6 +9,11 @@
       "ValueError"
     ]
   },
+  "Packer.pack_uhyper": {
+    "raises": [
+      "ConversionError"
+    ]
+  },
   "Unpacker.done": {
     "raises": [
       "Error"

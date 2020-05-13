@@ -1,4 +1,10 @@
 {
+  "_bytes_from_decode_data": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
   "_input_type_check": {
     "raises": [
       "TypeError"
@@ -6,22 +12,39 @@
   },
   "a85decode": {
     "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "b16decode": {
+    "raises": [
+      "TypeError",
       "ValueError"
     ]
   },
   "b32decode": {
     "raises": [
-      "AssertionError"
+      "AssertionError",
+      "TypeError",
+      "ValueError"
     ]
   },
   "b64decode": {
     "raises": [
-      "AssertionError"
+      "AssertionError",
+      "TypeError",
+      "ValueError"
     ]
   },
   "b64encode": {
     "raises": [
       "AssertionError"
+    ]
+  },
+  "b85decode": {
+    "raises": [
+      "TypeError",
+      "ValueError"
     ]
   },
   "decodebytes": {
@@ -50,12 +73,30 @@
   },
   "main": {
     "raises": [
+      "AssertionError",
+      "SystemExit"
+    ]
+  },
+  "standard_b64decode": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "standard_b64encode": {
+    "raises": [
       "AssertionError"
     ]
   },
   "test": {
     "raises": [
       "AssertionError"
+    ]
+  },
+  "urlsafe_b64decode": {
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ValueError"
     ]
   }
 }

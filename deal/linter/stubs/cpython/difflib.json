@@ -19,12 +19,33 @@
       "TypeError"
     ]
   },
+  "_mdiff": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_test": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "context_diff": {
     "raises": [
       "TypeError"
     ]
   },
+  "diff_bytes": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "get_close_matches": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "restore": {
     "raises": [
       "ValueError"
     ]

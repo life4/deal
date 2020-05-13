@@ -4,6 +4,11 @@
       "NotImplementedError"
     ]
   },
+  "ArgumentParser.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "ArgumentParser._check_value": {
     "raises": [
       "ArgumentError"
@@ -26,6 +31,13 @@
   },
   "FileType.__call__": {
     "raises": [
+      "ArgumentTypeError",
+      "ValueError"
+    ]
+  },
+  "HelpFormatter.__init__": {
+    "raises": [
+      "TypeError",
       "ValueError"
     ]
   },
@@ -39,7 +51,18 @@
       "AssertionError"
     ]
   },
+  "_ActionsContainer.__init__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
   "_ActionsContainer._add_container_actions": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_ActionsContainer._get_handler": {
     "raises": [
       "ValueError"
     ]
@@ -77,6 +100,16 @@
   "_StoreAction.__init__": {
     "raises": [
       "ValueError"
+    ]
+  },
+  "_SubParsersAction.__call__": {
+    "raises": [
+      "ArgumentError"
+    ]
+  },
+  "_copy_items": {
+    "raises": [
+      "Error"
     ]
   }
 }

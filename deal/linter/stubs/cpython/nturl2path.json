@@ -1,7 +1,8 @@
 {
   "pathname2url": {
     "raises": [
-      "OSError"
+      "OSError",
+      "TypeError"
     ]
   },
   "url2pathname": {

@@ -4,12 +4,56 @@
       "TypeError"
     ]
   },
+  "Doc.getdocloc": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "HTMLDoc.markup": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
   "Helper._gettopic": {
     "raises": [
       "ValueError"
     ]
   },
+  "_get_revised_path": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "_url_handler": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "apropos": {
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "browse": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "getpager": {
+    "raises": [
+      "FileExistsError"
+    ]
+  },
+  "importfile": {
+    "raises": [
+      "ErrorDuringImport",
+      "TypeError"
+    ]
+  },
+  "pathdirs": {
     "raises": [
       "TypeError"
     ]
@@ -22,6 +66,17 @@
   "resolve": {
     "raises": [
       "ImportError"
+    ]
+  },
+  "safeimport": {
+    "raises": [
+      "ErrorDuringImport"
+    ]
+  },
+  "tempfilepager": {
+    "raises": [
+      "FileExistsError",
+      "TypeError"
     ]
   }
 }

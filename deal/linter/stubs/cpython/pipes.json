@@ -12,11 +12,13 @@
   },
   "Template.open_r": {
     "raises": [
+      "TypeError",
       "ValueError"
     ]
   },
   "Template.open_w": {
     "raises": [
+      "TypeError",
       "ValueError"
     ]
   },
@@ -24,6 +26,11 @@
     "raises": [
       "TypeError",
       "ValueError"
+    ]
+  },
+  "makepipeline": {
+    "raises": [
+      "FileExistsError"
     ]
   }
 }

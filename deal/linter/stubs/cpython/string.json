@@ -28,5 +28,11 @@
     "raises": [
       "TypeError"
     ]
+  },
+  "_TemplateMetaclass.__init__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
   }
 }

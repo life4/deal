@@ -6,7 +6,10 @@
   },
   "cache_from_source": {
     "raises": [
-      "AssertionError"
+      "AssertionError",
+      "NotImplementedError",
+      "TypeError",
+      "ValueError"
     ]
   },
   "find_module": {
@@ -29,12 +32,26 @@
   },
   "load_package": {
     "raises": [
+      "ImportError",
+      "TypeError",
       "ValueError"
     ]
   },
   "load_source": {
     "raises": [
       "ImportError"
+    ]
+  },
+  "reload": {
+    "raises": [
+      "ImportError",
+      "TypeError"
+    ]
+  },
+  "source_from_cache": {
+    "raises": [
+      "NotImplementedError",
+      "ValueError"
     ]
   }
 }

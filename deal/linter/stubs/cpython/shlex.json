@@ -3,5 +3,10 @@
     "raises": [
       "StopIteration"
     ]
+  },
+  "shlex.sourcehook": {
+    "raises": [
+      "TypeError"
+    ]
   }
 }

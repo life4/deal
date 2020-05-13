@@ -1,7 +1,14 @@
 {
   "Telnet.expect": {
     "raises": [
-      "EOFError"
+      "EOFError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "Telnet.open": {
+    "raises": [
+      "err"
     ]
   },
   "Telnet.rawq_getchar": {

@@ -1,12 +1,69 @@
 {
+  "_abspath_fallback": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "commonpath": {
     "raises": [
+      "TypeError",
       "ValueError"
+    ]
+  },
+  "expanduser": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "expandvars": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "isabs": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "ismount": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "join": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "normcase": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "normpath": {
+    "raises": [
+      "TypeError"
     ]
   },
   "relpath": {
     "raises": [
+      "TypeError",
       "ValueError"
+    ]
+  },
+  "split": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "splitdrive": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "splitext": {
+    "raises": [
+      "TypeError"
     ]
   }
 }

@@ -29,6 +29,16 @@
       "TurtleGraphicsError"
     ]
   },
+  "ScrolledCanvas.adjustScrolls": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "ScrolledCanvas.reset": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
   "Shape.__init__": {
     "raises": [
       "TurtleGraphicsError"
@@ -37,6 +47,21 @@
   "Shape.addcomponent": {
     "raises": [
       "TurtleGraphicsError"
+    ]
+  },
+  "TNavigator._setDegreesPerAU": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "TNavigator._setmode": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "TNavigator.circle": {
+    "raises": [
+      "ZeroDivisionError"
     ]
   },
   "TurtleScreen._color": {
@@ -62,6 +87,43 @@
   "TurtleScreen.register_shape": {
     "raises": [
       "TurtleGraphicsError"
+    ]
+  },
+  "TurtleScreen.setworldcoordinates": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "Vec2D.rotate": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "_Screen.exitonclick": {
+    "raises": [
+      "SystemExit"
+    ]
+  },
+  "_Screen.setup": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "_screen_docrevise": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_turtle_docrevise": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "getmethparlist": {
+    "raises": [
+      "TypeError"
     ]
   }
 }

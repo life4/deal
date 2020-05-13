@@ -6,6 +6,7 @@
   },
   "fallback_getpass": {
     "raises": [
+      "EOFError",
       "RuntimeError",
       "TypeError",
       "message"

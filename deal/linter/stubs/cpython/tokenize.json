@@ -4,9 +4,20 @@
       "ValueError"
     ]
   },
+  "_compile": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
   "detect_encoding": {
     "raises": [
       "SyntaxError"
+    ]
+  },
+  "main": {
+    "raises": [
+      "SystemExit"
     ]
   }
 }

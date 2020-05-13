@@ -4,9 +4,25 @@
       "NotImplementedError"
     ]
   },
+  "GenericBrowser.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Grail._find_grail_rc": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "UnixBrowser.open": {
     "raises": [
       "Error"
+    ]
+  },
+  "_synthesize": {
+    "raises": [
+      "Error",
+      "TypeError"
     ]
   },
   "get": {
@@ -22,6 +38,11 @@
   "open": {
     "raises": [
       "Error"
+    ]
+  },
+  "register_standard_browsers": {
+    "raises": [
+      "TypeError"
     ]
   }
 }
