@@ -9,7 +9,6 @@ import astroid
 
 # project
 from deal.linter._extractors import get_exceptions_stubs
-from deal.linter._extractors.exceptions_stubs import _get_module
 from deal.linter._stub import StubsManager
 
 
@@ -134,13 +133,3 @@ def test_marhsmallow_stubs():
     func_tree = tree.body[-1].body
     returns = tuple(r.value for r in get_exceptions_stubs(body=func_tree, stubs=stubs))
     assert returns == (ValueError,)
-
-
-def test_get_module():
-    tree = astroid.parse('def f(): pass')
-    print(tree.repr_tree())
-    assert _get_module(expr=tree) is tree
-    assert _get_module(expr=tree.body[0]) is tree
-
-    tree.body[0].parent = None
-    assert _get_module(expr=tree.body[0]) is None

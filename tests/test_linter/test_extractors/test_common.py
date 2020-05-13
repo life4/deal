@@ -6,7 +6,7 @@ import astroid
 import pytest
 
 # project
-from deal.linter._extractors.common import get_name, get_full_name, infer
+from deal.linter._extractors.common import get_name, get_full_name, infer, _get_module
 
 
 @pytest.mark.parametrize('text, expected', [
@@ -83,3 +83,13 @@ def test_get_full_name_no_parent():
     tree = astroid.parse('def f(): pass')
     print(tree.repr_tree())
     assert get_full_name(expr=tree) == ('', '')
+
+
+def test_get_module():
+    tree = astroid.parse('def f(): pass')
+    print(tree.repr_tree())
+    assert _get_module(expr=tree) is tree
+    assert _get_module(expr=tree.body[0]) is tree
+
+    tree.body[0].parent = None
+    assert _get_module(expr=tree.body[0]) is None

@@ -2,11 +2,14 @@
 import ast
 from contextlib import suppress
 from functools import partial
+from pathlib import Path
 from types import SimpleNamespace
 from typing import Callable, Iterator, List, NamedTuple, Optional, Tuple
 
 # external
 import astroid
+
+from .._stub import EXTENSION, StubFile, StubsManager
 
 
 TOKENS = SimpleNamespace(
@@ -122,6 +125,30 @@ def infer(expr) -> Tuple[astroid.node_classes.NodeNG, ...]:
             return tuple()
         return tuple(g for g in guesses if type(g) is not astroid.Uninferable)
     return tuple()
+
+
+def get_stub(module_name: Optional[str], expr: astroid.FunctionDef, stubs: StubsManager) -> Optional[StubFile]:
+    if not module_name:
+        return None
+    stub = stubs.get(module_name)
+    if stub is not None:
+        return stub
+
+    module = _get_module(expr=expr)
+    if module is None or module.file is None:
+        return None  # pragma: no coverage
+    path = Path(module.file).with_suffix(EXTENSION)
+    if not path.exists():
+        return None
+    return stubs.read(path=path)
+
+
+def _get_module(expr: astroid.node_classes.NodeNG) -> Optional[astroid.Module]:
+    if type(expr) is astroid.Module:
+        return expr
+    if expr.parent is None:
+        return None
+    return _get_module(expr.parent)
 
 
 class Extractor:
