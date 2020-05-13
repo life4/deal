@@ -32,6 +32,9 @@
     ]
   },
   "FieldStorage.make_file": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "FileExistsError"
     ]
@@ -46,11 +49,24 @@
       "ValueError"
     ]
   },
+  "closelog": {
+    "has": [
+      "global"
+    ]
+  },
   "escape": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
       "message"
+    ]
+  },
+  "initlog": {
+    "has": [
+      "global"
     ]
   },
   "parse": {
@@ -59,6 +75,9 @@
     ]
   },
   "parse_qs": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -66,11 +85,57 @@
     ]
   },
   "parse_qsl": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
       "ValueError",
       "message"
+    ]
+  },
+  "print_arguments": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "print_directory": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "print_environ": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "print_environ_usage": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "print_exception": {
+    "has": [
+      "import",
+      "stdout"
+    ]
+  },
+  "print_form": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "test": {
+    "has": [
+      "global",
+      "import",
+      "stdout"
+    ]
+  },
+  "valid_boundary": {
+    "has": [
+      "import"
     ]
   }
 }

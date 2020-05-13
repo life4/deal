@@ -3,5 +3,10 @@
     "raises": [
       "TypeError"
     ]
+  },
+  "Cmd.complete": {
+    "has": [
+      "import"
+    ]
   }
 }

@@ -5,8 +5,16 @@
     ]
   },
   "get_docstring": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
+    ]
+  },
+  "walk": {
+    "has": [
+      "import"
     ]
   }
 }

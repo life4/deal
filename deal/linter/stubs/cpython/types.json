@@ -20,6 +20,9 @@
     ]
   },
   "coroutine": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]

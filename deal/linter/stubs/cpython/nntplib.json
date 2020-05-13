@@ -11,6 +11,9 @@
     ]
   },
   "_NNTPBase._getline": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "EOFError",
       "NNTPDataError"
@@ -22,6 +25,9 @@
     ]
   },
   "_NNTPBase._getresp": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "NNTPPermanentError",
       "NNTPProtocolError",
@@ -33,6 +39,16 @@
       "NNTPReplyError"
     ]
   },
+  "_NNTPBase._putcmd": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "_NNTPBase._putline": {
+    "has": [
+      "stdout"
+    ]
+  },
   "_NNTPBase._statparse": {
     "raises": [
       "NNTPReplyError"
@@ -42,6 +58,11 @@
     "raises": [
       "NNTPDataError",
       "NNTPReplyError"
+    ]
+  },
+  "_NNTPBase.getwelcome": {
+    "has": [
+      "stdout"
     ]
   },
   "_NNTPBase.group": {
@@ -67,6 +88,9 @@
     ]
   },
   "_NNTPBase.xgtitle": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -81,6 +105,9 @@
     ]
   },
   "_NNTPBase.xpath": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "NNTPReplyError",
       "RuntimeError",

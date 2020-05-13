@@ -7,6 +7,9 @@
     ]
   },
   "PyZipFile.writepy": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError"
@@ -16,6 +19,11 @@
     "raises": [
       "NotImplementedError",
       "RuntimeError"
+    ]
+  },
+  "ZipExtFile._init_decrypter": {
+    "has": [
+      "global"
     ]
   },
   "ZipExtFile._read2": {
@@ -35,6 +43,9 @@
     ]
   },
   "ZipFile._RealGetContents": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "BadZipFile"
     ]
@@ -48,6 +59,9 @@
     ]
   },
   "ZipFile._extract_member": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "TypeError"
     ]
@@ -63,11 +77,17 @@
     ]
   },
   "ZipFile._write_end_record": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "LargeZipFile"
     ]
   },
   "ZipFile._writecheck": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "LargeZipFile",
       "NotImplementedError",
@@ -83,6 +103,9 @@
     ]
   },
   "ZipFile.comment": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -110,12 +133,20 @@
       "ValueError"
     ]
   },
+  "ZipFile.printdir": {
+    "has": [
+      "stdout"
+    ]
+  },
   "ZipFile.setpassword": {
     "raises": [
       "TypeError"
     ]
   },
   "ZipFile.write": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "ValueError"
     ]
@@ -160,6 +191,11 @@
       "ValueError"
     ]
   },
+  "_ZipDecrypter": {
+    "has": [
+      "global"
+    ]
+  },
   "_ZipWriteFile.write": {
     "raises": [
       "ValueError"
@@ -177,6 +213,10 @@
     ]
   },
   "main": {
+    "has": [
+      "import",
+      "stdout"
+    ],
     "raises": [
       "TypeError"
     ]

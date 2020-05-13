@@ -7,6 +7,9 @@
     ]
   },
   "Fraction.from_decimal": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]
@@ -22,6 +25,9 @@
     ]
   },
   "gcd": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",

@@ -5,6 +5,9 @@
     ]
   },
   "Popen.__del__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -12,6 +15,9 @@
     ]
   },
   "Popen.__init__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "SubprocessError",

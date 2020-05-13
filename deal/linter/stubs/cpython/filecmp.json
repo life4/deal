@@ -1,7 +1,22 @@
 {
+  "_do_cmp": {
+    "has": [
+      "read"
+    ]
+  },
+  "cmp": {
+    "has": [
+      "read"
+    ]
+  },
   "cmpfiles": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "demo": {
+    "has": [
+      "import"
     ]
   },
   "dircmp.__getattr__": {
@@ -17,6 +32,21 @@
   "dircmp.phase4": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "dircmp.report": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "dircmp.report_full_closure": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "dircmp.report_partial_closure": {
+    "has": [
+      "stdout"
     ]
   }
 }

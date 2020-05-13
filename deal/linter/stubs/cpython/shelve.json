@@ -1,5 +1,9 @@
 {
   "DbfilenameShelf.__init__": {
+    "has": [
+      "global",
+      "import"
+    ],
     "raises": [
       "ImportError"
     ]

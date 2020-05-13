@@ -101,6 +101,10 @@
     ]
   },
   "openfp": {
+    "has": [
+      "import",
+      "read"
+    ],
     "raises": [
       "Error",
       "RuntimeError",

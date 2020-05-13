@@ -1,0 +1,7 @@
+{
+  "rgb_to_hls": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  }
+}

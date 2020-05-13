@@ -11,31 +11,85 @@
       "TypeError"
     ]
   },
+  "_arp_getnode": {
+    "has": [
+      "import"
+    ]
+  },
+  "_ipconfig_getnode": {
+    "has": [
+      "import"
+    ]
+  },
   "_load_system_functions": {
+    "has": [
+      "global",
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
       "message"
     ]
   },
+  "_netbios_getnode": {
+    "has": [
+      "import"
+    ]
+  },
   "_popen": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]
   },
+  "_random_getnode": {
+    "has": [
+      "import"
+    ]
+  },
+  "_unix_getnode": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
   "_windll_getnode": {
+    "has": [
+      "global",
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]
   },
   "getnode": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "AssertionError"
     ]
   },
   "uuid1": {
+    "has": [
+      "global",
+      "import"
+    ],
     "raises": [
       "AssertionError"
+    ]
+  },
+  "uuid3": {
+    "has": [
+      "import"
+    ]
+  },
+  "uuid5": {
+    "has": [
+      "import"
     ]
   }
 }

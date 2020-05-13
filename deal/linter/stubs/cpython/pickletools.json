@@ -15,16 +15,26 @@
     ]
   },
   "_test": {
+    "has": [
+      "global",
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]
   },
   "assure_pickle_consistency": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "ValueError"
     ]
   },
   "dis": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "AssertionError",
       "ValueError"

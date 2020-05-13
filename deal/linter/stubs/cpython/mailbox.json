@@ -1,5 +1,8 @@
 {
   "Babyl._install_message": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -58,8 +61,16 @@
     ]
   },
   "MH.get_sequences": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "FormatError"
+    ]
+  },
+  "MH.lock": {
+    "has": [
+      "read"
     ]
   },
   "MH.pack": {
@@ -77,6 +88,11 @@
     "raises": [
       "NotEmptyError",
       "TypeError"
+    ]
+  },
+  "MH.set_sequences": {
+    "has": [
+      "read"
     ]
   },
   "MHMessage._explain_to": {
@@ -110,6 +126,9 @@
     ]
   },
   "Mailbox._dump_message": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -223,7 +242,20 @@
       "TypeError"
     ]
   },
+  "Maildir.get_bytes": {
+    "has": [
+      "read"
+    ]
+  },
+  "Maildir.get_file": {
+    "has": [
+      "read"
+    ]
+  },
   "Maildir.get_message": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "TypeError"
     ]
@@ -260,6 +292,9 @@
     ]
   },
   "Message.__init__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "Error",
       "TypeError"
@@ -276,6 +311,9 @@
     ]
   },
   "_singlefileMailbox.__init__": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "NoSuchMailboxError"
     ]
@@ -286,6 +324,9 @@
     ]
   },
   "_singlefileMailbox.flush": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "AssertionError",
       "ExternalClashError"

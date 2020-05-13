@@ -20,17 +20,40 @@
       "ValueError"
     ]
   },
+  "Helper.help": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "Helper.showtopic": {
+    "has": [
+      "global",
+      "import",
+      "stdout"
+    ]
+  },
   "_get_revised_path": {
     "raises": [
       "TypeError"
     ]
   },
+  "_start_server": {
+    "has": [
+      "import"
+    ]
+  },
   "_url_handler": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "TypeError"
     ]
   },
   "apropos": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "AssertionError",
       "TypeError",
@@ -38,24 +61,63 @@
     ]
   },
   "browse": {
+    "has": [
+      "global",
+      "import",
+      "stdout"
+    ],
     "raises": [
       "Error"
     ]
   },
+  "cli": {
+    "has": [
+      "import",
+      "stdout"
+    ]
+  },
+  "doc": {
+    "has": [
+      "stdout"
+    ]
+  },
   "getpager": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "FileExistsError"
     ]
   },
   "importfile": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "ErrorDuringImport",
       "TypeError"
     ]
   },
+  "pager": {
+    "has": [
+      "global",
+      "import",
+      "stdout"
+    ]
+  },
   "pathdirs": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "pipepager": {
+    "has": [
+      "import"
+    ]
+  },
+  "plainpager": {
+    "has": [
+      "stdout"
     ]
   },
   "render_doc": {
@@ -74,9 +136,24 @@
     ]
   },
   "tempfilepager": {
+    "has": [
+      "global",
+      "import",
+      "write"
+    ],
     "raises": [
       "FileExistsError",
       "TypeError"
+    ]
+  },
+  "writedoc": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "writedocs": {
+    "has": [
+      "stdout"
     ]
   }
 }

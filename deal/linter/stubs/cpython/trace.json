@@ -1,23 +1,70 @@
 {
+  "CoverageResults.__init__": {
+    "has": [
+      "stdout"
+    ]
+  },
   "CoverageResults.write_results": {
+    "has": [
+      "global",
+      "read",
+      "stdout"
+    ],
     "raises": [
       "SyntaxError",
       "TypeError"
     ]
   },
+  "CoverageResults.write_results_file": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "Trace.globaltrace_lt": {
+    "has": [
+      "stdout"
+    ]
+  },
   "Trace.localtrace_trace": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "TypeError"
     ]
   },
   "Trace.localtrace_trace_and_count": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "TypeError"
+    ]
+  },
+  "Trace.run": {
+    "has": [
+      "import"
+    ]
+  },
+  "Trace.runctx": {
+    "has": [
+      "global"
     ]
   },
   "Trace.runfunc": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "_find_executable_linenos": {
+    "has": [
+      "read",
+      "stdout"
+    ]
+  },
+  "_find_strings": {
+    "has": [
+      "read"
     ]
   },
   "_fullmodname": {
@@ -31,6 +78,9 @@
     ]
   },
   "main": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "SystemExit",
       "TypeError"

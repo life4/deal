@@ -1,4 +1,9 @@
 {
+  "Au_read.__init__": {
+    "has": [
+      "import"
+    ]
+  },
   "Au_read.getmark": {
     "raises": [
       "Error"
@@ -10,6 +15,11 @@
       "Error"
     ]
   },
+  "Au_read.readframes": {
+    "has": [
+      "import"
+    ]
+  },
   "Au_read.rewind": {
     "raises": [
       "OSError"
@@ -19,6 +29,11 @@
     "raises": [
       "Error",
       "OSError"
+    ]
+  },
+  "Au_write.__init__": {
+    "has": [
+      "import"
     ]
   },
   "Au_write._ensure_header_written": {
@@ -76,6 +91,11 @@
       "Error"
     ]
   },
+  "Au_write.writeframesraw": {
+    "has": [
+      "import"
+    ]
+  },
   "_read_u32": {
     "raises": [
       "EOFError"
@@ -87,6 +107,10 @@
     ]
   },
   "openfp": {
+    "has": [
+      "import",
+      "read"
+    ],
     "raises": [
       "Error",
       "RuntimeError",

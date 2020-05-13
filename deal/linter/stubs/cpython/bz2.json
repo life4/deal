@@ -1,5 +1,8 @@
 {
   "BZ2File.__init__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",

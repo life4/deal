@@ -1,5 +1,8 @@
 {
   "Chunk.__init__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "EOFError"
     ]

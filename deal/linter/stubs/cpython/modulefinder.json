@@ -16,6 +16,9 @@
     ]
   },
   "ModuleFinder.find_module": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "ImportError",
       "RuntimeError",
@@ -23,13 +26,31 @@
     ]
   },
   "ModuleFinder.load_file": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "TypeError"
+    ]
+  },
+  "ModuleFinder.msg": {
+    "has": [
+      "stdout"
     ]
   },
   "ModuleFinder.replace_paths_in_code": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "ModuleFinder.report": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "ModuleFinder.run_script": {
+    "has": [
+      "read"
     ]
   },
   "ModuleFinder.scan_code": {
@@ -38,6 +59,10 @@
     ]
   },
   "test": {
+    "has": [
+      "import",
+      "stdout"
+    ],
     "raises": [
       "TypeError"
     ]

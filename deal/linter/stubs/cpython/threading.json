@@ -68,6 +68,9 @@
     ]
   },
   "Thread.isAlive": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -115,6 +118,9 @@
     ]
   },
   "_after_fork": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "AssertionError"
     ]
@@ -122,6 +128,16 @@
   "_shutdown": {
     "raises": [
       "AssertionError"
+    ]
+  },
+  "setprofile": {
+    "has": [
+      "global"
+    ]
+  },
+  "settrace": {
+    "has": [
+      "global"
     ]
   }
 }

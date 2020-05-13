@@ -1,0 +1,12 @@
+{
+  "filter": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "fnmatch": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

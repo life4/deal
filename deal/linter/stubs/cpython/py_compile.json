@@ -1,5 +1,8 @@
 {
   "compile": {
+    "has": [
+      "stderr"
+    ],
     "raises": [
       "AssertionError",
       "FileExistsError",
@@ -7,6 +10,11 @@
       "TypeError",
       "ValueError",
       "py_exc"
+    ]
+  },
+  "main": {
+    "has": [
+      "stderr"
     ]
   }
 }

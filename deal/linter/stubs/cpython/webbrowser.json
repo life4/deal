@@ -10,6 +10,9 @@
     ]
   },
   "Grail._find_grail_rc": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]
@@ -20,27 +23,61 @@
     ]
   },
   "_synthesize": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "Error",
       "TypeError"
     ]
   },
   "get": {
+    "has": [
+      "global",
+      "import"
+    ],
     "raises": [
       "Error"
     ]
   },
   "main": {
+    "has": [
+      "import",
+      "read",
+      "stdout"
+    ],
     "raises": [
       "SystemExit"
     ]
   },
   "open": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "Error"
     ]
   },
+  "open_new": {
+    "has": [
+      "read"
+    ]
+  },
+  "open_new_tab": {
+    "has": [
+      "read"
+    ]
+  },
+  "register": {
+    "has": [
+      "global"
+    ]
+  },
   "register_standard_browsers": {
+    "has": [
+      "global",
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]

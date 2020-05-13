@@ -163,6 +163,10 @@
     ]
   },
   "_test": {
+    "has": [
+      "global",
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]

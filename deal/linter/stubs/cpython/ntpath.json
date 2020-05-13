@@ -16,6 +16,9 @@
     ]
   },
   "expandvars": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]

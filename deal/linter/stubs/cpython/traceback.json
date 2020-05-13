@@ -1,7 +1,35 @@
 {
+  "print_exc": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "print_exception": {
+    "has": [
+      "stdout"
+    ]
+  },
   "print_last": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "ValueError"
+    ]
+  },
+  "print_list": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "print_stack": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "print_tb": {
+    "has": [
+      "stdout"
     ]
   }
 }

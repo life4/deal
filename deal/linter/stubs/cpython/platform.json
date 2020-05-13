@@ -1,10 +1,28 @@
 {
+  "_dist_try_harder": {
+    "has": [
+      "read"
+    ]
+  },
   "_follow_symlinks": {
     "raises": [
       "TypeError"
     ]
   },
+  "_java_getprop": {
+    "has": [
+      "import"
+    ]
+  },
+  "_linux_distribution": {
+    "has": [
+      "read"
+    ]
+  },
   "_mac_ver_xml": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "InvalidFileException"
     ]
@@ -14,26 +32,57 @@
       "ValueError"
     ]
   },
+  "architecture": {
+    "has": [
+      "import"
+    ]
+  },
   "dist": {
+    "has": [
+      "import",
+      "read"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
       "message"
     ]
   },
+  "java_ver": {
+    "has": [
+      "import"
+    ]
+  },
   "libc_ver": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "TypeError"
     ]
   },
   "linux_distribution": {
+    "has": [
+      "import",
+      "read"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
       "message"
     ]
   },
+  "mac_ver": {
+    "has": [
+      "read"
+    ]
+  },
   "platform": {
+    "has": [
+      "global",
+      "import",
+      "read"
+    ],
     "raises": [
       "AssertionError",
       "TypeError",
@@ -41,11 +90,19 @@
     ]
   },
   "popen": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
       "ValueError",
       "message"
+    ]
+  },
+  "uname": {
+    "has": [
+      "global"
     ]
   }
 }

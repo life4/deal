@@ -10,12 +10,28 @@
     ]
   },
   "Path.glob": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "NotImplementedError",
       "ValueError"
     ]
   },
+  "Path.group": {
+    "has": [
+      "import"
+    ]
+  },
+  "Path.owner": {
+    "has": [
+      "import"
+    ]
+  },
   "Path.rglob": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "NotImplementedError",
       "ValueError"
@@ -78,11 +94,17 @@
     ]
   },
   "_PosixFlavour.gethomedir": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError"
     ]
   },
   "_Selector.__init__": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "ValueError"
     ]

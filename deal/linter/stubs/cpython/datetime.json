@@ -155,6 +155,10 @@
     ]
   },
   "datetime.strptime": {
+    "has": [
+      "global",
+      "import"
+    ],
     "raises": [
       "TypeError",
       "ValueError"

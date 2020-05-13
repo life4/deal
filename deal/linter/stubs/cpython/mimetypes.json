@@ -1,0 +1,50 @@
+{
+  "MimeTypes.__init__": {
+    "has": [
+      "global"
+    ]
+  },
+  "MimeTypes.guess_type": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "MimeTypes.read": {
+    "has": [
+      "read"
+    ]
+  },
+  "_default_mime_types": {
+    "has": [
+      "global"
+    ]
+  },
+  "add_type": {
+    "has": [
+      "global"
+    ]
+  },
+  "guess_all_extensions": {
+    "has": [
+      "global"
+    ]
+  },
+  "guess_extension": {
+    "has": [
+      "global"
+    ]
+  },
+  "guess_type": {
+    "has": [
+      "global"
+    ]
+  },
+  "init": {
+    "has": [
+      "global"
+    ]
+  }
+}

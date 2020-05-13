@@ -4,6 +4,11 @@
       "ImportError"
     ]
   },
+  "_HackedGetData.get_data": {
+    "has": [
+      "read"
+    ]
+  },
   "cache_from_source": {
     "raises": [
       "AssertionError",
@@ -13,6 +18,9 @@
     ]
   },
   "find_module": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "ImportError",
       "RuntimeError",
@@ -25,6 +33,10 @@
     ]
   },
   "load_module": {
+    "has": [
+      "import",
+      "read"
+    ],
     "raises": [
       "ImportError",
       "ValueError"

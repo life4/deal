@@ -6,6 +6,9 @@
     ]
   },
   "SSLContext._load_windows_store_certs": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -155,6 +158,9 @@
     ]
   },
   "cert_time_to_seconds": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "ValueError"
     ]

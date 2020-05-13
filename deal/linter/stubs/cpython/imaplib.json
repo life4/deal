@@ -1,4 +1,9 @@
 {
+  "IMAP4._CRAM_MD5_AUTH": {
+    "has": [
+      "import"
+    ]
+  },
   "IMAP4.__getattr__": {
     "raises": [
       "AttributeError"

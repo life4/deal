@@ -1,0 +1,43 @@
+{
+  "POP3._create_socket": {
+    "raises": [
+      "err"
+    ]
+  },
+  "POP3._getline": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "POP3._getresp": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "POP3._putcmd": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "POP3._putline": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "POP3.apop": {
+    "has": [
+      "import"
+    ]
+  },
+  "POP3.stat": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "POP3.stls": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}

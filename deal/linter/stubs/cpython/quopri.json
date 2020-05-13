@@ -1,10 +1,25 @@
 {
+  "decodestring": {
+    "has": [
+      "import"
+    ]
+  },
+  "encodestring": {
+    "has": [
+      "import"
+    ]
+  },
   "ishex": {
     "raises": [
       "AssertionError"
     ]
   },
   "main": {
+    "has": [
+      "import",
+      "stderr",
+      "stdout"
+    ],
     "raises": [
       "SystemExit"
     ]

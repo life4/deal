@@ -1,5 +1,8 @@
 {
   "Random._randbelow": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -50,6 +53,18 @@
     "raises": [
       "TypeError",
       "ValueError"
+    ]
+  },
+  "_test": {
+    "has": [
+      "import",
+      "stdout"
+    ]
+  },
+  "_test_generator": {
+    "has": [
+      "import",
+      "stdout"
     ]
   }
 }

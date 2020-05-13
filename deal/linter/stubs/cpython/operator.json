@@ -29,5 +29,10 @@
     "raises": [
       "TypeError"
     ]
+  },
+  "methodcaller.__reduce__": {
+    "has": [
+      "import"
+    ]
   }
 }

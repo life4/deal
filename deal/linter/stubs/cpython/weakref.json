@@ -1,5 +1,8 @@
 {
   "WeakKeyDictionary.__deepcopy__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "Error"
     ]
@@ -7,6 +10,11 @@
   "WeakMethod.__new__": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "WeakValueDictionary.__deepcopy__": {
+    "has": [
+      "import"
     ]
   },
   "WeakValueDictionary.__getitem__": {
@@ -30,6 +38,9 @@
     ]
   },
   "finalize.__init__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]

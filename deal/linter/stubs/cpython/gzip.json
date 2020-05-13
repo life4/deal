@@ -6,6 +6,9 @@
     ]
   },
   "GzipFile.filename": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -13,16 +16,25 @@
     ]
   },
   "GzipFile.peek": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "OSError"
     ]
   },
   "GzipFile.read": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "OSError"
     ]
   },
   "GzipFile.read1": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "OSError"
     ]
@@ -39,6 +51,9 @@
     ]
   },
   "GzipFile.write": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "OSError",
       "ValueError"
@@ -55,6 +70,10 @@
     ]
   },
   "_test": {
+    "has": [
+      "read",
+      "stdout"
+    ],
     "raises": [
       "TypeError",
       "ValueError"

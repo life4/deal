@@ -15,6 +15,9 @@
     ]
   },
   "_execvpe": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError",
       "ValueError",
@@ -40,11 +43,17 @@
     ]
   },
   "fdopen": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]
   },
   "get_exec_path": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "AssertionError",
       "ValueError"
@@ -56,6 +65,9 @@
     ]
   },
   "popen": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError",
       "ValueError"

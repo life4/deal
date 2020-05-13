@@ -112,6 +112,9 @@
     ]
   },
   "OptionParser.exit": {
+    "has": [
+      "stderr"
+    ],
     "raises": [
       "SystemExit"
     ]
@@ -119,6 +122,16 @@
   "OptionParser.get_prog_name": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "OptionParser.print_usage": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "OptionParser.print_version": {
+    "has": [
+      "stdout"
     ]
   },
   "Values._update": {

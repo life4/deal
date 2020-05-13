@@ -9,6 +9,11 @@
       "OSError"
     ]
   },
+  "TarFile._dbg": {
+    "has": [
+      "stdout"
+    ]
+  },
   "TarFile._extract_member": {
     "raises": [
       "TypeError"
@@ -82,6 +87,11 @@
       "CompressionError",
       "ReadError",
       "ValueError"
+    ]
+  },
+  "TarFile.list": {
+    "has": [
+      "stdout"
     ]
   },
   "TarFile.makedev": {
@@ -179,7 +189,15 @@
       "StreamError"
     ]
   },
+  "_safe_print": {
+    "has": [
+      "stdout"
+    ]
+  },
   "filemode": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -192,6 +210,11 @@
     ]
   },
   "main": {
+    "has": [
+      "import",
+      "read",
+      "stdout"
+    ],
     "raises": [
       "TypeError"
     ]

@@ -16,8 +16,17 @@
     ]
   },
   "main": {
+    "has": [
+      "import",
+      "stdout"
+    ],
     "raises": [
       "SystemExit"
+    ]
+  },
+  "tokenize": {
+    "has": [
+      "import"
     ]
   }
 }

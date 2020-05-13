@@ -40,6 +40,9 @@
     ]
   },
   "ParsingError.filename": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -123,6 +126,9 @@
     ]
   },
   "RawConfigParser.readfp": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -140,6 +146,9 @@
     ]
   },
   "SafeConfigParser.__init__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",

@@ -21,6 +21,9 @@
     ]
   },
   "Signature.from_builtin": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -36,6 +39,9 @@
     ]
   },
   "Signature.from_function": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -48,6 +54,10 @@
     ]
   },
   "_main": {
+    "has": [
+      "import",
+      "stdout"
+    ],
     "raises": [
       "SystemExit"
     ]
@@ -63,6 +73,9 @@
     ]
   },
   "_signature_from_builtin": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "AssertionError",
       "TypeError",
@@ -70,6 +83,9 @@
     ]
   },
   "_signature_from_callable": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "AssertionError",
       "TypeError",
@@ -82,6 +98,9 @@
     ]
   },
   "_signature_fromstr": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "AssertionError",
       "ValueError"
@@ -99,6 +118,9 @@
     ]
   },
   "_signature_strip_non_python_syntax": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "AssertionError"
     ]
@@ -109,6 +131,9 @@
     ]
   },
   "findsource": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "OSError",
       "TypeError",
@@ -116,6 +141,9 @@
     ]
   },
   "formatargspec": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -133,6 +161,9 @@
     ]
   },
   "getargspec": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",

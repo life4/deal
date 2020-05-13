@@ -11,6 +11,9 @@
     ]
   },
   "EnumMeta.__contains__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -54,6 +57,9 @@
     ]
   },
   "Flag.__contains__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",

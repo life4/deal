@@ -1,5 +1,9 @@
 {
   "ImpImporter.__init__": {
+    "has": [
+      "global",
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -7,11 +11,18 @@
     ]
   },
   "ImpImporter.iter_modules": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]
   },
   "ImpLoader.__init__": {
+    "has": [
+      "global",
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -23,23 +34,47 @@
       "ImportError"
     ]
   },
+  "ImpLoader._reopen": {
+    "has": [
+      "read"
+    ]
+  },
+  "ImpLoader.get_data": {
+    "has": [
+      "read"
+    ]
+  },
+  "ImpLoader.get_source": {
+    "has": [
+      "read"
+    ]
+  },
   "_get_spec": {
     "raises": [
       "NotImplementedError"
     ]
   },
   "_import_imp": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "AssertionError",
       "TypeError"
     ]
   },
   "_iter_file_finder_modules": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]
   },
   "extend_path": {
+    "has": [
+      "stderr"
+    ],
     "raises": [
       "TypeError"
     ]
@@ -71,6 +106,11 @@
     "raises": [
       "ImportError",
       "ValueError"
+    ]
+  },
+  "read_code": {
+    "has": [
+      "import"
     ]
   }
 }

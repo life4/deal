@@ -1,7 +1,23 @@
 {
+  "DebuggingServer._print_message_content": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "DebuggingServer.process_message": {
+    "has": [
+      "stdout"
+    ]
+  },
   "MailmanProxy.__init__": {
     "raises": [
       "ValueError"
+    ]
+  },
+  "MailmanProxy.process_message": {
+    "has": [
+      "import",
+      "stdout"
     ]
   },
   "PureProxy.__init__": {
@@ -9,7 +25,21 @@
       "ValueError"
     ]
   },
+  "PureProxy._deliver": {
+    "has": [
+      "import",
+      "stdout"
+    ]
+  },
+  "PureProxy.process_message": {
+    "has": [
+      "stdout"
+    ]
+  },
   "SMTPChannel.__addr": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -17,6 +47,9 @@
     ]
   },
   "SMTPChannel.__conn": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -24,6 +57,9 @@
     ]
   },
   "SMTPChannel.__data": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -31,6 +67,9 @@
     ]
   },
   "SMTPChannel.__fqdn": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -38,6 +77,9 @@
     ]
   },
   "SMTPChannel.__greeting": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -45,11 +87,17 @@
     ]
   },
   "SMTPChannel.__init__": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "ValueError"
     ]
   },
   "SMTPChannel.__line": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -57,6 +105,9 @@
     ]
   },
   "SMTPChannel.__mailfrom": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -64,6 +115,9 @@
     ]
   },
   "SMTPChannel.__peer": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -71,6 +125,9 @@
     ]
   },
   "SMTPChannel.__rcpttos": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -78,6 +135,9 @@
     ]
   },
   "SMTPChannel.__server": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -85,15 +145,41 @@
     ]
   },
   "SMTPChannel.__state": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
       "message"
     ]
   },
+  "SMTPChannel.found_terminator": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "SMTPChannel.smtp_MAIL": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "SMTPChannel.smtp_RCPT": {
+    "has": [
+      "stdout"
+    ]
+  },
   "SMTPServer.__init__": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "ValueError"
+    ]
+  },
+  "SMTPServer.handle_accepted": {
+    "has": [
+      "stdout"
     ]
   },
   "SMTPServer.process_message": {
@@ -102,11 +188,18 @@
     ]
   },
   "parseargs": {
+    "has": [
+      "global",
+      "stdout"
+    ],
     "raises": [
       "SystemExit"
     ]
   },
   "usage": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "SystemExit"
     ]

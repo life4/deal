@@ -16,6 +16,11 @@
       "ValueError"
     ]
   },
+  "a85encode": {
+    "has": [
+      "global"
+    ]
+  },
   "b16decode": {
     "raises": [
       "TypeError",
@@ -23,10 +28,18 @@
     ]
   },
   "b32decode": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "AssertionError",
       "TypeError",
       "ValueError"
+    ]
+  },
+  "b32encode": {
+    "has": [
+      "global"
     ]
   },
   "b64decode": {
@@ -42,9 +55,17 @@
     ]
   },
   "b85decode": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "TypeError",
       "ValueError"
+    ]
+  },
+  "b85encode": {
+    "has": [
+      "global"
     ]
   },
   "decodebytes": {
@@ -53,6 +74,9 @@
     ]
   },
   "decodestring": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -65,6 +89,9 @@
     ]
   },
   "encodestring": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -72,6 +99,11 @@
     ]
   },
   "main": {
+    "has": [
+      "import",
+      "read",
+      "stdout"
+    ],
     "raises": [
       "AssertionError",
       "SystemExit"
@@ -88,6 +120,9 @@
     ]
   },
   "test": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "AssertionError"
     ]

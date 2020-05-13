@@ -21,11 +21,18 @@
     ]
   },
   "expanduser": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]
   },
   "expandvars": {
+    "has": [
+      "global",
+      "import"
+    ],
     "raises": [
       "TypeError",
       "ValueError"

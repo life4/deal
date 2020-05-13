@@ -5,11 +5,30 @@
     ]
   },
   "fallback_getpass": {
+    "has": [
+      "import",
+      "stdout"
+    ],
     "raises": [
       "EOFError",
       "RuntimeError",
       "TypeError",
       "message"
+    ]
+  },
+  "getuser": {
+    "has": [
+      "import"
+    ]
+  },
+  "unix_getpass": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "win_getpass": {
+    "has": [
+      "stdout"
     ]
   }
 }

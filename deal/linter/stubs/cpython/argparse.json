@@ -46,9 +46,19 @@
       "AssertionError"
     ]
   },
+  "HelpFormatter._fill_text": {
+    "has": [
+      "import"
+    ]
+  },
   "HelpFormatter._format_usage": {
     "raises": [
       "AssertionError"
+    ]
+  },
+  "HelpFormatter._split_lines": {
+    "has": [
+      "import"
     ]
   },
   "_ActionsContainer.__init__": {
@@ -87,9 +97,19 @@
       "ValueError"
     ]
   },
+  "_AppendAction.__call__": {
+    "has": [
+      "import"
+    ]
+  },
   "_AppendAction.__init__": {
     "raises": [
       "ValueError"
+    ]
+  },
+  "_AppendConstAction.__call__": {
+    "has": [
+      "import"
     ]
   },
   "_MutuallyExclusiveGroup._add_action": {
@@ -108,6 +128,9 @@
     ]
   },
   "_copy_items": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "Error"
     ]

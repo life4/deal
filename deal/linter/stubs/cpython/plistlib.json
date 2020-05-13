@@ -71,6 +71,11 @@
       "ValueError"
     ]
   },
+  "_maybe_open": {
+    "has": [
+      "read"
+    ]
+  },
   "dump": {
     "raises": [
       "ValueError"
@@ -92,6 +97,9 @@
     ]
   },
   "readPlist": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "InvalidFileException",
       "RuntimeError",
@@ -100,6 +108,9 @@
     ]
   },
   "readPlistFromBytes": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "InvalidFileException",
       "RuntimeError",
@@ -108,6 +119,9 @@
     ]
   },
   "writePlist": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -116,6 +130,9 @@
     ]
   },
   "writePlistToBytes": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",

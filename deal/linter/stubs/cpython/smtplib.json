@@ -9,6 +9,11 @@
       "err"
     ]
   },
+  "SMTP._print_debug": {
+    "has": [
+      "stdout"
+    ]
+  },
   "SMTP.auth": {
     "raises": [
       "SMTPAuthenticationError",
@@ -68,6 +73,9 @@
     ]
   },
   "SMTP.starttls": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "SMTPNotSupportedError",

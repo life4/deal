@@ -1,5 +1,8 @@
 {
   "Profile._calibrate_inner": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "ValueError",
       "ZeroDivisionError"
@@ -8,6 +11,21 @@
   "Profile.calibrate": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "Profile.dump_stats": {
+    "has": [
+      "read"
+    ]
+  },
+  "Profile.print_stats": {
+    "has": [
+      "import"
+    ]
+  },
+  "Profile.run": {
+    "has": [
+      "import"
     ]
   },
   "Profile.runcall": {
@@ -36,6 +54,10 @@
     ]
   },
   "main": {
+    "has": [
+      "import",
+      "read"
+    ],
     "raises": [
       "SystemExit",
       "TypeError"

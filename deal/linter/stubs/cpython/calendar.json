@@ -10,13 +10,34 @@
     ]
   },
   "LocaleHTMLCalendar.__init__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "ValueError"
     ]
   },
   "LocaleTextCalendar.__init__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "ValueError"
+    ]
+  },
+  "TextCalendar.prmonth": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "TextCalendar.prweek": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "TextCalendar.pryear": {
+    "has": [
+      "stdout"
     ]
   },
   "different_locale.__enter__": {
@@ -31,7 +52,15 @@
       "Error"
     ]
   },
+  "format": {
+    "has": [
+      "stdout"
+    ]
+  },
   "main": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "SystemExit"
     ]

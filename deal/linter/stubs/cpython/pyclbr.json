@@ -1,5 +1,8 @@
 {
   "_main": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]

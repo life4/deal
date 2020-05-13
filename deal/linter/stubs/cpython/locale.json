@@ -15,11 +15,18 @@
     ]
   },
   "_print_locale": {
+    "has": [
+      "import",
+      "stdout"
+    ],
     "raises": [
       "TypeError"
     ]
   },
   "_test": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "Error"
     ]
@@ -30,6 +37,9 @@
     ]
   },
   "format": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -38,6 +48,9 @@
     ]
   },
   "getdefaultlocale": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "ValueError"
     ]

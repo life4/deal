@@ -21,12 +21,18 @@
     ]
   },
   "_make_tarball": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError",
       "ValueError"
     ]
   },
   "_make_zipfile": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]
@@ -37,11 +43,17 @@
     ]
   },
   "_unpack_tarfile": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "ReadError"
     ]
   },
   "_unpack_zipfile": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "ReadError"
     ]
@@ -53,6 +65,9 @@
     ]
   },
   "copy": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "SameFileError",
       "SpecialFileError",
@@ -60,6 +75,9 @@
     ]
   },
   "copy2": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "SameFileError",
       "SpecialFileError",
@@ -67,6 +85,9 @@
     ]
   },
   "copyfile": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "SameFileError",
       "SpecialFileError"
