@@ -50,6 +50,11 @@ def handle_call(expr, dive: bool = True, stubs: StubsManager = None) -> Optional
     token_info = dict(line=expr.lineno, col=expr.col_offset)
     name = get_name(expr.func)
 
+    # if called expression is too complex, try to infer it by astroid and that's all.
+    if name is None:
+        yield from _markers_from_func(expr=expr)
+        return
+
     # stdout and stderr
     token = _check_print(expr=expr, name=name)
     if token is not None:

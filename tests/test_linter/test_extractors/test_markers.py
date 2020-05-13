@@ -11,6 +11,7 @@ from deal.linter._extractors import get_markers
 
 @pytest.mark.parametrize('text, expected', [
     ('print(1)', ('stdout', )),
+    ('print(1, sep=sys.stderr)', ('stdout', )),
     ('print(1, file=sys.stdout)', ('stdout', )),
     ('print(1, file=sys.stderr)', ('stderr', )),
     ('print(1, file=stream)', ()),
