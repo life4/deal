@@ -51,13 +51,14 @@ def handle_call(expr, dive: bool = True, stubs: StubsManager = None) -> Optional
     name = get_name(expr.func)
 
     # stdout and stderr
-    if name == 'print':
-        yield Token(marker='stdout', value='print', **token_info)
+    token = _check_print(expr=expr, name=name)
+    if token is not None:
+        yield token
         return
-    if name in ('print', 'sys.stdout', 'sys.stdout.write'):
+    if name.startswith('sys.stdout.'):
         yield Token(marker='stdout', value='sys.stdout', **token_info)
         return
-    if name in ('sys.stderr', 'sys.stderr.write'):
+    if name.startswith('sys.stderr.'):
         yield Token(marker='stderr', value='sys.stderr', **token_info)
         return
 
@@ -182,3 +183,40 @@ def _markers_from_func(expr) -> Iterator[Token]:
                     continue
                 yield Token(marker=value, line=expr.lineno, col=expr.col_offset)
     return None
+
+
+def _check_print(expr, name: str) -> Optional[Token]:
+    """Return token if expr is `print` function call.
+
+    Marker type depends on `file=` keyword argument.
+    If it is missed, the type is `stdout`.
+    If it is `stdout` or `stderr`, the type is `stdout` or `stderr`.
+    Otherwise, there is no marker. It writes something into a stream, and it's ok.
+    """
+    if name != 'print':
+        return None
+    for kwarg in (expr.keywords or []):
+        if kwarg.arg != 'file':
+            continue
+        value = get_name(expr=kwarg.value)
+        if value in ('stdout', 'sys.stdout'):
+            return Token(
+                marker='stdout',
+                value='print',
+                line=expr.lineno,
+                col=expr.col_offset,
+            )
+        if value in ('stderr', 'sys.stderr'):
+            return Token(
+                marker='stderr',
+                value='print',
+                line=expr.lineno,
+                col=expr.col_offset,
+            )
+        return None
+    return Token(
+        marker='stdout',
+        value='print',
+        line=expr.lineno,
+        col=expr.col_offset,
+    )
