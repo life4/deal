@@ -1,5 +1,6 @@
 # built-in
 import ast
+from textwrap import dedent
 
 # external
 import astroid
@@ -23,7 +24,8 @@ from deal.linter._extractors import get_markers
     ('open("fpath", mode="w")', ('write', )),
     ('with open("fpath", "w") as f: ...', ('write', )),
 
-    ('with something: ...', ()),
+    ('with something: ...', ()),     # uninferrable `with` test
+    ('something().anything()', ()),  # complex call, cannot get name
 
     ('with open("fpath") as f: ...', ('read', )),
     ('with open("fpath", "r") as f: ...', ('read', )),
@@ -32,7 +34,7 @@ from deal.linter._extractors import get_markers
     ('open("fpath")', ('read', )),
     ('open("fpath", encoding="utf8")', ('read', )),
 ])
-def test_get_markers_simple(text, expected):
+def test_io_hardcoded(text, expected):
     tree = astroid.parse(text)
     print(tree.repr_tree())
     tokens = list(get_markers(body=tree.body))
@@ -47,9 +49,9 @@ def test_get_markers_simple(text, expected):
 
 
 @pytest.mark.parametrize('text, expected', [
-    ('from pathlib import Path\np = Path()\np.write_text("lol")', ('Path.open', )),
-    ('from pathlib import Path\np = Path()\np.open("w")', ('Path.open', )),
-    ('from pathlib import Path\np = Path()\nwith p.open("w"): ...', ('Path.open', )),
+    ('from pathlib import Path\np = Path()\np.write_text("lol")', ('write', )),
+    ('from pathlib import Path\np = Path()\np.open("w")', ('write', )),
+    ('from pathlib import Path\np = Path()\nwith p.open("w"): ...', ('write', )),
 
     ('from pathlib import Path\np = Path()\np.open("r")', ()),          # allowed mode
     ('from pathlib import Path\np = Path()\np.open(mode="r")', ()),     # allowed mode
@@ -59,14 +61,12 @@ def test_get_markers_simple(text, expected):
     ('something = file\nwith something.open("w"): ...', ()),        # not pathlib
     ('class Path:\n def write_text(): pass\np = Path()\np.write_text()', ()),   # not pathlib
 ])
-def test_get_markers_infer(text, expected):
+def test_io_infer(text, expected):
     tree = astroid.parse(text)
     print(tree.repr_tree())
     tokens = list(get_markers(body=tree.body))
-    for token in tokens:
-        assert token.marker in ('read', 'write', 'stdout', 'stderr', 'import')
-    values = tuple(t.value for t in tokens if t.marker != 'import')
-    assert values == expected
+    markers = tuple(t.marker for t in tokens if t.marker != 'import')
+    assert markers == expected
 
 
 @pytest.mark.parametrize('text, expected', [
@@ -95,3 +95,37 @@ def test_get_globals_simple(text, expected):
     tokens = list(get_markers(body=tree.body))
     markers = tuple(t.marker for t in tokens)
     assert markers == expected
+
+
+def test_io_recursive_analise_body():
+    text = """
+    def inner(text):
+        print(text)
+
+    def outer():
+        inner('hello')
+    """
+    text = dedent(text)
+    tree = astroid.parse(text)
+    print(tree.repr_tree())
+    tokens = list(get_markers(body=tree.body[-1].body))
+    markers = tuple(t.marker for t in tokens)
+    assert markers == ('stdout', )
+
+
+def test_io_recursive_explicit_markers():
+    text = """
+    @deal.has('io')
+    @deal.raises()
+    def inner(text):
+        noting()
+
+    def outer():
+        inner('hello')
+    """
+    text = dedent(text)
+    tree = astroid.parse(text)
+    print(tree.repr_tree())
+    tokens = list(get_markers(body=tree.body[-1].body))
+    markers = tuple(t.marker for t in tokens)
+    assert markers == ('io', )
