@@ -13,6 +13,7 @@
   "addpackage": {
     "has": [
       "import",
+      "stderr",
       "stdout"
     ],
     "raises": [
@@ -22,6 +23,7 @@
   "addsitedir": {
     "has": [
       "import",
+      "stderr",
       "stdout"
     ]
   },

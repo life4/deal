@@ -78,6 +78,7 @@
   },
   "ZipFile._write_end_record": {
     "has": [
+      "stderr",
       "stdout"
     ],
     "raises": [

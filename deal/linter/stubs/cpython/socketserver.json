@@ -2,6 +2,7 @@
   "BaseServer.handle_error": {
     "has": [
       "import",
+      "stderr",
       "stdout"
     ]
   },

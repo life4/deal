@@ -190,6 +190,7 @@
   "parseargs": {
     "has": [
       "global",
+      "stderr",
       "stdout"
     ],
     "raises": [
@@ -198,6 +199,7 @@
   },
   "usage": {
     "has": [
+      "stderr",
       "stdout"
     ],
     "raises": [

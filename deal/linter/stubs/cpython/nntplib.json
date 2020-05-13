@@ -1,5 +1,8 @@
 {
   "NNTP.__init__": {
+    "has": [
+      "network"
+    ],
     "raises": [
       "err"
     ]

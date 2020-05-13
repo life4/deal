@@ -24,6 +24,21 @@
       "ValueError"
     ]
   },
+  "SocketIO.write": {
+    "has": [
+      "network"
+    ]
+  },
+  "create_connection": {
+    "has": [
+      "network"
+    ]
+  },
+  "getaddrinfo": {
+    "has": [
+      "network"
+    ]
+  },
   "socket.__getstate__": {
     "raises": [
       "TypeError"
@@ -38,6 +53,11 @@
   "socket._sendfile_use_send": {
     "raises": [
       "ValueError"
+    ]
+  },
+  "socket.connect": {
+    "has": [
+      "network"
     ]
   },
   "socket.makefile": {

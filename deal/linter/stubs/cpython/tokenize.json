@@ -18,6 +18,7 @@
   "main": {
     "has": [
       "import",
+      "stderr",
       "stdout"
     ],
     "raises": [

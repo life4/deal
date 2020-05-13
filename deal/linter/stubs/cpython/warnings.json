@@ -19,6 +19,7 @@
   },
   "_processoptions": {
     "has": [
+      "stderr",
       "stdout"
     ]
   },

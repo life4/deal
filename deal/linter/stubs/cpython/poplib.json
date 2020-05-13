@@ -1,5 +1,8 @@
 {
   "POP3._create_socket": {
+    "has": [
+      "network"
+    ],
     "raises": [
       "err"
     ]

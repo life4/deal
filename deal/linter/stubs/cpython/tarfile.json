@@ -11,6 +11,7 @@
   },
   "TarFile._dbg": {
     "has": [
+      "stderr",
       "stdout"
     ]
   },
@@ -213,6 +214,7 @@
     "has": [
       "import",
       "read",
+      "stderr",
       "stdout"
     ],
     "raises": [

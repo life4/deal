@@ -44,6 +44,7 @@
     "has": [
       "import",
       "read",
+      "stderr",
       "stdout"
     ],
     "raises": [

@@ -5,6 +5,9 @@
     ]
   },
   "FTP.connect": {
+    "has": [
+      "network"
+    ],
     "raises": [
       "err"
     ]
@@ -43,7 +46,8 @@
   "FTP.ntransfercmd": {
     "has": [
       "global",
-      "import"
+      "import",
+      "network"
     ],
     "raises": [
       "err"

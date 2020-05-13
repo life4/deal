@@ -20,6 +20,9 @@
     ]
   },
   "Telnet.open": {
+    "has": [
+      "network"
+    ],
     "raises": [
       "err"
     ]

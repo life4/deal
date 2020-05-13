@@ -16,6 +16,9 @@
     ]
   },
   "IMAP4._create_socket": {
+    "has": [
+      "network"
+    ],
     "raises": [
       "err"
     ]

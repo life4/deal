@@ -5,12 +5,16 @@
     ]
   },
   "SMTP._get_socket": {
+    "has": [
+      "network"
+    ],
     "raises": [
       "err"
     ]
   },
   "SMTP._print_debug": {
     "has": [
+      "stderr",
       "stdout"
     ]
   },
