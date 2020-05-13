@@ -49,10 +49,7 @@ def handle_astroid_import_from(expr: astroid.ImportFrom, **kwargs) -> Optional[T
 def handle_call(expr, dive: bool = True, stubs: StubsManager = None) -> Optional[Token]:
     token_info = dict(line=expr.lineno, col=expr.col_offset)
     name = get_name(expr.func)
-
-    # if called expression is too complex, try to infer it by astroid and that's all.
     if name is None:
-        yield from _markers_from_func(expr=expr)
         return
 
     # stdout and stderr
@@ -78,16 +75,21 @@ def handle_call(expr, dive: bool = True, stubs: StubsManager = None) -> Optional
         yield Token(marker='write', value='Path.open', **token_info)
         return
 
+    yield from _infer_markers(expr=expr, dive=dive, stubs=stubs)
+
+
+def _infer_markers(expr, dive: bool, stubs: StubsManager) -> Iterator[Token]:
+    inferred = infer(expr=expr.func)
     stubs_found = False
     if type(expr) is astroid.Call and stubs is not None:
-        for token in _markers_from_stubs(expr=expr, stubs=stubs):
+        for token in _markers_from_stubs(expr=expr, inferred=inferred, stubs=stubs):
             stubs_found = True
             yield token
 
     # Infer function call and check the function body for raises.
     # Do not dive into called function if we already found stubs for it.
     if not stubs_found and dive:
-        yield from _markers_from_func(expr=expr)
+        yield from _markers_from_func(expr=expr, inferred=inferred)
 
 
 @get_markers.register(*TOKENS.WITH)
@@ -149,8 +151,8 @@ def _is_pathlib_write(expr) -> bool:
     return False
 
 
-def _markers_from_stubs(expr: astroid.Call, stubs: StubsManager) -> Iterator[Token]:
-    for value in infer(expr=expr.func):
+def _markers_from_stubs(expr: astroid.Call, inferred, stubs: StubsManager) -> Iterator[Token]:
+    for value in inferred:
         if type(value) is not astroid.FunctionDef:
             continue
         module_name, func_name = get_full_name(expr=value)
@@ -162,8 +164,8 @@ def _markers_from_stubs(expr: astroid.Call, stubs: StubsManager) -> Iterator[Tok
             yield Token(marker=name, line=expr.lineno, col=expr.col_offset)
 
 
-def _markers_from_func(expr) -> Iterator[Token]:
-    for value in infer(expr.func):
+def _markers_from_func(expr, inferred) -> Iterator[Token]:
+    for value in inferred:
         if type(value) is not astroid.FunctionDef:
             continue
 
