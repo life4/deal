@@ -21,9 +21,9 @@ Deal can say you if something goes wrong but can't say if something can't go wro
 
 The next 3 parts of the documentation tell how to check different kinds of things that can happen when you call a function:
 
-1. Values -- arguments of the function and return values. That's all what pure functional languages have but Python is different.
-1. Exceptions -- be aware of where your code execution can stop.
-1. Side-effects -- when function mutates global values, does request to database or remote server, or even imports a module.
+1. [Values](values) -- arguments of the function and return values. That's all what pure functional languages have but Python is different.
+1. [Exceptions](exceptions) -- be aware of where your code execution can stop.
+1. [Side-effects](side-effects) -- when function mutates global values, does request to database or remote server, or even imports a module.
 
 ## Checking contracts
 

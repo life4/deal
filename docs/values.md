@@ -36,7 +36,7 @@ Post-condition allows to make additional constraints about function result. Use 
 
 ## deal.ensure
 
-Ensure is a [postcondition](./post) that accepts not only result, but also function arguments. Must be true after function executed.
+Ensure is a postcondition that accepts not only result, but also function arguments. Must be true after function executed.
 
 ```python
 @deal.ensure(lambda x, result: x != result)

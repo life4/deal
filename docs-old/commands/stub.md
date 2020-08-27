@@ -43,7 +43,7 @@ That's because the exception is raised deep inside the call chain. Analyzing fun
 Use `stub` command to generate stubs for a Python file:
 
 ```bash
-$ python3 -m deal stub /path/to/a/file.py
+python3 -m deal stub /path/to/a/file.py
 ```
 
 The command above will produce `/path/to/a/file.json` stub. On the next runs linter will use it do detect contracts.

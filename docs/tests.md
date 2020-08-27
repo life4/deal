@@ -3,8 +3,8 @@
 Deal can automatically test your functions. First of all, your function has to be prepared:
 
 1. All function arguments are type-annotated.
-1. All exceptions that function can raise are specified in [@deal.raises](decorators/raises).
-1. All pre-conditions are specified with [@deal.pre](decorators/pre).
+1. All exceptions that function can raise are specified in [@deal.raises](side-effects).
+1. All pre-conditions are specified with [@deal.pre](values).
 
 Then use `deal.cases` to get test cases for the function. Every case is a callable object that gets no arguments. Calling it will call the original function with suppressing allowed exceptions.
 
@@ -37,7 +37,7 @@ def test_div(case: deal.TestCase) -> None:
 1. For every arguments combination `deal.cases` returns `deal.TestCase` object.
 1. `deal.TestCase` on calling is doing the next steps:
     1. Calling the original function with all decorators and contracts.
-    1. Suppressing exceptions from `deal.pre` and `deal.raises`. In that case `typing.NoReturn` returned.
+    1. Suppressing exceptions from `deal.pre` and `deal.raises`. In that case, `typing.NoReturn` returned.
     1. Validating type of the function result if it's annotated.
     1. Returning the function result.
 
@@ -65,6 +65,8 @@ deal.cases(div, kwargs=dict(b=3))
 + `case.kwargs` -- dict of keyword arguments that will be passed into the original function.
 + `case.func` -- the original function itself
 + `case.exceptions` -- tuple of all exceptions that will be ignored.
+
+When called, `case` calls `case.func` and returns the call result. If an exception from `case.exceptions` was raised, `typing.NoReturn` returned.
 
 ## Practical example
 
@@ -104,6 +106,8 @@ contract_for_index_of = deal.chain(
     # LookupError will be raised if no elements found
     deal.raises(LookupError),
     deal.reason(LookupError, lambda items, item: item not in items)
+    # no side-effects
+    deal.has(),
 )
 ```
 
@@ -126,6 +130,6 @@ for case in deal.cases(index_of, count=1000):
     # run test case
     result = case()
     if result is not NoReturn:
-        # if case is valid show it
+        # if no exceptions was raised, print the result
         print(f"index of {case.kwargs['item']} in {case.kwargs['items']} is {result}")
 ```

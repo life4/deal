@@ -8,7 +8,7 @@ def my_sum(*args):
     return sum(args)
 ```
 
-If you run Python with `-O` option, contracts will be disabled. This is uses Python's `__debug__` option:
+If you run Python with `-O` option, these contracts will be disabled. This is uses Python's `__debug__` option:
 
 > The built-in variable `__debug__` is True under normal circumstances, False when optimization is requested (command line option -O).
 > - [Official documentation](https://docs.python.org/3/reference/simple_stmts.html#assert)
