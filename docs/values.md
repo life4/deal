@@ -1,4 +1,4 @@
-## Values
+# Values
 
 ## deal.pre
 
@@ -128,9 +128,9 @@ f(12)
 
 Contracts mostly support generators (`yield`) ans async functions:
 
-| contract | yield                              | async |
-| -------- | ---------------------------------- | ----- |
-| pre      | yes                                | yes   |
-| post     | yes (checks every yielded value)   | yes   |
-| ensure   | yes (checks every yielded value)   | yes   |
-| inv      | partially (before execution) | partially (before execution) |
+| contract | yield                            | async                        |
+| -------- | -------------------------------- | ---------------------------- |
+| pre      | yes                              | yes                          |
+| post     | yes (checks every yielded value) | yes                          |
+| ensure   | yes (checks every yielded value) | yes                          |
+| inv      | partially (before execution)     | partially (before execution) |

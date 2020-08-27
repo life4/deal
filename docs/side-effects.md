@@ -1,6 +1,6 @@
 # Side-effects
 
-# deal.has
+## deal.has
 
 `@deal.has` is a way to specify markers for a function. Markers are tags about kinds of side-effects which the function has. For example:
 
@@ -34,15 +34,13 @@ def main(stream=sys.stdout):
 
 ## Built-in markers
 
-
-
-| code    | marker          | allows                    |
-| ------- | --------------- | ------------------------- |
-| DEAL042 | `io`            | everything below          |
-| DEAL043 | -- `read`       | read a file               |
-| DEAL044 | -- `write`      | write into a file         |
-| DEAL045 | -- `stdout`     | `sys.stdout` and `print`  |
-| DEAL046 | -- `stderr`     | `sys.stderr`              |
-| DEAL047 | -- `network`    | network communications, `socket` |
-| DEAL051 | `global`        | `global` and `nonlocal`   |
-| DEAL052 | `import`        | `import`                  |
+| code    | marker       | allows                           |
+| ------- | ------------ | -------------------------------- |
+| DEAL042 | `io`         | everything below                 |
+| DEAL043 | -- `read`    | read a file                      |
+| DEAL044 | -- `write`   | write into a file                |
+| DEAL045 | -- `stdout`  | `sys.stdout` and `print`         |
+| DEAL046 | -- `stderr`  | `sys.stderr`                     |
+| DEAL047 | -- `network` | network communications, `socket` |
+| DEAL051 | `global`     | `global` and `nonlocal`          |
+| DEAL052 | `import`     | `import`                         |

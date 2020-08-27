@@ -15,7 +15,7 @@ So, think about it as typing on steroids. However, Deal doesn't try to replace t
 
 ## Open-world assumption
 
-Deal can say you if something goes wrong but can't say if something can't go wrong. For example, if the function explicitly raises an exception or does it almost on every input, Deal will say you about it. However, if the function does it somewhere deep inside of call stack and only on one value from million, chances that it will be caught are small. So, if you say "this function can raise ValueError" but Deal doesn't see it anywhere, it will trust you and don't argue about it. Deal assumes that developer is smart and can see something that the framework can't.
+Deal can say you if something goes wrong but can't say if something can't go wrong. It is known as [open-world assumption](https://en.wikipedia.org/wiki/Open-world_assumption). For example, if the function explicitly raises an exception or does it almost on every input, Deal will say you about it. However, if the function does it somewhere deep inside of call stack and only on one value from million, chances that it will be caught are small. So, if you say "this function can raise ValueError" but Deal doesn't see it anywhere, it will trust you and don't argue about it. Deal assumes that the developer is smart and can see something that the framework can't.
 
 ## Writing contracts
 
@@ -30,13 +30,12 @@ The next 3 parts of the documentation tell how to check different kinds of thing
 There are 3 ways to check contracts:
 
 1. **Runtime**. Call the functions, do usual tests, just play around with the application, deploy it to staging, and Deal will check contracts in runtime. Of course, you can disable contracts on production.
-1. **Tests**. Deal is easily integrates with PyTest or any other testing framework. It does property-based testing for functions with contracts. Also, deal has `test` CLI command to run find and run all pure functions in the project.
+1. **Tests**. Deal is easily integrates with PyTest or any other testing framework. It does property-based testing for functions with contracts. Also, deal has `test` CLI command to find and run all pure functions in the project.
 1. **Linter**. This is the most amazing part of Deal. It statically checks constant values in the code, does values inference, contracts partial execution, propagates exceptions and side-effects. Deal has `lint` CLI command for it and flake8 integration.
 
 ## Dive deeper
 
-It's not "advanced usage", there is nothing advanced or difficult. It's about writing better contracts or saving a bit more time. Not important but very useful. So, don't be afraid to dive in this section!
-
+It's not "advanced usage", there is nothing advanced or difficult. It's about writing better contracts or saving a bit of time. Not important but very useful. So, don't be afraid to dive in this section!
 
 ## Additional tools
 

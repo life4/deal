@@ -1,46 +1,40 @@
-## Exceptions
+# Exceptions
 
-Every contract type has it's own exception type. Every exception inherited from `ContractError`. `ContractError` inherited from built-in `AssertionError`.
+## deal.raises
 
-Custom error message for any contract can be specified by `message` argument:
-
-```python
-@deal.pre(lambda name: name.lower() != 'oleg', message='user name cannot be Oleg')
-def hello(name):
-    print(f'hello, {name}')
-
-hello('Oleg')
-# PreContractError: user name cannot be Oleg
-```
-
-Custom exception for any contract can be specified by `exception` argument:
+`@deal.raises` specifies which exceptions function can raise.
 
 ```python
-@deal.pre(lambda role: role in ('user', 'admin'), exception=LookupError)
-def change_role(role):
-    print(f'now you are {role}!')
+@deal.raises(ZeroDivisionError)
+def divide(*args):
+    return sum(args[:-1]) / args[-1]
 
-change_role('superuser')
-# LookupError:
+divide(1, 2, 3, 6)
+# 1.0
+
+divide(1, 2, 3, 0)
+# ZeroDivisionError: division by zero
+
+divide()
+# IndexError: tuple index out of range
+# The above exception was the direct cause of the following exception:
+# RaisesContractError:
 ```
 
-Also, contract can return string, and this string will be used as error message:
+`@deal.raises()` without exceptions specified means that function raises no exception.
+
+## deal.reason
+
+Checks condition if exception was raised.
 
 ```python
-def contract(name):
-    if name.lower() == 'oleg':
-        return 'not today, Oleg'
-    if name in ('admin', 'moderator'):
-        return 'this name is reservered'
-    return True
-
-@deal.pre(contract)
-def register(name):
-    print(f'welcome on board, {name}!')
-
-register('Greg')
-# welcome on board, Greg!
-
-register('Oleg')
-# PreContractError: not today, Oleg
+@deal.reason(ZeroDivisionError, lambda a, b: b == 0)
+def divide(a, b):
+    return a / b
 ```
+
+## Motivation
+
+Exceptions are the most explicit part of Python. Any code can raise any exception. None of the tools can say you which exceptions can be raised in some function. However, sometimes you can infer it yourself and say it to other people. And `@deal.raises` will remain you if function has raised something that you forgot to specify.
+
+Also, it's an important decorator for autotesting. Deal won't fail tests for exceptions that was marked as allowed with `@deal.raises`.
