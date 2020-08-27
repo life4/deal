@@ -116,7 +116,7 @@ def test_io_recursive_analise_body():
 
 def test_io_recursive_explicit_markers():
     text = """
-    @deal.has('io')
+    @deal.has('io', invalid)
     @deal.raises()
     def inner(text):
         noting()

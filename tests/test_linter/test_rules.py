@@ -188,6 +188,7 @@ def test_check_pure():
     checker = CheckMarkers()
     text = """
     @deal.pure
+    @deal.post(lambda x: x)  # skip other contracts
     def test(a):
         global b
         return b
@@ -197,7 +198,7 @@ def test_check_pure():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(3, 4, 'DEAL041 missed marker (global)')]
+        expected = [(4, 4, 'DEAL041 missed marker (global)')]
         assert actual == expected
 
 
