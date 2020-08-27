@@ -16,5 +16,6 @@ docs/build/
 /setup.py
 .dephell_report/
 .mypy_cache/
+.pytest_cache/
 /tmp.py
 .hypothesis/
