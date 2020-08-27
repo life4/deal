@@ -170,7 +170,7 @@ def test_check_raises_inherited():
 def test_check_prints():
     checker = CheckMarkers()
     text = """
-    @deal.silent
+    @deal.pure
     def test(a):
         print(1)
         return 1

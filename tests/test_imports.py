@@ -18,20 +18,20 @@ def test_get_contracts():
         a = 1
         1 / 0
         not_a_deal.module_load(something)
-        deal.module_load(deal.silent)
+        deal.module_load(deal.pure)
         """
     text = dedent(text)
     tree = ast.parse(text)
     print(ast.dump(tree))
     nodes = DealLoader._get_contracts(tree=tree)
-    assert [get_name(node) for node in nodes] == ['deal.silent']
+    assert [get_name(node) for node in nodes] == ['deal.pure']
 
 
 @pytest.mark.parametrize('text, expected', [
-    ('deal.silent', deal.silent),
-    ('deal.silent()', deal.silent),
+    ('deal.pure', deal.pure),
+    # ('deal.has()', deal.has),
     ('deal.pre(something)', None),
-    ('not_a_deal.silent', None),
+    ('not_a_deal.pure', None),
     ('deal.typo', None),
 ])
 def test_exec_contract(text, expected):
@@ -68,7 +68,7 @@ class SubLoader:
 def test_exec_module():
     text = """
         import deal
-        deal.module_load(deal.silent)
+        deal.module_load(deal.has())
         print(1)
         """
     text = dedent(text)
@@ -122,12 +122,12 @@ def test_exec_module_no_source():
 def test_module_load():
     assert deal.activate()
     try:
-        deal.module_load(deal.silent)
+        deal.module_load(deal.pure)
     finally:
         assert deactivate()
 
     with pytest.raises(RuntimeError):
-        deal.module_load(deal.silent)
+        deal.module_load(deal.pure)
 
 
 def test_module_load_no_contracts():
@@ -147,7 +147,7 @@ def test_activate():
 def test_smoke():
     text = """
         import deal
-        deal.module_load(deal.silent)
+        deal.module_load(deal.pure)
         print(1)
         """
     text = dedent(text)

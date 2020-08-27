@@ -112,9 +112,3 @@ def offline(_func: Callable = None, **kwargs):
     if _func is None:
         return has('print', **kwargs)
     return has('print')(_func)
-
-
-def silent(_func: Callable = None, **kwargs):
-    if _func is None:
-        return has(**kwargs)
-    return has(**kwargs)(_func)

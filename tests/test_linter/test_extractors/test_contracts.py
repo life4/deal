@@ -12,10 +12,10 @@ from deal.linter._extractors import get_contracts
 
 @pytest.mark.parametrize('text, expected', [
     ('@deal.post(lambda x: x>0)', ('post', )),
-    ('@deal.silent', ('silent', )),
-    ('@deal.silent()', ('silent', )),
-    ('@deal.chain(deal.silent)', ('silent', )),
-    ('@deal.chain(deal.silent, deal.post(lambda x: x>0))', ('silent', 'post')),
+    ('@deal.pure', ('pure', )),
+    ('@deal.pure()', ('pure', )),
+    ('@deal.chain(deal.pure)', ('pure', )),
+    ('@deal.chain(deal.pure, deal.post(lambda x: x>0))', ('pure', 'post')),
 ])
 def test_get_contracts_decorators(text, expected):
     text += '\ndef f(x): pass'
@@ -38,7 +38,7 @@ def test_get_contracts_infer():
         from io import StringIO
         import deal
 
-        contracts = deal.chain(deal.silent, deal.post(lambda x: x>0))
+        contracts = deal.chain(deal.pure, deal.post(lambda x: x>0))
 
         @contracts
         def f(x):
@@ -54,4 +54,4 @@ def test_get_contracts_infer():
     print(tree.repr_tree())
     decos = tree.body[-2].decorators.nodes
     returns = tuple(cat for cat, _ in get_contracts(decos))
-    assert returns == ('silent', 'post')
+    assert returns == ('pure', 'post')

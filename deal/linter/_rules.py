@@ -181,7 +181,7 @@ class CheckMarkers:
         for contract in func.contracts:
             if contract.category == Category.HAS:
                 markers = [get_value(arg) for arg in contract.args]
-            elif contract.category in (Category.PURE, Category.SILENT):
+            elif contract.category == Category.PURE:
                 markers = []
             else:
                 continue

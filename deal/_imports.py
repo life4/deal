@@ -54,7 +54,7 @@ class DealLoader:
             contracts.append(contract)
 
         # execute module with contracts
-        wrapped = _aliases.chain(contract)(self._loader.exec_module)
+        wrapped = _aliases.chain(*contracts)(self._loader.exec_module)
         wrapped(module)
 
     @staticmethod
@@ -74,7 +74,7 @@ class DealLoader:
         """Get AST node and return a contract function
         """
         if type(node) is ast.Call and not node.args:    # type: ignore
-            return cls._exec_contract(node.func)        # type: ignore
+            return cls._exec_contract(node.func)()      # type: ignore
 
         if not isinstance(node, ast.Attribute):
             return None
