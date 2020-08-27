@@ -72,8 +72,7 @@ def reason(
     )
 
 
-require = pre
-inv = invariant = _decorators.Invariant
+inv = _decorators.Invariant
 
 
 @overload

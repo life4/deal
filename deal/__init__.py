@@ -22,8 +22,8 @@ __license__ = 'MIT'
 
 # app
 from ._aliases import (
-    chain, ensure, inv, invariant, post,
-    pre, pure, raises, reason, require, safe, has,
+    chain, ensure, inv, post,
+    pre, pure, raises, reason, safe, has,
 )
 from ._exceptions import *  # noQA
 from ._imports import activate, module_load
@@ -54,9 +54,7 @@ __all__ = [
     'safe',
 
     # aliases
-    'invariant',
     'pure',
-    'require',
 
     # module level
     'module_load',

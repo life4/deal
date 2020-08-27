@@ -7,7 +7,7 @@ import deal
 
 
 def get_func():
-    @deal.require(lambda x: x > 0)
+    @deal.pre(lambda x: x > 0)
     @deal.post(lambda x: x > 0)
     @deal.ensure(lambda *args, **kwargs: True)
     @deal.raises(ValueError)
