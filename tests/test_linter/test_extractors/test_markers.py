@@ -8,6 +8,7 @@ import pytest
 
 # project
 from deal.linter._extractors import get_markers
+from deal.linter._stub import StubsManager
 
 
 @pytest.mark.parametrize('text, expected', [
@@ -129,3 +130,28 @@ def test_io_recursive_explicit_markers():
     tokens = list(get_markers(body=tree.body[-1].body))
     markers = tuple(t.marker for t in tokens)
     assert markers == ('io', )
+
+
+def test_markers_from_stubs():
+    text = """
+    import ast
+
+    nothing = None
+
+    def do_nothing():
+        pass
+
+    @deal.has()
+    def inner(text):
+        ast.walk(None)
+        not_resolvable()
+        do_nothing()
+        nothing()
+    """
+    text = dedent(text)
+    tree = astroid.parse(text)
+    print(tree.repr_tree())
+    stubs = StubsManager()
+    tokens = list(get_markers(body=tree.body[-1].body, stubs=stubs))
+    markers = tuple(t.marker for t in tokens)
+    assert markers == ('import', )
