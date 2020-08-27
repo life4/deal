@@ -46,7 +46,7 @@ def ensure(
 
 
 def raises(
-    *exceptions,
+    *exceptions: Exception,
     message: str = None,
     exception: ExceptionType = None,
     debug: bool = False,
@@ -56,7 +56,7 @@ def raises(
 
 
 def has(
-    *markers,
+    *markers: str,
     message: str = None,
     exception: ExceptionType = None,
     debug: bool = False,
@@ -123,5 +123,5 @@ def offline(_func: Callable = None, **kwargs):
 
 def silent(_func: Callable = None, **kwargs):
     if _func is None:
-        return has('network', **kwargs)
-    return has('network')(_func)
+        return has(**kwargs)
+    return has(**kwargs)(_func)

@@ -9,9 +9,9 @@ import deal
 from .helpers import run_sync
 
 
-def test_network_request_in_offline_raises_exception():
+def test_raises_exception():
 
-    @deal.offline
+    @deal.has()
     def func(do):
         if do:
             http = urllib3.PoolManager()
@@ -22,9 +22,9 @@ def test_network_request_in_offline_raises_exception():
         func(True)
 
 
-def test_network_request_in_offline_and_raises_specified_exception():
+def test_raises_specified_exception():
 
-    @deal.offline(exception=KeyError)
+    @deal.has(exception=KeyError)
     def func(do):
         if do:
             http = urllib3.PoolManager()
@@ -35,8 +35,20 @@ def test_network_request_in_offline_and_raises_specified_exception():
         func(True)
 
 
+def test_allow_network():
+
+    @deal.has('network')
+    def func(do):
+        if do:
+            http = urllib3.PoolManager()
+            http.request('GET', 'http://httpbin.org/robots.txt')
+
+    func(False)
+    func(True)
+
+
 def test_decorating_async_function():
-    @deal.offline
+    @deal.has()
     async def func(do):
         if not do:
             return 1
@@ -49,7 +61,7 @@ def test_decorating_async_function():
 
 
 def test_decorating_generator():
-    @deal.offline
+    @deal.has()
     def func(do):
         if not do:
             yield 1

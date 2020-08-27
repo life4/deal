@@ -1,3 +1,5 @@
+import sys
+
 # external
 import pytest
 
@@ -8,8 +10,8 @@ import deal
 from .helpers import run_sync
 
 
-def test_silent_contract_not_allow_print():
-    @deal.silent
+def test_not_allow_print():
+    @deal.has()
     def func(msg):
         if msg:
             print(msg)
@@ -19,8 +21,39 @@ def test_silent_contract_not_allow_print():
         func('bad')
 
 
+def test_allow_print():
+    @deal.has('stdout')
+    def func(msg):
+        if msg:
+            print(msg)
+
+    func(None)
+    func('good')
+
+
+def test_not_allow_stderr():
+    @deal.has()
+    def func(msg):
+        if msg:
+            print(msg, file=sys.stderr)
+
+    func(None)
+    with pytest.raises(deal.SilentContractError):
+        func('bad')
+
+
+def test_allow_stderr():
+    @deal.has('stderr')
+    def func(msg):
+        if msg:
+            print(msg, file=sys.stderr)
+
+    func(None)
+    func('good')
+
+
 def test_decorating_async_function():
-    @deal.silent
+    @deal.has()
     async def func(msg):
         if msg:
             print(msg)
@@ -32,7 +65,7 @@ def test_decorating_async_function():
 
 
 def test_decorating_generator():
-    @deal.silent
+    @deal.has()
     def func(msg):
         if msg:
             print(msg)

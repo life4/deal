@@ -154,6 +154,54 @@ def test_has_write(markers: list, expected: bool):
     assert deal.has(*markers).has_write is expected
 
 
+def test_decorating_regular_function():
+    @deal.has()
+    def func(msg):
+        if msg:
+            print(msg)
+        return msg
+
+    assert func('') == ''
+    with pytest.raises(deal.SilentContractError):
+        func('a')
+
+
+def test_custom_exception():
+    @deal.has(exception=KeyError)
+    def func(msg):
+        if msg:
+            print(msg)
+        return msg
+
+    assert func('') == ''
+    with pytest.raises(KeyError):
+        func('a')
+
+
+def test_custom_message():
+    @deal.has(message='oh hi mark')
+    def func(msg):
+        if msg:
+            print(msg)
+        return msg
+
+    assert func('') == ''
+    with pytest.raises(deal.SilentContractError, match='oh hi mark'):
+        func('a')
+
+
+def test_custom_exc_and_message():
+    @deal.has(exception=KeyError, message='oh hi mark')
+    def func(msg):
+        if msg:
+            print(msg)
+        return msg
+
+    assert func('') == ''
+    with pytest.raises(KeyError, match='oh hi mark'):
+        func('a')
+
+
 def test_decorating_async_function():
     @deal.has()
     async def func(msg):
