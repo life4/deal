@@ -1,22 +1,23 @@
 
 
 class _State:
-    __slots__ = ('main', 'debug')
+    __slots__ = ('debug', )
+    debug: bool
 
     def __init__(self):
         self.reset()
 
     def reset(self) -> None:
-        self.main = True
         self.debug = __debug__
 
-    def switch(self, *, main: bool = None, debug: bool = None) -> None:
-        if main is not None:
-            self.main = main
-        if debug is not None:
-            self.debug = debug
+    def enable(self) -> None:
+        self.debug = True
+
+    def disable(self) -> None:
+        self.debug = False
 
 
 state = _State()
 reset = state.reset
-switch = state.switch
+enable = state.enable
+disable = state.disable

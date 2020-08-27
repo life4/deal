@@ -23,12 +23,11 @@ class Base(Generic[_CallableType]):
     function: _CallableType
 
     def __init__(self, validator, *, message: str = None,
-                 exception: ExceptionType = None, debug: bool = False):
+                 exception: ExceptionType = None):
         """
         Step 1. Set contract (validator).
         """
         self.validator = self._make_validator(validator, message=message)
-        self.debug = debug
         if exception:
             self.exception = exception
         if message:
@@ -115,9 +114,7 @@ class Base(Generic[_CallableType]):
 
     @property
     def enabled(self) -> bool:
-        if self.debug:
-            return state.debug
-        return state.main
+        return state.debug
 
     def __call__(self, function: _CallableType) -> _CallableType:
         """

@@ -28,16 +28,19 @@ from ._aliases import (
 from ._exceptions import *  # noQA
 from ._imports import activate, module_load
 from ._schemes import Scheme
-from ._state import reset, switch
+from ._state import reset, enable, disable
 from ._testing import TestCase, cases
 
 
 __all__ = [
     'cases',
-    'reset',
     'Scheme',
-    'switch',
     'TestCase',
+
+    # state
+    'disable',
+    'enable',
+    'reset',
 
     # decorators
     'chain',

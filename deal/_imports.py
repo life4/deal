@@ -13,12 +13,6 @@ from ._state import state
 from .linter._extractors.common import get_name
 
 
-def _enabled(debug: bool = False) -> bool:
-    if debug:
-        return state.debug
-    return state.main
-
-
 class DealFinder(PathFinder):
     @classmethod
     def find_spec(cls, *args, **kwargs):
@@ -92,8 +86,8 @@ class DealLoader:
         return contract
 
 
-def module_load(*contracts, debug: bool = False) -> None:
-    if not _enabled(debug):
+def module_load(*contracts) -> None:
+    if not state.debug:
         return
     if not contracts:
         raise RuntimeError('no contracts specified')
@@ -109,7 +103,7 @@ def activate(debug: bool = False) -> bool:
     This function must be called before importing anything
     with deal.module_load() contract.
     """
-    if not _enabled(debug):
+    if not state.debug:
         return False
     if DealFinder in sys.meta_path:
         return False

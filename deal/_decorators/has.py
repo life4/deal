@@ -33,14 +33,13 @@ class Has(Base[_CallableType]):
     exception: ExceptionType = None
     markers: FrozenSet[str]
 
-    def __init__(self, *markers, message: str = None, exception: ExceptionType = None, debug: bool = False):
+    def __init__(self, *markers, message: str = None, exception: ExceptionType = None):
         """
         Step 1. Set allowed markers.
         """
         self.markers = frozenset(markers)
         self.message = message
         self.exception = exception
-        self.debug = debug
 
     def patched_function(self, *args, **kwargs):
         """

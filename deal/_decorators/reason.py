@@ -14,7 +14,7 @@ class Reason(Base[_CallableType]):
     exception: ExceptionType = ReasonContractError
 
     def __init__(self, event: Exception, validator: Callable, *,
-                 message: str = None, exception: ExceptionType = None, debug: bool = False):
+                 message: str = None, exception: ExceptionType = None):
         """
         Step 1. Set allowed exceptions list.
         """
@@ -23,7 +23,6 @@ class Reason(Base[_CallableType]):
             validator=validator,
             message=message,
             exception=exception,
-            debug=debug,
         )
 
     def patched_function(self, *args, **kwargs):

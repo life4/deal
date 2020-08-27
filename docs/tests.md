@@ -21,9 +21,17 @@ for case in deal.cases(div):
     case()
 ```
 
+## CLI
+
+There is a CLI command named `test`. It extracts `@deal.pure` (alias for `@deal.has()`) wrapped functions and runs `deal.cases` powered tests for it.
+
+```bash
+python3 -m deal test project/*.py
+```
+
 ## PyTest
 
-A simple snippet to use `deal.cases` with [pytest](https://docs.pytest.org/en/latest/) (type annotations are optional):
+A simple snippet to use `deal.cases` with [pytest](https://docs.pytest.org/en/latest/) (type annotations for the test function are optional):
 
 ```python
 @pytest.mark.parametrize('case', deal.cases(div))

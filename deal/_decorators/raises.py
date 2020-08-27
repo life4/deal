@@ -13,7 +13,7 @@ _CallableType = TypeVar('_CallableType', bound=Callable)
 class Raises(Base[_CallableType]):
     exception: ExceptionType = RaisesContractError
 
-    def __init__(self, *exceptions, message: str = None, exception: ExceptionType = None, debug: bool = False):
+    def __init__(self, *exceptions, message: str = None, exception: ExceptionType = None):
         """
         Step 1. Set allowed exceptions list.
         """
@@ -22,7 +22,6 @@ class Raises(Base[_CallableType]):
             validator=None,  # type: ignore
             message=message,
             exception=exception,
-            debug=debug,
         )
 
     def patched_function(self, *args, **kwargs):

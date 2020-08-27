@@ -14,10 +14,9 @@ def pre(
     *,
     message: str = None,
     exception: ExceptionType = None,
-    debug: bool = False,
 ) -> Callable[[_CallableType], _CallableType]:
     return _decorators.Pre[_CallableType](
-        validator, message=message, exception=exception, debug=debug,
+        validator, message=message, exception=exception,
     )
 
 
@@ -26,10 +25,9 @@ def post(
     *,
     message: str = None,
     exception: ExceptionType = None,
-    debug: bool = False,
 ) -> Callable[[_CallableType], _CallableType]:
     return _decorators.Post[_CallableType](
-        validator, message=message, exception=exception, debug=debug,
+        validator, message=message, exception=exception,
     )
 
 
@@ -38,10 +36,9 @@ def ensure(
     *,
     message: str = None,
     exception: ExceptionType = None,
-    debug: bool = False,
 ) -> Callable[[_CallableType], _CallableType]:
     return _decorators.Ensure[_CallableType](
-        validator, message=message, exception=exception, debug=debug,
+        validator, message=message, exception=exception,
     )
 
 
@@ -49,20 +46,18 @@ def raises(
     *exceptions: Exception,
     message: str = None,
     exception: ExceptionType = None,
-    debug: bool = False,
 ) -> Callable[[_CallableType], _CallableType]:
     cls = _decorators.Raises[_CallableType]
-    return cls(*exceptions, message=message, exception=exception, debug=debug)
+    return cls(*exceptions, message=message, exception=exception)
 
 
 def has(
     *markers: str,
     message: str = None,
     exception: ExceptionType = None,
-    debug: bool = False,
 ) -> Callable[[_CallableType], _CallableType]:
     cls = _decorators.Has[_CallableType]
-    return cls(*markers, message=message, exception=exception, debug=debug)
+    return cls(*markers, message=message, exception=exception)
 
 
 def reason(
@@ -71,10 +66,9 @@ def reason(
     *,
     message: str = None,
     exception: ExceptionType = None,
-    debug: bool = False,
 ) -> Callable[[_CallableType], _CallableType]:
     return _decorators.Reason[_CallableType](
-        event, validator, message=message, exception=exception, debug=debug,
+        event, validator, message=message, exception=exception,
     )
 
 
@@ -87,7 +81,6 @@ def safe(
     *,
     message: str = None,
     exception: ExceptionType = None,
-    debug: bool = False,
 ) -> Callable[[_CallableType], _CallableType]:
     pass  # pragma: no cover
 

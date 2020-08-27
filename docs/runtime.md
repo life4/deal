@@ -2,17 +2,9 @@
 
 ...
 
-## Disable contracts on production
+## Contracts on production
 
-If you want disable contracts on production, pass `debug=True` to decorator:
-
-```python
-@deal.post(lambda x: x > 0, debug=True)
-def my_sum(*args):
-    return sum(args)
-```
-
-If you run Python with `-O` option, these contracts will be disabled. This is uses Python's `__debug__` option:
+If you run Python with `-O` option, all contracts will be disabled. This is uses Python's `__debug__` option:
 
 > The built-in variable `__debug__` is True under normal circumstances, False when optimization is requested (command line option -O).
 > Source: [Python documentation](https://docs.python.org/3/reference/simple_stmts.html#assert)
@@ -20,19 +12,13 @@ If you run Python with `-O` option, these contracts will be disabled. This is us
 Also, you can explicitly enable or disable contracts:
 
 ```python
-# disable contracts without `debug=True`
-deal.switch(main=False)
-
-# enable contracts with `debug=True`
-deal.switch(debug=True)
-
-# disable contracts with `debug=True`
-deal.switch(debug=False)
-
 # disable all contracts
-deal.switch(main=False, debug=False)
+deal.disable()
 
-# return default behavior
-# (`main` enabled, `debug` the same as `__debug__`)
+# enable all contracts
+deal.enable()
+
+# restore the default behavior
+# (enabled if `__debug__` is True, disabled otherwise)
 deal.reset()
 ```
