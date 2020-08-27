@@ -23,7 +23,7 @@ for case in deal.cases(div):
 
 ## CLI
 
-There is a CLI command named `test`. It extracts `@deal.pure` (alias for `@deal.has()`) wrapped functions and runs `deal.cases` powered tests for it.
+There is a CLI command named `test`. It extracts `@deal.has()` (without arguments) wrapped functions and runs `deal.cases` powered tests for it.
 
 ```bash
 python3 -m deal test project/*.py

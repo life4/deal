@@ -106,9 +106,3 @@ def chain(*contracts) -> Callable[[_CallableType], _CallableType]:
 
 def pure(_func: _CallableType) -> _CallableType:
     return chain(has(), safe)(_func)
-
-
-def offline(_func: Callable = None, **kwargs):
-    if _func is None:
-        return has('print', **kwargs)
-    return has('print')(_func)

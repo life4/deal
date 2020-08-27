@@ -22,7 +22,7 @@ def test_raises_expects_function_to_raise_error():
 
 def test_raises_doesnt_override_another_contract():
     @deal.raises(ZeroDivisionError)
-    @deal.offline
+    @deal.has()
     def func(do, number):
         if do:
             http = urllib3.PoolManager()
@@ -52,7 +52,7 @@ def test_decorating_async_function():
 
 def test_raises_doesnt_override_another_contract_async():
     @deal.raises(ZeroDivisionError)
-    @deal.offline
+    @deal.has()
     async def func(do, number):
         if do:
             http = urllib3.PoolManager()
@@ -82,7 +82,7 @@ def test_decorating_generator():
 
 def test_raises_generator():
     @deal.raises(ZeroDivisionError)
-    @deal.offline
+    @deal.has()
     def func(do, number):
         if do:
             http = urllib3.PoolManager()

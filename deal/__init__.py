@@ -22,7 +22,7 @@ __license__ = 'MIT'
 
 # app
 from ._aliases import (
-    chain, ensure, inv, invariant, offline, post,
+    chain, ensure, inv, invariant, post,
     pre, pure, raises, reason, require, safe, has,
 )
 from ._exceptions import *  # noQA
@@ -47,7 +47,6 @@ __all__ = [
     'ensure',
     'has',
     'inv',
-    'offline',
     'post',
     'pre',
     'raises',
