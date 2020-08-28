@@ -1,6 +1,6 @@
 # Runtime
 
-...
+Call the functions, do usual tests, just play around with the application, deploy it to staging, and Deal will check contracts in runtime. On contract violation, deal raises an exception. In general, you shouldn't ever catch these exceptions because contracts must be never violated. Contract violation means a bug.
 
 ## Contracts on production
 

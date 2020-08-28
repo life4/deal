@@ -1,4 +1,4 @@
-# Testing
+# Tests
 
 Deal can automatically test your functions. First of all, your function has to be prepared:
 

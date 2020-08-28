@@ -29,9 +29,9 @@ The next 3 parts of the documentation tell how to check different kinds of thing
 
 There are 3 ways to check contracts:
 
-1. **Runtime**. Call the functions, do usual tests, just play around with the application, deploy it to staging, and Deal will check contracts in runtime. Of course, you can disable contracts on production.
-1. **Tests**. Deal is easily integrates with PyTest or any other testing framework. It does property-based testing for functions with contracts. Also, deal has `test` CLI command to find and run all pure functions in the project.
-1. **Linter**. This is the most amazing part of Deal. It statically checks constant values in the code, does values inference, contracts partial execution, propagates exceptions and side-effects. Deal has `lint` CLI command for it and flake8 integration.
+1. [Runtime](runtime). Call the functions, do usual tests, just play around with the application, deploy it to staging, and Deal will check contracts in runtime. Of course, you can disable contracts on production.
+1. [Tests](tests). Deal is easily integrates with PyTest or any other testing framework. It does property-based testing for functions with contracts. Also, deal has `test` CLI command to find and run all pure functions in the project.
+1. [Linter](linter). This is the most amazing part of Deal. It statically checks constant values in the code, does values inference, contracts partial execution, propagates exceptions and side-effects. Deal has `lint` CLI command for it and flake8 integration.
 
 ## Dive deeper
 
@@ -41,6 +41,6 @@ It's not "advanced usage", there is nothing advanced or difficult. It's about wr
 
 Some external tools that can come in handy when using Deal:
 
-+ [flake8](https://flake8.pycqa.org/en/latest/) and [flakehell](https://github.com/life4/flakehell/) can run Deal linter. See [awesome-flake8-extensions](https://github.com/DmytroLitvinov/awesome-flake8-extensions) for more checks to catch bugs that are outside of Deal responsibility.
++ [flake8](https://flake8.pycqa.org/en/latest/) and [flakehell](https://github.com/life4/flakehell/) can run [Deal linter](linter). See [awesome-flake8-extensions](https://github.com/DmytroLitvinov/awesome-flake8-extensions) for more checks to catch bugs that are outside of Deal responsibility.
 + [mypy](https://mypy.readthedocs.io/en/stable/) is good for checking type annotations. So, we don't do that. See [awesome-python-typing](https://github.com/typeddjango/awesome-python-typing) for alternatives and runtime type checking solutions.
-+ [pytest](https://docs.pytest.org/en/latest/) is a powerful framework to write and run tests.
++ [pytest](https://docs.pytest.org/en/latest/) is a powerful framework to write and run [Deal tests](tests).
