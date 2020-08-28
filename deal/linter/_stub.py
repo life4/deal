@@ -17,10 +17,12 @@ CPYTHON_ROOT = ROOT / 'cpython'
 
 class StubFile:
     __slots__ = ('path', '_content')
+    path: Path
+    _content: Dict[str, Dict[str, Any]]
 
     def __init__(self, path: Path) -> None:
         self.path = path
-        self._content = dict()  # type: Dict[str, Dict[str, Any]]
+        self._content = dict()
 
     def load(self) -> None:
         with self.path.open(encoding='utf8') as stream:
@@ -51,12 +53,15 @@ class StubFile:
 
 class StubsManager:
     __slots__ = ('paths', '_modules')
+    _modules: Dict[str, StubFile]
+    paths: Tuple[Path, ...]
+
     default_paths = (ROOT, CPYTHON_ROOT)
 
     def __init__(self, paths: Sequence[Path] = None):
-        self._modules = dict()  # type: Dict[str, StubFile]
+        self._modules = dict()
         if paths is None:
-            self.paths = self.default_paths  # type: Tuple[Path, ...]
+            self.paths = self.default_paths
         else:
             self.paths = tuple(paths)
 
@@ -161,6 +166,7 @@ def generate_stub(*, path: Path, stubs: StubsManager = None) -> Path:
                 value = value.__name__
             stub.add(func=func.name, contract=Category.RAISES, value=str(value))
         for token in get_markers(body=func.body, stubs=stubs):
+            assert token.marker is not None
             stub.add(func=func.name, contract=Category.HAS, value=token.marker)
     stub.dump()
     return stub.path

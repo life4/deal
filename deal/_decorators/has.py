@@ -5,7 +5,7 @@ import socket
 from typing import Callable, FrozenSet, TypeVar, Type
 
 # app
-from .._exceptions import OfflineContractError, SilentContractError
+from .._exceptions import MarkerError, OfflineContractError, SilentContractError
 from .._types import ExceptionType
 from .base import Base
 
@@ -30,7 +30,7 @@ class PatchedSocket:
 
 
 class Has(Base[_CallableType]):
-    exception: ExceptionType = None
+    exception: ExceptionType = MarkerError
     markers: FrozenSet[str]
 
     def __init__(self, *markers, message: str = None, exception: ExceptionType = None):
@@ -39,7 +39,8 @@ class Has(Base[_CallableType]):
         """
         self.markers = frozenset(markers)
         self.message = message
-        self.exception = exception
+        if exception:
+            self.exception = exception
 
     def patched_function(self, *args, **kwargs):
         """
@@ -176,11 +177,13 @@ class Has(Base[_CallableType]):
             sys.stderr = self.true_stderr
 
     def _get_exception(self, default: Type[Exception]) -> ExceptionType:
-        if self.exception is None:
+        if self.exception is MarkerError:
             if self.message is None:
                 return default
             return default(self.message)
 
         if self.message is None:
+            return self.exception
+        if isinstance(self.exception, Exception):
             return self.exception
         return self.exception(self.message)
