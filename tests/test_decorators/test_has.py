@@ -202,6 +202,18 @@ def test_custom_exc_and_message():
         func('a')
 
 
+def test_custom_exc_instance_and_message():
+    @deal.has(exception=KeyError('oh no'), message='oh hi mark')
+    def func(msg):
+        if msg:
+            print(msg)
+        return msg
+
+    assert func('') == ''
+    with pytest.raises(KeyError, match='oh no'):
+        func('a')
+
+
 def test_decorating_async_function():
     @deal.has()
     async def func(msg):

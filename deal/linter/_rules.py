@@ -179,11 +179,12 @@ class CheckMarkers:
 
     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         for contract in func.contracts:
+            markers = None
             if contract.category == Category.HAS:
                 markers = [get_value(arg) for arg in contract.args]
             elif contract.category == Category.PURE:
                 markers = []
-            else:
+            if markers is None:
                 continue
             yield from self._check(func=func, has=Has(*markers))
             return
@@ -201,9 +202,9 @@ class CheckMarkers:
             )
 
         for token in get_markers(body=func.body):
+            assert token.marker
             if getattr(has, 'has_{}'.format(token.marker)):
                 continue
-            assert token.marker
             yield Error(
                 code=cls.codes[token.marker],
                 text=cls.message,
