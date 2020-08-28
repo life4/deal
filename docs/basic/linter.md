@@ -26,7 +26,7 @@ Another option is to use built-in CLI from deal: `python3 -m deal lint`. I has b
 
 Since this is ad-hoc solution, it has a bit more beautiful colored output.
 
-![linter output](../assets/linter.png)
+![linter output](../../assets/linter.png)
 
 ## Codes
 

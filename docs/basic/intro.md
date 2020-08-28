@@ -37,9 +37,9 @@ There are 3 ways to check contracts:
 
 It's not "advanced usage", there is nothing advanced or difficult. It's about writing better contracts or saving a bit of time. Not important but very useful. So, don't be afraid to dive in this section!
 
-1. [Stubs](stubs) is a way to store some contracts in a JSON file instead of the source code. It can be helpful for third-party libraries. Some stubs already inside Deal.
-1. [Validators](validators) is a way to describe complex contracts using [Marshmallow](https://github.com/marshmallow-code/marshmallow) or another validation library.
-1. [Recipes] is the place to learn more about best practices of using contracts.
+1. [Stubs](../details/stubs) is a way to store some contracts in a JSON file instead of the source code. It can be helpful for third-party libraries. Some stubs already inside Deal.
+1. [Validators](../details/validators) is a way to describe complex contracts using [Marshmallow](https://github.com/marshmallow-code/marshmallow) or another validation library.
+1. [Recipes](../details/recipes) is the place to learn more about best practices of using contracts.
 
 ## Additional tools
 

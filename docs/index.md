@@ -8,29 +8,29 @@
     :maxdepth: 1
     :caption: Getting started
 
-    intro
+    basic/intro
 
 .. toctree::
     :maxdepth: 1
     :caption: Writing contracts
 
-    values
-    exceptions
-    side-effects
+    basic/values
+    basic/exceptions
+    basic/side-effects
 
 .. toctree::
     :maxdepth: 1
     :caption: Checking contracts
 
-    runtime
-    tests
-    linter
+    basic/runtime
+    basic/tests
+    basic/linter
 
 .. toctree::
     :maxdepth: 1
     :caption: Dive deeper
 
-    stubs
-    validators
-    recipes
+    details/stubs
+    details/validators
+    details/recipes
 ```

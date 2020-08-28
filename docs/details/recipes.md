@@ -25,7 +25,7 @@ def div(left: float, right: float, default: float = None) -> float:
         raise
 ```
 
-## Type checks
+## Don't check types
 
 Never check types with deal. [Mypy](https://github.com/python/mypy) does it much better. Also, there are [plenty of alternatives](https://github.com/typeddjango/awesome-python-typing) for both static and dynamic validation. Deal is intended to empower types, to tell a bit more about possible values set than you can do with type annotations, not replace them. However, if you want to play with deal a bit or make types a part of contracts, [PySchemes](https://github.com/spy16/pyschemes)-based contract is the best choice:
 

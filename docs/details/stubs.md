@@ -1,6 +1,6 @@
 # Stubs
 
-When [linter](linter) analyses a function, it checks all called functions inside it, even if these functions have no explicit contracts. For example:
+When [linter](../basic/linter) analyses a function, it checks all called functions inside it, even if these functions have no explicit contracts. For example:
 
 ```python
 import deal
