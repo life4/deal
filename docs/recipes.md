@@ -27,7 +27,7 @@ def div(left: float, right: float, default: float = None) -> float:
 
 ## Type checks
 
-Never check types with deal. [Mypy](https://github.com/python/mypy) does it much better. Also, there are [plenty of alternatives](https://github.com/typeddjango/awesome-python-typing) for both static and dynamic validation. Deal is intended to empower types, say a bit more about possible values set than you can do with type annotations, not replace them. However, if you want to play with deal a bit or make types a part of contracts, [PySchemes](https://github.com/spy16/pyschemes)-based contract is the best choice:
+Never check types with deal. [Mypy](https://github.com/python/mypy) does it much better. Also, there are [plenty of alternatives](https://github.com/typeddjango/awesome-python-typing) for both static and dynamic validation. Deal is intended to empower types, to tell a bit more about possible values set than you can do with type annotations, not replace them. However, if you want to play with deal a bit or make types a part of contracts, [PySchemes](https://github.com/spy16/pyschemes)-based contract is the best choice:
 
 ```python
 import deal
@@ -61,12 +61,12 @@ def divide(a, b):
 
 ## Keep module initialization pure
 
-Nothing should happen on module load. Create some constants, compile regexpes, and that's all. Make it lazy.
+Nothing should happen on module load. Create some constants, compile RegExes, and that's all. Make it lazy.
 
 ```python
 deal.module_load(deal.pure)
 ```
 
-## Contract shouldn't be important
+## Contracts shouldn't be important
 
 Never catch contract errors. Never rely on them in runtime. They are for tests and humans. The shouldn't have an actual logic, only validate it.

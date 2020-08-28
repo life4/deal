@@ -1,6 +1,6 @@
-# **stub**: generate stub files
+# Stubs
 
-When [linter](lint) analyses a function, it checks all called functions inside it, even if these functions have no explicit contracts. For example:
+When [linter](linter) analyses a function, it checks all called functions inside it, even if these functions have no explicit contracts. For example:
 
 ```python
 import deal

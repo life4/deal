@@ -25,4 +25,12 @@
     runtime
     tests
     linter
+
+.. toctree::
+    :maxdepth: 1
+    :caption: Dive deeper
+
+    stubs
+    validators
+    recipes
 ```
