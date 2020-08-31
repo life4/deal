@@ -1,6 +1,6 @@
-# module_load
+# Contracts for importing modules
 
-This function allows you to control what can happen at module load stage.
+The function `module_load` allows you to control what can happen at module load stage.
 
 Usage:
 

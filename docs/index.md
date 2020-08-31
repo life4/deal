@@ -30,6 +30,7 @@
     :maxdepth: 1
     :caption: Dive deeper
 
+    details/module_load
     details/stubs
     details/validators
     details/recipes
