@@ -98,12 +98,19 @@ f(-2)
 
 Every contract type raises it's own exception type, inherited from `ContractError` (which is inherited from built-in `AssertionError`):
 
+```eval_rst
++----------+-------------------+
 | contract | exception         |
-| -------- | ----------------- |
++==========+===================+
 | pre      | PreContractError  |
++----------+-------------------+
 | post     | PostContractError |
++----------+-------------------+
 | ensure   | PostContractError |
++----------+-------------------+
 | inv      | InvContractError  |
++----------+-------------------+
+```
 
 Custom exception for any contract can be specified by `exception` argument:
 
@@ -159,9 +166,16 @@ It can be helpful if a function has too many contracts.
 
 Contracts mostly support generators (`yield`) ans async functions:
 
+```eval_rst
++----------+----------------------------------+------------------------------+
 | contract | yield                            | async                        |
-| -------- | -------------------------------- | ---------------------------- |
++==========+==================================+==============================+
 | pre      | yes                              | yes                          |
++----------+----------------------------------+------------------------------+
 | post     | yes (checks every yielded value) | yes                          |
++----------+----------------------------------+------------------------------+
 | ensure   | yes (checks every yielded value) | yes                          |
++----------+----------------------------------+------------------------------+
 | inv      | partially (before execution)     | partially (before execution) |
++----------+----------------------------------+------------------------------+
+```
