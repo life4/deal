@@ -9,6 +9,7 @@
     :caption: Getting started
 
     basic/intro
+    basic/motivation
 
 .. toctree::
     :maxdepth: 1

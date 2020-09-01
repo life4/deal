@@ -11,7 +11,9 @@ Deal is a powerful library for writing and testing contracts.
     1. Like type annotations, contracts are part of the function signature, and can be checked statically.
     1. Like properties, contacts allow you to specify any conditions, and the framework will take care of choosing exact values and checking call results.
 
-So, think about it as typing on steroids. However, Deal doesn't try to replace type annotations (mypy isn't perfect but it's hard to make better) but instead empowers them, says more about possible values and their properties.
+So, think about it as typing on steroids. However, Deal doesn't try to replace type annotations (mypy isn't perfect but it's hard to do better) but instead empowers them, says more about possible values and their properties.
+
+Read [Contract-Driven Development](motivation) section if you want to know more why contracts are cool.
 
 ## Open-world assumption
 
