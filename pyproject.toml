@@ -17,7 +17,7 @@ command = "pytest tests/"
 
 [tool.dephell.docs]
 from = {format = "poetry", path = "pyproject.toml"}
-envs = ["docs"]
+envs = ["main", "docs"]
 command = "sphinx-build -W docs docs/build"
 
 [tool.dephell.typing]

@@ -15,6 +15,36 @@ def pre(
     message: str = None,
     exception: ExceptionType = None,
 ) -> Callable[[_CallableType], _CallableType]:
+    """
+    Decorator implementing precondition [value](../basic/values.md) contract.
+    [Precondition](https://en.wikipedia.org/wiki/Precondition) is
+    a condition that must be true before the function is executed.
+    Raises `PreContractError` otherwise.
+
+    :param validator: a function or validator that implements the contract.
+    :param message: error message for the exception raised on contract violation.
+        No error message by default.
+    :type message: str, optional
+    :param exception: exception type to raise on the contract violation.
+        ``PreContractError`` by default.
+    :type exception: ExceptionType, optional
+    :return: a function wrapper.
+    :rtype: Callable[[_CallableType], _CallableType]
+
+    ```pycon
+    >>> import deal
+    >>> @deal.pre(lambda a, b: a + b > 0)
+    ... def example(a, b):
+    ...     return (a + b) * 2
+    >>> example(1, 2)
+    6
+    >>> example(1, -2)
+    Traceback (most recent call last):
+      ...
+    PreContractError
+
+    ```
+    """
     return _decorators.Pre[_CallableType](
         validator, message=message, exception=exception,
     )
@@ -26,6 +56,36 @@ def post(
     message: str = None,
     exception: ExceptionType = None,
 ) -> Callable[[_CallableType], _CallableType]:
+    """
+    Decorator implementing postcondition [value](../basic/values.md) contract.
+    [Postcondition](https://en.wikipedia.org/wiki/Postcondition) is
+    a condition that must be true for the function result.
+    Raises `PostContractError` otherwise.
+
+    :param validator: a function or validator that implements the contract.
+    :param message: error message for the exception raised on contract violation.
+        No error message by default.
+    :type message: str, optional
+    :param exception: exception type to raise on the contract violation.
+        ``PostContractError`` by default.
+    :type exception: ExceptionType, optional
+    :return: a function wrapper.
+    :rtype: Callable[[_CallableType], _CallableType]
+
+    ```pycon
+    >>> import deal
+    >>> @deal.post(lambda res: res > 0)
+    ... def example(a, b):
+    ...     return a + b
+    >>> example(-1, 2)
+    1
+    >>> example(1, -2)
+    Traceback (most recent call last):
+      ...
+    PostContractError
+
+    ```
+    """
     return _decorators.Post[_CallableType](
         validator, message=message, exception=exception,
     )
@@ -105,3 +165,8 @@ def chain(*contracts) -> Callable[[_CallableType], _CallableType]:
 
 def pure(_func: _CallableType) -> _CallableType:
     return chain(has(), safe)(_func)
+
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()

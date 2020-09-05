@@ -7,7 +7,7 @@ from pathlib import Path
 
 # external
 import sphinx_rtd_theme
-from m2r import MdInclude
+from m2r import MdInclude, convert
 from recommonmark.transform import AutoStructify
 
 
@@ -85,6 +85,13 @@ texinfo_documents = [
 ]
 
 
+def autodoc_process(app, what, name, obj, options, lines):
+    if not lines:
+        return None
+    text = convert('\n'.join(lines))
+    lines[:] = text.split('\n')
+
+
 # https://github.com/rtfd/recommonmark/blob/master/docs/conf.py
 def setup(app):
     config = {
@@ -101,3 +108,5 @@ def setup(app):
     app.add_config_value('m2r_anonymous_references', False, 'env')
     app.add_config_value('m2r_disable_inline_math', False, 'env')
     app.add_directive('mdinclude', MdInclude)
+
+    app.connect('autodoc-process-docstring', autodoc_process)

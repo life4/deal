@@ -35,4 +35,5 @@
     details/stubs
     details/validators
     details/recipes
+    details/api
 ```
