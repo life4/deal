@@ -7,6 +7,7 @@ from ._types import ExceptionType
 
 
 _CallableType = TypeVar('_CallableType', bound=Callable)
+_T = TypeVar('_T')
 
 
 def pre(
@@ -48,9 +49,8 @@ def pre(
     [wiki]: https://en.wikipedia.org/wiki/Precondition
     [value]: ../basic/values.md
     """
-    return _decorators.Pre[_CallableType](
-        validator, message=message, exception=exception,
-    )
+    cls = _decorators.Pre[_CallableType]
+    return cls(validator=validator, message=message, exception=exception)
 
 
 def post(
@@ -92,9 +92,8 @@ def post(
     [wiki]: https://en.wikipedia.org/wiki/Postcondition
     [value]: ../basic/values.md
     """
-    return _decorators.Post[_CallableType](
-        validator, message=message, exception=exception,
-    )
+    cls = _decorators.Post[_CallableType]
+    return cls(validator=validator, message=message, exception=exception)
 
 
 def ensure(
@@ -117,7 +116,7 @@ def ensure(
         No error message by default.
     :type message: str, optional
     :param exception: exception type to raise on the contract violation.
-        ``PostContractError`` by default.
+        `PostContractError` by default.
     :type exception: ExceptionType, optional
     :return: a function wrapper.
     :rtype: Callable[[_CallableType], _CallableType]
@@ -139,9 +138,8 @@ def ensure(
     [wiki]: https://en.wikipedia.org/wiki/Postcondition
     [value]: ../basic/values.md
     """
-    return _decorators.Ensure[_CallableType](
-        validator, message=message, exception=exception,
-    )
+    cls = _decorators.Ensure[_CallableType]
+    return cls(validator=validator, message=message, exception=exception)
 
 
 def raises(
@@ -169,9 +167,8 @@ def reason(
     message: str = None,
     exception: ExceptionType = None,
 ) -> Callable[[_CallableType], _CallableType]:
-    return _decorators.Reason[_CallableType](
-        event, validator, message=message, exception=exception,
-    )
+    cls = _decorators.Reason[_CallableType]
+    return cls(event=event, validator=validator, message=message, exception=exception)
 
 
 def inv(
@@ -179,7 +176,7 @@ def inv(
     *,
     message: str = None,
     exception: ExceptionType = None,
-) -> Callable[[_CallableType], _CallableType]:
+) -> Callable[[_T], _T]:
     """
     Decorator implementing invariant [value][value] contract.
 
@@ -190,12 +187,51 @@ def inv(
     2. After class method execution.
     3. After some class attribute setting.
 
+    Deal doesn't rollback changes on contract violation.
+
+    :param validator: a function or validator that implements the contract.
+    :param message: error message for the exception raised on contract violation.
+        No error message by default.
+    :type message: str, optional
+    :param exception: exception type to raise on the contract violation.
+        `InvContractError` by default.
+    :type exception: ExceptionType, optional
+    :return: a class wrapper.
+    :rtype: Callable[[_T], _T]
+
+    ```pycon
+    >>> import deal
+    >>> @deal.inv(lambda obj: obj.likes >= 0)
+    ... class Video:
+    ...   likes = 1
+    ...   def like(self): self.likes += 1
+    ...   def dislike(self): self.likes -= 1
+    ...
+    >>> v = Video()
+    >>> v.dislike()
+    >>> v.likes
+    0
+    >>> v.dislike()
+    Traceback (most recent call last):
+    ...
+    InvContractError
+    >>> v.likes
+    -1
+    >>> v.likes = 2
+    >>> v.likes = -2
+    Traceback (most recent call last):
+    ...
+    InvContractError
+    >>> v.likes
+    -2
+
+    ```
+
     [wiki]: https://en.wikipedia.org/wiki/Invariant_(computer_science)
     [value]: ../basic/values.md
     """
-    return _decorators.Invariant[_CallableType](
-        validator, message=message, exception=exception,
-    )
+    cls = _decorators.Invariant[_CallableType]
+    return cls(validator=validator, message=message, exception=exception)
 
 
 @overload
@@ -227,9 +263,12 @@ def chain(*contracts) -> Callable[[_CallableType], _CallableType]:
 
 
 def pure(_func: _CallableType) -> _CallableType:
+    """
+    Decorator for [pure functions][wiki].
+    Alias for `@deal.chain(deal.has(), deal.safe)`.
+
+    Pure function has no side-effects and doesn't raise any exceptions.
+
+    [wiki]: https://en.wikipedia.org/wiki/Pure_function
+    """
     return chain(has(), safe)(_func)
-
-
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
