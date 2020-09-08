@@ -311,7 +311,11 @@ def inv(
     [value]: ../basic/values.md
     """
     cls = _decorators.Invariant[_CallableType]
-    return cls(validator=validator, message=message, exception=exception)
+    return cls(  # type: ignore
+        validator=validator,
+        message=message,
+        exception=exception,
+    )
 
 
 @overload

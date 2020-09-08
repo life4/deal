@@ -1,5 +1,5 @@
 # built-in
-from typing import Callable, TypeVar
+from typing import Callable, Type, TypeVar
 
 # app
 from .._exceptions import ReasonContractError
@@ -13,7 +13,7 @@ _CallableType = TypeVar('_CallableType', bound=Callable)
 class Reason(Base[_CallableType]):
     exception: ExceptionType = ReasonContractError
 
-    def __init__(self, event: Exception, validator: Callable, *,
+    def __init__(self, event: Type[Exception], validator: Callable, *,
                  message: str = None, exception: ExceptionType = None):
         """
         Step 1. Set allowed exceptions list.

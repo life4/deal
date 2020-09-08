@@ -13,7 +13,12 @@ _CallableType = TypeVar('_CallableType', bound=Callable)
 class Raises(Base[_CallableType]):
     exception: ExceptionType = RaisesContractError
 
-    def __init__(self, *exceptions, message: str = None, exception: ExceptionType = None):
+    def __init__(
+        self,
+        *exceptions: Type[Exception],
+        message: str = None,
+        exception: ExceptionType = None,
+    ):
         """
         Step 1. Set allowed exceptions list.
         """
