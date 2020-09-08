@@ -103,7 +103,7 @@ def ensure(
     exception: ExceptionType = None,
 ) -> Callable[[_CallableType], _CallableType]:
     """
-    Decorator implementing postcondition [value][value] contract.
+    Decorator implementing postcondition [value] contract.
     [Postcondition][wiki] is
     a condition that must be true for the function result.
     Raises `PostContractError` otherwise.
@@ -147,6 +147,45 @@ def raises(
     message: str = None,
     exception: ExceptionType = None,
 ) -> Callable[[_CallableType], _CallableType]:
+    """
+    Decorators listing exceptions which the function can raise.
+    Implements the most important [exception] contract.
+    If the function raises an exception not listed in the decorator,
+    `RaisesContractError` will be raised.
+
+    :param exceptions: exceptions which the function can raise.
+    :type exceptions: Type[Exception].
+    :param message: error message for the exception raised on contract violation.
+        No error message by default.
+    :type message: str, optional
+    :param exception: exception type to raise on the contract violation.
+        `RaisesContractError` by default.
+    :type exception: ExceptionType, optional
+    :return: a function wrapper.
+    :rtype: Callable[[_T], _T]
+
+    ```pycon
+    >>> import deal
+    >>> @deal.raises(ZeroDivisionError, ValueError)
+    ... def div(a, b):
+    ...   return a / b
+    ...
+    >>> div(1, 0)
+    Traceback (most recent call last):
+        ...
+    ZeroDivisionError: division by zero
+    >>> div(1, '')
+    Traceback (most recent call last):
+        ...
+     TypeError: unsupported operand type(s) for /: 'int' and 'str'
+     The above exception was the direct cause of the following exception:
+        ...
+    RaisesContractError
+
+    ```
+
+    [exception] ../basic/exceptions.md
+    """
     cls = _decorators.Raises[_CallableType]
     return cls(*exceptions, message=message, exception=exception)
 
@@ -168,7 +207,7 @@ def reason(
     exception: ExceptionType = None,
 ) -> Callable[[_CallableType], _CallableType]:
     """
-    Decorator implementing [exception][exception] contract.
+    Decorator implementing [exception] contract.
     Allows to assert precondition for raised exception.
     It's like [@deal.ensure](#deal.ensure) but when instead of returning result
     the function raises an exception.
@@ -180,9 +219,9 @@ def reason(
         No error message by default.
     :type message: str, optional
     :param exception: exception type to raise on the contract violation.
-        `InvContractError` by default.
+        `ReasonContractError` by default.
     :type exception: ExceptionType, optional
-    :return: a class wrapper.
+    :return: a function wrapper.
     :rtype: Callable[[_T], _T]
 
     ```pycon
