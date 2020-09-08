@@ -20,7 +20,7 @@ _CallableType = TypeVar('_CallableType', bound=Callable)
 
 class Base(Generic[_CallableType]):
     exception: ExceptionType = ContractError
-    function: _CallableType
+    function: _CallableType  # pytype: disable=not-supported-yet
 
     def __init__(self, validator, *, message: str = None,
                  exception: ExceptionType = None):
@@ -147,3 +147,21 @@ class Base(Generic[_CallableType]):
         else:
             new_callable = update_wrapper(wrapped, function)
         return new_callable  # type: ignore
+
+    def patched_function(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        raise NotImplementedError
+
+    async def async_patched_function(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        raise NotImplementedError
+
+    def patched_generator(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        raise NotImplementedError
