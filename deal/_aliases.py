@@ -249,6 +249,28 @@ def safe(_func: _CallableType) -> _CallableType:
 
 
 def safe(_func=None, **kwargs):
+    """
+    Alias for [@deal.raises()](#deal.raises).
+    Wraps a function that never raises an exception.
+
+    ```python
+    >>> import deal
+    >>> @deal.safe
+    ... def div(a, b):
+    ...   return a / b
+    ...
+    >>> div(2, 4)
+    0.5
+    >>> div(2, 0)
+    Traceback (most recent call last):
+        ...
+        ZeroDivisionError: division by zero
+    The above exception was the direct cause of the following exception:
+        ...
+    RaisesContractError
+
+    ```
+    """
     if _func is None:
         return raises(**kwargs)
     return raises()(_func)
