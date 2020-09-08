@@ -16,8 +16,8 @@ def pre(
     exception: ExceptionType = None,
 ) -> Callable[[_CallableType], _CallableType]:
     """
-    Decorator implementing precondition [value](../basic/values.md) contract.
-    [Precondition](https://en.wikipedia.org/wiki/Precondition) is
+    Decorator implementing precondition [value][value] contract.
+    [Precondition][wiki] is
     a condition that must be true before the function is executed.
     Raises `PreContractError` otherwise.
 
@@ -44,6 +44,9 @@ def pre(
     PreContractError
 
     ```
+
+    [wiki]: https://en.wikipedia.org/wiki/Precondition
+    [value]: ../basic/values.md
     """
     return _decorators.Pre[_CallableType](
         validator, message=message, exception=exception,
@@ -57,8 +60,8 @@ def post(
     exception: ExceptionType = None,
 ) -> Callable[[_CallableType], _CallableType]:
     """
-    Decorator implementing postcondition [value](../basic/values.md) contract.
-    [Postcondition](https://en.wikipedia.org/wiki/Postcondition) is
+    Decorator implementing postcondition [value][value] contract.
+    [Postcondition][wiki] is
     a condition that must be true for the function result.
     Raises `PostContractError` otherwise.
 
@@ -85,6 +88,9 @@ def post(
     PostContractError
 
     ```
+
+    [wiki]: https://en.wikipedia.org/wiki/Postcondition
+    [value]: ../basic/values.md
     """
     return _decorators.Post[_CallableType](
         validator, message=message, exception=exception,
@@ -97,6 +103,42 @@ def ensure(
     message: str = None,
     exception: ExceptionType = None,
 ) -> Callable[[_CallableType], _CallableType]:
+    """
+    Decorator implementing postcondition [value][value] contract.
+    [Postcondition][wiki] is
+    a condition that must be true for the function result.
+    Raises `PostContractError` otherwise.
+    It's like [@deal.post](#deal.post) but contract accepts as input value
+    not only the function result but also the function input arguments.
+    The function result is passed into validator as `result` keyword argument.
+
+    :param validator: a function or validator that implements the contract.
+    :param message: error message for the exception raised on contract violation.
+        No error message by default.
+    :type message: str, optional
+    :param exception: exception type to raise on the contract violation.
+        ``PostContractError`` by default.
+    :type exception: ExceptionType, optional
+    :return: a function wrapper.
+    :rtype: Callable[[_CallableType], _CallableType]
+
+    ```pycon
+    >>> import deal
+    >>> @deal.ensure(lambda a, result: a < result)
+    ... def example(a):
+    ...     return a * 2
+    >>> example(2)
+    4
+    >>> example(0)
+    Traceback (most recent call last):
+      ...
+    PostContractError
+
+    ```
+
+    [wiki]: https://en.wikipedia.org/wiki/Postcondition
+    [value]: ../basic/values.md
+    """
     return _decorators.Ensure[_CallableType](
         validator, message=message, exception=exception,
     )
@@ -132,7 +174,28 @@ def reason(
     )
 
 
-inv = _decorators.Invariant
+def inv(
+    validator,
+    *,
+    message: str = None,
+    exception: ExceptionType = None,
+) -> Callable[[_CallableType], _CallableType]:
+    """
+    Decorator implementing invariant [value][value] contract.
+
+    [Invariant][wiki] is a condition that can be relied upon to be true during execution
+    of a program. `@deal.inv` is triggered in 3 cases:
+
+    1. Before class method execution.
+    2. After class method execution.
+    3. After some class attribute setting.
+
+    [wiki]: https://en.wikipedia.org/wiki/Invariant_(computer_science)
+    [value]: ../basic/values.md
+    """
+    return _decorators.Invariant[_CallableType](
+        validator, message=message, exception=exception,
+    )
 
 
 @overload

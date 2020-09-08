@@ -1,7 +1,6 @@
 # API
 
 ```eval_rst
-.. automodule:: deal._aliases
+.. automodule:: deal
    :members:
-   :undoc-members:
 ```

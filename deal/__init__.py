@@ -1,16 +1,9 @@
 """
-**Deal** -- python library for design by contract (DbC) programming.
-https://en.wikipedia.org/wiki/Design_by_contract
+**Deal** is a Python library for [design by contract][wiki] (DbC) programming.
+See [documentation][docs] for more details.
 
-This library contain 3 main conception from DbC:
-
-* Precondition -- condition that must be true before function is executed.
-* Postcondition -- condition that must be true after function executed.
-* Invariant -- condition that can be relied upon to be true during execution
-  of a program. In this library invariant condition check in 3 cases:
-    1. Before class method execution.
-    2. After class method execution.
-    3. After some class attribute setting.
+[wiki]: https://en.wikipedia.org/wiki/Design_by_contract
+[docs]: https://deal.readthedocs.io/index.html
 """
 
 # main package info
