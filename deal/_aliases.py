@@ -253,7 +253,7 @@ def safe(_func=None, **kwargs):
     Alias for [@deal.raises()](#deal.raises).
     Wraps a function that never raises an exception.
 
-    ```python
+    ```pycon
     >>> import deal
     >>> @deal.safe
     ... def div(a, b):
@@ -264,8 +264,8 @@ def safe(_func=None, **kwargs):
     >>> div(2, 0)
     Traceback (most recent call last):
         ...
-        ZeroDivisionError: division by zero
-    The above exception was the direct cause of the following exception:
+     ZeroDivisionError: division by zero
+     The above exception was the direct cause of the following exception:
         ...
     RaisesContractError
 
