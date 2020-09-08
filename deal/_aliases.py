@@ -1,5 +1,5 @@
 # built-in
-from typing import Callable, TypeVar, overload
+from typing import Callable, Type, TypeVar, overload
 
 # app
 from . import _decorators
@@ -143,7 +143,7 @@ def ensure(
 
 
 def raises(
-    *exceptions: Exception,
+    *exceptions: Type[Exception],
     message: str = None,
     exception: ExceptionType = None,
 ) -> Callable[[_CallableType], _CallableType]:
@@ -161,12 +161,53 @@ def has(
 
 
 def reason(
-    event: Exception,
+    event: Type[Exception],
     validator,
     *,
     message: str = None,
     exception: ExceptionType = None,
 ) -> Callable[[_CallableType], _CallableType]:
+    """
+    Decorator implementing [exception][exception] contract.
+    Allows to assert precondition for raised exception.
+    It's like [@deal.ensure](#deal.ensure) but when instead of returning result
+    the function raises an exception.
+
+    :param event: exception raising which will trigger contract validation.
+    :type event: Type[Exception].
+    :param validator: a function or validator that implements the contract.
+    :param message: error message for the exception raised on contract violation.
+        No error message by default.
+    :type message: str, optional
+    :param exception: exception type to raise on the contract violation.
+        `InvContractError` by default.
+    :type exception: ExceptionType, optional
+    :return: a class wrapper.
+    :rtype: Callable[[_T], _T]
+
+    ```pycon
+    >>> import deal
+    >>> @deal.reason(ZeroDivisionError, lambda a, b: b == 0)
+    ... def div(a, b):
+    ...   return a / (a - b)
+    >>> div(2, 1)
+    2.0
+    >>> div(0, 0)
+    Traceback (most recent call last):
+        ...
+    ZeroDivisionError: division by zero
+    >>> div(2, 2)
+    Traceback (most recent call last):
+        ...
+     ZeroDivisionError: division by zero
+     The above exception was the direct cause of the following exception:
+        ...
+    ReasonContractError
+
+    ```
+
+    [exception]: ../basic/exceptions.md
+    """
     cls = _decorators.Reason[_CallableType]
     return cls(event=event, validator=validator, message=message, exception=exception)
 
