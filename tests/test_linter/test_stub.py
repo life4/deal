@@ -11,7 +11,7 @@ from deal.linter._contract import Category
 from deal.linter._stub import StubFile, StubsManager, _get_funcs, generate_stub
 
 
-def test_generate_stub(tmp_path: Path):
+def test_generate_stub_exceptions(tmp_path: Path):
     root = tmp_path / 'project'
     root.mkdir()
     (root / '__init__.py').touch()
@@ -22,6 +22,19 @@ def test_generate_stub(tmp_path: Path):
     assert stub_path.name == 'example.json'
     assert stub_path.parent == root
     assert content == {'func': {'raises': ['ZeroDivisionError']}}
+
+
+def test_generate_stub_markers(tmp_path: Path):
+    root = tmp_path / 'project'
+    root.mkdir()
+    (root / '__init__.py').touch()
+    source_path = (root / 'example.py')
+    source_path.write_text('def func(): print("oh hi mark")')
+    stub_path = generate_stub(path=source_path)
+    content = json.loads(stub_path.read_text())
+    assert stub_path.name == 'example.json'
+    assert stub_path.parent == root
+    assert content == {'func': {'has': ['stdout']}}
 
 
 def test_generate_stub_bad_ext(tmp_path: Path):

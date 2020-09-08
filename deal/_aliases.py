@@ -227,7 +227,7 @@ def inv(
 
     ```
 
-    [wiki]: https://en.wikipedia.org/wiki/Invariant_(computer_science)
+    [wiki]: https://en.wikipedia.org/wiki/Class_invariant
     [value]: ../basic/values.md
     """
     cls = _decorators.Invariant[_CallableType]
