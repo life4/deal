@@ -1,8 +1,8 @@
 # built-in
+import socket
 import sys
 from io import StringIO
-import socket
-from typing import Callable, FrozenSet, TypeVar, Type
+from typing import Callable, FrozenSet, Type, TypeVar
 
 # app
 from .._exceptions import MarkerError, OfflineContractError, SilentContractError

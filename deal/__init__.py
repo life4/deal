@@ -14,14 +14,11 @@ __license__ = 'MIT'
 
 
 # app
-from ._aliases import (
-    chain, ensure, inv, post,
-    pre, pure, raises, reason, safe, has,
-)
+from ._aliases import chain, ensure, has, inv, post, pre, pure, raises, reason, safe
 from ._exceptions import *  # noQA
 from ._imports import activate, module_load
 from ._schemes import Scheme
-from ._state import reset, enable, disable
+from ._state import disable, enable, reset
 from ._testing import TestCase, cases
 
 

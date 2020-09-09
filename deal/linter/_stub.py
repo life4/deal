@@ -151,6 +151,7 @@ def _get_funcs_from_expr(expr, prefix='') -> Iterator[PseudoFunc]:
 
 
 def generate_stub(*, path: Path, stubs: StubsManager = None) -> Path:
+    # app
     from ._extractors import get_exceptions, get_markers
 
     if path.suffix != '.py':

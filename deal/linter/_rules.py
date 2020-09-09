@@ -5,15 +5,15 @@ from types import MappingProxyType
 from typing import Iterator
 
 # app
+from .._decorators import Has
 from ._contract import Category, Contract
 from ._error import Error
 from ._extractors import (
-    get_asserts, get_exceptions,
-    get_imports, get_pre, get_markers, get_returns, has_returns, get_value
+    get_asserts, get_exceptions, get_imports, get_markers,
+    get_pre, get_returns, get_value, has_returns,
 )
 from ._func import Func
 from ._stub import StubsManager
-from .._decorators import Has
 
 
 rules = []

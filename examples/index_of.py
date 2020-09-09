@@ -1,7 +1,11 @@
+# built-in
 from typing import List
 
-import deal
+# external
 import pytest
+
+# project
+import deal
 
 
 # if you have more than 2-3 contracts,

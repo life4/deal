@@ -1,7 +1,10 @@
+# built-in
 import doctest
 
+# external
 import pytest
 
+# project
 import deal._aliases
 
 

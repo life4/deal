@@ -1,15 +1,16 @@
+# built-in
 import ast
-from typing import Optional, Iterator
+from typing import Iterator, Optional
 
 # external
 import astroid
 
 # app
-from .common import TOKENS, Extractor, Token, get_name, infer, get_full_name, get_stub
-from .contracts import get_contracts
-from .value import get_value
 from .._contract import Category
 from .._stub import StubsManager
+from .common import TOKENS, Extractor, Token, get_full_name, get_name, get_stub, infer
+from .contracts import get_contracts
+from .value import get_value
 
 
 get_markers = Extractor()

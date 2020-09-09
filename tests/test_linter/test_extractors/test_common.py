@@ -6,7 +6,7 @@ import astroid
 import pytest
 
 # project
-from deal.linter._extractors.common import get_name, get_full_name, infer, _get_module
+from deal.linter._extractors.common import _get_module, get_full_name, get_name, infer
 
 
 @pytest.mark.parametrize('text, expected', [

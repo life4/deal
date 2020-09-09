@@ -1,5 +1,8 @@
-import deal
+# external
 import pytest
+
+# project
+import deal
 
 
 @deal.ensure(lambda _: _.result.startswith(_.left))

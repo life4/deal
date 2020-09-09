@@ -53,6 +53,7 @@ class Contract:
 
     @property
     def exceptions(self) -> list:
+        # app
         from ._extractors import get_name
 
         excs = []

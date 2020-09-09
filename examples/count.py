@@ -1,7 +1,11 @@
+# built-in
 from typing import List
 
-import deal
+# external
 import pytest
+
+# project
+import deal
 
 
 @deal.post(lambda result: result >= 0)

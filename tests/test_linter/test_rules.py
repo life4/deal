@@ -8,8 +8,7 @@ import astroid
 # project
 from deal.linter._func import Func
 from deal.linter._rules import (
-    CheckAsserts, CheckImports, CheckPre, CheckMarkers,
-    CheckRaises, rules, CheckReturns,
+    CheckAsserts, CheckImports, CheckMarkers, CheckPre, CheckRaises, CheckReturns, rules,
 )
 
 

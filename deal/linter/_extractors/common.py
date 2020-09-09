@@ -9,6 +9,7 @@ from typing import Callable, Iterator, List, NamedTuple, Optional, Tuple
 # external
 import astroid
 
+# app
 from .._stub import EXTENSION, StubFile, StubsManager
 
 

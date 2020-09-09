@@ -4,8 +4,8 @@ from .common import get_name
 from .contracts import get_contracts
 from .exceptions import get_exceptions
 from .imports import get_imports
-from .pre import get_pre
 from .markers import get_markers
+from .pre import get_pre
 from .returns import get_returns, has_returns
 from .value import get_value
 

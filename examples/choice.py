@@ -1,7 +1,11 @@
+# built-in
 import random
 from typing import List
 
+# external
 import pytest
+
+# project
 import deal
 
 
