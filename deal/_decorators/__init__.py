@@ -10,6 +10,7 @@ from .reason import Reason
 
 __all__ = [
     'Ensure',
+    'Has',
     'Invariant',
     'Offline',
     'Post',
