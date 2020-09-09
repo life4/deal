@@ -73,8 +73,15 @@ class DealLoader:
     def _exec_contract(cls, node: ast.AST) -> Optional[Callable]:
         """Get AST node and return a contract function
         """
-        if type(node) is ast.Call and not node.args:    # type: ignore
-            return cls._exec_contract(node.func)()      # type: ignore
+        if isinstance(node, ast.Call) and not node.keywords:
+            for arg in node.args:
+                if type(arg) is not ast.Str:
+                    return None
+            args = [ast.literal_eval(arg) for arg in node.args]
+            func = cls._exec_contract(node.func)
+            if not func:
+                return None
+            return func(*args)
 
         if not isinstance(node, ast.Attribute):
             return None

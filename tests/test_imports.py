@@ -101,6 +101,17 @@ def test_exec_module_invalid_contract():
         DealLoader(loader=SubLoader(ok=False, text=text)).exec_module(TestModule)
 
 
+def test_exec_module_invalid_contract_called():
+    text = """
+        import deal
+        deal.module_load(something())
+        print(1)
+        """
+    text = dedent(text)
+    with pytest.raises(RuntimeError, match='unsupported contract:.+'):
+        DealLoader(loader=SubLoader(ok=False, text=text)).exec_module(TestModule)
+
+
 def test_exec_module_no_contracts():
     text = """
         import deal
@@ -144,7 +155,7 @@ def test_activate():
         assert not deactivate()
 
 
-def test_smoke():
+def test_smoke_pure():
     text = """
         import deal
         deal.module_load(deal.pure)
@@ -156,6 +167,32 @@ def test_smoke():
     try:
         assert deal.activate()
         with pytest.raises(deal.SilentContractError):
+            __import__('tmp123')
+    finally:
+        assert deactivate()
+        assert not deactivate()
+        Path('tmp123.py').unlink()
+
+
+def test_smoke_has():
+    text = """
+        import urllib3
+        import deal
+
+        deal.module_load(deal.has('stdout'))
+        # stdout is ok
+        print(1)
+
+        # network is not ok
+        http = urllib3.PoolManager()
+        http.request('GET', 'http://httpbin.org/robots.txt')
+        """
+    text = dedent(text)
+    Path('tmp123.py').write_text(text)
+
+    try:
+        assert deal.activate()
+        with pytest.raises(deal.OfflineContractError):
             __import__('tmp123')
     finally:
         assert deactivate()
