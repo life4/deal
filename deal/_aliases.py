@@ -361,6 +361,40 @@ def safe(_func=None, **kwargs):
 
 
 def chain(*contracts) -> Callable[[_CallableType], _CallableType]:
+    """
+    Decorator to chain 2 or more contracts together.
+    It can be helpful to store contracts separately from the function.
+    Consider using it when you have too many contracts.
+    Otherwise, the function will be lost under a bunch of decorators.
+
+    ```pycon
+    >>> import deal
+    >>> sum_contract = deal.chain(
+    ...   deal.pre(lambda a, b: a > 0),
+    ...   deal.pre(lambda a, b: b > 0),
+    ...   deal.post(lambda res: res > 0),
+    ... )
+    >>> @sum_contract
+    ... def sum(a, b):
+    ...   return a + b
+    ...
+    >>> sum(2, 3)
+    5
+    >>> sum(2, -3)
+    Traceback (most recent call last):
+        ...
+    PreContractError
+    >>> sum(-2, 3)
+    Traceback (most recent call last):
+        ...
+    PreContractError
+
+    ```
+
+    :param contracts: contracts to chain.
+    :return: a function wrapper
+    :rtype: Callable[[_CallableType], _CallableType]
+    """
     def wrapped(func):
         for contract in contracts:
             func = contract(func)
@@ -374,6 +408,30 @@ def pure(_func: _CallableType) -> _CallableType:
     Alias for `@deal.chain(deal.has(), deal.safe)`.
 
     Pure function has no side-effects and doesn't raise any exceptions.
+
+    ```pycon
+    >>> import deal
+    >>> @deal.pure
+    ... def div(a, b, log=False):
+    ...   if log:
+    ...     print('div called')
+    ...   return a / b
+    ...
+    >>> div(2, 4)
+    0.5
+    >>> div(2, 0)
+    Traceback (most recent call last):
+        ...
+     ZeroDivisionError: division by zero
+     The above exception was the direct cause of the following exception:
+        ...
+    RaisesContractError
+    >>> div(2, 3, log=True)
+    Traceback (most recent call last):
+        ...
+    SilentContractError
+
+    ```
 
     [wiki]: https://en.wikipedia.org/wiki/Pure_function
     """
