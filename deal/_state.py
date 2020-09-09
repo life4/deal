@@ -8,12 +8,21 @@ class _State:
         self.reset()
 
     def reset(self) -> None:
+        """Restore contracts switch to default.
+
+        All contracts are disabled on production by default.
+        See [runtime](../basic/runtime.md) documentation.
+        """
         self.debug = __debug__
 
     def enable(self) -> None:
+        """Enable all contracts.
+        """
         self.debug = True
 
     def disable(self) -> None:
+        """Disable all contracts.
+        """
         self.debug = False
 
 
