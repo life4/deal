@@ -87,6 +87,20 @@ class DealLoader:
 
 
 def module_load(*contracts) -> None:
+    """
+    Specify contracts that will be checked at module import time.
+    Keep in mind that [deal.activate](#deal.activate) must be called
+    before importing a module with `module_load` contract.
+
+    ```pycon
+    >>> import deal
+    >>> deal.module_load(deal.has(), deal.safe)
+
+    ```
+
+    See [Contracts for importing modules](./module_load.md)
+    documentation for more details.
+    """
     if not state.debug:
         return
     if not contracts:
@@ -97,11 +111,23 @@ def module_load(*contracts) -> None:
         raise RuntimeError(msg)
 
 
-def activate(debug: bool = False) -> bool:
+def activate() -> bool:
     """Activate module-level checks.
 
     This function must be called before importing anything
-    with deal.module_load() contract.
+    with [deal.module_load](#deal.module_load) contract.
+    Otherwise, the contract won't be executed.
+
+    The best practice is to place it in `__init__.py` of your project:
+
+    ```pycon
+    >>> import deal
+    >>> deal.activate()
+
+    ```
+
+    See [Contracts for importing modules](./module_load.md)
+    documentation for more details.
     """
     if not state.debug:
         return False

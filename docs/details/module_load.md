@@ -25,7 +25,7 @@ from .other import something
 import deal
 import something_else
 
-deal.module_load(deal.silent, deal.safe, deal.offline)
+deal.module_load(deal.pure)
 
 something = 1
 print(1)  # contract violation! deal.SilentContractError will be raised
