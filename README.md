@@ -49,7 +49,7 @@ Now we can:
 * Run `python3 -m deal test` or `pytest` to generate and run tests.
 * Just use the function in the project and check errors in runtime.
 
-Read mor in the [documentation](https://deal.readthedocs.io/).
+Read more in the [documentation](https://deal.readthedocs.io/).
 
 ## Installation
 
