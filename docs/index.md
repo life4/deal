@@ -1,8 +1,7 @@
 # Deal
 
-<!-- .. mdinclude:: ../README.md -->
-
 ```eval_rst
+.. mdinclude:: ../README.md
 
 .. toctree::
     :maxdepth: 1

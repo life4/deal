@@ -1,5 +1,13 @@
 # that's for readthedocs
+
+# to build docs
 m2r
 recommonmark
 sphinx
 sphinx-rtd-theme
+
+# project deps to run `autodoc`
+astroid
+hypothesis
+typeguard
+vaa
