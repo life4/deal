@@ -34,6 +34,8 @@ def main(stream=sys.stdout):
 
 ## Built-in markers
 
+Deal already know about some markers and will report if they are violated:
+
 ```eval_rst
 +---------+--------------+----------------------------------+
 | code    | marker       | allows                           |

@@ -33,7 +33,7 @@
 # the result is always non-negative
 @deal.post(lambda result: result >= 0)
 # the function has no side-effects
-@deal.has()
+@deal.pure
 def count(items: List[str], item: str) -> int:
     return items.count(item)
 
