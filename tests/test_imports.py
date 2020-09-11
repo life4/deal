@@ -41,11 +41,11 @@ def test_exec_contract(text, expected):
     assert actual == expected
 
 
-class TestException(Exception):
+class FakeException(Exception):
     pass
 
 
-class TestModule:
+class FakeModule:
     pass
 
 
@@ -55,13 +55,13 @@ class SubLoader:
         self.text = text
 
     def get_source(self, module):
-        assert module == 'TestModule'
+        assert module == 'FakeModule'
         return self.text
 
     def exec_module(self, module):
-        assert module is TestModule
+        assert module is FakeModule
         if not self.ok:
-            raise TestException
+            raise FakeException
         print(1)
 
 
@@ -73,21 +73,21 @@ def test_exec_module():
         """
     text = dedent(text)
 
-    with pytest.raises(TestException):
-        DealLoader(loader=SubLoader(ok=False, text=text)).exec_module(TestModule)
+    with pytest.raises(FakeException):
+        DealLoader(loader=SubLoader(ok=False, text=text)).exec_module(FakeModule)
 
     with pytest.raises(deal.SilentContractError):
-        DealLoader(loader=SubLoader(ok=True, text=text)).exec_module(TestModule)
+        DealLoader(loader=SubLoader(ok=True, text=text)).exec_module(FakeModule)
 
 
 def test_not_path_loader():
     class SubLoaderNoGetSource:
         def exec_module(self, module):
-            assert module is TestModule
-            raise TestException
+            assert module is FakeModule
+            raise FakeException
 
-    with pytest.raises(TestException):
-        DealLoader(loader=SubLoaderNoGetSource()).exec_module(TestModule)
+    with pytest.raises(FakeException):
+        DealLoader(loader=SubLoaderNoGetSource()).exec_module(FakeModule)
 
 
 def test_exec_module_invalid_contract():
@@ -98,7 +98,7 @@ def test_exec_module_invalid_contract():
         """
     text = dedent(text)
     with pytest.raises(RuntimeError, match='unsupported contract:.+'):
-        DealLoader(loader=SubLoader(ok=False, text=text)).exec_module(TestModule)
+        DealLoader(loader=SubLoader(ok=False, text=text)).exec_module(FakeModule)
 
 
 def test_exec_module_invalid_contract_called():
@@ -109,7 +109,7 @@ def test_exec_module_invalid_contract_called():
         """
     text = dedent(text)
     with pytest.raises(RuntimeError, match='unsupported contract:.+'):
-        DealLoader(loader=SubLoader(ok=False, text=text)).exec_module(TestModule)
+        DealLoader(loader=SubLoader(ok=False, text=text)).exec_module(FakeModule)
 
 
 def test_exec_module_no_contracts():
@@ -118,16 +118,16 @@ def test_exec_module_no_contracts():
         print(1)
         """
     text = dedent(text)
-    DealLoader(loader=SubLoader(ok=True, text=text)).exec_module(TestModule)
-    with pytest.raises(TestException):
-        DealLoader(loader=SubLoader(ok=False, text=text)).exec_module(TestModule)
+    DealLoader(loader=SubLoader(ok=True, text=text)).exec_module(FakeModule)
+    with pytest.raises(FakeException):
+        DealLoader(loader=SubLoader(ok=False, text=text)).exec_module(FakeModule)
 
 
 def test_exec_module_no_source():
     text = None
-    DealLoader(loader=SubLoader(ok=True, text=text)).exec_module(TestModule)
-    with pytest.raises(TestException):
-        DealLoader(loader=SubLoader(ok=False, text=text)).exec_module(TestModule)
+    DealLoader(loader=SubLoader(ok=True, text=text)).exec_module(FakeModule)
+    with pytest.raises(FakeException):
+        DealLoader(loader=SubLoader(ok=False, text=text)).exec_module(FakeModule)
 
 
 def test_module_load():
