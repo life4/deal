@@ -1,7 +1,30 @@
 {
   "Telnet.expect": {
+    "has": [
+      "import"
+    ],
     "raises": [
-      "EOFError"
+      "EOFError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "Telnet.msg": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "Telnet.mt_interact": {
+    "has": [
+      "import"
+    ]
+  },
+  "Telnet.open": {
+    "has": [
+      "network"
+    ],
+    "raises": [
+      "err"
     ]
   },
   "Telnet.rawq_getchar": {

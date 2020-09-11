@@ -15,18 +15,27 @@
     ]
   },
   "wait_for_read": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "NoWayToWaitForSocketError",
       "RuntimeError"
     ]
   },
   "wait_for_socket": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "NoWayToWaitForSocketError",
       "RuntimeError"
     ]
   },
   "wait_for_write": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "NoWayToWaitForSocketError",
       "RuntimeError"

@@ -1,12 +1,51 @@
 {
+  "Pdb._runmodule": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "Pdb._runscript": {
+    "has": [
+      "import",
+      "read"
+    ]
+  },
   "Pdb._select_frame": {
     "raises": [
       "AssertionError"
     ]
   },
   "Pdb.do_run": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "Restart"
+    ]
+  },
+  "Pdb.error": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "Pdb.help_pdb": {
+    "has": [
+      "import"
+    ]
+  },
+  "Pdb.lookupmodule": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Pdb.message": {
+    "has": [
+      "stdout"
     ]
   },
   "Pdb.sigint_handler": {
@@ -14,9 +53,37 @@
       "KeyboardInterrupt"
     ]
   },
-  "main": {
+  "find_function": {
     "raises": [
-      "SystemExit"
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "getsourcelines": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "OSError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "help": {
+    "has": [
+      "global",
+      "import",
+      "stdout"
+    ]
+  },
+  "main": {
+    "has": [
+      "import",
+      "stdout"
+    ],
+    "raises": [
+      "SystemExit",
+      "TypeError"
     ]
   },
   "pm": {

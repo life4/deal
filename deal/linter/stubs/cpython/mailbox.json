@@ -1,5 +1,8 @@
 {
   "Babyl._install_message": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -31,9 +34,65 @@
       "NoSuchMailboxError"
     ]
   },
+  "MH.__setitem__": {
+    "raises": [
+      "KeyError",
+      "TypeError"
+    ]
+  },
+  "MH.add": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "MH.get_bytes": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "MH.get_file": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "MH.get_message": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "MH.get_sequences": {
+    "has": [
+      "read"
+    ],
+    "raises": [
+      "FormatError"
+    ]
+  },
+  "MH.lock": {
+    "has": [
+      "read"
+    ]
+  },
+  "MH.pack": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "MH.remove": {
+    "raises": [
+      "KeyError",
+      "TypeError"
+    ]
+  },
   "MH.remove_folder": {
     "raises": [
-      "NotEmptyError"
+      "NotEmptyError",
+      "TypeError"
+    ]
+  },
+  "MH.set_sequences": {
+    "has": [
+      "read"
     ]
   },
   "MHMessage._explain_to": {
@@ -51,6 +110,11 @@
       "NotImplementedError"
     ]
   },
+  "Mailbox.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "Mailbox.__len__": {
     "raises": [
       "NotImplementedError"
@@ -62,10 +126,18 @@
     ]
   },
   "Mailbox._dump_message": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
       "message"
+    ]
+  },
+  "Mailbox._string_to_bytes": {
+    "raises": [
+      "ValueError"
     ]
   },
   "Mailbox.add": {
@@ -133,17 +205,78 @@
       "NoSuchMailboxError"
     ]
   },
+  "Maildir.__setitem__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "Maildir._create_tmp": {
     "raises": [
-      "ExternalClashError"
+      "ExternalClashError",
+      "TypeError"
+    ]
+  },
+  "Maildir._lookup": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "Maildir._refresh": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Maildir.add": {
+    "raises": [
+      "ExternalClashError",
+      "TypeError"
+    ]
+  },
+  "Maildir.add_folder": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Maildir.clean": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Maildir.get_bytes": {
+    "has": [
+      "read"
+    ]
+  },
+  "Maildir.get_file": {
+    "has": [
+      "read"
+    ]
+  },
+  "Maildir.get_message": {
+    "has": [
+      "read"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Maildir.remove": {
+    "raises": [
+      "TypeError"
     ]
   },
   "Maildir.remove_folder": {
     "raises": [
-      "NotEmptyError"
+      "NotEmptyError",
+      "TypeError"
     ]
   },
   "MaildirMessage._explain_to": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "MaildirMessage.set_date": {
     "raises": [
       "TypeError"
     ]
@@ -159,7 +292,11 @@
     ]
   },
   "Message.__init__": {
+    "has": [
+      "import"
+    ],
     "raises": [
+      "Error",
       "TypeError"
     ]
   },
@@ -173,7 +310,23 @@
       "TypeError"
     ]
   },
+  "_singlefileMailbox.__init__": {
+    "has": [
+      "read"
+    ],
+    "raises": [
+      "NoSuchMailboxError"
+    ]
+  },
+  "_singlefileMailbox._lookup": {
+    "raises": [
+      "KeyError"
+    ]
+  },
   "_singlefileMailbox.flush": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "AssertionError",
       "ExternalClashError"

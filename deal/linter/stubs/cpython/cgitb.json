@@ -1,0 +1,12 @@
+{
+  "Hook.handle": {
+    "raises": [
+      "FileExistsError"
+    ]
+  },
+  "html": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

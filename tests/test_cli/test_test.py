@@ -4,8 +4,12 @@ from io import StringIO
 from pathlib import Path
 from textwrap import dedent
 
+# external
+import pytest
+
 # project
-from deal._cli._test import sys_path, test_command as command
+from deal._cli._test import has_pure_contract, sys_path, test_command as command
+from deal.linter._func import Func
 
 
 def test_safe_violation(tmp_path: Path, capsys):
@@ -101,3 +105,15 @@ def test_sys_path():
     with sys_path(path):
         del sys.path[0]
     assert len(sys.path) == size
+
+
+@pytest.mark.parametrize('source, has', [
+    ('@deal.pure \ndef f(): 0', True),
+    ('@deal.pure() \ndef f(): 0', True),
+    ('@deal.has() \ndef f(): 0', True),
+    # ('@deal.has\ndef f(): 0', True),
+])
+def test_has_pure_contract(source: str, has: bool) -> None:
+    funcs = Func.from_text(source)
+    assert len(funcs) == 1
+    assert has_pure_contract(funcs[0]) is has

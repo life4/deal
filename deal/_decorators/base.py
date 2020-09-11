@@ -20,15 +20,14 @@ _CallableType = TypeVar('_CallableType', bound=Callable)
 
 class Base(Generic[_CallableType]):
     exception: ExceptionType = ContractError
-    function: _CallableType
+    function: _CallableType  # pytype: disable=not-supported-yet
 
     def __init__(self, validator, *, message: str = None,
-                 exception: ExceptionType = None, debug: bool = False):
+                 exception: ExceptionType = None):
         """
         Step 1. Set contract (validator).
         """
         self.validator = self._make_validator(validator, message=message)
-        self.debug = debug
         if exception:
             self.exception = exception
         if message:
@@ -70,6 +69,7 @@ class Base(Generic[_CallableType]):
             while hasattr(function, '__wrapped__'):
                 function = function.__wrapped__     # type: ignore
             # assign *args to real names
+            kwargs.pop('result', None)
             params.update(inspect.getcallargs(function, *args, **kwargs))
             # drop args-kwargs, we already put them on the right places
             for bad_name in ('args', 'kwargs'):
@@ -114,9 +114,7 @@ class Base(Generic[_CallableType]):
 
     @property
     def enabled(self) -> bool:
-        if self.debug:
-            return state.debug
-        return state.main
+        return state.debug
 
     def __call__(self, function: _CallableType) -> _CallableType:
         """
@@ -149,3 +147,21 @@ class Base(Generic[_CallableType]):
         else:
             new_callable = update_wrapper(wrapped, function)
         return new_callable  # type: ignore
+
+    def patched_function(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        raise NotImplementedError
+
+    async def async_patched_function(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        raise NotImplementedError
+
+    def patched_generator(self, *args, **kwargs):
+        """
+        Step 3. Wrapped function calling.
+        """
+        raise NotImplementedError

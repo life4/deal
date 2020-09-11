@@ -1,0 +1,17 @@
+{
+  "test": {
+    "has": [
+      "import",
+      "stderr"
+    ],
+    "raises": [
+      "SystemExit"
+    ]
+  },
+  "testall": {
+    "has": [
+      "import",
+      "stdout"
+    ]
+  }
+}

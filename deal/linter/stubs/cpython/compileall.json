@@ -1,6 +1,47 @@
 {
-  "compile_dir": {
+  "_compile_file_tuple": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "_walk_dir": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
+      "TypeError"
+    ]
+  },
+  "compile_dir": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "compile_file": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "NotImplementedError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "compile_path": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "main": {
+    "has": [
+      "import",
+      "stdout"
+    ],
+    "raises": [
+      "TypeError",
       "ValueError"
     ]
   }

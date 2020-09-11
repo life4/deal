@@ -14,12 +14,27 @@
       "AssertionError"
     ]
   },
+  "_test": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
   "assure_pickle_consistency": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "ValueError"
     ]
   },
   "dis": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "AssertionError",
       "ValueError"
@@ -90,6 +105,11 @@
     ]
   },
   "read_stringnl": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_stringnl_noescape": {
     "raises": [
       "ValueError"
     ]

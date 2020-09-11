@@ -1,12 +1,33 @@
 {
+  "Profile.dump_stats": {
+    "has": [
+      "import",
+      "read"
+    ]
+  },
+  "Profile.print_stats": {
+    "has": [
+      "import"
+    ]
+  },
+  "Profile.run": {
+    "has": [
+      "import"
+    ]
+  },
   "Profile.runcall": {
     "raises": [
       "TypeError"
     ]
   },
   "main": {
+    "has": [
+      "import",
+      "read"
+    ],
     "raises": [
-      "SystemExit"
+      "SystemExit",
+      "TypeError"
     ]
   }
 }

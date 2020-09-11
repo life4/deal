@@ -1,10 +1,19 @@
 {
   "Random._randbelow": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
       "ValueError",
+      "ZeroDivisionError",
       "message"
+    ]
+  },
+  "Random.choice": {
+    "raises": [
+      "IndexError"
     ]
   },
   "Random.choices": {
@@ -31,6 +40,7 @@
   },
   "Random.setstate": {
     "raises": [
+      "TypeError",
       "ValueError"
     ]
   },
@@ -43,6 +53,18 @@
     "raises": [
       "TypeError",
       "ValueError"
+    ]
+  },
+  "_test": {
+    "has": [
+      "import",
+      "stdout"
+    ]
+  },
+  "_test_generator": {
+    "has": [
+      "import",
+      "stdout"
     ]
   }
 }

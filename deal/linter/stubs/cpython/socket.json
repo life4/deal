@@ -24,6 +24,26 @@
       "ValueError"
     ]
   },
+  "SocketIO.write": {
+    "has": [
+      "network"
+    ]
+  },
+  "create_connection": {
+    "has": [
+      "network"
+    ]
+  },
+  "getaddrinfo": {
+    "has": [
+      "network"
+    ]
+  },
+  "getfqdn": {
+    "has": [
+      "network"
+    ]
+  },
   "socket.__getstate__": {
     "raises": [
       "TypeError"
@@ -40,10 +60,25 @@
       "ValueError"
     ]
   },
+  "socket.accept": {
+    "has": [
+      "network"
+    ]
+  },
+  "socket.connect": {
+    "has": [
+      "network"
+    ]
+  },
   "socket.makefile": {
     "raises": [
       "AssertionError",
       "ValueError"
+    ]
+  },
+  "socket.sendfile": {
+    "has": [
+      "network"
     ]
   }
 }

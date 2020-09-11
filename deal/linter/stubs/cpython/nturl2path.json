@@ -1,10 +1,17 @@
 {
   "pathname2url": {
+    "has": [
+      "import"
+    ],
     "raises": [
-      "OSError"
+      "OSError",
+      "TypeError"
     ]
   },
   "url2pathname": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "OSError"
     ]

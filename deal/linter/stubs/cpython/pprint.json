@@ -8,5 +8,11 @@
     "raises": [
       "AssertionError"
     ]
+  },
+  "_perfcheck": {
+    "has": [
+      "import",
+      "stdout"
+    ]
   }
 }

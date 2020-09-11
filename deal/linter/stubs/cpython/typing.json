@@ -1,6 +1,7 @@
 {
   "ForwardRef.__init__": {
     "raises": [
+      "SyntaxError",
       "TypeError"
     ]
   },
@@ -115,6 +116,12 @@
   "_get_defaults": {
     "raises": [
       "AssertionError"
+    ]
+  },
+  "_make_nmtuple": {
+    "raises": [
+      "TypeError",
+      "ValueError"
     ]
   },
   "_overload_dummy": {

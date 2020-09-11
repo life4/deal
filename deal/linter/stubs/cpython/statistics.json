@@ -7,6 +7,7 @@
   },
   "_exact_ratio": {
     "raises": [
+      "AssertionError",
       "TypeError"
     ]
   },
@@ -52,7 +53,8 @@
   },
   "median": {
     "raises": [
-      "StatisticsError"
+      "StatisticsError",
+      "ZeroDivisionError"
     ]
   },
   "median_grouped": {

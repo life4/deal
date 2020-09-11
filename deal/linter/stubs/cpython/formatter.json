@@ -1,0 +1,62 @@
+{
+  "AbstractWriter.new_alignment": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "AbstractWriter.new_font": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "AbstractWriter.new_margin": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "AbstractWriter.new_spacing": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "AbstractWriter.new_styles": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "AbstractWriter.send_flowing_data": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "AbstractWriter.send_hor_rule": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "AbstractWriter.send_label_data": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "AbstractWriter.send_line_break": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "AbstractWriter.send_literal_data": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "AbstractWriter.send_paragraph": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "test": {
+    "has": [
+      "read"
+    ]
+  }
+}

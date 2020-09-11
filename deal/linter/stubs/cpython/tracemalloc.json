@@ -9,7 +9,22 @@
       "ValueError"
     ]
   },
+  "Snapshot.dump": {
+    "has": [
+      "read"
+    ]
+  },
   "Snapshot.filter_traces": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Snapshot.load": {
+    "has": [
+      "read"
+    ]
+  },
+  "_normalize_filename": {
     "raises": [
       "TypeError"
     ]

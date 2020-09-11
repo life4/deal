@@ -1,7 +1,86 @@
 {
   "_script": {
+    "has": [
+      "global",
+      "import",
+      "stdout"
+    ],
     "raises": [
+      "AssertionError",
       "SystemExit"
+    ]
+  },
+  "addpackage": {
+    "has": [
+      "import",
+      "stderr",
+      "stdout"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "addsitedir": {
+    "has": [
+      "import",
+      "stderr",
+      "stdout"
+    ]
+  },
+  "addusersitepackages": {
+    "has": [
+      "global"
+    ]
+  },
+  "execsitecustomize": {
+    "has": [
+      "stderr"
+    ]
+  },
+  "execusercustomize": {
+    "has": [
+      "stderr"
+    ]
+  },
+  "getsitepackages": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "getuserbase": {
+    "has": [
+      "global"
+    ]
+  },
+  "getusersitepackages": {
+    "has": [
+      "global"
+    ]
+  },
+  "main": {
+    "has": [
+      "global",
+      "read",
+      "stderr"
+    ]
+  },
+  "makepath": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "setcopyright": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "venv": {
+    "has": [
+      "global",
+      "read"
+    ],
+    "raises": [
+      "TypeError"
     ]
   }
 }

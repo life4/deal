@@ -4,24 +4,83 @@
       "NotImplementedError"
     ]
   },
+  "GenericBrowser.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Grail._find_grail_rc": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
   "UnixBrowser.open": {
     "raises": [
       "Error"
     ]
   },
+  "_synthesize": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "Error",
+      "TypeError"
+    ]
+  },
   "get": {
+    "has": [
+      "global",
+      "import"
+    ],
     "raises": [
       "Error"
     ]
   },
   "main": {
+    "has": [
+      "import",
+      "read",
+      "stderr",
+      "stdout"
+    ],
     "raises": [
       "SystemExit"
     ]
   },
   "open": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "Error"
+    ]
+  },
+  "open_new": {
+    "has": [
+      "read"
+    ]
+  },
+  "open_new_tab": {
+    "has": [
+      "read"
+    ]
+  },
+  "register": {
+    "has": [
+      "global"
+    ]
+  },
+  "register_standard_browsers": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "TypeError"
     ]
   }
 }

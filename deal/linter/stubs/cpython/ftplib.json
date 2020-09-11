@@ -1,8 +1,40 @@
 {
+  "FTP.abort": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "FTP.connect": {
+    "has": [
+      "network"
+    ],
+    "raises": [
+      "err"
+    ]
+  },
   "FTP.getline": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "EOFError",
       "Error"
+    ]
+  },
+  "FTP.getresp": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "FTP.getwelcome": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "FTP.makepasv": {
+    "has": [
+      "global",
+      "import"
     ]
   },
   "FTP.makeport": {
@@ -11,17 +43,69 @@
       "err"
     ]
   },
+  "FTP.ntransfercmd": {
+    "has": [
+      "global",
+      "import",
+      "network"
+    ],
+    "raises": [
+      "err"
+    ]
+  },
+  "FTP.putcmd": {
+    "has": [
+      "stdout"
+    ]
+  },
   "FTP.putline": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "ValueError"
     ]
   },
   "ftpcp": {
+    "has": [
+      "global",
+      "import"
+    ],
     "raises": [
       "error_proto"
     ]
   },
+  "parse150": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "parse227": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "print_line": {
+    "has": [
+      "stdout"
+    ]
+  },
   "test": {
+    "has": [
+      "import",
+      "stderr",
+      "stdout"
+    ],
     "raises": [
       "SystemExit"
     ]

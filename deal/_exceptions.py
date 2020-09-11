@@ -24,9 +24,13 @@ class ReasonContractError(ContractError):
     pass
 
 
-class OfflineContractError(ContractError):
+class MarkerError(ContractError):
     pass
 
 
-class SilentContractError(ContractError):
+class OfflineContractError(MarkerError):
+    pass
+
+
+class SilentContractError(MarkerError):
     pass

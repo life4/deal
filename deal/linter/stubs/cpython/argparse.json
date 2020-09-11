@@ -4,6 +4,11 @@
       "NotImplementedError"
     ]
   },
+  "ArgumentParser.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "ArgumentParser._check_value": {
     "raises": [
       "ArgumentError"
@@ -26,6 +31,13 @@
   },
   "FileType.__call__": {
     "raises": [
+      "ArgumentTypeError",
+      "ValueError"
+    ]
+  },
+  "HelpFormatter.__init__": {
+    "raises": [
+      "TypeError",
       "ValueError"
     ]
   },
@@ -34,12 +46,33 @@
       "AssertionError"
     ]
   },
+  "HelpFormatter._fill_text": {
+    "has": [
+      "import"
+    ]
+  },
   "HelpFormatter._format_usage": {
     "raises": [
       "AssertionError"
     ]
   },
+  "HelpFormatter._split_lines": {
+    "has": [
+      "import"
+    ]
+  },
+  "_ActionsContainer.__init__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
   "_ActionsContainer._add_container_actions": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_ActionsContainer._get_handler": {
     "raises": [
       "ValueError"
     ]
@@ -64,9 +97,19 @@
       "ValueError"
     ]
   },
+  "_AppendAction.__call__": {
+    "has": [
+      "import"
+    ]
+  },
   "_AppendAction.__init__": {
     "raises": [
       "ValueError"
+    ]
+  },
+  "_AppendConstAction.__call__": {
+    "has": [
+      "import"
     ]
   },
   "_MutuallyExclusiveGroup._add_action": {
@@ -77,6 +120,19 @@
   "_StoreAction.__init__": {
     "raises": [
       "ValueError"
+    ]
+  },
+  "_SubParsersAction.__call__": {
+    "raises": [
+      "ArgumentError"
+    ]
+  },
+  "_copy_items": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "Error"
     ]
   }
 }

@@ -8,8 +8,7 @@ from textwrap import dedent
 import astroid
 
 # project
-from deal.linter._extractors import get_exceptions_stubs
-from deal.linter._extractors.exceptions_stubs import _get_full_name, _get_module
+from deal.linter._extractors import get_exceptions
 from deal.linter._stub import StubsManager
 
 
@@ -32,7 +31,7 @@ def test_stubs_in_the_root(tmp_path: Path):
     tree = astroid.parse(dedent(text))
     print(tree.repr_tree())
     func_tree = tree.body[-1].body
-    returns = tuple(r.value for r in get_exceptions_stubs(body=func_tree, stubs=stubs))
+    returns = tuple(r.value for r in get_exceptions(body=func_tree, stubs=stubs))
     assert returns == (ZeroDivisionError, )
 
 
@@ -57,7 +56,7 @@ def test_stubs_next_to_imported_module(tmp_path: Path):
         tree = astroid.parse(dedent(text))
         print(tree.repr_tree())
         func_tree = tree.body[-1].body
-        returns = tuple(r.value for r in get_exceptions_stubs(body=func_tree, stubs=stubs))
+        returns = tuple(r.value for r in get_exceptions(body=func_tree, stubs=stubs))
         assert set(returns) == {ZeroDivisionError, 'SomeError'}
     finally:
         sys.path = sys.path[:-1]
@@ -76,7 +75,7 @@ def test_built_in_stubs():
     tree = astroid.parse(dedent(text))
     print(tree.repr_tree())
     func_tree = tree.body[-1].body
-    returns = tuple(r.value for r in get_exceptions_stubs(body=func_tree, stubs=stubs))
+    returns = tuple(r.value for r in get_exceptions(body=func_tree, stubs=stubs))
     assert returns == (TypeError, )
 
 
@@ -93,7 +92,7 @@ def test_no_stubs_for_module():
     tree = astroid.parse(dedent(text))
     print(tree.repr_tree())
     func_tree = tree.body[-1].body
-    returns = tuple(r.value for r in get_exceptions_stubs(body=func_tree, stubs=stubs))
+    returns = tuple(r.value for r in get_exceptions(body=func_tree, stubs=stubs))
     assert returns == ()
 
 
@@ -115,7 +114,7 @@ def test_infer_junk():
     tree = astroid.parse(dedent(text))
     print(tree.repr_tree())
     func_tree = tree.body[-1].body
-    returns = tuple(r.value for r in get_exceptions_stubs(body=func_tree, stubs=stubs))
+    returns = tuple(r.value for r in get_exceptions(body=func_tree, stubs=stubs))
     assert returns == ()
 
 
@@ -132,56 +131,5 @@ def test_marhsmallow_stubs():
     tree = astroid.parse(dedent(text))
     print(tree.repr_tree())
     func_tree = tree.body[-1].body
-    returns = tuple(r.value for r in get_exceptions_stubs(body=func_tree, stubs=stubs))
+    returns = tuple(r.value for r in get_exceptions(body=func_tree, stubs=stubs))
     assert returns == (ValueError,)
-
-
-def test_get_full_name_func():
-    tree = astroid.parse('def f(): pass')
-    print(tree.repr_tree())
-    func = tree.body[0]
-    assert _get_full_name(expr=func) == ('', 'f')
-
-
-def test_get_full_name_method():
-    tree = astroid.parse('class C:\n  def f(): pass')
-    print(tree.repr_tree())
-    func = tree.body[0].body[0]
-    assert _get_full_name(expr=func) == ('', 'C.f')
-
-
-def test_get_full_name_deep_method():
-    tree = astroid.parse('class A:\n  class B:\n    def f(): pass')
-    print(tree.repr_tree())
-    func = tree.body[0].body[0].body[0]
-    assert _get_full_name(expr=func) == ('', 'A.B.f')
-
-
-def test_get_full_name_func_in_func():
-    tree = astroid.parse('def outer():\n def inner(): pass')
-    print(tree.repr_tree())
-    func = tree.body[0].body[0]
-    assert _get_full_name(expr=func) == ('', 'outer.inner')
-
-
-def test_get_full_name_not_a_func():
-    tree = astroid.parse('try:\n pass\nexcept E as e:\n def f(): pass')
-    print(tree.repr_tree())
-    func = tree.body[0].handlers[0].body[0]
-    assert _get_full_name(expr=func) == ('', 'f')
-
-
-def test_get_full_name_no_parent():
-    tree = astroid.parse('def f(): pass')
-    print(tree.repr_tree())
-    assert _get_full_name(expr=tree) == ('', '')
-
-
-def test_get_module():
-    tree = astroid.parse('def f(): pass')
-    print(tree.repr_tree())
-    assert _get_module(expr=tree) is tree
-    assert _get_module(expr=tree.body[0]) is tree
-
-    tree.body[0].parent = None
-    assert _get_module(expr=tree.body[0]) is None

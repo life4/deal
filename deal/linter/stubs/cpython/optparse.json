@@ -94,6 +94,12 @@
       "ValueError"
     ]
   },
+  "OptionParser._match_long_opt": {
+    "raises": [
+      "AmbiguousOptionError",
+      "BadOptionError"
+    ]
+  },
   "OptionParser._process_short_opts": {
     "raises": [
       "BadOptionError"
@@ -106,8 +112,26 @@
     ]
   },
   "OptionParser.exit": {
+    "has": [
+      "stderr"
+    ],
     "raises": [
       "SystemExit"
+    ]
+  },
+  "OptionParser.get_prog_name": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "OptionParser.print_usage": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "OptionParser.print_version": {
+    "has": [
+      "stdout"
     ]
   },
   "Values._update": {
@@ -119,6 +143,11 @@
     "raises": [
       "AmbiguousOptionError",
       "BadOptionError"
+    ]
+  },
+  "check_builtin": {
+    "raises": [
+      "OptionValueError"
     ]
   },
   "check_choice": {

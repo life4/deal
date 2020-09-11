@@ -3,5 +3,15 @@
     "raises": [
       "TypeError"
     ]
+  },
+  "Completer.attr_matches": {
+    "has": [
+      "import"
+    ]
+  },
+  "Completer.global_matches": {
+    "has": [
+      "import"
+    ]
   }
 }

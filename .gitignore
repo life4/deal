@@ -16,4 +16,7 @@ docs/build/
 /setup.py
 .dephell_report/
 .mypy_cache/
+.pytype/
+.pytest_cache/
 /tmp.py
+.hypothesis/

@@ -12,10 +12,10 @@ TEMPLATE = (Path(__file__).parent / '_template.py').read_text()
 
 
 class Category(enum.Enum):
+    HAS = 'has'
     PRE = 'pre'
     POST = 'post'
     RAISES = 'raises'
-    SILENT = 'silent'
     PURE = 'pure'
 
 
@@ -53,6 +53,7 @@ class Contract:
 
     @property
     def exceptions(self) -> list:
+        # app
         from ._extractors import get_name
 
         excs = []

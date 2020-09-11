@@ -11,6 +11,9 @@
     ]
   },
   "HTTPSConnection.connect": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",

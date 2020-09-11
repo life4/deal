@@ -9,14 +9,63 @@
       "OSError"
     ]
   },
+  "TarFile._dbg": {
+    "has": [
+      "stderr",
+      "stdout"
+    ]
+  },
+  "TarFile._extract_member": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "TarFile._find_link_target": {
     "raises": [
       "KeyError"
     ]
   },
+  "TarFile._getmember": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "TarFile.add": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "TarFile.addfile": {
+    "raises": [
+      "Error"
+    ]
+  },
   "TarFile.bz2open": {
     "raises": [
+      "CompressionError",
+      "ReadError",
       "ValueError"
+    ]
+  },
+  "TarFile.chmod": {
+    "raises": [
+      "ExtractError"
+    ]
+  },
+  "TarFile.chown": {
+    "raises": [
+      "ExtractError"
+    ]
+  },
+  "TarFile.extract": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "TarFile.extractall": {
+    "raises": [
+      "Error",
+      "TypeError"
     ]
   },
   "TarFile.extractfile": {
@@ -29,9 +78,21 @@
       "KeyError"
     ]
   },
+  "TarFile.gettarinfo": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "TarFile.gzopen": {
     "raises": [
+      "CompressionError",
+      "ReadError",
       "ValueError"
+    ]
+  },
+  "TarFile.list": {
+    "has": [
+      "stdout"
     ]
   },
   "TarFile.makedev": {
@@ -40,6 +101,11 @@
     ]
   },
   "TarFile.makefifo": {
+    "raises": [
+      "ExtractError"
+    ]
+  },
+  "TarFile.makelink": {
     "raises": [
       "ExtractError"
     ]
@@ -61,13 +127,32 @@
       "ValueError"
     ]
   },
+  "TarFile.utime": {
+    "raises": [
+      "ExtractError"
+    ]
+  },
   "TarFile.xzopen": {
     "raises": [
+      "CompressionError",
+      "ReadError",
       "ValueError"
     ]
   },
   "TarInfo._posix_split_name": {
     "raises": [
+      "ValueError"
+    ]
+  },
+  "TarInfo._proc_gnulong": {
+    "raises": [
+      "SubsequentHeaderError"
+    ]
+  },
+  "TarInfo._proc_pax": {
+    "raises": [
+      "SubsequentHeaderError",
+      "TypeError",
       "ValueError"
     ]
   },
@@ -105,7 +190,15 @@
       "StreamError"
     ]
   },
+  "_safe_print": {
+    "has": [
+      "stdout"
+    ]
+  },
   "filemode": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -115,6 +208,22 @@
   "itn": {
     "raises": [
       "ValueError"
+    ]
+  },
+  "main": {
+    "has": [
+      "import",
+      "read",
+      "stderr",
+      "stdout"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "nti": {
+    "raises": [
+      "InvalidHeaderError"
     ]
   }
 }

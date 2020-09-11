@@ -9,6 +9,11 @@
       "TurtleGraphicsError"
     ]
   },
+  "RawTurtle._undogoto": {
+    "has": [
+      "stdout"
+    ]
+  },
   "RawTurtle.clone": {
     "raises": [
       "Error"
@@ -29,6 +34,16 @@
       "TurtleGraphicsError"
     ]
   },
+  "ScrolledCanvas.adjustScrolls": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "ScrolledCanvas.reset": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
   "Shape.__init__": {
     "raises": [
       "TurtleGraphicsError"
@@ -37,6 +52,21 @@
   "Shape.addcomponent": {
     "raises": [
       "TurtleGraphicsError"
+    ]
+  },
+  "TNavigator._setDegreesPerAU": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "TNavigator._setmode": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "TNavigator.circle": {
+    "raises": [
+      "ZeroDivisionError"
     ]
   },
   "TurtleScreen._color": {
@@ -62,6 +92,76 @@
   "TurtleScreen.register_shape": {
     "raises": [
       "TurtleGraphicsError"
+    ]
+  },
+  "TurtleScreen.setworldcoordinates": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "Vec2D.rotate": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "_Screen.exitonclick": {
+    "raises": [
+      "SystemExit"
+    ]
+  },
+  "_Screen.setup": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "_make_global_funcs": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "_screen_docrevise": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_turtle_docrevise": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "config_dict": {
+    "has": [
+      "read",
+      "stdout"
+    ]
+  },
+  "getmethparlist": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "read_docstrings": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "readconfig": {
+    "has": [
+      "read",
+      "stdout"
+    ]
+  },
+  "write_docstringdict": {
+    "has": [
+      "write"
     ]
   }
 }

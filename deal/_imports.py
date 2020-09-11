@@ -4,19 +4,13 @@ import sys
 from types import ModuleType
 from typing import Any, Callable, List, Optional
 
-# project
+# external
 from _frozen_importlib_external import PathFinder
 
 # app
 from . import _aliases
 from ._state import state
 from .linter._extractors.common import get_name
-
-
-def _enabled(debug: bool = False) -> bool:
-    if debug:
-        return state.debug
-    return state.main
 
 
 class DealFinder(PathFinder):
@@ -60,7 +54,7 @@ class DealLoader:
             contracts.append(contract)
 
         # execute module with contracts
-        wrapped = _aliases.chain(contract)(self._loader.exec_module)
+        wrapped = _aliases.chain(*contracts)(self._loader.exec_module)
         wrapped(module)
 
     @staticmethod
@@ -79,8 +73,15 @@ class DealLoader:
     def _exec_contract(cls, node: ast.AST) -> Optional[Callable]:
         """Get AST node and return a contract function
         """
-        if type(node) is ast.Call and not node.args:    # type: ignore
-            return cls._exec_contract(node.func)        # type: ignore
+        if isinstance(node, ast.Call) and not node.keywords:
+            try:
+                args = [ast.literal_eval(arg) for arg in node.args]
+            except ValueError:
+                return None
+            func = cls._exec_contract(node.func)
+            if not func:
+                return None
+            return func(*args)
 
         if not isinstance(node, ast.Attribute):
             return None
@@ -92,8 +93,22 @@ class DealLoader:
         return contract
 
 
-def module_load(*contracts, debug: bool = False) -> None:
-    if not _enabled(debug):
+def module_load(*contracts) -> None:
+    """
+    Specify contracts that will be checked at module import time.
+    Keep in mind that [deal.activate](#deal.activate) must be called
+    before importing a module with `module_load` contract.
+
+    ```pycon
+    >>> import deal
+    >>> deal.module_load(deal.has(), deal.safe)
+
+    ```
+
+    See [Contracts for importing modules](./module_load.md)
+    documentation for more details.
+    """
+    if not state.debug:
         return
     if not contracts:
         raise RuntimeError('no contracts specified')
@@ -103,13 +118,25 @@ def module_load(*contracts, debug: bool = False) -> None:
         raise RuntimeError(msg)
 
 
-def activate(debug: bool = False) -> bool:
+def activate() -> bool:
     """Activate module-level checks.
 
     This function must be called before importing anything
-    with deal.module_load() contract.
+    with [deal.module_load](#deal.module_load) contract.
+    Otherwise, the contract won't be executed.
+
+    The best practice is to place it in `__init__.py` of your project:
+
+    ```pycon
+    >>> import deal
+    >>> deal.activate()
+
+    ```
+
+    See [Contracts for importing modules](./module_load.md)
+    documentation for more details.
     """
-    if not _enabled(debug):
+    if not state.debug:
         return False
     if DealFinder in sys.meta_path:
         return False

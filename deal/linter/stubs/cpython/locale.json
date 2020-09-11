@@ -1,4 +1,9 @@
 {
+  "_build_localename": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "_grouping_intervals": {
     "raises": [
       "ValueError"
@@ -10,11 +15,18 @@
     ]
   },
   "_print_locale": {
+    "has": [
+      "import",
+      "stdout"
+    ],
     "raises": [
       "TypeError"
     ]
   },
   "_test": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "Error"
     ]
@@ -25,6 +37,20 @@
     ]
   },
   "format": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "getdefaultlocale": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "ValueError"
     ]
@@ -32,10 +58,17 @@
   "getlocale": {
     "raises": [
       "Error",
-      "TypeError"
+      "TypeError",
+      "ValueError"
     ]
   },
   "resetlocale": {
+    "raises": [
+      "Error",
+      "TypeError"
+    ]
+  },
+  "setlocale": {
     "raises": [
       "Error"
     ]

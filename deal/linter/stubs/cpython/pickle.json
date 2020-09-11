@@ -1,6 +1,7 @@
 {
   "_Pickler.__init__": {
     "raises": [
+      "TypeError",
       "ValueError"
     ]
   },
@@ -25,6 +26,11 @@
       "PicklingError"
     ]
   },
+  "_Pickler.save_pers": {
+    "raises": [
+      "PicklingError"
+    ]
+  },
   "_Pickler.save_reduce": {
     "raises": [
       "PicklingError"
@@ -43,6 +49,11 @@
   "_Unframer.readline": {
     "raises": [
       "UnpicklingError"
+    ]
+  },
+  "_Unpickler._instantiate": {
+    "raises": [
+      "TypeError"
     ]
   },
   "_Unpickler.get_extension": {
@@ -101,6 +112,11 @@
       "ValueError"
     ]
   },
+  "_Unpickler.load_persid": {
+    "raises": [
+      "UnpicklingError"
+    ]
+  },
   "_Unpickler.load_proto": {
     "raises": [
       "ValueError"
@@ -142,6 +158,15 @@
     ]
   },
   "_loads": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_test": {
+    "has": [
+      "global",
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]

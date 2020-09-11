@@ -1,16 +1,59 @@
 {
+  "_basename": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "_check_unpack_options": {
     "raises": [
       "RegistryError",
       "TypeError"
     ]
   },
-  "_make_tarball": {
+  "_destinsrc": {
     "raises": [
+      "TypeError"
+    ]
+  },
+  "_ensure_directory": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_make_tarball": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "TypeError",
       "ValueError"
     ]
   },
+  "_make_zipfile": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_rmtree_safe_fd": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_unpack_tarfile": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "ReadError"
+    ]
+  },
   "_unpack_zipfile": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "ReadError"
     ]
@@ -22,18 +65,29 @@
     ]
   },
   "copy": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "SameFileError",
-      "SpecialFileError"
+      "SpecialFileError",
+      "TypeError"
     ]
   },
   "copy2": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "SameFileError",
-      "SpecialFileError"
+      "SpecialFileError",
+      "TypeError"
     ]
   },
   "copyfile": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "SameFileError",
       "SpecialFileError"
@@ -41,12 +95,20 @@
   },
   "copytree": {
     "raises": [
-      "Error"
+      "Error",
+      "TypeError"
+    ]
+  },
+  "make_archive": {
+    "raises": [
+      "TypeError",
+      "ValueError"
     ]
   },
   "move": {
     "raises": [
-      "Error"
+      "Error",
+      "TypeError"
     ]
   },
   "register_archive_format": {
@@ -62,7 +124,14 @@
   },
   "unpack_archive": {
     "raises": [
-      "ReadError"
+      "ReadError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "which": {
+    "raises": [
+      "TypeError"
     ]
   }
 }

@@ -18,5 +18,15 @@
     "raises": [
       "AssertionError"
     ]
+  },
+  "dispatcher.log": {
+    "has": [
+      "stderr"
+    ]
+  },
+  "dispatcher.log_info": {
+    "has": [
+      "stdout"
+    ]
   }
 }

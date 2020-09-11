@@ -1,7 +1,51 @@
 {
+  "abspath": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "basename": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "commonpath": {
     "raises": [
+      "TypeError",
       "ValueError"
+    ]
+  },
+  "dirname": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "expanduser": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "expandvars": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "isabs": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "join": {
+    "raises": [
+      "TypeError"
     ]
   },
   "normcase": {
@@ -9,9 +53,35 @@
       "TypeError"
     ]
   },
+  "normpath": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "realpath": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "relpath": {
     "raises": [
+      "TypeError",
       "ValueError"
+    ]
+  },
+  "split": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "splitdrive": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "splitext": {
+    "raises": [
+      "TypeError"
     ]
   }
 }

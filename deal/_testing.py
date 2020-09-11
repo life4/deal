@@ -13,10 +13,24 @@ from ._types import ArgsKwargsType
 
 
 class TestCase(typing.NamedTuple):
+    """A callable object, wrapper around a function that must be tested.
+
+    When called, calls the wrapped function, suppresses expected exceptions,
+    checks the type of the result, and returns it.
+    """
+
     args: typing.Tuple[typing.Any, ...]
+    """Positional arguments to be passed in the function"""
+
     kwargs: typing.Dict[str, typing.Any]
+    """Keyword arguments to be passed in the function"""
+
     func: typing.Callable
+    """The function which will be called when the test case is called"""
+
     exceptions: typing.Tuple[typing.Type[Exception], ...]
+    """Exceptions that must be suppressed.
+    """
 
     def __call__(self) -> typing.Any:
         """Calls the given test case returning the called functions result on success or
@@ -93,6 +107,32 @@ def get_examples(func: typing.Callable, kwargs: typing.Dict[str, typing.Any],
 def cases(func: typing.Callable, *, count: int = 50,
           kwargs: typing.Dict[str, typing.Any] = None,
           ) -> typing.Iterator[TestCase]:
+    """[summary]
+
+    :param func: the function to test. Should be type annotated.
+    :type func: typing.Callable
+    :param count: how many test cases to generate, defaults to 50
+    :type count: int, optional
+    :param kwargs: keyword arguments to pass into the function.
+    :type kwargs: typing.Dict[str, typing.Any], optional
+    :yield: Emits test cases.
+    :rtype: typing.Iterator[TestCase]
+
+    ```pycon
+    >>> import deal
+    >>> @deal.pre(lambda a, b: b != 0)
+    ... def div(a: int, b: int) -> float:
+    ...   return a / b
+    ...
+    >>> cases = deal.cases(div)
+    >>> next(cases)
+    TestCase(args=(), kwargs=..., func=<function div ...>, exceptions=(<class 'PreContractError'>,))
+    >>> case = next(cases)
+    >>> case()  # execute the test case
+    ...
+    ```
+
+    """
     if not kwargs:
         kwargs = {}
     params_generator = get_examples(

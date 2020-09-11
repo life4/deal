@@ -10,19 +10,19 @@ from .test_decorators.helpers import run_sync
 
 
 def test_contract_state_switch_custom_param():
-    func = deal.pre(lambda x: x > 0, debug=True)(lambda x: x * 2)
-    deal.switch(debug=False)
+    func = deal.pre(lambda x: x > 0)(lambda x: x * 2)
+    deal.disable()
     func(-2)
-    deal.switch(debug=True)
+    deal.enable()
     with pytest.raises(deal.PreContractError):
         func(-2)
 
 
 def test_contract_state_switch_default_param():
     func = deal.pre(lambda x: x > 0)(lambda x: x * 2)
-    deal.switch(main=False)
+    deal.disable()
     assert func(-2) == -4
-    deal.switch(main=True)
+    deal.enable()
     with pytest.raises(deal.PreContractError):
         func(-2)
 
@@ -32,9 +32,9 @@ def test_contract_state_switch_default_param_async():
     async def func(x):
         return x * 2
 
-    deal.switch(main=False)
+    deal.disable()
     assert run_sync(func(-2)) == -4
-    deal.switch(main=True)
+    deal.enable()
     with pytest.raises(deal.PreContractError):
         run_sync(func(-2))
 
@@ -44,9 +44,9 @@ def test_contract_state_switch_default_param_generator():
     def func(x):
         yield x * 2
 
-    deal.switch(main=False)
+    deal.disable()
     assert list(func(-2)) == [-4]
-    deal.switch(main=True)
+    deal.enable()
     with pytest.raises(deal.PreContractError):
         list(func(-2))
 
@@ -55,24 +55,24 @@ def test_state_switch_module_load():
     with pytest.raises(RuntimeError):
         deal.module_load()
     try:
-        deal.switch(main=False)
+        deal.disable()
         deal.activate()
         deal.module_load()
     finally:
         deactivate()
-        deal.switch(main=True)
+        deal.enable()
 
 
 def test_state_switch_module_load_debug():
     with pytest.raises(RuntimeError):
-        deal.module_load(debug=True)
+        deal.module_load()
     try:
-        deal.switch(debug=False)
+        deal.disable()
         deal.activate()
-        deal.module_load(debug=True)
+        deal.enable()
     finally:
         deactivate()
-        deal.switch(debug=True)
+        deal.reset()
 
 
 def test_state_switch_activate():
@@ -80,8 +80,8 @@ def test_state_switch_activate():
         assert deal.activate()
         assert deactivate()
 
-        deal.switch(main=False)
+        deal.disable()
         assert not deal.activate()
     finally:
         deactivate()
-        deal.switch(main=True)
+        deal.enable()

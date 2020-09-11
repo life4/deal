@@ -1,6 +1,7 @@
 {
   "Wave_read._read_fmt_chunk": {
     "raises": [
+      "EOFError",
       "Error"
     ]
   },
@@ -100,7 +101,12 @@
     ]
   },
   "openfp": {
+    "has": [
+      "import",
+      "read"
+    ],
     "raises": [
+      "Error",
       "RuntimeError",
       "TypeError",
       "message"

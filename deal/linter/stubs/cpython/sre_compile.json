@@ -13,5 +13,21 @@
     "raises": [
       "AssertionError"
     ]
+  },
+  "compile": {
+    "has": [
+      "import",
+      "stdout"
+    ],
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "dis": {
+    "has": [
+      "global",
+      "import"
+    ]
   }
 }

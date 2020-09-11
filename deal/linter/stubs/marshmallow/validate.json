@@ -1,4 +1,9 @@
 {
+  "ContainsNoneOf.__call__": {
+    "raises": [
+      "ValidationError"
+    ]
+  },
   "ContainsOnly.__call__": {
     "raises": [
       "ValidationError"
@@ -42,6 +47,12 @@
   "Regexp.__call__": {
     "raises": [
       "ValidationError"
+    ]
+  },
+  "URL.RegexMemoizer._regex_generator": {
+    "raises": [
+      "TypeError",
+      "ValueError"
     ]
   },
   "URL.__call__": {

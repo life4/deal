@@ -1,5 +1,15 @@
 {
+  "decode": {
+    "has": [
+      "read"
+    ]
+  },
   "test": {
+    "has": [
+      "import",
+      "read",
+      "stdout"
+    ],
     "raises": [
       "SystemExit"
     ]

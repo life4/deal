@@ -1,0 +1,12 @@
+{
+  "clearcache": {
+    "has": [
+      "global"
+    ]
+  },
+  "getlines": {
+    "has": [
+      "global"
+    ]
+  }
+}

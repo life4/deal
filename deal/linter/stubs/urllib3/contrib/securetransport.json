@@ -1,5 +1,8 @@
 {
   "SecureTransportContext.load_verify_locations": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "ValueError"
     ]
@@ -14,6 +17,11 @@
       "AssertionError"
     ]
   },
+  "WrappedSocket._custom_validate": {
+    "has": [
+      "read"
+    ]
+  },
   "WrappedSocket._raise_on_error": {
     "raises": [
       "exception"
@@ -22,6 +30,11 @@
   "WrappedSocket.getpeercert": {
     "raises": [
       "ValueError"
+    ]
+  },
+  "WrappedSocket.recv": {
+    "raises": [
+      "TypeError"
     ]
   }
 }

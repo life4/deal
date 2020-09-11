@@ -3,5 +3,35 @@
     "raises": [
       "StopIteration"
     ]
+  },
+  "shlex.get_token": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "shlex.pop_source": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "shlex.push_source": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "shlex.push_token": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "shlex.read_token": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "shlex.sourcehook": {
+    "raises": [
+      "TypeError"
+    ]
   }
 }

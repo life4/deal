@@ -1,0 +1,7 @@
+{
+  "addbase.__enter__": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

@@ -1,5 +1,8 @@
 {
   "AppEngineManager.__init__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "AppEnginePlatformError",
       "RuntimeError",
@@ -8,6 +11,9 @@
     ]
   },
   "AppEngineManager._get_absolute_timeout": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -15,6 +21,9 @@
     ]
   },
   "AppEngineManager._get_retries": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",

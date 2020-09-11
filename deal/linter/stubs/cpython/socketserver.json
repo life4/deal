@@ -1,0 +1,14 @@
+{
+  "BaseServer.handle_error": {
+    "has": [
+      "import",
+      "stderr",
+      "stdout"
+    ]
+  },
+  "DatagramRequestHandler.setup": {
+    "has": [
+      "import"
+    ]
+  }
+}

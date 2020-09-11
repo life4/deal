@@ -38,5 +38,10 @@
     "raises": [
       "Error"
     ]
+  },
+  "getfileinfo": {
+    "raises": [
+      "TypeError"
+    ]
   }
 }

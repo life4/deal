@@ -11,6 +11,9 @@
     ]
   },
   "EnumMeta.__contains__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -33,9 +36,19 @@
       "ValueError"
     ]
   },
+  "EnumMeta.__prepare__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "EnumMeta.__setattr__": {
     "raises": [
       "AttributeError"
+    ]
+  },
+  "EnumMeta._create_": {
+    "raises": [
+      "TypeError"
     ]
   },
   "EnumMeta._get_mixins_": {
@@ -44,6 +57,9 @@
     ]
   },
   "Flag.__contains__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -53,6 +69,11 @@
   "Flag._create_pseudo_member_": {
     "raises": [
       "ValueError"
+    ]
+  },
+  "Flag._generate_next_value_": {
+    "raises": [
+      "TypeError"
     ]
   },
   "IntFlag._missing_": {

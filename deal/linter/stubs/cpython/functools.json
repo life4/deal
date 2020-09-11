@@ -29,6 +29,11 @@
       "TypeError"
     ]
   },
+  "singledispatch": {
+    "has": [
+      "import"
+    ]
+  },
   "total_ordering": {
     "raises": [
       "ValueError"

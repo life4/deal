@@ -1,12 +1,35 @@
 {
   "SMTP.__init__": {
+    "has": [
+      "network"
+    ],
     "raises": [
       "SMTPConnectError"
     ]
   },
+  "SMTP._get_socket": {
+    "has": [
+      "network"
+    ],
+    "raises": [
+      "err"
+    ]
+  },
+  "SMTP._print_debug": {
+    "has": [
+      "stderr",
+      "stdout"
+    ]
+  },
   "SMTP.auth": {
     "raises": [
-      "SMTPAuthenticationError"
+      "SMTPAuthenticationError",
+      "TypeError"
+    ]
+  },
+  "SMTP.connect": {
+    "raises": [
+      "OSError"
     ]
   },
   "SMTP.data": {
@@ -44,6 +67,8 @@
   },
   "SMTP.send_message": {
     "raises": [
+      "Error",
+      "SMTPNotSupportedError",
       "ValueError"
     ]
   },
@@ -55,6 +80,9 @@
     ]
   },
   "SMTP.starttls": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "SMTPNotSupportedError",

@@ -1,0 +1,14 @@
+{
+  "_main": {
+    "has": [
+      "import",
+      "stderr",
+      "stdout"
+    ],
+    "raises": [
+      "SystemExit",
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}

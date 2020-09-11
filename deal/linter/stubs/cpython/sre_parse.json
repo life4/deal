@@ -1,4 +1,9 @@
 {
+  "SubPattern.dump": {
+    "has": [
+      "stdout"
+    ]
+  },
   "_parse_flags": {
     "raises": [
       "AssertionError"

@@ -7,18 +7,14 @@ import deal
 
 
 def get_func():
-    @deal.require(lambda x: x > 0)
+    @deal.pre(lambda x: x > 0)
     @deal.post(lambda x: x > 0)
     @deal.ensure(lambda *args, **kwargs: True)
     @deal.raises(ValueError)
-    @deal.offline()
-    @deal.offline
     @deal.safe
     @deal.safe()
-    @deal.silent
-    @deal.silent()
     @deal.pure
-    @deal.chain(deal.safe, deal.silent)
+    @deal.chain(deal.safe, deal.pure)
     def func(x: int) -> int:
         """docs were before docker
         """

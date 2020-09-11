@@ -4,8 +4,22 @@
       "NotImplementedError"
     ]
   },
-  "_execvpe": {
+  "_Environ.__delitem__": {
     "raises": [
+      "KeyError"
+    ]
+  },
+  "_Environ.__getitem__": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "_execvpe": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "TypeError",
       "ValueError",
       "last_exc",
       "saved_exc"
@@ -29,20 +43,44 @@
     ]
   },
   "fdopen": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]
   },
   "get_exec_path": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "AssertionError",
       "ValueError"
     ]
   },
+  "makedirs": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "popen": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError",
       "ValueError"
+    ]
+  },
+  "removedirs": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "renames": {
+    "raises": [
+      "TypeError"
     ]
   },
   "walk": {

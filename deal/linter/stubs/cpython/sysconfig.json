@@ -1,9 +1,104 @@
 {
+  "_expand_vars": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_generate_posix_vars": {
+    "has": [
+      "import",
+      "write"
+    ],
+    "raises": [
+      "OSError",
+      "TypeError"
+    ]
+  },
+  "_init_non_posix": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_main": {
+    "has": [
+      "global",
+      "import",
+      "stdout",
+      "write"
+    ],
+    "raises": [
+      "OSError"
+    ]
+  },
+  "_parse_makefile": {
+    "has": [
+      "import",
+      "read"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_print_dict": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "_subst_vars": {
+    "raises": [
+      "AttributeError"
+    ]
+  },
+  "get_config_h_filename": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "get_config_var": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
       "message"
+    ]
+  },
+  "get_config_vars": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "get_makefile_filename": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "get_platform": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "parse_config_h": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
     ]
   }
 }

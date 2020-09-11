@@ -1,7 +1,60 @@
 {
+  "Stats.dump_stats": {
+    "has": [
+      "read"
+    ]
+  },
+  "Stats.get_print_list": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "Stats.init": {
+    "has": [
+      "stdout"
+    ]
+  },
   "Stats.load_stats": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "TypeError"
+    ]
+  },
+  "Stats.print_call_heading": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "Stats.print_call_line": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "Stats.print_callees": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "Stats.print_callers": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "Stats.print_line": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "Stats.print_stats": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "Stats.print_title": {
+    "has": [
+      "stdout"
     ]
   },
   "Stats.sort_stats": {

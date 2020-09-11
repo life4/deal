@@ -1,16 +1,16 @@
 # app
 from .ensure import Ensure
+from .has import Has
 from .inv import Invariant
-from .offline import Offline
 from .post import Post
 from .pre import Pre
 from .raises import Raises
 from .reason import Reason
-from .silent import Silent
 
 
 __all__ = [
     'Ensure',
+    'Has',
     'Invariant',
     'Offline',
     'Post',

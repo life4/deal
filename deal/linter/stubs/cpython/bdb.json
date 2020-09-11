@@ -1,4 +1,9 @@
 {
+  "Bdb.canonic": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "Bdb.dispatch_call": {
     "raises": [
       "BdbQuit"
@@ -24,14 +29,86 @@
       "NotImplementedError"
     ]
   },
+  "Bdb.format_stack_entry": {
+    "has": [
+      "import"
+    ]
+  },
   "Bdb.get_bpbynumber": {
     "raises": [
       "ValueError"
     ]
   },
+  "Bdb.reset": {
+    "has": [
+      "import"
+    ]
+  },
+  "Bdb.run": {
+    "has": [
+      "import"
+    ]
+  },
   "Bdb.runcall": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "Bdb.runeval": {
+    "has": [
+      "import"
+    ]
+  },
+  "Bdb.set_break": {
+    "has": [
+      "import"
+    ]
+  },
+  "Bdb.trace_dispatch": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "Breakpoint.bpprint": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "Tdb.user_call": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "Tdb.user_exception": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "Tdb.user_line": {
+    "has": [
+      "import",
+      "stdout"
+    ]
+  },
+  "Tdb.user_return": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "bar": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "foo": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "ZeroDivisionError"
     ]
   }
 }

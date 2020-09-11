@@ -16,7 +16,11 @@
     ]
   },
   "DocFileTest": {
+    "has": [
+      "read"
+    ],
     "raises": [
+      "TypeError",
       "ValueError"
     ]
   },
@@ -26,7 +30,16 @@
     ]
   },
   "DocTestFinder._find": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
+      "ValueError"
+    ]
+  },
+  "DocTestFinder._find_lineno": {
+    "raises": [
+      "TypeError",
       "ValueError"
     ]
   },
@@ -36,7 +49,11 @@
     ]
   },
   "DocTestFinder.find": {
+    "has": [
+      "global"
+    ],
     "raises": [
+      "TypeError",
       "ValueError"
     ]
   },
@@ -55,12 +72,25 @@
       "ValueError"
     ]
   },
+  "DocTestRunner.__patched_linecache_getlines": {
+    "has": [
+      "global"
+    ]
+  },
   "DocTestRunner.__run": {
     "raises": [
       "AssertionError"
     ]
   },
+  "DocTestRunner.run": {
+    "has": [
+      "import"
+    ]
+  },
   "DocTestRunner.summarize": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "AssertionError"
     ]
@@ -72,7 +102,8 @@
   },
   "OutputChecker.output_difference": {
     "raises": [
-      "AssertionError"
+      "AssertionError",
+      "TypeError"
     ]
   },
   "_ellipsis_match": {
@@ -80,7 +111,15 @@
       "AssertionError"
     ]
   },
+  "_exception_traceback": {
+    "has": [
+      "stdout"
+    ]
+  },
   "_load_testfile": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "TypeError",
       "ValueError"
@@ -98,28 +137,59 @@
     ]
   },
   "_test": {
+    "has": [
+      "global",
+      "import"
+    ],
     "raises": [
       "TypeError",
       "ValueError"
     ]
   },
   "debug": {
+    "has": [
+      "import",
+      "stdout"
+    ],
     "raises": [
       "TypeError",
       "ValueError"
     ]
   },
+  "debug_script": {
+    "has": [
+      "import",
+      "stdout"
+    ]
+  },
+  "debug_src": {
+    "has": [
+      "import",
+      "stdout"
+    ]
+  },
   "set_unittest_reportflags": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "ValueError"
     ]
   },
   "testfile": {
+    "has": [
+      "global",
+      "read"
+    ],
     "raises": [
+      "TypeError",
       "ValueError"
     ]
   },
   "testmod": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "TypeError"
     ]

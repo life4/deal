@@ -21,13 +21,27 @@
     ]
   },
   "Signature.from_builtin": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
+      "ValueError",
       "message"
     ]
   },
+  "Signature.from_callable": {
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
   "Signature.from_function": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -40,6 +54,11 @@
     ]
   },
   "_main": {
+    "has": [
+      "import",
+      "stderr",
+      "stdout"
+    ],
     "raises": [
       "SystemExit"
     ]
@@ -55,12 +74,19 @@
     ]
   },
   "_signature_from_builtin": {
+    "has": [
+      "import"
+    ],
     "raises": [
+      "AssertionError",
       "TypeError",
       "ValueError"
     ]
   },
   "_signature_from_callable": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "AssertionError",
       "TypeError",
@@ -73,6 +99,9 @@
     ]
   },
   "_signature_fromstr": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "AssertionError",
       "ValueError"
@@ -85,10 +114,14 @@
   },
   "_signature_get_partial": {
     "raises": [
-      "AssertionError"
+      "AssertionError",
+      "ValueError"
     ]
   },
   "_signature_strip_non_python_syntax": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "AssertionError"
     ]
@@ -99,16 +132,28 @@
     ]
   },
   "findsource": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "OSError",
-      "TypeError"
+      "TypeError",
+      "ValueError"
     ]
   },
   "formatargspec": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
       "message"
+    ]
+  },
+  "getabsfile": {
+    "raises": [
+      "TypeError"
     ]
   },
   "getargs": {
@@ -117,6 +162,9 @@
     ]
   },
   "getargspec": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -149,7 +197,17 @@
       "TypeError"
     ]
   },
+  "getfullargspec": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "getgeneratorlocals": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "getmodulename": {
     "raises": [
       "TypeError"
     ]

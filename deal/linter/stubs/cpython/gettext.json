@@ -1,11 +1,22 @@
 {
   "GNUTranslations._parse": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "OSError",
       "ValueError"
     ]
   },
+  "NullTranslations.install": {
+    "has": [
+      "import"
+    ]
+  },
   "_as_int": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -23,18 +34,47 @@
       "ValueError"
     ]
   },
+  "bind_textdomain_codeset": {
+    "has": [
+      "global"
+    ]
+  },
+  "bindtextdomain": {
+    "has": [
+      "global"
+    ]
+  },
   "c2py": {
     "raises": [
       "ValueError"
     ]
   },
+  "find": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "install": {
+    "has": [
+      "import",
+      "read"
+    ],
     "raises": [
       "FileNotFoundError"
     ]
   },
+  "textdomain": {
+    "has": [
+      "global"
+    ]
+  },
   "translation": {
+    "has": [
+      "import",
+      "read"
+    ],
     "raises": [
+      "Error",
       "FileNotFoundError"
     ]
   }

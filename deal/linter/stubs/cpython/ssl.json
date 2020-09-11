@@ -1,7 +1,18 @@
 {
   "PEM_cert_to_DER_cert": {
     "raises": [
+      "TypeError",
       "ValueError"
+    ]
+  },
+  "SSLContext._load_windows_store_certs": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
     ]
   },
   "SSLContext.load_default_certs": {
@@ -142,6 +153,14 @@
     ]
   },
   "_ipaddress_match": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "cert_time_to_seconds": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "ValueError"
     ]

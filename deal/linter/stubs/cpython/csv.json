@@ -1,4 +1,9 @@
 {
+  "Dialect._validate": {
+    "raises": [
+      "Error"
+    ]
+  },
   "DictWriter.__init__": {
     "raises": [
       "ValueError"
@@ -6,6 +11,12 @@
   },
   "DictWriter._dict_to_list": {
     "raises": [
+      "ValueError"
+    ]
+  },
+  "Sniffer._guess_quote_and_delimiter": {
+    "raises": [
+      "TypeError",
       "ValueError"
     ]
   },

@@ -1,50 +1,39 @@
+# Deal
+
+<!-- .. mdinclude:: ../README.md -->
+
 ```eval_rst
-.. mdinclude:: ../README.md
 
 .. toctree::
     :maxdepth: 1
-    :caption: Classic contracts
+    :caption: Getting started
 
-    decorators/pre
-    decorators/post
-    decorators/ensure
-    decorators/inv
+    basic/intro
+    basic/motivation
 
 .. toctree::
     :maxdepth: 1
-    :caption: CLI
+    :caption: Writing contracts
 
-    commands/lint
-    commands/stub
-    commands/test
-
-.. toctree::
-    :maxdepth: 1
-    :caption: Main info
-
-    exceptions
-    disable
-    chaining
-    validators
-    testing
-    recipes
-
+    basic/values
+    basic/exceptions
+    basic/side-effects
 
 .. toctree::
     :maxdepth: 1
-    :caption: Take more control
+    :caption: Checking contracts
 
-    decorators/module_load
-    decorators/offline
-    decorators/raises
-    decorators/reason
-    decorators/silent
+    basic/runtime
+    basic/tests
+    basic/linter
 
 .. toctree::
     :maxdepth: 1
-    :caption: Helpers
+    :caption: Dive deeper
 
-    decorators/chain
-    decorators/pure
-    decorators/safe
+    details/module_load
+    details/stubs
+    details/validators
+    details/recipes
+    details/api
 ```

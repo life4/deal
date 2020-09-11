@@ -4,6 +4,11 @@
       "AddressValueError"
     ]
   },
+  "IPv4Address.packed": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "IPv4Network.__init__": {
     "raises": [
       "ValueError"
@@ -12,6 +17,11 @@
   "IPv6Address.__init__": {
     "raises": [
       "AddressValueError"
+    ]
+  },
+  "IPv6Address.packed": {
+    "raises": [
+      "ValueError"
     ]
   },
   "IPv6Network.__init__": {
@@ -39,6 +49,11 @@
       "NotImplementedError"
     ]
   },
+  "_BaseNetwork._is_subnet_of": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "_BaseNetwork.address_exclude": {
     "raises": [
       "AssertionError",
@@ -51,6 +66,11 @@
       "TypeError"
     ]
   },
+  "_BaseNetwork.subnet_of": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "_BaseNetwork.subnets": {
     "raises": [
       "ValueError"
@@ -59,6 +79,11 @@
   "_BaseNetwork.supernet": {
     "raises": [
       "ValueError"
+    ]
+  },
+  "_BaseNetwork.supernet_of": {
+    "raises": [
+      "TypeError"
     ]
   },
   "_BaseV4._ip_int_from_string": {
@@ -145,6 +170,16 @@
   "summarize_address_range": {
     "raises": [
       "TypeError",
+      "ValueError"
+    ]
+  },
+  "v4_int_to_packed": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "v6_int_to_packed": {
+    "raises": [
       "ValueError"
     ]
   }

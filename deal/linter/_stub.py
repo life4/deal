@@ -1,6 +1,5 @@
 # built-in
 import json
-from itertools import chain
 from pathlib import Path
 from typing import Any, Dict, FrozenSet, Iterator, NamedTuple, Optional, Sequence, Tuple
 
@@ -18,10 +17,12 @@ CPYTHON_ROOT = ROOT / 'cpython'
 
 class StubFile:
     __slots__ = ('path', '_content')
+    path: Path
+    _content: Dict[str, Dict[str, Any]]
 
     def __init__(self, path: Path) -> None:
         self.path = path
-        self._content = dict()  # type: Dict[str, Dict[str, Any]]
+        self._content = dict()
 
     def load(self) -> None:
         with self.path.open(encoding='utf8') as stream:
@@ -34,7 +35,7 @@ class StubFile:
             json.dump(obj=self._content, fp=stream, indent=2, sort_keys=True)
 
     def add(self, func: str, contract: Category, value: str) -> None:
-        if contract != Category.RAISES:
+        if contract not in (Category.RAISES, Category.HAS):
             raise ValueError('unsupported contract')
         contracts = self._content.setdefault(func, dict())
         values = contracts.setdefault(contract.value, [])
@@ -44,7 +45,7 @@ class StubFile:
         values.sort()
 
     def get(self, func: str, contract: Category) -> FrozenSet[str]:
-        if contract != Category.RAISES:
+        if contract not in (Category.RAISES, Category.HAS):
             raise ValueError('unsupported contract')
         values = self._content.get(func, {}).get(contract.value, [])
         return frozenset(values)
@@ -52,12 +53,15 @@ class StubFile:
 
 class StubsManager:
     __slots__ = ('paths', '_modules')
+    _modules: Dict[str, StubFile]
+    paths: Tuple[Path, ...]
+
     default_paths = (ROOT, CPYTHON_ROOT)
 
     def __init__(self, paths: Sequence[Path] = None):
-        self._modules = dict()  # type: Dict[str, StubFile]
+        self._modules = dict()
         if paths is None:
-            self.paths = self.default_paths  # type: Tuple[Path, ...]
+            self.paths = self.default_paths
         else:
             self.paths = tuple(paths)
 
@@ -147,7 +151,8 @@ def _get_funcs_from_expr(expr, prefix='') -> Iterator[PseudoFunc]:
 
 
 def generate_stub(*, path: Path, stubs: StubsManager = None) -> Path:
-    from ._extractors import get_exceptions, get_exceptions_stubs
+    # app
+    from ._extractors import get_exceptions, get_markers
 
     if path.suffix != '.py':
         raise ValueError('invalid Python file extension: *{}'.format(path.suffix))
@@ -156,14 +161,13 @@ def generate_stub(*, path: Path, stubs: StubsManager = None) -> Path:
         stubs = StubsManager()
     stub = stubs.create(path=path)
     for func in _get_funcs(path=path):
-        tokens = chain(
-            get_exceptions(body=func.body),
-            get_exceptions_stubs(body=func.body, stubs=stubs),
-        )
-        for token in tokens:
+        for token in get_exceptions(body=func.body, stubs=stubs):
             value = token.value
             if isinstance(value, type):
                 value = value.__name__
             stub.add(func=func.name, contract=Category.RAISES, value=str(value))
+        for token in get_markers(body=func.body, stubs=stubs):
+            assert token.marker is not None
+            stub.add(func=func.name, contract=Category.HAS, value=token.marker)
     stub.dump()
     return stub.path

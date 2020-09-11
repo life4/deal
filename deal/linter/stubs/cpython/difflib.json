@@ -14,7 +14,30 @@
       "ValueError"
     ]
   },
+  "HtmlDiff.make_table": {
+    "has": [
+      "import"
+    ]
+  },
   "_check_types": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_mdiff": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_test": {
+    "has": [
+      "global",
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]
@@ -24,7 +47,17 @@
       "TypeError"
     ]
   },
+  "diff_bytes": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "get_close_matches": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "restore": {
     "raises": [
       "ValueError"
     ]

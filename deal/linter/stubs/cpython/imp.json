@@ -4,12 +4,23 @@
       "ImportError"
     ]
   },
+  "_HackedGetData.get_data": {
+    "has": [
+      "read"
+    ]
+  },
   "cache_from_source": {
     "raises": [
-      "AssertionError"
+      "AssertionError",
+      "NotImplementedError",
+      "TypeError",
+      "ValueError"
     ]
   },
   "find_module": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "ImportError",
       "RuntimeError",
@@ -22,6 +33,10 @@
     ]
   },
   "load_module": {
+    "has": [
+      "import",
+      "read"
+    ],
     "raises": [
       "ImportError",
       "ValueError"
@@ -29,12 +44,26 @@
   },
   "load_package": {
     "raises": [
+      "ImportError",
+      "TypeError",
       "ValueError"
     ]
   },
   "load_source": {
     "raises": [
       "ImportError"
+    ]
+  },
+  "reload": {
+    "raises": [
+      "ImportError",
+      "TypeError"
+    ]
+  },
+  "source_from_cache": {
+    "raises": [
+      "NotImplementedError",
+      "ValueError"
     ]
   }
 }

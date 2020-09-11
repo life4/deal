@@ -1,10 +1,40 @@
 {
+  "Aifc_read._adpcm2lin": {
+    "has": [
+      "import"
+    ]
+  },
+  "Aifc_read._alaw2lin": {
+    "has": [
+      "import"
+    ]
+  },
   "Aifc_read._read_comm_chunk": {
+    "has": [
+      "import"
+    ],
     "raises": [
+      "EOFError",
       "Error",
       "RuntimeError",
       "TypeError",
       "message"
+    ]
+  },
+  "Aifc_read._readmark": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "EOFError",
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "Aifc_read._ulaw2lin": {
+    "has": [
+      "import"
     ]
   },
   "Aifc_read.getmark": {
@@ -27,7 +57,25 @@
       "Error"
     ]
   },
+  "Aifc_write._lin2adpcm": {
+    "has": [
+      "import"
+    ]
+  },
+  "Aifc_write._lin2alaw": {
+    "has": [
+      "import"
+    ]
+  },
+  "Aifc_write._lin2ulaw": {
+    "has": [
+      "import"
+    ]
+  },
   "Aifc_write._write_header": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "ValueError"
     ]
@@ -107,6 +155,36 @@
       "Error"
     ]
   },
+  "_read_float": {
+    "raises": [
+      "EOFError"
+    ]
+  },
+  "_read_long": {
+    "raises": [
+      "EOFError"
+    ]
+  },
+  "_read_short": {
+    "raises": [
+      "EOFError"
+    ]
+  },
+  "_read_ulong": {
+    "raises": [
+      "EOFError"
+    ]
+  },
+  "_read_ushort": {
+    "raises": [
+      "EOFError"
+    ]
+  },
+  "_write_float": {
+    "has": [
+      "import"
+    ]
+  },
   "_write_string": {
     "raises": [
       "ValueError"
@@ -118,7 +196,12 @@
     ]
   },
   "openfp": {
+    "has": [
+      "import",
+      "read"
+    ],
     "raises": [
+      "Error",
       "RuntimeError",
       "TypeError",
       "message"

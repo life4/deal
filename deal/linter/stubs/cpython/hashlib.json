@@ -3,5 +3,10 @@
     "raises": [
       "ValueError"
     ]
+  },
+  "__get_openssl_constructor": {
+    "raises": [
+      "ValueError"
+    ]
   }
 }

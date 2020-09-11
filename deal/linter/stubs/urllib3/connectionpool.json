@@ -31,6 +31,9 @@
     ]
   },
   "HTTPSConnectionPool._validate_conn": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",

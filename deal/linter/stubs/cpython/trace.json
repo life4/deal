@@ -1,6 +1,92 @@
 {
+  "CoverageResults.__init__": {
+    "has": [
+      "stderr",
+      "stdout"
+    ]
+  },
+  "CoverageResults.write_results": {
+    "has": [
+      "global",
+      "read",
+      "stderr",
+      "stdout"
+    ],
+    "raises": [
+      "SyntaxError",
+      "TypeError"
+    ]
+  },
+  "CoverageResults.write_results_file": {
+    "has": [
+      "stderr",
+      "stdout"
+    ]
+  },
+  "Trace.globaltrace_lt": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "Trace.localtrace_trace": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Trace.localtrace_trace_and_count": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Trace.run": {
+    "has": [
+      "import"
+    ]
+  },
+  "Trace.runctx": {
+    "has": [
+      "global"
+    ]
+  },
   "Trace.runfunc": {
     "raises": [
+      "TypeError"
+    ]
+  },
+  "_find_executable_linenos": {
+    "has": [
+      "read",
+      "stderr",
+      "stdout"
+    ]
+  },
+  "_find_strings": {
+    "has": [
+      "read"
+    ]
+  },
+  "_fullmodname": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_modname": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "main": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "SystemExit",
       "TypeError"
     ]
   }

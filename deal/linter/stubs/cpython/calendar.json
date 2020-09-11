@@ -9,7 +9,58 @@
       "IllegalMonthError"
     ]
   },
+  "LocaleHTMLCalendar.__init__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "LocaleTextCalendar.__init__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "TextCalendar.prmonth": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "TextCalendar.prweek": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "TextCalendar.pryear": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "different_locale.__enter__": {
+    "raises": [
+      "Error",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "different_locale.__exit__": {
+    "raises": [
+      "Error"
+    ]
+  },
+  "format": {
+    "has": [
+      "stdout"
+    ]
+  },
   "main": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "SystemExit"
     ]

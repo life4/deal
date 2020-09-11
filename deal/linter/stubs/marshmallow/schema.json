@@ -1,6 +1,7 @@
 {
   "Schema.__init__": {
     "raises": [
+      "Error",
       "StringNotCollectionError"
     ]
   },
@@ -31,6 +32,9 @@
     ]
   },
   "SchemaOpts.__init__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",

@@ -4,7 +4,19 @@
       "ValueError"
     ]
   },
+  "Timer.print_exc": {
+    "has": [
+      "import",
+      "stdout"
+    ]
+  },
   "main": {
+    "has": [
+      "global",
+      "import",
+      "stderr",
+      "stdout"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",

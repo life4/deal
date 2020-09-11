@@ -1,15 +1,40 @@
 {
   "FileInput.__getitem__": {
     "raises": [
+      "IndexError",
       "RuntimeError"
     ]
   },
   "FileInput.__init__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
       "ValueError",
       "message"
+    ]
+  },
+  "FileInput._readline": {
+    "has": [
+      "import",
+      "read",
+      "write"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_test": {
+    "has": [
+      "import",
+      "stdout"
+    ]
+  },
+  "close": {
+    "has": [
+      "global"
     ]
   },
   "filelineno": {
@@ -27,7 +52,20 @@
       "RuntimeError"
     ]
   },
+  "hook_compressed": {
+    "has": [
+      "import",
+      "read"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
   "input": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "RuntimeError"
     ]

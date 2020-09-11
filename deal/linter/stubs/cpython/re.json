@@ -1,5 +1,32 @@
 {
+  "Scanner.__init__": {
+    "has": [
+      "import",
+      "stdout"
+    ],
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
   "_compile": {
+    "has": [
+      "import",
+      "stdout"
+    ],
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "compile": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "template": {
     "raises": [
       "TypeError",
       "ValueError"

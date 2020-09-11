@@ -15,6 +15,9 @@
     ]
   },
   "Field.fail": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "TypeError",
@@ -36,6 +39,11 @@
       "ValueError"
     ]
   },
+  "List._bind_to_schema": {
+    "raises": [
+      "Error"
+    ]
+  },
   "List._deserialize": {
     "raises": [
       "ValidationError"
@@ -46,12 +54,30 @@
       "ValueError"
     ]
   },
+  "Mapping._bind_to_schema": {
+    "raises": [
+      "Error"
+    ]
+  },
   "Mapping._deserialize": {
     "raises": [
       "ValidationError"
     ]
   },
+  "Method._deserialize": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Method._serialize": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "Nested.__init__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "RuntimeError",
       "StringNotCollectionError",
@@ -66,6 +92,8 @@
   },
   "Nested.schema": {
     "raises": [
+      "Error",
+      "RegistryError",
       "ValueError"
     ]
   },
@@ -77,6 +105,11 @@
   "Tuple.__init__": {
     "raises": [
       "ValueError"
+    ]
+  },
+  "Tuple._bind_to_schema": {
+    "raises": [
+      "Error"
     ]
   },
   "Tuple._deserialize": {
