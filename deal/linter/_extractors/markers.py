@@ -76,6 +76,11 @@ def handle_call(expr, dive: bool = True, stubs: StubsManager = None) -> Iterator
         yield Token(marker='write', value='Path.open', **token_info)
         return
 
+    # import
+    if name == '__import__':
+        yield Token(marker='import', **token_info)
+        return
+
     yield from _infer_markers(expr=expr, dive=dive, stubs=stubs)
 
 

@@ -83,6 +83,8 @@ def test_io_infer(text, expected):
 
     ('from a import b', ('import', )),
     ('from a import b as c', ('import', )),
+
+    ('__import__("something")', ('import', )),
 ])
 def test_get_globals_simple(text, expected):
     tree = astroid.parse(text)
