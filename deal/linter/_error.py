@@ -2,7 +2,7 @@
 import typing
 
 
-ERROR_FORMAT = 'DEAL{code:03d} {text}'
+ERROR_FORMAT = 'DEAL{code:03d}'
 
 
 class Error:
@@ -16,8 +16,12 @@ class Error:
         self.value = value
 
     @property
+    def full_code(self) -> str:
+        return ERROR_FORMAT.format(code=self.code)
+
+    @property
     def message(self) -> str:
-        msg = ERROR_FORMAT.format(code=self.code, text=self.text)
+        msg = self.full_code + ' ' + self.text
         if self.value:
             msg += ' ({})'.format(self.value)
         return msg

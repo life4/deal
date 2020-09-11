@@ -18,7 +18,8 @@ COLORS = dict(
     magenta='\033[95m',
     end='\033[0m',
 )
-TEMPLATE = '  {blue}{row}{end}:{blue}{col}{end} {yellow}{text}{end}'
+TEMPLATE = '  {blue}{row}{end}:{blue}{col}{end} {magenta}{code}{end} {yellow}{text}{end}'
+VALUE = ' {magenta}({value}){end}'
 POINTER = '{magenta}^{end}'
 
 
@@ -53,7 +54,7 @@ def get_errors(paths: Iterable[Union[str, Path]]) -> Iterator[dict]:
                     path=str(path),
                     row=error.row,
                     col=error.col,
-                    code=error.code,
+                    code=error.full_code,
                     text=error.text,
                     value=error.value,
                     content=lines[error.row - 1],
@@ -85,7 +86,7 @@ def lint_command(argv: Sequence[str]) -> int:
         # print message
         line = TEMPLATE.format(**COLORS, **error)
         if error['value']:
-            line += ' {magenta}({value}){end}'.format(**COLORS, **error)
+            line += VALUE.format(**COLORS, **error)
         print(line)
 
         # print code line
