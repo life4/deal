@@ -203,10 +203,13 @@ class CheckMarkers:
 
         for token in get_markers(body=func.body):
             assert token.marker
-            if getattr(has, 'has_{}'.format(token.marker)):
+            has_marker = getattr(has, 'has_{}'.format(token.marker), None)
+            if has_marker is None:
+                has_marker = token.marker in has.markers
+            if has_marker:
                 continue
             yield Error(
-                code=cls.codes[token.marker],
+                code=cls.codes.get(token.marker, 40),
                 text=cls.message,
                 value=token.marker,
                 row=token.line,
