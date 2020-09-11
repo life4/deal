@@ -74,10 +74,10 @@ class DealLoader:
         """Get AST node and return a contract function
         """
         if isinstance(node, ast.Call) and not node.keywords:
-            for arg in node.args:
-                if type(arg) is not ast.Str:
-                    return None
-            args = [ast.literal_eval(arg) for arg in node.args]
+            try:
+                args = [ast.literal_eval(arg) for arg in node.args]
+            except ValueError:
+                return None
             func = cls._exec_contract(node.func)
             if not func:
                 return None
