@@ -238,6 +238,28 @@ def test_check_has_io():
         assert actual[0][2] == expected
 
 
+def test_check_has_custom_markers():
+    checker = CheckMarkers()
+    text = """
+    import deal
+
+    @deal.has('database')
+    def inner():
+        return 1
+
+    @deal.has()
+    def outer():
+        return inner()
+    """
+    text = dedent(text).strip()
+    funcs = Func.from_astroid(astroid.parse(text))
+    func = funcs[-1]
+    actual = [tuple(err) for err in checker(func)]
+    assert len(actual) == 1
+    expected = 'DEAL040 missed marker (database)'
+    assert actual[0][2] == expected
+
+
 def test_check_has_no_has():
     checker = CheckMarkers()
     text = """
