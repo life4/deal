@@ -64,7 +64,7 @@ class CheckPre:
         for token in get_pre(body=func.body):
             yield Error(
                 code=self.code,
-                text=self.message,
+                text=token.marker or self.message,
                 value=token.value,  # type: ignore
                 row=token.line,
                 col=token.col,

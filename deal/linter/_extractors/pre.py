@@ -55,8 +55,12 @@ def handle_call(expr: astroid.Call) -> Iterator[Token]:
             except NameError:
                 continue
             if result is False or type(result) is str:
-                msg = format_call_args(args, kwargs)
-                yield Token(value=msg, line=expr.lineno, col=expr.col_offset)
+                yield Token(
+                    value=format_call_args(args, kwargs),
+                    marker=result or None,
+                    line=expr.lineno,
+                    col=expr.col_offset,
+                )
 
 
 def format_call_args(args: Sequence, kwargs: dict) -> str:
