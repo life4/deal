@@ -1,8 +1,9 @@
+import re
+
 import deal
 
 
 def contract(template: str, *args):
-    import re
     rex = re.compile(r'\{\:([a-z])\}')
     types = {'s': str, 'd': float}
     matches = rex.findall(template)
