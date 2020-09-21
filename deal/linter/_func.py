@@ -34,6 +34,7 @@ class Func(NamedTuple):
     @classmethod
     def from_ast(cls, tree: ast.Module) -> List['Func']:
         funcs = []
+        definitions = cls._extract_defs_ast(tree=tree)
         for expr in tree.body:
             if not isinstance(expr, ast.FunctionDef):
                 continue
@@ -43,6 +44,7 @@ class Func(NamedTuple):
                     args=args,
                     category=Category(category),
                     func_args=expr.args,
+                    context=definitions,
                 )
                 contracts.append(contract)
             funcs.append(cls(

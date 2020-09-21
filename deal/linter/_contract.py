@@ -2,6 +2,7 @@
 import ast
 import builtins
 import enum
+from copy import copy
 from pathlib import Path
 from typing import Dict, FrozenSet, Iterable
 
@@ -126,7 +127,7 @@ class Contract:
         return excs
 
     @cached_property
-    def bytecode(self):
+    def module(self) -> ast.Module:
         module = ast.parse(TEMPLATE)
 
         # inject function signature
@@ -134,9 +135,18 @@ class Contract:
         func.args = self.func_args
         module.body[3].value = func
 
-        # inject contract
-        contract = self.body
+        # collect definitions for contract external deps
+        deps = []
+        for dep in self.dependencies:
+            definition = self.context.get(dep)
+            if not definition:
+                continue
+            deps.append(definition)
+
+        # inject contract if contract is a function
+        contract = copy(self.body)
         if isinstance(contract, ast.FunctionDef):
+            contract.body = deps + contract.body
             # if contract is function, add it's definition and assign it's name
             # to `contract` variable.
             module.body = [contract] + module.body
@@ -146,12 +156,43 @@ class Contract:
                 col_offset=1,
                 ctx=ast.Load(),
             )
-        else:
-            if isinstance(contract, ast.Expr):
-                contract = contract.value
-            module.body[2].value = contract
+            return module
 
-        return compile(module, filename='<ast>', mode='exec')
+        if isinstance(contract, ast.Expr):
+            contract = contract.value
+
+        # Inject contract if contract is a lambda.
+        # We have to rebuild lambda into a function
+        # to inject dependencies inside the body.
+        if isinstance(contract, ast.Lambda):
+            body = list(deps)
+            return_node = ast.Return(
+                value=contract.body,
+                lineno=1,
+                col_offset=1,
+                ctx=ast.Load(),
+            )
+            body.append(return_node)
+            var_name = module.body[2].targets[0].id
+            func = ast.FunctionDef(
+                name=var_name,
+                args=contract.args,
+                body=body,
+                decorator_list=[],
+                lineno=1,
+                col_offset=1,
+                ctx=ast.Load(),
+            )
+            module.body[2] = func
+            return module
+
+        # inject contract if contract is an unknown expression
+        module.body[2].value = contract
+        return module
+
+    @cached_property
+    def bytecode(self):
+        return compile(self.module, filename='<ast>', mode='exec')
 
     def run(self, *args, **kwargs):
         globals = dict(args=args, kwargs=kwargs)
