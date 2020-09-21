@@ -67,8 +67,13 @@ def test_repr():
     ('ab = 2', {'ab'}),
     ('ab = cd = 23', {'ab', 'cd'}),
 ])
-def test_extract_defs_ast(source: str, names) -> None:
+def test_extract_defs(source: str, names) -> None:
     tree = ast.parse(source)
     print(ast.dump(tree))
     defs = Func._extract_defs_ast(tree)
+    assert set(defs) == names
+
+    tree = astroid.parse(source)
+    print(tree.repr_tree())
+    defs = Func._extract_defs_astroid(tree)
     assert set(defs) == names

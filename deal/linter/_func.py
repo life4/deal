@@ -60,6 +60,7 @@ class Func(NamedTuple):
     @classmethod
     def from_astroid(cls, tree: astroid.Module) -> List['Func']:
         funcs = []
+        definitions = cls._extract_defs_astroid(tree=tree)
         for expr in tree.body:
             if not isinstance(expr, astroid.FunctionDef):
                 continue
@@ -76,6 +77,7 @@ class Func(NamedTuple):
                         args=args,
                         func_args=func_args,
                         category=Category(category),
+                        context=definitions,
                     )
                     contracts.append(contract)
 
@@ -95,7 +97,7 @@ class Func(NamedTuple):
         for node in tree.body:
             if isinstance(node, ast.Import):
                 for name_node in node.names:
-                    stmt = ast.Import([name_node])
+                    stmt = ast.Import(names=[name_node])
                     name = name_node.asname or name_node.name
                     result[name] = stmt
                 continue
@@ -103,7 +105,7 @@ class Func(NamedTuple):
             if isinstance(node, ast.ImportFrom):
                 module_name = '.' * node.level + node.module
                 for name_node in node.names:
-                    stmt = ast.ImportFrom(module_name, [name_node])
+                    stmt = ast.ImportFrom(module=module_name, names=[name_node])
                     name = name_node.asname or name_node.name
                     result[name] = stmt
                 continue
@@ -115,6 +117,36 @@ class Func(NamedTuple):
                     if not isinstance(target, ast.Name):
                         continue
                     result[target.id] = ast.Expr(node)
+        return result
+
+    @staticmethod
+    def _extract_defs_astroid(tree: astroid.Module) -> Dict[str, ast.AST]:
+        result: Dict[str, ast.AST] = dict()
+        for node in tree.body:
+            if isinstance(node, astroid.Import):
+                for name, alias in node.names:
+                    result[alias or name] = ast.Import(
+                        names=[ast.alias(name=name, asname=alias)],
+                    )
+                continue
+
+            if isinstance(node, astroid.ImportFrom):
+                module_name = '.' * (node.level or 0) + node.modname
+                for name, alias in node.names:
+                    result[alias or name] = ast.ImportFrom(
+                        module=module_name,
+                        names=[ast.alias(name=name, asname=alias)],
+                    )
+                continue
+
+            if isinstance(node, astroid.Expr):
+                node = node.value
+            if isinstance(node, astroid.Assign):
+                expr = ast.parse(node.value.as_string()).body[0]
+                for target in node.targets:
+                    if not isinstance(target, astroid.AssignName):
+                        continue
+                    result[target.name] = expr
         return result
 
     def __repr__(self) -> str:
