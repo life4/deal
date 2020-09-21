@@ -65,9 +65,12 @@ class Contract:
 
         Useful for resolving external dependencies.
         """
-        if not isinstance(self.body, (ast.FunctionDef, ast.Lambda)):
+        func = self.body
+        if isinstance(func, ast.Expr):
+            func = func.value
+        if not isinstance(func, (ast.FunctionDef, ast.Lambda)):
             return frozenset()
-        args = self.body.args
+        args = func.args
         result = set()
         for arg in args.args:
             result.add(arg.arg)

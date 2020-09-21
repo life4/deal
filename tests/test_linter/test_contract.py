@@ -154,14 +154,21 @@ def test_arguments(source: str, deps: set):
     """
     text = text.format(source=source)
     text = dedent(text).strip()
+
     tree = ast.parse(text)
     print(ast.dump(tree))
     funcs1 = Func.from_ast(tree)
-    assert len(funcs1) == 1
-    func = funcs1[0]
-    assert len(func.contracts) == 1
-    c = func.contracts[0]
-    assert c.arguments == deps
+
+    tree = astroid.parse(text)
+    print(tree.repr_tree())
+    funcs2 = Func.from_astroid(tree)
+
+    for funcs in (funcs1, funcs2):
+        assert len(funcs) == 1
+        func = funcs[0]
+        assert len(func.contracts) == 1
+        c = func.contracts[0]
+        assert c.arguments == deps
 
 
 @pytest.mark.parametrize('source, deps', [
@@ -183,8 +190,66 @@ def test_dependencies(source: str, deps: set):
     text = text.format(source=source)
     text = dedent(text).strip()
     funcs1 = Func.from_ast(ast.parse(text))
-    assert len(funcs1) == 1
-    func = funcs1[0]
+
+    tree = astroid.parse(text)
+    print(tree.repr_tree())
+    funcs2 = Func.from_astroid(tree)
+
+    for funcs in (funcs1, funcs2):
+        assert len(funcs) == 1
+        func = funcs[0]
+        assert len(func.contracts) == 1
+        c = func.contracts[0]
+        assert c.dependencies == deps
+
+
+def test_resolve_and_run_dependencies_func_astroid():
+    text = """
+    import deal
+    CONST = 34
+
+    def contract(a):
+        return a == CONST
+
+    @deal.post(contract)
+    def f(a):
+        return a * 2
+    """
+    text = dedent(text).strip()
+    tree = astroid.parse(text)
+    print(tree.repr_tree())
+    funcs = Func.from_astroid(tree)
+    assert len(funcs) == 2
+    func = funcs[-1]
     assert len(func.contracts) == 1
     c = func.contracts[0]
-    assert c.dependencies == deps
+
+    c.run(12) is False
+    c.run(34) is True
+
+
+def test_resolve_and_run_dependencies_lambda():
+    text = """
+    import deal
+
+    CONST = 34
+
+    @deal.post(lambda a: a == CONST)
+    def f(a):
+        return a * 2
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+
+    tree = astroid.parse(text)
+    print(tree.repr_tree())
+    funcs2 = Func.from_astroid(tree)
+
+    for funcs in (funcs1, funcs2):
+        assert len(funcs) == 1
+        func = funcs[0]
+        assert len(func.contracts) == 1
+        c = func.contracts[0]
+
+        c.run(12) is False
+        c.run(34) is True

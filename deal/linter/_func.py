@@ -97,7 +97,12 @@ class Func(NamedTuple):
         for node in tree.body:
             if isinstance(node, ast.Import):
                 for name_node in node.names:
-                    stmt = ast.Import(names=[name_node])
+                    stmt = ast.Import(
+                        names=[name_node],
+                        lineno=1,
+                        col_offset=1,
+                        ctx=ast.Load(),
+                    )
                     name = name_node.asname or name_node.name
                     result[name] = stmt
                 continue
@@ -105,7 +110,13 @@ class Func(NamedTuple):
             if isinstance(node, ast.ImportFrom):
                 module_name = '.' * node.level + node.module
                 for name_node in node.names:
-                    stmt = ast.ImportFrom(module=module_name, names=[name_node])
+                    stmt = ast.ImportFrom(
+                        module=module_name,
+                        names=[name_node],
+                        lineno=1,
+                        col_offset=1,
+                        ctx=ast.Load(),
+                    )
                     name = name_node.asname or name_node.name
                     result[name] = stmt
                 continue
@@ -116,7 +127,7 @@ class Func(NamedTuple):
                 for target in node.targets:
                     if not isinstance(target, ast.Name):
                         continue
-                    result[target.id] = ast.Expr(node)
+                    result[target.id] = node
         return result
 
     @staticmethod
@@ -127,6 +138,9 @@ class Func(NamedTuple):
                 for name, alias in node.names:
                     result[alias or name] = ast.Import(
                         names=[ast.alias(name=name, asname=alias)],
+                        lineno=1,
+                        col_offset=1,
+                        ctx=ast.Load(),
                     )
                 continue
 
@@ -136,13 +150,16 @@ class Func(NamedTuple):
                     result[alias or name] = ast.ImportFrom(
                         module=module_name,
                         names=[ast.alias(name=name, asname=alias)],
+                        lineno=1,
+                        col_offset=1,
+                        ctx=ast.Load(),
                     )
                 continue
 
             if isinstance(node, astroid.Expr):
                 node = node.value
             if isinstance(node, astroid.Assign):
-                expr = ast.parse(node.value.as_string()).body[0]
+                expr = ast.parse(node.as_string()).body[0]
                 for target in node.targets:
                     if not isinstance(target, astroid.AssignName):
                         continue
