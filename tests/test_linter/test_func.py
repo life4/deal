@@ -3,6 +3,7 @@ import ast
 
 # external
 import astroid
+import pytest
 
 # project
 from deal.linter._func import Func
@@ -53,3 +54,21 @@ def test_repr():
     funcs2 = Func.from_astroid(astroid.parse(TEXT))
     for func in (funcs1[0], funcs2[0]):
         assert repr(func) == 'Func(post, raises)'
+
+
+@pytest.mark.parametrize('source, names', [
+    ('import re', {'re'}),
+    ('import typing, types', {'typing', 'types'}),
+    ('import typing as types', {'types'}),
+
+    ('from typing import List', {'List'}),
+    ('from typing import List, Dict', {'List', 'Dict'}),
+
+    ('ab = 2', {'ab'}),
+    ('ab = cd = 23', {'ab', 'cd'}),
+])
+def test_extract_defs_ast(source: str, names) -> None:
+    tree = ast.parse(source)
+    print(ast.dump(tree))
+    defs = Func._extract_defs_ast(tree)
+    assert set(defs) == names

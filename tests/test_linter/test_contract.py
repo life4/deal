@@ -4,6 +4,7 @@ from textwrap import dedent
 
 # external
 import astroid
+import pytest
 
 # project
 from deal.linter._contract import Category, Contract
@@ -135,3 +136,55 @@ def test_simplified_signature():
         c = func.contracts[0]
         assert c.run(3, 2) is True
         assert c.run(2, 3) is False
+
+
+@pytest.mark.parametrize('source, deps', [
+    ('lambda: ...', set()),
+    ('lambda a, b: ...', {'a', 'b'}),
+    ('lambda *args, **kwargs: ...', {'args', 'kwargs'}),
+    ('lambda a, *, b: ...', {'a', 'b'}),
+])
+def test_arguments(source: str, deps: set):
+    text = """
+    import deal
+
+    @deal.post({source})
+    def f():
+        return 2
+    """
+    text = text.format(source=source)
+    text = dedent(text).strip()
+    tree = ast.parse(text)
+    print(ast.dump(tree))
+    funcs1 = Func.from_ast(tree)
+    assert len(funcs1) == 1
+    func = funcs1[0]
+    assert len(func.contracts) == 1
+    c = func.contracts[0]
+    assert c.arguments == deps
+
+
+@pytest.mark.parametrize('source, deps', [
+    ('lambda a, b: cd', {'cd'}),
+    ('lambda a, b: a+b', set()),
+    ('lambda a, b: (a+b)/c', {'c'}),
+
+    ('lambda: re.compile()', {'re'}),
+    ('lambda a, b: ab.cd()', {'ab'}),
+])
+def test_dependencies(source: str, deps: set):
+    text = """
+    import deal
+
+    @deal.post({source})
+    def f(a, b):
+        return a + b
+    """
+    text = text.format(source=source)
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    assert len(funcs1) == 1
+    func = funcs1[0]
+    assert len(func.contracts) == 1
+    c = func.contracts[0]
+    assert c.dependencies == deps

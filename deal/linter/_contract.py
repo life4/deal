@@ -2,11 +2,8 @@
 import ast
 import builtins
 import enum
-import pdb
-import sys
-from distutils.sysconfig import get_python_lib
-from importlib.util import find_spec
 from pathlib import Path
+from typing import Dict, FrozenSet, Iterable
 
 # external
 import astroid
@@ -35,11 +32,22 @@ class cached_property:
 
 
 class Contract:
+    args: tuple
+    category: Category
+    func_args: ast.arguments
+    context: Dict[str, ast.AST]
 
-    def __init__(self, args, category: Category, func_args: ast.arguments):
-        self.args = args
+    def __init__(
+        self,
+        args: Iterable,
+        category: Category,
+        func_args: ast.arguments,
+        context: Dict[str, ast.AST] = None,
+    ):
+        self.args = tuple(args)
         self.category = category
         self.func_args = func_args
+        self.context = context or dict()
 
     @cached_property
     def body(self) -> ast.AST:
@@ -48,36 +56,45 @@ class Contract:
         if hasattr(contract, 'as_string'):
             contract = self._resolve_name(contract)
             contract = ast.parse(contract.as_string()).body[0]
-        contract = self._resolve_deps(contract)
         return contract
 
-    @staticmethod
-    def _resolve_deps(contract):
-        # infer stdlib modules
-        modules = set()
-        stdlib_prefix = get_python_lib(standard_lib=True)
-        for node in ast.walk(contract):
+    @cached_property
+    def arguments(self) -> FrozenSet[str]:
+        """Contract function arguments names.
+
+        Useful for resolving external dependencies.
+        """
+        if not isinstance(self.body, (ast.FunctionDef, ast.Lambda)):
+            return frozenset()
+        args = self.body.args
+        result = set()
+        for arg in args.args:
+            result.add(arg.arg)
+        for arg in args.kwonlyargs:
+            result.add(arg.arg)
+        if args.vararg:
+            result.add(args.vararg.arg)
+        if args.kwarg:
+            result.add(args.kwarg.arg)
+        return result
+
+    @cached_property
+    def dependencies(self) -> FrozenSet[str]:
+        """Names that are defined outside of the contract body.
+
+        1. Excludes built-in objects.
+        1. Excludes contract function arguments.
+        """
+        deps = set()
+        for node in ast.walk(self.body):
             if not isinstance(node, ast.Name):
                 continue
             if hasattr(builtins, node.id):
                 continue
-            # C-compiled built-in
-            if node.id in sys.builtin_module_names:
-                modules.add(node.id)
+            if node.id in self.arguments:
                 continue
-            # stdlib
-            spec = find_spec(node.id)
-            if spec and spec.origin.startswith(stdlib_prefix):
-                modules.add(node.id)
-                continue
-
-        # import inferred modules
-        for module in modules:
-            node: ast.Import = ast.parse('import something').body[0]
-            node.names[0].name = module
-            contract.body.insert(0, node)
-
-        return contract
+            deps.add(node.id)
+        return frozenset(deps)
 
     @staticmethod
     def _resolve_name(contract):
