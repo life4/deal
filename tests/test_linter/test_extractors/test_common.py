@@ -35,6 +35,7 @@ def test_get_name(text, expected):
     ('class C:\n def f(): pass\nC.f', [('', 'C.f')]),
     ('class C:\n def f(): pass\nc = C()\nc.f', [('', 'C.f')]),
     ('print', [('builtins', 'print')]),
+    ('"".format', [('builtins', 'str.format')]),
 ])
 def test_infer(text, expected):
     tree = astroid.parse(text)

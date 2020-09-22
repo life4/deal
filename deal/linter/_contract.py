@@ -11,6 +11,8 @@ import astroid
 
 
 TEMPLATE = (Path(__file__).parent / '_template.py').read_text()
+CONTRACT_INDEX = 3
+FUNC_INDEX = 4
 
 
 class Category(enum.Enum):
@@ -136,7 +138,7 @@ class Contract:
         # inject function signature
         func = ast.parse('lambda:0').body[0].value
         func.args = self.func_args
-        module.body[3].value = func
+        module.body[FUNC_INDEX].value = func
 
         # collect definitions for contract external deps
         deps = []
@@ -153,7 +155,7 @@ class Contract:
             # if contract is function, add it's definition and assign it's name
             # to `contract` variable.
             module.body = [contract] + module.body
-            module.body[3].value = ast.Name(
+            module.body[FUNC_INDEX].value = ast.Name(
                 id=contract.name,
                 lineno=1,
                 col_offset=1,
@@ -176,9 +178,8 @@ class Contract:
                 ctx=ast.Load(),
             )
             body.append(return_node)
-            var_name = module.body[2].targets[0].id
             func = ast.FunctionDef(
-                name=var_name,
+                name='contract',
                 args=contract.args,
                 body=body,
                 decorator_list=[],
@@ -186,11 +187,11 @@ class Contract:
                 col_offset=1,
                 ctx=ast.Load(),
             )
-            module.body[2] = func
+            module.body[CONTRACT_INDEX] = func
             return module
 
         # inject contract if contract is an unknown expression
-        module.body[2].value = contract
+        module.body[CONTRACT_INDEX].value = contract
         return module
 
     @cached_property

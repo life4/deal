@@ -3,7 +3,6 @@ import ast
 
 # external
 import astroid
-import pytest
 
 # project
 from deal.linter._func import Func

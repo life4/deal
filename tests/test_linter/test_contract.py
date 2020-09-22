@@ -253,3 +253,41 @@ def test_resolve_and_run_dependencies_lambda():
 
         c.run(12) is False
         c.run(34) is True
+
+
+def test_lazy_import_stdlib():
+    text = """
+    import deal
+
+    @deal.post(lambda a: re.compile('^abc$').match(a))
+    def f(a):
+        return a * 2
+    """
+    text = dedent(text).strip()
+    funcs = Func.from_ast(ast.parse(text))
+    assert len(funcs) == 1
+    func = funcs[0]
+    assert len(func.contracts) == 1
+    c = func.contracts[0]
+
+    c.run("bcd") is False
+    c.run("abc") is True
+
+
+def test_unresolvable():
+    text = """
+    import deal
+
+    @deal.post(lambda a: re.compile(unknown))
+    def f(a):
+        return a * 2
+    """
+    text = dedent(text).strip()
+    funcs = Func.from_ast(ast.parse(text))
+    assert len(funcs) == 1
+    func = funcs[0]
+    assert len(func.contracts) == 1
+    c = func.contracts[0]
+
+    with pytest.raises(NameError):
+        c.run("bcd")
