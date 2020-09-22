@@ -8,7 +8,7 @@ from typing import Iterable, Iterator, Sequence, Union
 
 # app
 from ..linter import Checker
-from ._common import highlight, get_paths
+from ._common import get_paths, highlight
 
 
 COLORS = dict(
@@ -62,7 +62,7 @@ def get_parser() -> ArgumentParser:
 
 
 def lint_command(argv: Sequence[str]) -> int:
-    """Run linter against given files.
+    """Run linter against the given files.
 
     ```python
     python3 -m deal lint project/
@@ -70,9 +70,11 @@ def lint_command(argv: Sequence[str]) -> int:
 
     Options:
 
-    * `--json`: output violations as json per line (ndjson.org).
+    * `--json`: output violations as [json per line](http://ndjson.org/).
     * `--nocolor`: output violations in human-friendly format but without colors.
         Useful for running linter on CI.
+
+    Exit code is equal to the found violations count.
     """
     parser = get_parser()
     args = parser.parse_args(argv)

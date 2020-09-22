@@ -1,5 +1,7 @@
+# built-in
 from pathlib import Path
 from typing import Iterator
+
 
 try:
     import pygments

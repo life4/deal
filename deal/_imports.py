@@ -4,7 +4,7 @@ import sys
 from types import ModuleType
 from typing import Any, Callable, List, Optional
 
-# external
+# project
 from _frozen_importlib_external import PathFinder
 
 # app

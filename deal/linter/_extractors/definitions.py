@@ -1,6 +1,9 @@
+# built-in
 import ast
-import astroid
 from typing import Dict, Union
+
+# external
+import astroid
 
 
 TreeType = Union[ast.Module, astroid.Module]
