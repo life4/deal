@@ -66,10 +66,11 @@ def _extract_defs_astroid(tree: astroid.Module) -> DefsType:
             continue
 
         if isinstance(node, astroid.ImportFrom):
-            module_name = '.' * (node.level or 0) + node.modname
+            if not node.modname or node.level:
+                continue
             for name, alias in node.names:
                 result[alias or name] = ast.ImportFrom(
-                    module=module_name,
+                    module=node.modname,
                     names=[ast.alias(name=name, asname=alias)],
                     lineno=1,
                     col_offset=1,
@@ -77,8 +78,6 @@ def _extract_defs_astroid(tree: astroid.Module) -> DefsType:
                 )
             continue
 
-        if isinstance(node, astroid.Expr):
-            node = node.value
         if isinstance(node, astroid.Assign):
             expr = ast.parse(node.as_string()).body[0]
             for target in node.targets:

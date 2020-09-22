@@ -13,12 +13,15 @@ from deal.linter._extractors import get_definitions
     ('import re', {'re'}),
     ('import typing, types', {'typing', 'types'}),
     ('import typing as types', {'types'}),
+    ('from . import hi', set()),
+    ('from .something import hi', set()),
 
     ('from typing import List', {'List'}),
     ('from typing import List, Dict', {'List', 'Dict'}),
 
     ('ab = 2', {'ab'}),
     ('ab = cd = 23', {'ab', 'cd'}),
+    ('ab.cd = 2', set()),
 ])
 def test_extract_defs(source: str, names) -> None:
     tree = ast.parse(source)
