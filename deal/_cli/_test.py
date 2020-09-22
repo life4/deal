@@ -13,6 +13,7 @@ from .._testing import cases
 from ..linter._contract import Category
 from ..linter._extractors.pre import format_call_args
 from ..linter._func import Func
+from ._common import get_paths
 
 
 COLORS = dict(
@@ -97,11 +98,12 @@ def test_command(
     args = parser.parse_args(argv)
 
     failed = 0
-    for path in args.paths:
-        failed += run_tests(
-            path=Path(path),
-            root=root,
-            count=args.count,
-            stream=stream,
-        )
+    for arg in args.paths:
+        for path in get_paths(Path(arg)):
+            failed += run_tests(
+                path=Path(path),
+                root=root,
+                count=args.count,
+                stream=stream,
+            )
     return failed

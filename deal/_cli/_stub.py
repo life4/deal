@@ -1,10 +1,11 @@
 # built-in
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Sequence
+from typing import List, Sequence
 
 # app
 from ..linter import StubsManager, generate_stub
+from ._common import get_paths
 
 
 def stub_command(argv: Sequence[str]) -> int:
@@ -13,7 +14,11 @@ def stub_command(argv: Sequence[str]) -> int:
     parser.add_argument('paths', nargs='+')
     args = parser.parse_args(argv)
 
-    paths = [Path(path) for path in args.paths]
+    paths: List[Path] = []
+    for arg in args.paths:
+        for path in get_paths(Path(arg)):
+            paths.append(path)
+
     roots = list(StubsManager.default_paths) + list(set(paths))
     stubs = StubsManager(paths=roots)
 
