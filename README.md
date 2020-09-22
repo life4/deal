@@ -18,6 +18,8 @@
 * [External validators support.][validators]
 * [Contracts for importing modules.][module_load]
 * [Can be enabled or disabled on production.][runtime]
+* [Colorless](colorless): annotate only what you want. Hence, easy integration into an existing project.
+* Partial execution: linter executes contracts to statically check possible values.
 
 [values]: https://deal.readthedocs.io/basic/values.html
 [exceptions]: https://deal.readthedocs.io/basic/exceptions.html
@@ -26,6 +28,7 @@
 [validators]: https://deal.readthedocs.io/details/validators.html
 [module_load]: https://deal.readthedocs.io/details/module_load.html
 [runtime]: https://deal.readthedocs.io/basic/runtime.html
+[colorless]: http://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/
 
 ## Deal in 30 seconds
 
