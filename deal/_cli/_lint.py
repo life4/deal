@@ -8,15 +8,7 @@ from typing import Iterable, Iterator, Sequence, Union
 
 # app
 from ..linter import Checker
-
-
-try:
-    import pygments
-except ImportError:
-    pygments = None
-else:
-    from pygments.formatters import TerminalFormatter
-    from pygments.lexers import PythonLexer
+from ._common import highlight, get_paths
 
 
 COLORS = dict(
@@ -38,34 +30,6 @@ NOCOLORS = dict(
 TEMPLATE = '  {blue}{row}{end}:{blue}{col}{end} {magenta}{code}{end} {yellow}{text}{end}'
 VALUE = ' {magenta}({value}){end}'
 POINTER = '{magenta}^{end}'
-
-
-def highlight(source: str) -> str:
-    if pygments is None:
-        return source
-    source = pygments.highlight(
-        code=source,
-        lexer=PythonLexer(),
-        formatter=TerminalFormatter(),
-    )
-    return source.strip()
-
-
-def get_paths(path: Path) -> Iterator[Path]:
-    """Recursively yields python files.
-    """
-    if not path.exists():
-        raise FileNotFoundError(str(path))
-    if path.is_file():
-        if path.suffix == '.py':
-            yield path
-        return
-    for subpath in path.iterdir():
-        if subpath.name[0] == '.':
-            continue
-        if subpath.name == '__pycache__':
-            continue
-        yield from get_paths(subpath)
 
 
 def get_errors(paths: Iterable[Union[str, Path]]) -> Iterator[dict]:
@@ -98,6 +62,18 @@ def get_parser() -> ArgumentParser:
 
 
 def lint_command(argv: Sequence[str]) -> int:
+    """Run linter against given files.
+
+    ```python
+    python3 -m deal lint project/
+    ```
+
+    Options:
+
+    * `--json`: output violations as json per line (ndjson.org).
+    * `--nocolor`: output violations in human-friendly format but without colors.
+        Useful for running linter on CI.
+    """
     parser = get_parser()
     args = parser.parse_args(argv)
     prev = None
