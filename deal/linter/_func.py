@@ -1,7 +1,7 @@
 # built-in
 import ast
 from pathlib import Path
-from typing import Iterable, List, NamedTuple
+from typing import List, NamedTuple
 
 # external
 import astroid
@@ -15,7 +15,7 @@ class Func(NamedTuple):
     name: str
     args: ast.arguments
     body: list
-    contracts: Iterable[Contract]
+    contracts: List[Contract]
 
     line: int
     col: int

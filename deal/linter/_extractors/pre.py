@@ -1,6 +1,6 @@
 # built-in
 import ast
-from typing import Any, Dict, Iterator
+from typing import Any, Dict, Iterator, Sequence
 
 # external
 import astroid
@@ -15,7 +15,7 @@ get_pre = Extractor()
 
 
 @get_pre.register(astroid.Call)
-def handle_call(expr: astroid.Call, context: Dict[str, ast.AST] = None) -> Iterator[Token]:
+def handle_call(expr: astroid.Call, context: Dict[str, ast.stmt] = None) -> Iterator[Token]:
     # app
     from .._contract import Category, Contract
 
@@ -64,7 +64,7 @@ def handle_call(expr: astroid.Call, context: Dict[str, ast.AST] = None) -> Itera
                 )
 
 
-def format_call_args(args: list, kwargs: Dict[str, Any]) -> str:
+def format_call_args(args: Sequence, kwargs: Dict[str, Any]) -> str:
     sep = ', '
     args_s = sep.join(map(repr, args))
     kwargs_s = sep.join(['{}={!r}'.format(k, v) for k, v in kwargs.items()])

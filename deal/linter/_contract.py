@@ -4,7 +4,7 @@ import builtins
 import enum
 from copy import copy
 from pathlib import Path
-from typing import Dict, FrozenSet, Iterable
+from typing import Dict, FrozenSet, Iterable, List
 
 # external
 import astroid
@@ -38,14 +38,14 @@ class Contract:
     args: tuple
     category: Category
     func_args: ast.arguments
-    context: Dict[str, ast.AST]
+    context: Dict[str, ast.stmt]
 
     def __init__(
         self,
         args: Iterable,
         category: Category,
         func_args: ast.arguments,
-        context: Dict[str, ast.AST] = None,
+        context: Dict[str, ast.stmt] = None,
     ):
         self.args = tuple(args)
         self.category = category
@@ -82,7 +82,7 @@ class Contract:
             result.add(args.vararg.arg)
         if args.kwarg:
             result.add(args.kwarg.arg)
-        return result
+        return frozenset(result)
 
     @cached_property
     def dependencies(self) -> FrozenSet[str]:
@@ -136,12 +136,22 @@ class Contract:
         module = ast.parse(TEMPLATE)
 
         # inject function signature
-        func = ast.parse('lambda:0').body[0].value
-        func.args = self.func_args
-        module.body[FUNC_INDEX].value = func
+        func = ast.Lambda(
+            args=self.func_args,
+            body=ast.Set(
+                elts=[],
+                lineno=1,
+                col_offset=1,
+                ctx=ast.Load(),
+            ),
+            lineno=1,
+            col_offset=1,
+            ctx=ast.Load(),
+        )
+        module.body[FUNC_INDEX].value = func  # type: ignore
 
         # collect definitions for contract external deps
-        deps = []
+        deps: List[ast.stmt] = []
         for dep in self.dependencies:
             definition = self.context.get(dep)
             if not definition:
@@ -154,8 +164,8 @@ class Contract:
             contract.body = deps + contract.body
             # if contract is function, add it's definition and assign it's name
             # to `contract` variable.
-            module.body = [contract] + module.body
-            module.body[FUNC_INDEX].value = ast.Name(
+            module.body = [contract] + module.body      # type: ignore
+            module.body[FUNC_INDEX].value = ast.Name(   # type: ignore
                 id=contract.name,
                 lineno=1,
                 col_offset=1,
@@ -178,7 +188,7 @@ class Contract:
                 ctx=ast.Load(),
             )
             body.append(return_node)
-            func = ast.FunctionDef(
+            module.body[CONTRACT_INDEX] = ast.FunctionDef(
                 name='contract',
                 args=contract.args,
                 body=body,
@@ -187,11 +197,10 @@ class Contract:
                 col_offset=1,
                 ctx=ast.Load(),
             )
-            module.body[CONTRACT_INDEX] = func
             return module
 
         # inject contract if contract is an unknown expression
-        module.body[CONTRACT_INDEX].value = contract
+        module.body[CONTRACT_INDEX].value = contract  # type: ignore
         return module
 
     @cached_property

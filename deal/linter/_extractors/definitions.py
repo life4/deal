@@ -7,45 +7,43 @@ import astroid
 
 
 TreeType = Union[ast.Module, astroid.Module]
+DefsType = Dict[str, ast.stmt]
 
 
-def get_definitions(tree: TreeType) -> Dict[str, ast.AST]:
+def get_definitions(tree: TreeType) -> DefsType:
     if isinstance(tree, ast.Module):
         return _extract_defs_ast(tree)
     return _extract_defs_astroid(tree)
 
 
-def _extract_defs_ast(tree: ast.Module) -> Dict[str, ast.AST]:
-    result: Dict[str, ast.AST] = dict()
+def _extract_defs_ast(tree: ast.Module) -> DefsType:
+    result: DefsType = dict()
     for node in tree.body:
         if isinstance(node, ast.Import):
             for name_node in node.names:
-                stmt = ast.Import(
+                name = name_node.asname or name_node.name
+                result[name] = ast.Import(
                     names=[name_node],
                     lineno=1,
                     col_offset=1,
                     ctx=ast.Load(),
                 )
-                name = name_node.asname or name_node.name
-                result[name] = stmt
             continue
 
         if isinstance(node, ast.ImportFrom):
-            module_name = '.' * node.level + node.module
+            if not node.module or node.level:
+                continue
             for name_node in node.names:
-                stmt = ast.ImportFrom(
-                    module=module_name,
+                name = name_node.asname or name_node.name
+                result[name] = ast.ImportFrom(
+                    module=node.module,
                     names=[name_node],
                     lineno=1,
                     col_offset=1,
                     ctx=ast.Load(),
                 )
-                name = name_node.asname or name_node.name
-                result[name] = stmt
             continue
 
-        if isinstance(node, ast.Expr):
-            node = node.value
         if isinstance(node, ast.Assign):
             for target in node.targets:
                 if not isinstance(target, ast.Name):
@@ -54,8 +52,8 @@ def _extract_defs_ast(tree: ast.Module) -> Dict[str, ast.AST]:
     return result
 
 
-def _extract_defs_astroid(tree: astroid.Module) -> Dict[str, ast.AST]:
-    result: Dict[str, ast.AST] = dict()
+def _extract_defs_astroid(tree: astroid.Module) -> DefsType:
+    result: DefsType = dict()
     for node in tree.body:
         if isinstance(node, astroid.Import):
             for name, alias in node.names:
