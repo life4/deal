@@ -33,6 +33,16 @@ def test_lint_command(tmp_path: Path, capsys):
     assert '^' in captured.out
 
 
+def test_lint_command_no_color(tmp_path: Path, capsys):
+    (tmp_path / 'example.py').write_text(TEXT)
+    count = lint_command(['--nocolor', str(tmp_path)])
+    assert count == 1
+
+    captured = capsys.readouterr()
+    exp = '6:11 DEAL012 post contract error (-1) return -1 ^'
+    assert captured.out.split()[1:] == exp.split()
+
+
 def test_lint_command_two_files(tmp_path: Path, capsys):
     (tmp_path / 'example1.py').write_text(TEXT)
     (tmp_path / 'example2.py').write_text(TEXT)
