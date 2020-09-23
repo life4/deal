@@ -30,6 +30,22 @@
 .. literalinclude:: ../../examples/index_of.py
 ```
 
+## min
+
+```eval_rst
+.. literalinclude:: ../../examples/min.py
+```
+
+Linter output:
+
+```bash
+$ python3 -m deal lint examples/min.py
+examples/min.py
+  21:4 DEAL011 pre contract error ([])
+    my_min([])
+    ^
+```
+
 ## format
 
 ```eval_rst
