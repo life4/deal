@@ -15,6 +15,14 @@ from ..linter._extractors.pre import format_call_args
 from ..linter._func import Func
 from ._common import get_paths
 
+try:
+    import pygments
+except ImportError:
+    pygments = None
+else:
+    from pygments.formatters import TerminalFormatter
+    from pygments.lexers import PythonTracebackLexer
+
 
 COLORS = dict(
     red='\033[91m',
@@ -52,10 +60,21 @@ def get_func_names(path: Path) -> Iterator[str]:
             yield func.name
 
 
+def color_exception(text: str) -> str:
+    text = text.replace('deal._exceptions.', '')
+    if pygments is None:
+        return '{red}{text}{end}'.format(text=text, **COLORS)
+    return pygments.highlight(
+        code=text,
+        lexer=PythonTracebackLexer(),
+        formatter=TerminalFormatter(),
+    )
+
+
 def print_exception(stream: TextIO) -> None:
     lines = format_exception(*sys.exc_info())
-    text = indent(text=''.join(lines), prefix='    ')
-    text = '{red}{text}{end}'.format(text=text, **COLORS)
+    text = color_exception(''.join(lines))
+    text = indent(text=text, prefix='    ').rstrip()
     print(text, file=stream)
 
 
