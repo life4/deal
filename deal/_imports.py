@@ -105,8 +105,10 @@ def module_load(*contracts) -> None:
 
     ```
 
-    See [Contracts for importing modules](./module_load.md)
+    See [Contracts for importing modules][module_load]
     documentation for more details.
+
+    [module_load]: https://deal.readthedocs.io/details/module_load.html
     """
     if not state.debug:
         return
@@ -133,8 +135,10 @@ def activate() -> bool:
 
     ```
 
-    See [Contracts for importing modules](./module_load.md)
+    See [Contracts for importing modules][module_load]
     documentation for more details.
+
+    [module_load]: https://deal.readthedocs.io/details/module_load.html
     """
     if not state.debug:
         return False

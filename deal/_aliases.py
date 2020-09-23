@@ -47,7 +47,7 @@ def pre(
     ```
 
     [wiki]: https://en.wikipedia.org/wiki/Precondition
-    [value]: ../basic/values.md
+    [value]: https://deal.readthedocs.io/basic/values.html
     """
     cls = _decorators.Pre[_CallableType]
     return cls(validator=validator, message=message, exception=exception)
@@ -90,7 +90,7 @@ def post(
     ```
 
     [wiki]: https://en.wikipedia.org/wiki/Postcondition
-    [value]: ../basic/values.md
+    [value]: https://deal.readthedocs.io/basic/values.html
     """
     cls = _decorators.Post[_CallableType]
     return cls(validator=validator, message=message, exception=exception)
@@ -136,7 +136,7 @@ def ensure(
     ```
 
     [wiki]: https://en.wikipedia.org/wiki/Postcondition
-    [value]: ../basic/values.md
+    [value]: https://deal.readthedocs.io/basic/values.html
     """
     cls = _decorators.Ensure[_CallableType]
     return cls(validator=validator, message=message, exception=exception)
@@ -184,7 +184,7 @@ def raises(
 
     ```
 
-    [exception] ../basic/exceptions.md
+    [exception] https://deal.readthedocs.io/basic/exceptions.html
     """
     cls = _decorators.Raises[_CallableType]
     return cls(*exceptions, message=message, exception=exception)
@@ -245,7 +245,7 @@ def reason(
 
     ```
 
-    [exception]: ../basic/exceptions.md
+    [exception]: https://deal.readthedocs.io/basic/exceptions.html
     """
     cls = _decorators.Reason[_CallableType]
     return cls(event=event, validator=validator, message=message, exception=exception)
@@ -308,7 +308,7 @@ def inv(
     ```
 
     [wiki]: https://en.wikipedia.org/wiki/Class_invariant
-    [value]: ../basic/values.md
+    [value]: https://deal.readthedocs.io/basic/values.html
     """
     cls = _decorators.Invariant[_CallableType]
     return cls(  # type: ignore
