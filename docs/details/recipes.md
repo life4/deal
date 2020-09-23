@@ -70,3 +70,11 @@ deal.module_load(deal.pure)
 ## Contracts shouldn't be important
 
 Never catch contract errors. Never rely on them in runtime. They are for tests and humans. The shouldn't have an actual logic, only validate it.
+
+## Short signature conflicts
+
+In short signature, `_` is a `dict` with access by attributes. Hence it has all dict attributes. So, if argument we need conflicts with a dict attribute, use getitem instead of getattr. For example, we should use `_['items']` instead of `_.items`.
+
+## What can be contract
+
+You can use any logic inside the validator. However, thumb up rule is to keep contracts [pure](https://en.wikipedia.org/wiki/Pure_function) (without any side-effects, even logging). The main motivation for it is that some contracts can be partially executed by [linter](../basic/linter.md).
