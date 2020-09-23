@@ -64,17 +64,21 @@ def get_parser() -> ArgumentParser:
 def lint_command(argv: Sequence[str]) -> int:
     """Run linter against the given files.
 
-    ```python
+    ```bash
     python3 -m deal lint project/
     ```
 
     Options:
 
-    * `--json`: output violations as [json per line](http://ndjson.org/).
-    * `--nocolor`: output violations in human-friendly format but without colors.
-        Useful for running linter on CI.
+    + `--json`: output violations as [json per line][ndjson].
+    + `--nocolor`: output violations in human-friendly format but without colors.
+      Useful for running linter on CI.
 
     Exit code is equal to the found violations count.
+    See [linter][linter] documentation for more details.
+
+    [ndjson]: http://ndjson.org/
+    [linter]: https://deal.readthedocs.io/basic/linter.html
     """
     parser = get_parser()
     args = parser.parse_args(argv)

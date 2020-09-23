@@ -9,6 +9,22 @@ from ._common import get_paths
 
 
 def stub_command(argv: Sequence[str]) -> int:
+    """Generate stub files for the given Python files.
+
+    ```bash
+    python3 -m deal stub project/
+    ```
+
+    Options:
+
+    + `--iterations`: how many time run stub generation against files.
+      Every new iteration uses results from the previous ones, improving the result.
+      Default: 1.
+
+    Exit code is 0. See [stubs][stubs] documentation for more details.
+
+    [stubs]: https://deal.readthedocs.io/details/stubs.html
+    """
     parser = ArgumentParser(prog='python3 -m deal stub')
     parser.add_argument('--iterations', type=int, default=1)
     parser.add_argument('paths', nargs='+')

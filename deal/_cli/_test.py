@@ -90,6 +90,26 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
 def test_command(
     argv: Sequence[str], root: Path = None, stream: TextIO = sys.stdout,
 ) -> int:
+    """Generate and run tests against pure functions.
+
+    ```bash
+    python3 -m deal test project/
+    ```
+
+    Function must be decorated by one of the following to be run:
+
+    + `@deal.pure`
+    + `@deal.has()` (without arguments)
+
+    Options:
+
+    + `--count`: how many input values combinations should be checked.
+
+    Exit code is equal to count of failed test cases.
+    See [tests][tests] documentation for more details.
+
+    [tests]: https://deal.readthedocs.io/basic/tests.html
+    """
     if root is None:  # pragma: no cover
         root = Path()
     parser = ArgumentParser(prog='python3 -m deal test')
