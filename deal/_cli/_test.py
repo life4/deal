@@ -8,30 +8,16 @@ from textwrap import indent
 from traceback import format_exception
 from typing import Iterator, Sequence, TextIO
 
+import pygments
+from pygments.formatters import TerminalFormatter
+from pygments.lexers import PythonTracebackLexer
+
 # app
 from .._testing import cases
 from ..linter._contract import Category
 from ..linter._extractors.pre import format_call_args
 from ..linter._func import Func
-from ._common import get_paths
-
-try:
-    import pygments
-except ImportError:
-    pygments = None
-else:
-    from pygments.formatters import TerminalFormatter
-    from pygments.lexers import PythonTracebackLexer
-
-
-COLORS = dict(
-    red='\033[91m',
-    green='\033[92m',
-    yellow='\033[93m',
-    blue='\033[94m',
-    magenta='\033[95m',
-    end='\033[0m',
-)
+from ._common import get_paths, COLORS
 
 
 @contextmanager
@@ -62,8 +48,6 @@ def get_func_names(path: Path) -> Iterator[str]:
 
 def color_exception(text: str) -> str:
     text = text.replace('deal._exceptions.', '')
-    if pygments is None:
-        return '{red}{text}{end}'.format(text=text, **COLORS)
     return pygments.highlight(
         code=text,
         lexer=PythonTracebackLexer(),

@@ -85,8 +85,11 @@ def get_excs(func: typing.Callable) -> typing.Iterator[typing.Type[Exception]]:
         func = func.__wrapped__                 # type: ignore
 
 
-def get_examples(func: typing.Callable, kwargs: typing.Dict[str, typing.Any],
-                 count: int) -> typing.List[ArgsKwargsType]:
+def get_examples(
+    func: typing.Callable,
+    kwargs: typing.Dict[str, typing.Any],
+    count: int,
+) -> typing.List[ArgsKwargsType]:
     kwargs = kwargs.copy()
     for name, value in kwargs.items():
         if isinstance(value, hypothesis.strategies.SearchStrategy):
@@ -117,10 +120,12 @@ def get_examples(func: typing.Callable, kwargs: typing.Dict[str, typing.Any],
     return examples
 
 
-def cases(func: typing.Callable, *, count: int = 50,
-          kwargs: typing.Dict[str, typing.Any] = None,
-          check_types: bool = True,
-          ) -> typing.Iterator[TestCase]:
+def cases(
+    func: typing.Callable, *,
+    count: int = 50,
+    kwargs: typing.Dict[str, typing.Any] = None,
+    check_types: bool = True,
+) -> typing.Iterator[TestCase]:
     """[summary]
 
     :param func: the function to test. Should be type annotated.

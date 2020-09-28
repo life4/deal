@@ -22,15 +22,15 @@ def test_get_errors(tmp_path: Path):
     assert errors[0]['content'] == '    return -1'
 
 
-def test_lint_command(tmp_path: Path, capsys):
+def test_lint_command_colors(tmp_path: Path, capsys):
     (tmp_path / 'example.py').write_text(TEXT)
     count = lint_command([str(tmp_path)])
     assert count == 1
 
     captured = capsys.readouterr()
-    assert 'return -1' in captured.out
-    assert '(-1)' in captured.out
-    assert '^' in captured.out
+    assert '\x1b[34mreturn\x1b[39;49;00m -\x1b[34m1\x1b[39;49;00m' in captured.out
+    assert '\x1b[95m(-1)\x1b[0m' in captured.out
+    assert '\x1b[95m^\x1b[0m' in captured.out
 
 
 def test_lint_command_no_color(tmp_path: Path, capsys):
@@ -46,7 +46,7 @@ def test_lint_command_no_color(tmp_path: Path, capsys):
 def test_lint_command_two_files(tmp_path: Path, capsys):
     (tmp_path / 'example1.py').write_text(TEXT)
     (tmp_path / 'example2.py').write_text(TEXT)
-    count = lint_command([str(tmp_path)])
+    count = lint_command(['--nocolor', str(tmp_path)])
     assert count == 2
 
     captured = capsys.readouterr()
@@ -59,7 +59,7 @@ def test_lint_command_two_files(tmp_path: Path, capsys):
 
 def test_lint_command_two_errors(tmp_path: Path, capsys):
     (tmp_path / 'example.py').write_text('from deal import pre\n' + TEXT)
-    count = lint_command([str(tmp_path)])
+    count = lint_command(['--nocolor', str(tmp_path)])
     assert count == 2
 
     captured = capsys.readouterr()

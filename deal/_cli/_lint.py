@@ -8,25 +8,9 @@ from typing import Iterable, Iterator, Sequence, Union
 
 # app
 from ..linter import Checker
-from ._common import get_paths, highlight
+from ._common import get_paths, highlight, COLORS, NOCOLORS
 
 
-COLORS = dict(
-    red='\033[91m',
-    green='\033[92m',
-    yellow='\033[93m',
-    blue='\033[94m',
-    magenta='\033[95m',
-    end='\033[0m',
-)
-NOCOLORS = dict(
-    red='',
-    green='',
-    yellow='',
-    blue='',
-    magenta='',
-    end='',
-)
 TEMPLATE = '  {blue}{row}{end}:{blue}{col}{end} {magenta}{code}{end} {yellow}{text}{end}'
 VALUE = ' {magenta}({value}){end}'
 POINTER = '{magenta}^{end}'
