@@ -20,7 +20,7 @@ def highlight(source: str) -> str:
         lexer=PythonLexer(),
         formatter=TerminalFormatter(),
     )
-    return source.strip()
+    return source.rstrip()
 
 
 def get_paths(path: Path) -> Iterator[Path]:

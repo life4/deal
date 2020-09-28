@@ -13,13 +13,12 @@ def my_min(items: List[T]) -> T:
     return min(items)
 
 
-@deal.has()
+@deal.has('stdout')
 def example():
     # good
-    my_min([3, 1, 4])
+    print(my_min([3, 1, 4]))
     # bad
-    my_min([])
-    return 0
+    print(my_min([]))
 
 
 @pytest.mark.parametrize('case', deal.cases(my_min))
