@@ -7,7 +7,6 @@ from .value import UNKNOWN, get_value
 
 
 get_returns = Extractor()
-inner_extractor = Extractor()
 
 
 def has_returns(body: list) -> bool:

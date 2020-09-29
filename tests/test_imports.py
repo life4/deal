@@ -8,8 +8,21 @@ import pytest
 
 # project
 import deal
-from deal._imports import DealLoader, deactivate
-from deal.linter._extractors.common import get_name
+from deal._imports import DealLoader, deactivate, get_name
+
+
+@pytest.mark.parametrize('text, expected', [
+    ('name', 'name'),
+    ('left.right', 'left.right'),
+
+    ('left().right', None),
+    ('1', None),
+])
+def test_get_name(text, expected):
+    tree = ast.parse(text)
+    print(ast.dump(tree))
+    expr = tree.body[0].value
+    assert get_name(expr=expr) == expected
 
 
 def test_get_contracts():

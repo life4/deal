@@ -1,6 +1,6 @@
 # built-in
 import ast
-from typing import Iterator, Sequence
+from typing import Any, Dict, Iterator, Sequence
 
 # external
 import astroid
@@ -15,7 +15,7 @@ get_pre = Extractor()
 
 
 @get_pre.register(astroid.Call)
-def handle_call(expr: astroid.Call) -> Iterator[Token]:
+def handle_call(expr: astroid.Call, context: Dict[str, ast.stmt] = None) -> Iterator[Token]:
     # app
     from .._contract import Category, Contract
 
@@ -26,7 +26,7 @@ def handle_call(expr: astroid.Call) -> Iterator[Token]:
             return
         args.append(value)
 
-    kwargs = {}
+    kwargs: Dict[str, Any] = {}
     for subnode in (expr.keywords or ()):
         value = get_value(expr=subnode.value)
         if value is UNKNOWN:
@@ -49,17 +49,22 @@ def handle_call(expr: astroid.Call) -> Iterator[Token]:
                 args=contract_args,
                 category=Category.PRE,
                 func_args=func_args,
+                context=context,
             )
             try:
                 result = contract.run(*args, **kwargs)
             except NameError:
                 continue
             if result is False or type(result) is str:
-                msg = format_call_args(args, kwargs)
-                yield Token(value=msg, line=expr.lineno, col=expr.col_offset)
+                yield Token(
+                    value=format_call_args(args, kwargs),
+                    marker=result or None,
+                    line=expr.lineno,
+                    col=expr.col_offset,
+                )
 
 
-def format_call_args(args: Sequence, kwargs: dict) -> str:
+def format_call_args(args: Sequence, kwargs: Dict[str, Any]) -> str:
     sep = ', '
     args_s = sep.join(map(repr, args))
     kwargs_s = sep.join(['{}={!r}'.format(k, v) for k, v in kwargs.items()])

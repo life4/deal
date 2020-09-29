@@ -79,3 +79,32 @@ Markers:
 | DEAL048 | missed marker (network) |
 +---------+-------------------------+
 ```
+
+## Partial execution
+
+To check `pre` and `post` contracts, linter can partially execute them. For example:
+
+```python
+import deal
+
+@deal.post(lambda r: r != 0)
+def f():
+    return 0
+```
+
+Try to run linter against the code above:
+
+```bash
+$ python3 -m deal lint tmp.py
+tmp.py
+  6:11 DEAL012 post contract error (0)
+    return 0
+```
+
+Hence there are some rules to make your contracts linter-friendly:
+
++ Avoid side-effects, even logging.
++ Avoid external dependencies (functions and contants defined outside of the contract).
++ Keep them as small as possible. If you have a few different things to check, make separate contracts.
+
+Linter silently ignores contract if it cannot be executed.

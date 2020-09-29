@@ -8,21 +8,16 @@ from textwrap import indent
 from traceback import format_exception
 from typing import Iterator, Sequence, TextIO
 
+import pygments
+from pygments.formatters import TerminalFormatter
+from pygments.lexers import PythonTracebackLexer
+
 # app
 from .._testing import cases
 from ..linter._contract import Category
 from ..linter._extractors.pre import format_call_args
 from ..linter._func import Func
-
-
-COLORS = dict(
-    red='\033[91m',
-    green='\033[92m',
-    yellow='\033[93m',
-    blue='\033[94m',
-    magenta='\033[95m',
-    end='\033[0m',
-)
+from ._common import get_paths, COLORS
 
 
 @contextmanager
@@ -51,10 +46,19 @@ def get_func_names(path: Path) -> Iterator[str]:
             yield func.name
 
 
+def color_exception(text: str) -> str:
+    text = text.replace('deal._exceptions.', '')
+    return pygments.highlight(
+        code=text,
+        lexer=PythonTracebackLexer(),
+        formatter=TerminalFormatter(),
+    )
+
+
 def print_exception(stream: TextIO) -> None:
     lines = format_exception(*sys.exc_info())
-    text = indent(text=''.join(lines), prefix='    ')
-    text = '{red}{text}{end}'.format(text=text, **COLORS)
+    text = color_exception(''.join(lines))
+    text = indent(text=text, prefix='    ').rstrip()
     print(text, file=stream)
 
 
@@ -89,6 +93,26 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
 def test_command(
     argv: Sequence[str], root: Path = None, stream: TextIO = sys.stdout,
 ) -> int:
+    """Generate and run tests against pure functions.
+
+    ```bash
+    python3 -m deal test project/
+    ```
+
+    Function must be decorated by one of the following to be run:
+
+    + `@deal.pure`
+    + `@deal.has()` (without arguments)
+
+    Options:
+
+    + `--count`: how many input values combinations should be checked.
+
+    Exit code is equal to count of failed test cases.
+    See [tests][tests] documentation for more details.
+
+    [tests]: https://deal.readthedocs.io/basic/tests.html
+    """
     if root is None:  # pragma: no cover
         root = Path()
     parser = ArgumentParser(prog='python3 -m deal test')
@@ -97,11 +121,12 @@ def test_command(
     args = parser.parse_args(argv)
 
     failed = 0
-    for path in args.paths:
-        failed += run_tests(
-            path=Path(path),
-            root=root,
-            count=args.count,
-            stream=stream,
-        )
+    for arg in args.paths:
+        for path in get_paths(Path(arg)):
+            failed += run_tests(
+                path=Path(path),
+                root=root,
+                count=args.count,
+                stream=stream,
+            )
     return failed

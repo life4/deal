@@ -12,7 +12,7 @@ Then use `deal.cases` to get test cases for the function. Every case is a callab
 
 ```python
 @deal.raises(ZeroDivisionError)
-@deal.pre(lambda a, b: a > 0 and b > 0)
+@deal.pre(lambda a, b: a >= 0 and b >= 0)
 def div(a: int, b: int) -> float:
     return a / b
 

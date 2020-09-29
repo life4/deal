@@ -61,10 +61,11 @@ class CheckPre:
         # is a really expensive operation.
         if not func.contracts:
             return
-        for token in get_pre(body=func.body):
+        context = func.contracts[0].context
+        for token in get_pre(body=func.body, context=context):
             yield Error(
                 code=self.code,
-                text=self.message,
+                text=token.marker or self.message,
                 value=token.value,  # type: ignore
                 row=token.line,
                 col=token.col,

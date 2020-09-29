@@ -1,21 +1,21 @@
 # built-in
 import ast
 from pathlib import Path
-from typing import Iterable, List, NamedTuple
+from typing import List, NamedTuple
 
 # external
 import astroid
 
 # app
 from ._contract import Category, Contract
-from ._extractors import get_contracts
+from ._extractors import get_contracts, get_definitions
 
 
 class Func(NamedTuple):
     name: str
     args: ast.arguments
     body: list
-    contracts: Iterable[Contract]
+    contracts: List[Contract]
 
     line: int
     col: int
@@ -34,6 +34,7 @@ class Func(NamedTuple):
     @classmethod
     def from_ast(cls, tree: ast.Module) -> List['Func']:
         funcs = []
+        definitions = get_definitions(tree=tree)
         for expr in tree.body:
             if not isinstance(expr, ast.FunctionDef):
                 continue
@@ -41,8 +42,9 @@ class Func(NamedTuple):
             for category, args in get_contracts(expr.decorator_list):
                 contract = Contract(
                     args=args,
-                    category=Category(category),
                     func_args=expr.args,
+                    category=Category(category),
+                    context=definitions,
                 )
                 contracts.append(contract)
             funcs.append(cls(
@@ -58,6 +60,7 @@ class Func(NamedTuple):
     @classmethod
     def from_astroid(cls, tree: astroid.Module) -> List['Func']:
         funcs = []
+        definitions = get_definitions(tree=tree)
         for expr in tree.body:
             if not isinstance(expr, astroid.FunctionDef):
                 continue
@@ -74,6 +77,7 @@ class Func(NamedTuple):
                         args=args,
                         func_args=func_args,
                         category=Category(category),
+                        context=definitions,
                     )
                     contracts.append(contract)
 

@@ -32,6 +32,10 @@ class TestCase(typing.NamedTuple):
     """Exceptions that must be suppressed.
     """
 
+    check_types: bool
+    """Check that the result matches return type of the function.
+    """
+
     def __call__(self) -> typing.Any:
         """Calls the given test case returning the called functions result on success or
         Raising an exception on error
@@ -44,13 +48,22 @@ class TestCase(typing.NamedTuple):
         return result
 
     def _check_result(self, result: typing.Any) -> None:
+        if not self.check_types:
+            return
         hints = typing.get_type_hints(self.func)
         if 'return' not in hints:
             return
+        memo = typeguard._CallMemo(
+            func=self.func,
+            args=self.args,
+            kwargs=self.kwargs,
+        )
+        typeguard.check_argument_types(memo=memo)
         typeguard.check_type(
-            argname='return',
+            argname='the return value',
             value=result,
             expected_type=hints['return'],
+            memo=memo,
         )
 
 
@@ -72,8 +85,11 @@ def get_excs(func: typing.Callable) -> typing.Iterator[typing.Type[Exception]]:
         func = func.__wrapped__                 # type: ignore
 
 
-def get_examples(func: typing.Callable, kwargs: typing.Dict[str, typing.Any],
-                 count: int) -> typing.List[ArgsKwargsType]:
+def get_examples(
+    func: typing.Callable,
+    kwargs: typing.Dict[str, typing.Any],
+    count: int,
+) -> typing.List[ArgsKwargsType]:
     kwargs = kwargs.copy()
     for name, value in kwargs.items():
         if isinstance(value, hypothesis.strategies.SearchStrategy):
@@ -104,17 +120,23 @@ def get_examples(func: typing.Callable, kwargs: typing.Dict[str, typing.Any],
     return examples
 
 
-def cases(func: typing.Callable, *, count: int = 50,
-          kwargs: typing.Dict[str, typing.Any] = None,
-          ) -> typing.Iterator[TestCase]:
+def cases(
+    func: typing.Callable, *,
+    count: int = 50,
+    kwargs: typing.Dict[str, typing.Any] = None,
+    check_types: bool = True,
+) -> typing.Iterator[TestCase]:
     """[summary]
 
     :param func: the function to test. Should be type annotated.
     :type func: typing.Callable
-    :param count: how many test cases to generate, defaults to 50
+    :param count: how many test cases to generate, defaults to 50.
     :type count: int, optional
     :param kwargs: keyword arguments to pass into the function.
     :type kwargs: typing.Dict[str, typing.Any], optional
+    :param check_types: check that the result matches return type of the function.
+        Enabled by default.
+    :type check_types: bool, optional
     :yield: Emits test cases.
     :rtype: typing.Iterator[TestCase]
 
@@ -146,4 +168,5 @@ def cases(func: typing.Callable, *, count: int = 50,
             kwargs=kwargs,
             func=func,
             exceptions=tuple(get_excs(func)),
+            check_types=check_types,
         )

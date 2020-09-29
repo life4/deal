@@ -11,7 +11,9 @@ class _State:
         """Restore contracts switch to default.
 
         All contracts are disabled on production by default.
-        See [runtime](../basic/runtime.md) documentation.
+        See [runtime][runtime] documentation.
+
+        [runtime]: https://deal.readthedocs.io/basic/runtime.html
         """
         self.debug = __debug__
 

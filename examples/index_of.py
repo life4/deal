@@ -41,9 +41,6 @@ def index_of(items: List[int], item: int) -> int:
     raise LookupError
 
 
-# TESTS
-
-
 @pytest.mark.parametrize('case', deal.cases(index_of))
 def test_index_of(case):
     case()
