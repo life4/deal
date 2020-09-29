@@ -10,7 +10,17 @@ from _frozen_importlib_external import PathFinder
 # app
 from . import _aliases
 from ._state import state
-from .linter._extractors.common import get_name
+
+
+def get_name(expr) -> Optional[str]:
+    if isinstance(expr, ast.Name):
+        return expr.id
+    if isinstance(expr, ast.Attribute):
+        left = get_name(expr.value)
+        if left is None:
+            return None
+        return left + '.' + expr.attr
+    return None
 
 
 class DealFinder(PathFinder):

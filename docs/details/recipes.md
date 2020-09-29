@@ -27,7 +27,7 @@ def div(left: float, right: float, default: float = None) -> float:
 
 ## Don't check types
 
-Never check types with deal. [Mypy](https://github.com/python/mypy) does it much better. Also, there are [plenty of alternatives](https://github.com/typeddjango/awesome-python-typing) for both static and dynamic validation. Deal is intended to empower types, to tell a bit more about possible values set than you can do with type annotations, not replace them. However, if you want to play with deal a bit or make types a part of contracts, [PySchemes](https://github.com/spy16/pyschemes)-based contract is the best choice:
+Never check types with deal. [MyPy](https://github.com/python/mypy) does it much better. Also, there are [plenty of alternatives](https://github.com/typeddjango/awesome-python-typing) for both static and dynamic validation. Deal is intended to empower types, to tell a bit more about possible values set than you can do with type annotations, not replace them. However, if you want to play with deal a bit or make types a part of contracts, [PySchemes](https://github.com/spy16/pyschemes)-based contract is the best choice:
 
 ```python
 import deal
@@ -78,3 +78,7 @@ In short signature, `_` is a `dict` with access by attributes. Hence it has all 
 ## What can be contract
 
 You can use any logic inside the validator. However, thumb up rule is to keep contracts [pure](https://en.wikipedia.org/wiki/Pure_function) (without any side-effects, even logging). The main motivation for it is that some contracts can be partially executed by [linter](../basic/linter.md).
+
+## Permissive license
+
+Deal distributed under [MIT License](https://en.wikipedia.org/wiki/MIT_License) which is a permissive license with high [license compatibility](https://en.wikipedia.org/wiki/License_compatibility). However, Deal has [astroid](https://github.com/PyCQA/astroid) in the dependencies which is licensed under [LGPL](https://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License). While this license allows to be used in non-LGPL proprietary software too, it still can be not enough for some companies. So, if the legal department in your company forbids using LGPL libraries in transitive dependencies, you can freely remove `astroid` from the project dependencies before shipping it on the production. All CLI commands won't work anymore but runtime checks will.
