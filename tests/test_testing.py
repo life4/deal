@@ -110,7 +110,7 @@ def test_disable_type_checks():
 
 
 def test_type_var():
-    T = TypeVar('T')
+    T = TypeVar('T')  # noqa: N806
 
     def identity(a: T, b) -> T:
         return b

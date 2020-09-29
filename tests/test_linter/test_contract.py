@@ -270,8 +270,8 @@ def test_lazy_import_stdlib():
     assert len(func.contracts) == 1
     c = func.contracts[0]
 
-    c.run("bcd") is False
-    c.run("abc") is True
+    c.run('bcd') is False
+    c.run('abc') is True
 
 
 def test_unresolvable():
@@ -290,4 +290,4 @@ def test_unresolvable():
     c = func.contracts[0]
 
     with pytest.raises(NameError):
-        c.run("bcd")
+        c.run('bcd')

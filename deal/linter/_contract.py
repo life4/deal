@@ -23,7 +23,7 @@ class Category(enum.Enum):
     PURE = 'pure'
 
 
-class cached_property:
+class cached_property:  # noqa: N801
     def __init__(self, func):
         self.func = func
 
