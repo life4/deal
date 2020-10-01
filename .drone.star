@@ -20,6 +20,7 @@ def step(env, python):
     result = dict(
         name="{} (py{})".format(env, python),
         image="python:{}-alpine".format(python),
+        depends_on=[],  # run in parallel
         commands=[
             # install DepHell
             "apk add curl git gcc libc-dev",
