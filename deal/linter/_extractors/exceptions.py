@@ -58,10 +58,10 @@ def handle_bin_op(expr, **kwargs) -> Optional[Token]:
     return None
 
 
-# exit()
 @get_exceptions.register(*TOKENS.CALL)
 def handle_call(expr, dive: bool = True, stubs: StubsManager = None) -> Iterator[Token]:
     token_info = dict(line=expr.lineno, col=expr.col_offset)
+    # exit()
     name = get_name(expr.func)
     if name and name == 'exit':
         yield Token(value=SystemExit, **token_info)

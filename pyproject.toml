@@ -84,7 +84,6 @@ vaa = ">=0.2.1"
 [tool.poetry.dev-dependencies]
 # coverage squad
 coverage = "*"
-coveralls = "*"
 pytest-cov = "*"
 
 # tests
@@ -101,7 +100,7 @@ sphinx = "*"
 sphinx-rtd-theme = "*"
 
 [tool.poetry.extras]
-tests = ["coverage", "coveralls", "isort", "marshmallow", "mypy", "pytest", "pytest-cov", "urllib3"]
+tests = ["coverage", "isort", "marshmallow", "mypy", "pytest", "pytest-cov", "urllib3"]
 docs = ["m2r", "recommonmark", "sphinx", "sphinx-rtd-theme", "urllib3"]
 
 [tool.poetry.plugins."flake8.extension"]
