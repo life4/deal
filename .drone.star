@@ -21,6 +21,11 @@ def step(env, python):
         name="{} (py{})".format(env, python),
         image="python:{}-alpine".format(python),
         depends_on=["clone"],  # run in parallel
+        environment=dict(
+            # set coverage database file name
+            # to avoid conflicts between steps
+            COVERAGE_FILE=".coverage.{}.{}".format(env, python),
+        )
         commands=[
             # install DepHell
             "apk add curl git gcc libc-dev",
