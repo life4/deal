@@ -12,7 +12,7 @@ steps:
     ENV: pytest
   commands:
     # install DepHell
-    - apk add curl git
+    - apk add curl git gcc libc-dev
     - curl -L dephell.org/install > install.py
     - python3 install.py --branch=master
     - dephell inspect self
