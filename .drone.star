@@ -7,11 +7,11 @@ def main(ctx):
             branch="master",
         ),
         steps=[
-            step(env="pytest", python="3.6")
-            step(env="pytest", python="3.7")
-            step(env="pytest", python="3.8")
-            step(env="flake8", python="3.8")
-            step(env="typing", python="3.8")
+            step(env="pytest", python="3.6"),
+            step(env="pytest", python="3.7"),
+            step(env="pytest", python="3.8"),
+            step(env="flake8", python="3.8"),
+            step(env="typing", python="3.8"),
         ],
     )
 
