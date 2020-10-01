@@ -36,7 +36,4 @@ def step(env, python):
             "dephell venv run",
         ],
     )
-    if env == "pytest":
-        cmd = "dephell venv run coverage report --fail-under=100 --show-missing --skip-covered"
-        result["commands"].append(cmd)
     return result
