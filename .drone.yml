@@ -1,0 +1,20 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+- name: pytest 3.7
+  image: python:3.7-alpine
+  environment:
+    ENV: pytest
+  commands:
+    # install DepHell
+    - curl -L dephell.org/install > install.py
+    - python3 install.py --branch=master
+    - dephell inspect self
+    # install deps
+    - dephell venv create --env=$ENV
+    - dephell deps install --env=$ENV
+    # run
+    - dephell venv run --env=$ENV
+    - dephell venv run --env=$ENV coveralls
