@@ -25,7 +25,7 @@ def step(env, python):
             # set coverage database file name
             # to avoid conflicts between steps
             COVERAGE_FILE=".coverage.{}.{}".format(env, python),
-        )
+        ),
         commands=[
             # install DepHell
             "apk add curl git gcc libc-dev",
