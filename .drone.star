@@ -7,14 +7,18 @@ def main(ctx):
             branch="master",
         ),
         steps=[
+            step(env="pytest", python="3.6")
             step(env="pytest", python="3.7")
+            step(env="pytest", python="3.8")
+            step(env="flake8", python="3.8")
+            step(env="typing", python="3.8")
         ],
     )
 
 
 def step(env, python):
     result = dict(
-        name="{} {}".format(env, python),
+        name="{} (py{})".format(env, python),
         image="python:{}-alpine".format(python),
         commands=[
             # install DepHell
@@ -26,7 +30,7 @@ def step(env, python):
             # install deps
             "export DEPHELL_ENV={}".format(env),
             "dephell venv create",
-            "dephell deps install",
+            "dephell deps install --silent",
             # run
             "dephell venv run",
         ],
