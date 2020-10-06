@@ -82,7 +82,7 @@ class ContractError(AssertionError):
                 line = line[:-1]
         if line.startswith('lambda'):
             _, _, line = line.partition(':')
-        return line.strip()
+        return line.strip().rstrip(',')
 
     @cached_property
     def colored_source(self) -> str:
