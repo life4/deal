@@ -1,6 +1,7 @@
 import sys
 from io import StringIO
 from pathlib import Path
+from typing import Any, Optional
 
 from uncompyle6 import deparse_code2str
 import pygments
@@ -12,7 +13,7 @@ from ._cached_property import cached_property
 root = str(Path(__file__).parent)
 
 
-def exception_hook(etype, value, tb):
+def exception_hook(etype: type, value, tb):
     """Exception hook to remove deal from the traceback for ContractError.
     """
     if not issubclass(etype, ContractError):
@@ -39,6 +40,10 @@ sys.excepthook = exception_hook
 
 
 class ContractError(AssertionError):
+    message: str
+    errors: Optional[Any]
+    validator: Any
+
     def __init__(self, message: str = '', errors=None, validator=None) -> None:
         self.message = message
         self.errors = errors
