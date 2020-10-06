@@ -79,7 +79,6 @@ astroid = "*"
 hypothesis = "*"
 pygments = "*"
 typeguard = "*"
-uncompyle6 = "*"
 vaa = ">=0.2.1"
 
 [tool.poetry.dev-dependencies]

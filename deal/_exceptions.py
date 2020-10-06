@@ -1,9 +1,8 @@
 import sys
-from io import StringIO
 from pathlib import Path
 from typing import Any, Optional
+from inspect import getsourcelines
 
-from uncompyle6 import deparse_code2str
 import pygments
 from pygments.formatters.terminal import TerminalFormatter
 from pygments.lexers.python import PythonLexer
@@ -60,20 +59,30 @@ class ContractError(AssertionError):
     def source(self) -> str:
         if self.validator is None:
             return ''
-
-        if hasattr(self.validator, '__code__'):
-            devnull = StringIO()
-            source = deparse_code2str(code=self.validator.__code__, out=devnull)
-            lines = source.strip('\n').split('\n')
-            if len(lines) == 1:
-                source = lines[0]
-                if source.startswith('return '):
-                    source = source[7:]
-                return source
-
+        source = self._source_from_code()
+        if source:
+            return source
         if hasattr(self.validator, '__qualname__'):
             return self.validator.__qualname__
         return repr(self.validator)
+
+    def _source_from_code(self) -> Optional[str]:
+        if not hasattr(self.validator, '__code__'):
+            return None
+        try:
+            lines, _ = getsourcelines(self.validator.__code__)
+        except OSError:
+            return None
+        if not lines:
+            return None
+        line = lines[0].strip()
+        if line.startswith('@'):
+            _, sep, line = line.partition('(')
+            if sep and line.endswith(')'):
+                line = line[:-1]
+        if line.startswith('lambda'):
+            _, _, line = line.partition(':')
+        return line.strip()
 
     @cached_property
     def colored_source(self) -> str:
