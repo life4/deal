@@ -23,7 +23,7 @@ def test_source_get_lambda_from_var():
 
     with pytest.raises(deal.ContractError) as exc_info:
         f(-2)
-    assert exc_info.value.source == 'x > 0'
+    assert exc_info.value.source == 'c'
 
 
 def test_source_get_lambda_with_braces():

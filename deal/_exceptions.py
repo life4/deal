@@ -76,13 +76,16 @@ class ContractError(AssertionError):
         if not lines:
             return None
         line = lines[0].strip()
+        line = ' '.join(line.split())
         if line.startswith('@'):
             _, sep, line = line.partition('(')
             if sep and line.endswith(')'):
                 line = line[:-1]
         if line.startswith('lambda'):
             _, _, line = line.partition(':')
-        return line.strip().rstrip(',')
+        line = line.strip().rstrip(',')
+        line = line.split(' = ')[0]
+        return line
 
     @cached_property
     def colored_source(self) -> str:
