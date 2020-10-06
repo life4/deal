@@ -1,13 +1,13 @@
 import sys
 from pathlib import Path
 from typing import Any, Optional
-from inspect import getsourcelines
 
 import pygments
 from pygments.formatters.terminal import TerminalFormatter
 from pygments.lexers.python import PythonLexer
 
 from ._cached_property import cached_property
+from ._source import get_validator_source
 
 root = str(Path(__file__).parent)
 
@@ -59,33 +59,12 @@ class ContractError(AssertionError):
     def source(self) -> str:
         if self.validator is None:
             return ''
-        source = self._source_from_code()
+        source = get_validator_source(self.validator)
         if source:
             return source
         if hasattr(self.validator, '__qualname__'):
             return self.validator.__qualname__
         return repr(self.validator)
-
-    def _source_from_code(self) -> Optional[str]:
-        if not hasattr(self.validator, '__code__'):
-            return None
-        try:
-            lines, _ = getsourcelines(self.validator.__code__)
-        except OSError:
-            return None
-        if not lines:
-            return None
-        line = lines[0].strip()
-        line = ' '.join(line.split())
-        if line.startswith('@'):
-            _, sep, line = line.partition('(')
-            if sep and line.endswith(')'):
-                line = line[:-1]
-        if line.startswith('lambda'):
-            _, _, line = line.partition(':')
-        line = line.strip().rstrip(',')
-        line = line.split(' = ')[0]
-        return line
 
     @cached_property
     def colored_source(self) -> str:

@@ -23,7 +23,7 @@ def test_source_get_lambda_from_var():
 
     with pytest.raises(deal.ContractError) as exc_info:
         f(-2)
-    assert exc_info.value.source == 'c'
+    assert exc_info.value.source == 'x > 0'
 
 
 def test_source_get_lambda_with_braces():
@@ -40,6 +40,18 @@ def test_source_get_lambda_multiline_dec():
     @deal.pre(
         lambda x: x > 0,
     )
+    def f(x):
+        pass
+
+    with pytest.raises(deal.ContractError) as exc_info:
+        f(-2)
+    assert exc_info.value.source == 'x > 0,'
+
+
+def test_source_get_lambda_from_many():
+    @deal.pre(lambda x: x > -10)
+    @deal.pre(lambda x: x > 0)
+    @deal.pre(lambda x: x > -20)
     def f(x):
         pass
 
