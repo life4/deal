@@ -65,12 +65,21 @@ class Base(Generic[_CallableType]):
             if not message and exception.args:
                 message = exception.args[0]
             exception = type(exception)
+
+        # if errors provided, use it as error message
+        if errors and isinstance(errors, str):
+            message = errors
+            errors = None
+
+        # raise beautiful ContractError
         if issubclass(exception, ContractError):
             raise exception(
                 message=message,
-                errors=errors,
                 validator=self.validator,
+                errors=errors,
             )
+
+        # raise boring custom exception
         raise exception(errors or message)
 
     def _vaa_validation(self, *args, **kwargs) -> None:

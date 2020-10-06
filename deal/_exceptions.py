@@ -39,10 +39,17 @@ sys.excepthook = exception_hook
 
 
 class ContractError(AssertionError):
-    def __init__(self, message: str = None, errors=None, validator=None) -> None:
+    def __init__(self, message: str = '', errors=None, validator=None) -> None:
         self.message = message
         self.errors = errors
         self.validator = validator
+
+        args = []
+        if message:
+            args.append(message)
+        if errors:
+            args.append(errors)
+        super().__init__(*args)
 
     @cached_property
     def source(self) -> str:
@@ -78,16 +85,11 @@ class ContractError(AssertionError):
         return source
 
     def __str__(self) -> str:
-        result: str = self.message or ''
-        if self.errors:
-            if isinstance(self.errors, str):
-                result = self.errors
-            else:
-                result = repr(self.errors)
-
+        result = self.message
+        if not result and self.errors:
+            result = repr(self.errors)
         if not result and self.colored_source:
             result = self.colored_source
-
         return result
 
 
