@@ -3,7 +3,7 @@ import inspect
 from asyncio import iscoroutinefunction
 from contextlib import suppress
 from functools import update_wrapper
-from typing import Callable, Generic, TypeVar
+from typing import Callable, Generic, NoReturn, TypeVar
 
 # external
 import vaa
@@ -59,6 +59,20 @@ class Base(Generic[_CallableType]):
         else:
             self._simple_validation(*args, **kwargs)
 
+    def _raise(self, message=None, errors=None) -> NoReturn:
+        exception = self.exception
+        if isinstance(exception, Exception):
+            if not message and exception.args:
+                message = exception.args[0]
+            exception = type(exception)
+        if issubclass(exception, ContractError):
+            raise exception(
+                message=message,
+                errors=errors,
+                validator=self.validator,
+            )
+        raise exception(errors or message)
+
     def _vaa_validation(self, *args, **kwargs) -> None:
         params = kwargs.copy()
 
@@ -84,7 +98,7 @@ class Base(Generic[_CallableType]):
         # if no errors returned, raise the default exception
         errors = validator.errors
         if not errors:
-            raise self.exception
+            self._raise()
 
         # Flatten single error without field to one simple str message.
         # This is for better readability of simple validators.
@@ -94,23 +108,18 @@ class Base(Generic[_CallableType]):
                     if errors[0].field is None:
                         errors = errors[0].message
 
-        # raise errors
-        if isinstance(self.exception, Exception):
-            raise type(self.exception)(errors)
-        raise self.exception(errors)
+        self._raise(errors=errors)
 
     def _simple_validation(self, *args, **kwargs) -> None:
         validation_result = self.validator(*args, **kwargs)
         # is invalid (validator returns error message)
         if isinstance(validation_result, str):
-            if isinstance(self.exception, Exception):
-                raise type(self.exception)(validation_result)
-            raise self.exception(validation_result)
+            self._raise(message=validation_result)
         # is valid (truely result)
         if validation_result:
             return
         # is invalid (falsy result)
-        raise self.exception
+        self._raise()
 
     @property
     def enabled(self) -> bool:
