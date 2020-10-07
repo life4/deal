@@ -8,6 +8,7 @@ from pygments.lexers.python import PythonLexer
 
 from ._cached_property import cached_property
 from ._source import get_validator_source
+from ._state import state
 
 root = str(Path(__file__).parent)
 
@@ -84,8 +85,11 @@ class ContractError(AssertionError):
         result = self.message
         if not result and self.errors:
             result = repr(self.errors)
-        if not result and self.colored_source:
-            result = self.colored_source
+        if not result and self.source:
+            if state.color:
+                result = self.colored_source
+            else:
+                result = self.source
         return result
 
 

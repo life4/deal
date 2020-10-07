@@ -1,8 +1,10 @@
+import os
 
 
 class _State:
-    __slots__ = ('debug', )
+    __slots__ = ('debug', 'color')
     debug: bool
+    color: bool
 
     def __init__(self):
         self.reset()
@@ -16,6 +18,7 @@ class _State:
         [runtime]: https://deal.readthedocs.io/basic/runtime.html
         """
         self.debug = __debug__
+        self.color = 'NO_COLOR' not in os.environ
 
     def enable(self) -> None:
         """Enable all contracts.
