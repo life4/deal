@@ -21,9 +21,10 @@ def get_validator_source(validator) -> str:
     lines = _extract_assignment(lines)
     lines = _extract_lambda_body(lines)
 
+    # drop trailing spaces and empty lines
+    lines = '\n'.join(lines).rstrip().split('\n')
     # drop trailing comma
-    lines[-1] = lines[-1].rstrip()
-    if lines[-1][-1] == ',':
+    if lines[-1] and lines[-1][-1] == ',':
         lines[-1] = lines[-1][:-1]
 
     return ' '.join(lines)
@@ -62,7 +63,14 @@ def _drop_comments(lines: List[str]):
 def _extract_decorator_args(lines: List[str]):
     tokens = _get_tokens(lines)
 
-    if tokens[0].string != '@':
+    # drop decorator symbol
+    if tokens[0].string == '@':
+        tokens = tokens[1:]
+
+    # proceed only if is call of a deal decorator
+    if tokens[0].string != 'deal':
+        return lines
+    if tokens[1].string != '.':
         return lines
 
     # find where decorator starts
