@@ -45,7 +45,7 @@ def test_source_get_lambda_multiline_dec():
 
     with pytest.raises(deal.ContractError) as exc_info:
         f(-2)
-    assert exc_info.value.source == 'x > 0,'
+    assert exc_info.value.source == 'x > 0'
 
 
 def test_source_get_lambda_from_many():

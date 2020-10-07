@@ -21,6 +21,11 @@ def get_validator_source(validator) -> str:
     lines = _extract_assignment(lines)
     lines = _extract_lambda_body(lines)
 
+    # drop trailing comma
+    lines[-1] = lines[-1].rstrip()
+    if lines[-1][-1] == ',':
+        lines[-1] = lines[-1][:-1]
+
     return ' '.join(lines)
 
 
