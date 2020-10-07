@@ -6,6 +6,7 @@ import pytest
 
 # project
 import deal._aliases
+from deal._state import state
 
 
 class Checker(doctest.OutputChecker):
@@ -25,10 +26,14 @@ finder = doctest.DocTestFinder(exclude_empty=True)
 
 @pytest.mark.parametrize('test', finder.find(deal._aliases))
 def test_doctest(test):
-    runner = doctest.DocTestRunner(checker=Checker())
-    runner.run(test)
-    result = runner.summarize(verbose=False)
-    if result.failed:
-        print('Kinda diff:')
-        print(*runner._checker.diff, sep='\n')
-    assert not result.failed
+    state.color = False
+    try:
+        runner = doctest.DocTestRunner(checker=Checker())
+        runner.run(test)
+        result = runner.summarize(verbose=False)
+        if result.failed:
+            print('Kinda diff:')
+            print(*runner._checker.diff, sep='\n')
+        assert not result.failed
+    finally:
+        state.color = True
