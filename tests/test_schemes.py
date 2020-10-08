@@ -10,6 +10,7 @@ import deal
 @vaa.marshmallow
 class MarshMallowScheme(marshmallow.Schema):
     name = marshmallow.fields.Str()
+    kwargs = marshmallow.fields.Dict(required=False)
 
 
 class CustomScheme(deal.Scheme):

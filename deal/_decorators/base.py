@@ -105,14 +105,9 @@ class Base(Generic[_CallableType]):
             del kwargs['result']
 
         # detect original function
-        while hasattr(function, '__wrapped__'):
-            function = function.__wrapped__     # type: ignore
+        function = inspect.unwrap(function)
         # assign *args to real names
         params.update(inspect.getcallargs(function, *args, **kwargs))
-        # drop args-kwargs, we already put them on the right places
-        for bad_name in ('args', 'kwargs'):
-            if bad_name in params and bad_name not in kwargs:
-                del params[bad_name]
         return params
 
     def _vaa_validation(self, *args, **kwargs) -> None:
