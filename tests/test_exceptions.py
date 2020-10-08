@@ -3,6 +3,8 @@ from pathlib import Path
 
 import deal
 import pytest
+import vaa
+import marshmallow
 from deal._decorators.base import Base
 from deal._exceptions import exception_hook, _excepthook
 
@@ -85,6 +87,20 @@ def test_source_get_chain():
     assert exc_info.value.source == 'b > 0'
 
 
+def test_source_get_func_name():
+    def identity_contract(x):
+        a = 0
+        return x > a
+
+    @deal.pre(identity_contract)
+    def identity(x):
+        return x
+
+    with pytest.raises(deal.ContractError) as exc_info:
+        identity(-2)
+    assert exc_info.value.source == 'identity_contract'
+
+
 def test_exception_hook(capsys):
     pre_path = str(Path('deal', '_decorators', 'pre.py'))
     f = deal.pre(lambda x: x > 0)(lambda x: x)
@@ -117,3 +133,14 @@ def test_exception_hook_ignores_non_contract_exceptions(capsys):
     assert captured.out == ''
     base_path = str(Path('deal', '_decorators', 'base.py'))
     assert base_path in captured.err
+
+
+def test_exception_hook_ignores_contract_from_non_deal(capsys):
+    with pytest.raises(deal.ContractError) as exc_info:
+        raise deal.ContractError
+
+    # the custom hook does not reduce contract from the traceback
+    exception_hook(exc_info.type, exc_info.value, exc_info.tb)
+    captured = capsys.readouterr()
+    assert captured.out == ''
+    assert 'test_exceptions.py' in captured.err

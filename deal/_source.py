@@ -27,6 +27,8 @@ def get_validator_source(validator) -> str:
     if lines[-1] and lines[-1][-1] == ',':
         lines[-1] = lines[-1][:-1]
 
+    if len(lines) > 1:
+        return ''
     return ' '.join(lines)
 
 
