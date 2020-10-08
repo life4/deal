@@ -5,6 +5,7 @@ import deal
 import pytest
 import vaa
 import marshmallow
+from deal._state import state
 from deal._decorators.base import Base
 from deal._exceptions import exception_hook, _excepthook
 
@@ -17,6 +18,10 @@ def test_source_get_lambda_from_dec():
     with pytest.raises(deal.ContractError) as exc_info:
         f(-2)
     assert exc_info.value.source == 'x > 0'
+
+    state.color = False
+    assert str(exc_info.value) == 'expected x > 0 (where x=-2)'
+    state.color = True
 
 
 def test_source_get_lambda_from_var():
@@ -31,6 +36,10 @@ def test_source_get_lambda_from_var():
     with pytest.raises(deal.ContractError) as exc_info:
         f(-2)
     assert exc_info.value.source == 'x > 0'
+
+    state.color = False
+    assert str(exc_info.value) == 'expected x > 0 (where x=-2)'
+    state.color = True
 
 
 def test_source_get_lambda_with_braces():
@@ -86,6 +95,10 @@ def test_source_get_chain():
         sum(2, -3)
     assert exc_info.value.source == 'b > 0'
 
+    state.color = False
+    assert str(exc_info.value) == 'expected b > 0 (where a=2, b=-3)'
+    state.color = True
+
 
 def test_source_get_func_name():
     def identity_contract(x):
@@ -99,6 +112,45 @@ def test_source_get_func_name():
     with pytest.raises(deal.ContractError) as exc_info:
         identity(-2)
     assert exc_info.value.source == 'identity_contract'
+
+
+def test_variables_too_long_repr():
+    @deal.pre(lambda a, b: a == b)
+    def f(a, b):
+        return a + b
+
+    with pytest.raises(deal.ContractError) as exc_info:
+        f(234, "x" * 60)
+    state.color = False
+    assert exc_info.value.variables == 'a=234'
+    state.color = True
+
+
+def test_source_vaa_scheme():
+    class MarshMallowScheme(marshmallow.Schema):
+        x = marshmallow.fields.Str()
+
+    @deal.pre(vaa.marshmallow(MarshMallowScheme))
+    def identity(x):
+        return x
+
+    with pytest.raises(deal.ContractError) as exc_info:
+        identity(-2)
+    assert exc_info.value.source.startswith('<vaa._external.Marshmallow object at ')
+    exp = "[Error(message='Not a valid string.', field='x')] (where x=-2)"
+    state.color = False
+    assert str(exc_info.value) == exp
+    state.color = True
+
+
+def test_repr_raises_exc():
+    @deal.raises()
+    def identity(b):
+        return 1 / b
+
+    with pytest.raises(deal.RaisesContractError) as exc_info:
+        identity(0)
+    assert str(exc_info.value) == ''
 
 
 def test_exception_hook(capsys):

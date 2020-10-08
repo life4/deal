@@ -78,17 +78,12 @@ class ContractError(AssertionError):
 
     @cached_property
     def colored_source(self) -> str:
-        if not self.source:
-            return self.source
         source = pygments.highlight(
             code=self.source,
             lexer=PythonLexer(),
             formatter=TerminalFormatter(),
         )
-        source = source.rstrip()
-        if '\033' not in source:
-            source = '\033[94m' + source + '\033[0m'
-        return source
+        return source.rstrip()
 
     @cached_property
     def variables(self) -> str:
@@ -116,10 +111,7 @@ class ContractError(AssertionError):
             else:
                 result += self.source
         if self.variables:
-            if result:
-                result += ' (where {})'.format(self.variables)
-            else:
-                result += self.variables
+            result += ' (where {})'.format(self.variables)
         return result
 
 
