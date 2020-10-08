@@ -17,7 +17,8 @@ from .._testing import cases
 from ..linter._contract import Category
 from ..linter._extractors.pre import format_call_args
 from ..linter._func import Func
-from ._common import get_paths, COLORS
+from ._common import get_paths
+from .._colors import COLORS
 
 
 @contextmanager

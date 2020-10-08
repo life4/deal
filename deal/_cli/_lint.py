@@ -9,7 +9,8 @@ from typing import Iterable, Iterator, Sequence, Union
 # app
 from ..linter import Checker
 from .._state import state
-from ._common import get_paths, highlight, COLORS, NOCOLORS
+from ._common import get_paths
+from .._colors import highlight, COLORS, NOCOLORS
 
 
 TEMPLATE = '  {blue}{row}{end}:{blue}{col}{end} {magenta}{code}{end} {yellow}{text}{end}'
