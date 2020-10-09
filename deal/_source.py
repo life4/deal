@@ -90,8 +90,6 @@ def _extract_decorator_args(lines: List[str]):
         if token.string == '(':
             start = index
             break
-    else:
-        start = 0
     first_token = tokens[start + 1]
 
     end = 0
@@ -113,8 +111,6 @@ def _extract_assignment(lines: List[str]):
             break
         if token.type not in (tokenize.NAME, tokenize.DOT):
             return lines
-    else:
-        return lines
     first_token = tokens[start + 1]
     last_token = tokens[-1]
     return _cut_lines(lines, first_token, last_token)
@@ -148,8 +144,6 @@ def _extract_lambda_body(lines: List[str]):
         if token.type == tokenize.OP and ':' in token.string:
             start = index
             break
-    else:
-        return lines
     first_token = tokens[start + 1]
     last_token = tokens[-1]
     return _cut_lines(lines, first_token, last_token)
