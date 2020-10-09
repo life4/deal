@@ -120,7 +120,7 @@ def test_variables_too_long_repr():
         return a + b
 
     with pytest.raises(deal.ContractError) as exc_info:
-        f(234, "x" * 60)
+        f(234, 'x' * 60)
     state.color = False
     assert exc_info.value.variables == 'a=234'
     state.color = True

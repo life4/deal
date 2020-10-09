@@ -11,14 +11,17 @@ def get_validator_source(validator) -> str:
         lines, _ = inspect.getsourcelines(validator.__code__)
     except OSError:
         return ''
-    if not lines:
-        return ''
     lines = dedent('\n'.join(lines)).split('\n')
 
-    # extract contract from decorator arguments
+    try:
+        _get_tokens(lines)
+    except tokenize.TokenError:
+        lines = _clear_lines(lines)
+
     lines = _drop_comments(lines)
     lines = _extract_decorator_args(lines)
     lines = _extract_assignment(lines)
+    lines = _extract_lambda(lines)
     lines = _extract_lambda_body(lines)
 
     # drop trailing spaces and empty lines
@@ -30,6 +33,12 @@ def get_validator_source(validator) -> str:
     if len(lines) > 1:
         return ''
     return ' '.join(lines)
+
+
+def _clear_lines(lines: List[str]) -> List[str]:
+    lines = [line.rstrip() for line in lines]
+    lines = [line for line in lines if line]
+    return lines
 
 
 def _cut_lines(lines: List[str], first_token, last_token):
@@ -48,8 +57,10 @@ def _cut_lines(lines: List[str], first_token, last_token):
     return lines
 
 
-def _get_tokens(lines: List[str]):
-    return list(tokenize.generate_tokens(iter(lines).__next__))
+def _get_tokens(lines: List[str]) -> List[tokenize.TokenInfo]:
+    tokens = tokenize.generate_tokens(iter(lines).__next__)
+    exclude = {tokenize.INDENT, tokenize.DEDENT, tokenize.ENDMARKER}
+    return [token for token in tokens if token.type not in exclude]
 
 
 def _drop_comments(lines: List[str]):
@@ -70,9 +81,7 @@ def _extract_decorator_args(lines: List[str]):
         tokens = tokens[1:]
 
     # proceed only if is call of a deal decorator
-    if tokens[0].string != 'deal':
-        return lines
-    if tokens[1].string != '.':
+    if tokens[0].string != 'deal' or tokens[1].string != '.':
         return lines
 
     # find where decorator starts
@@ -96,9 +105,6 @@ def _extract_decorator_args(lines: List[str]):
 def _extract_assignment(lines: List[str]):
     tokens = _get_tokens(lines)
 
-    if tokens[0].type != tokenize.NAME:
-        return lines
-
     # find where body starts
     start = 0
     for index, token in enumerate(tokens):
@@ -110,8 +116,24 @@ def _extract_assignment(lines: List[str]):
     else:
         return lines
     first_token = tokens[start + 1]
-    last_token = tokens[-2]
+    last_token = tokens[-1]
     return _cut_lines(lines, first_token, last_token)
+
+
+def _extract_lambda(lines: List[str]):
+    tokens = _get_tokens(lines)
+    if tokens[0].string != '(':
+        return lines
+    if tokens[1].string != 'lambda':
+        return lines
+
+    end = 0
+    for index, token in enumerate(tokens):
+        if token.string == ')':
+            end = index
+    last_token = tokens[end - 1]
+
+    return _cut_lines(lines, tokens[1], last_token)
 
 
 def _extract_lambda_body(lines: List[str]):
@@ -129,5 +151,5 @@ def _extract_lambda_body(lines: List[str]):
     else:
         return lines
     first_token = tokens[start + 1]
-    last_token = tokens[-2]
+    last_token = tokens[-1]
     return _cut_lines(lines, first_token, last_token)
