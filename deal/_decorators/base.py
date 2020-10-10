@@ -74,7 +74,7 @@ class Base(Generic[_CallableType]):
         # raise beautiful ContractError
         if issubclass(exception, ContractError):
             raise exception(
-                message=message,
+                message=message or '',
                 validator=self.validator,
                 errors=errors,
                 params=params,

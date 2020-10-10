@@ -1,6 +1,6 @@
 import sys
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Type
 
 import pygments
 from pygments.formatters.terminal import TerminalFormatter
@@ -14,7 +14,7 @@ from ._colors import COLORS, NOCOLORS
 root = str(Path(__file__).parent)
 
 
-def exception_hook(etype: type, value, tb):
+def exception_hook(etype: Type[BaseException], value: BaseException, tb):
     """Exception hook to remove deal from the traceback for ContractError.
     """
     if not issubclass(etype, ContractError):
