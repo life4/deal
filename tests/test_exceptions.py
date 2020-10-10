@@ -24,6 +24,20 @@ def test_source_get_lambda_from_dec():
     state.color = True
 
 
+def test_source_get_lambda_from_dec_simple():
+    @deal.pre(lambda _: _.x > 0)
+    def f(x):
+        pass
+
+    with pytest.raises(deal.ContractError) as exc_info:
+        f(-2)
+    assert exc_info.value.source == 'x > 0'
+
+    state.color = False
+    assert str(exc_info.value) == 'expected x > 0 (where x=-2)'
+    state.color = True
+
+
 def test_source_get_lambda_from_var():
     # autopep8: off
     c = lambda x: x > 0 # noqa

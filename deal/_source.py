@@ -2,9 +2,12 @@ import inspect
 import tokenize
 from textwrap import dedent
 from typing import List
+from vaa._internal import Simple
 
 
 def get_validator_source(validator) -> str:
+    if isinstance(validator, Simple):
+        validator = validator.validator
     if not hasattr(validator, '__code__'):
         return ''
     try:
@@ -32,7 +35,7 @@ def get_validator_source(validator) -> str:
 
     if len(lines) > 1:
         return ''
-    return ' '.join(lines)
+    return ' '.join(lines).replace('_.', '')
 
 
 def _clear_lines(lines: List[str]) -> List[str]:

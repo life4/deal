@@ -13,7 +13,7 @@ sum_positive(1, 2, 3, 4)
 # 10
 
 sum_positive(1, 2, -3, 4)
-# PreContractError:
+# PreContractError: expected all(arg > 0 for arg in args) (where args=(1, 2, -3, 4))
 ```
 
 ## deal.post
@@ -47,7 +47,7 @@ double(2)
 # 4
 
 double(0)
-# PostContractError:
+# PostContractError: expected x != result (where result=0, x=0)
 ```
 
 Ensure is the shining star of property-based testing. It works perfect for [P vs NP](https://en.wikipedia.org/wiki/P_versus_NP_problem) like problems. In other words, for complex task when checking result correctness (even partial checking only for some cases) is much easier then the calculation itself.
@@ -72,7 +72,7 @@ post = Post()
 post.likes = 10
 
 post.likes = -10
-# InvContractError:
+# InvContractError: expected post.likes >= 0
 
 type(post)
 # deal.core.PostInvarianted
@@ -91,7 +91,7 @@ f(1)
 # 2
 
 f(-2)
-# PreContractError:
+# PreContractError: expected a + b > 0 (where a=-2, b=1)
 ```
 
 ## assert
@@ -150,10 +150,10 @@ f(5)
 # 10
 
 f(-1)
-# PreContractError:
+# PreContractError: expected x > 0 (where x=-1)
 
 f(12)
-# PreContractError:
+# PreContractError: expected x < 10 (where x=12)
 ```
 
 `@deal.post` and `@deal.ensure` contracts are resolved from bottom to top. All other contracts are resolved from top to bottom. This is because of how wrapping works: before calling function we go down by contracts list, after calling the function we go back, up by call stack.

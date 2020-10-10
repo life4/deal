@@ -95,7 +95,7 @@ class ContractError(AssertionError):
         params = []
         for k, v in self.params.items():
             v = repr(v)
-            if len(v) > 10:
+            if len(v) > 20:
                 continue
             params.append(tmpl.format(k=k, v=v, **colors))
         return sep.join(params)

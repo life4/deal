@@ -81,7 +81,12 @@ class Base(Generic[_CallableType]):
             )
 
         # raise boring custom exception
-        raise exception(errors or message)
+        args = []
+        if message:
+            args.append(message)
+        if errors:
+            args.append(errors)
+        raise exception(*args)
 
     def _args_to_vars(self, *, args, kwargs: Dict[str, Any], function=None) -> Dict[str, Any]:
         """Convert args and kwargs into dict of params based on the given function.
