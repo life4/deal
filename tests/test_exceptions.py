@@ -1,3 +1,4 @@
+# autopep8: off
 import sys
 from pathlib import Path
 
@@ -39,9 +40,7 @@ def test_source_get_lambda_from_dec_simple():
 
 
 def test_source_get_lambda_from_var():
-    # autopep8: off
     c = lambda x: x > 0 # noqa
-    # autopep8: on
 
     @deal.pre(c)
     def f(x):
@@ -76,6 +75,17 @@ def test_source_get_lambda_multiline_dec():
     with pytest.raises(deal.ContractError) as exc_info:
         f(-2)
     assert exc_info.value.source == 'x > 0'
+
+
+def test_source_get_lambda_multiline_splitted_dec():
+    @deal.pre(lambda x: x > 0 and   # noqa
+                        x < 10)     # noqa
+    def f(x):
+        pass
+
+    with pytest.raises(deal.ContractError) as exc_info:
+        f(-2)
+    assert exc_info.value.source == '<lambda>'
 
 
 def test_source_get_lambda_from_many():
@@ -210,3 +220,58 @@ def test_exception_hook_ignores_contract_from_non_deal(capsys):
     captured = capsys.readouterr()
     assert captured.out == ''
     assert 'test_exceptions.py' in captured.err
+
+
+def test_custom_exc():
+    @deal.pre(lambda x: x > 0, exception=ZeroDivisionError)
+    def f(x):
+        pass
+
+    with pytest.raises(ZeroDivisionError) as exc_info:
+        f(-2)
+    assert repr(exc_info.value) == 'ZeroDivisionError()'
+
+
+def test_custom_exc_with_message():
+    @deal.pre(lambda x: x > 0, exception=ZeroDivisionError('oh hi mark'))
+    def f(x):
+        pass
+
+    with pytest.raises(ZeroDivisionError) as exc_info:
+        f(-2)
+    assert repr(exc_info.value) == "ZeroDivisionError('oh hi mark')"
+
+
+def test_custom_exc_and_message():
+    @deal.pre(lambda x: x > 0, exception=ZeroDivisionError, message='oh hi mark')
+    def f(x):
+        pass
+
+    with pytest.raises(ZeroDivisionError) as exc_info:
+        f(-2)
+    assert repr(exc_info.value) == "ZeroDivisionError('oh hi mark')"
+
+
+def test_custom_exc_and_returned_message():
+    @deal.pre(lambda x: x > 0 or 'oh hi mark', exception=ZeroDivisionError)
+    def f(x):
+        pass
+
+    with pytest.raises(ZeroDivisionError) as exc_info:
+        f(-2)
+    assert repr(exc_info.value) == "ZeroDivisionError('oh hi mark')"
+
+
+def test_vaa_scheme_and_custom_exception():
+    @vaa.marshmallow
+    class MarshMallowScheme(marshmallow.Schema):
+        x = marshmallow.fields.Str()
+
+    @deal.pre(MarshMallowScheme, exception=ZeroDivisionError)
+    def identity(x):
+        return x
+
+    with pytest.raises(ZeroDivisionError) as exc_info:
+        identity(-2)
+    exp = "[Error(message='Not a valid string.', field='x')]"
+    assert str(exc_info.value) == exp

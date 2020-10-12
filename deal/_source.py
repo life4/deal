@@ -41,6 +41,8 @@ def get_validator_source(validator) -> str:
     # transform back to text
     lines = tokenize.untokenize(tokens).split('\n')
     lines = _clear_lines(lines)
+    if len(lines) > 1:
+        return ''
     return ' '.join(lines).replace('_.', '').lstrip()
 
 
@@ -57,6 +59,20 @@ def _get_tokens(lines: List[str]) -> List[tokenize.TokenInfo]:
     tokens = tokenize.generate_tokens(iter(lines).__next__)
     exclude = {tokenize.INDENT, tokenize.DEDENT, tokenize.ENDMARKER}
     return [token for token in tokens if token.type not in exclude]
+
+
+@processor
+def _extract_def_name(tokens: TokensType) -> TokensType:
+    for token, next_token in zip(tokens, tokens[1:]):
+        if token.string == 'lambda':
+            return tokens
+        if token.string == '@':
+            return tokens
+        if token.string == 'def':
+            return [next_token]
+        if token.string == 'class':
+            return [next_token]
+    return tokens
 
 
 @processor
@@ -113,9 +129,9 @@ def _extract_assignment(tokens: TokensType) -> TokensType:
 def _extract_lambda(tokens: TokensType) -> TokensType:
     start = 0
     for index, (token1, token2) in enumerate(zip(tokens, tokens[1:])):
-        if tokens[0].string != '(':
+        if token1.string != '(':
             continue
-        if tokens[1].string != 'lambda':
+        if token2.string != 'lambda':
             continue
         start = index + 1
         break
@@ -151,16 +167,6 @@ def _extract_lambda_body(tokens: TokensType) -> TokensType:
     start += 1
 
     return tokens[start:]
-
-
-@processor
-def _extract_def_name(tokens: TokensType) -> TokensType:
-    for token, next_token in zip(tokens, tokens[1:]):
-        if token.string == 'def':
-            return [next_token]
-        if token.string == 'class':
-            return [next_token]
-    return tokens
 
 
 @processor

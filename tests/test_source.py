@@ -65,6 +65,6 @@ def test_name_token():
     assert _get_tokens([]) == []
     for processor in processors:
         tokens = _get_tokens(['aragorn'])
-        tokens = _extract_decorator_args(tokens)
+        tokens = processor(tokens)
         text = untokenize(tokens)
         assert text == 'aragorn'
