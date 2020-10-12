@@ -1,11 +1,21 @@
 import inspect
 import tokenize
 from textwrap import dedent
-from typing import List
+from typing import Callable, List
 from vaa._internal import Simple
 
 
+TokensType = List[tokenize.TokenInfo]
+processors = []
+
+
+def processor(func: Callable[[TokensType], TokensType]) -> Callable[[TokensType], TokensType]:
+    processors.append(func)
+    return func
+
+
 def get_validator_source(validator) -> str:
+    # get source code
     if isinstance(validator, Simple):
         validator = validator.validator
     if not hasattr(validator, '__code__'):
@@ -16,49 +26,48 @@ def get_validator_source(validator) -> str:
         return ''
     lines = dedent('\n'.join(lines)).split('\n')
 
+    # tokenize
+    tokens: TokensType
     try:
         tokens = _get_tokens(lines)
     except tokenize.TokenError:
         lines = _clear_lines(lines)
         tokens = _get_tokens(lines)
 
-    tokens = _drop_comments(tokens)
-    tokens = _extract_decorator_args(tokens)
-    tokens = _extract_assignment(tokens)
-    tokens = _extract_lambda(tokens)
-    tokens = _extract_lambda_body(tokens)
-    tokens = _fix_line_numbers(tokens)
-    tokens = _extract_function_name(tokens)
+    # drop junk
+    for processor in processors:
+        tokens = processor(tokens)
 
+    # transform back to text
     lines = tokenize.untokenize(tokens).split('\n')
     lines = _clear_lines(lines)
-    # drop trailing comma
-    if lines[-1] and lines[-1][-1] == ',':
-        lines[-1] = lines[-1][:-1]
-
-    if len(lines) > 1:
-        return ''
     return ' '.join(lines).replace('_.', '').lstrip()
 
 
 def _clear_lines(lines: List[str]) -> List[str]:
     lines = [line.rstrip() for line in lines]
     lines = [line for line in lines if line]
+    # drop trailing comma
+    if lines[-1] and lines[-1][-1] == ',':
+        lines[-1] = lines[-1][:-1]
     return lines
 
 
 def _get_tokens(lines: List[str]) -> List[tokenize.TokenInfo]:
     tokens = tokenize.generate_tokens(iter(lines).__next__)
-    # exclude = []
     exclude = {tokenize.INDENT, tokenize.DEDENT, tokenize.ENDMARKER}
     return [token for token in tokens if token.type not in exclude]
 
 
-def _drop_comments(tokens: List[tokenize.TokenInfo]) -> List[tokenize.TokenInfo]:
+@processor
+def _drop_comments(tokens: TokensType) -> TokensType:
     return [token for token in tokens if token.type != tokenize.COMMENT]
 
 
-def _extract_decorator_args(tokens: List[tokenize.TokenInfo]) -> List[tokenize.TokenInfo]:
+@processor
+def _extract_decorator_args(tokens: TokensType) -> TokensType:
+    if not tokens:
+        return tokens
 
     # drop decorator symbol
     if tokens[0].string == '@':
@@ -85,7 +94,8 @@ def _extract_decorator_args(tokens: List[tokenize.TokenInfo]) -> List[tokenize.T
     return tokens[start:end]
 
 
-def _extract_assignment(tokens: List[tokenize.TokenInfo]) -> List[tokenize.TokenInfo]:
+@processor
+def _extract_assignment(tokens: TokensType) -> TokensType:
     start = 0
     for index, token in enumerate(tokens):
         if token.type == tokenize.OP and '=' in token.string:
@@ -99,7 +109,8 @@ def _extract_assignment(tokens: List[tokenize.TokenInfo]) -> List[tokenize.Token
     return tokens[start:]
 
 
-def _extract_lambda(tokens: List[tokenize.TokenInfo]) -> List[tokenize.TokenInfo]:
+@processor
+def _extract_lambda(tokens: TokensType) -> TokensType:
     start = 0
     for index, (token1, token2) in enumerate(zip(tokens, tokens[1:])):
         if tokens[0].string != '(':
@@ -119,7 +130,8 @@ def _extract_lambda(tokens: List[tokenize.TokenInfo]) -> List[tokenize.TokenInfo
     return tokens[start:end]
 
 
-def _extract_lambda_body(tokens: List[tokenize.TokenInfo]) -> List[tokenize.TokenInfo]:
+@processor
+def _extract_lambda_body(tokens: TokensType) -> TokensType:
     # find where lambda starts
     start = 0
     for index, token in enumerate(tokens):
@@ -141,14 +153,18 @@ def _extract_lambda_body(tokens: List[tokenize.TokenInfo]) -> List[tokenize.Toke
     return tokens[start:]
 
 
-def _extract_function_name(tokens: List[tokenize.TokenInfo]) -> List[tokenize.TokenInfo]:
+@processor
+def _extract_def_name(tokens: TokensType) -> TokensType:
     for token, next_token in zip(tokens, tokens[1:]):
         if token.string == 'def':
+            return [next_token]
+        if token.string == 'class':
             return [next_token]
     return tokens
 
 
-def _fix_line_numbers(tokens: List[tokenize.TokenInfo]) -> List[tokenize.TokenInfo]:
+@processor
+def _fix_line_numbers(tokens: TokensType) -> TokensType:
     if not tokens:
         return tokens
     diff = tokens[0].start[0] - 1

@@ -2,7 +2,7 @@
 from tokenize import untokenize
 from deal._source import (
     get_validator_source, _extract_assignment, _extract_lambda_body,
-    _extract_decorator_args, _get_tokens)
+    _extract_decorator_args, _get_tokens, processors)
 
 
 def test_get_validator_source():
@@ -46,3 +46,9 @@ def test_extract_decorator_args_no_call():
     tokens = _extract_decorator_args(tokens)
     text = untokenize(tokens)
     assert text == ' deal.safe'
+
+
+def test_no_tokens():
+    assert _get_tokens([]) == []
+    for processor in processors:
+        assert processor([]) == []
