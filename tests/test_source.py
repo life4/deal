@@ -1,5 +1,8 @@
 # autopep8: off
-from deal._source import get_validator_source, _extract_assignment, _extract_lambda_body, _extract_decorator_args
+from tokenize import untokenize
+from deal._source import (
+    get_validator_source, _extract_assignment, _extract_lambda_body,
+    _extract_decorator_args, _get_tokens)
 
 
 def test_get_validator_source():
@@ -25,12 +28,21 @@ def test_get_validator_source_no_source():
 
 
 def test_extract_assignment_no_assigment():
-    assert _extract_assignment(['aragorn']) == ['aragorn']
+    tokens = _get_tokens(['aragorn'])
+    tokens = _extract_assignment(tokens)
+    text = untokenize(tokens)
+    assert text == 'aragorn'
 
 
 def test_extract_lambda_body_no_lambda():
-    assert _extract_lambda_body(['lambda x']) == ['lambda x']
+    tokens = _get_tokens(['lambda x'])
+    tokens = _extract_lambda_body(tokens)
+    text = untokenize(tokens)
+    assert text == 'lambda x'
 
 
 def test_extract_decorator_args_no_call():
-    assert _extract_decorator_args(['@deal.safe']) == ['@deal.safe']
+    tokens = _get_tokens(['@deal.safe'])
+    tokens = _extract_decorator_args(tokens)
+    text = untokenize(tokens)
+    assert text == ' deal.safe'
