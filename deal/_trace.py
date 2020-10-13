@@ -10,6 +10,7 @@ class TraceResult(NamedTuple):
     file_name: str
     func_result: Any
     covered_lines: Set[int]
+    all_lines: Set[int]
     first_line: int
     last_line: int
 
@@ -30,7 +31,9 @@ def trace(case: TestCase) -> TraceResult:
 
     func = inspect.unwrap(case.func)
     file_name = func.__code__.co_filename
-    first_line, last_line = _get_func_body_range(func=func)
+    all_lines = _get_func_body_statements(func=func)
+    first_line = min(all_lines)
+    last_line = max(all_lines)
 
     covered_lines: Set[int] = set()
     for (fname, lineno), _hits in t.counts.items():
@@ -46,24 +49,35 @@ def trace(case: TestCase) -> TraceResult:
         file_name=file_name,
         func_result=func_result,
         covered_lines=covered_lines,
+        all_lines=all_lines,
         first_line=first_line,
         last_line=last_line,
     )
 
 
-def _get_func_body_range(func) -> Tuple[int, int]:
+def _get_func_body_statements(func) -> Set[int]:
     func_name = func.__name__
     file_name = func.__code__.co_filename
 
     with open(file_name) as stream:
         tree = ast.parse(stream.read(), filename=file_name)
 
-    node = _get_func_node(func_name=func_name, tree=tree)
-    if node is None:
+    func_node = _get_func_node(func_name=func_name, tree=tree)
+    if func_node is None:
         first_line = func.__code__.co_firstlineno
-        return (first_line, first_line + 1)
+        return {first_line}
 
-    return (node.body[0].lineno + 1, node.body[-1].lineno)
+    result: Set[int] = set()
+    for node in func_node.body:
+        for node in ast.walk(node):
+            # skip nodes without lineno
+            if not isinstance(node, ast.stmt):
+                continue
+            # skip docstring
+            if isinstance(node, ast.Expr) and isinstance(node.value, ast.Str):
+                continue
+            result.add(node.lineno)
+    return result
 
 
 def _get_func_node(func_name: str, tree: ast.Module) -> Optional[ast.FunctionDef]:
@@ -77,13 +91,13 @@ def _get_func_node(func_name: str, tree: ast.Module) -> Optional[ast.FunctionDef
 
 
 def format_lines(statements: Set[int], lines: Set[int]) -> str:
-    return ', '.join(_nice_pair(*pair) for pair in _line_ranges(statements, lines))
-
-
-def _nice_pair(start: int, end: int) -> str:
-    if start == end:
-        return str(start)
-    return '{}-{}'.format(start, end)
+    pairs = []
+    for start, end in _line_ranges(statements, lines):
+        if start == end:
+            pairs.append(str(start))
+        else:
+            pairs.append('{}-{}'.format(start, end))
+    return ', '.join(pairs)
 
 
 def _line_ranges(statements: Set[int], lines: Set[int]) -> Iterator[Tuple[int, int]]:
