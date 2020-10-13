@@ -21,7 +21,7 @@ def trace(case: TestCase) -> TraceResult:
         func_result: Any = t.runfunc(case)  # type: ignore
     finally:
         # restore previous tracer
-        sys.settrace(old_trace)
+        sys.settrace(old_trace)  # pragma: no cover
 
     func = inspect.unwrap(case.func)
     file_name = func.__code__.co_filename
