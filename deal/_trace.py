@@ -1,6 +1,7 @@
 from typing import Any, Iterator, NamedTuple, Optional, Set, Tuple
 from trace import Trace
 import ast
+import sys
 import inspect
 
 from ._testing import TestCase
@@ -11,17 +12,16 @@ class TraceResult(NamedTuple):
     func_result: Any
     covered_lines: Set[int]
     all_lines: Set[int]
-    first_line: int
-    last_line: int
-
-    @property
-    def total_lines(self) -> int:
-        return self.last_line - self.first_line + 1
 
 
 def trace(case: TestCase) -> TraceResult:
     t = Trace(trace=False)
-    func_result: Any = t.runfunc(case)  # type: ignore
+    old_trace = sys.gettrace()
+    try:
+        func_result: Any = t.runfunc(case)  # type: ignore
+    finally:
+        # restore previous tracer
+        sys.settrace(old_trace)
 
     func = inspect.unwrap(case.func)
     file_name = func.__code__.co_filename
@@ -44,8 +44,6 @@ def trace(case: TestCase) -> TraceResult:
         func_result=func_result,
         covered_lines=covered_lines,
         all_lines=all_lines,
-        first_line=first_line,
-        last_line=last_line,
     )
 
 
