@@ -6,7 +6,7 @@ from importlib import import_module
 from pathlib import Path
 from textwrap import indent
 from traceback import format_exception
-from typing import Iterator, Sequence, TextIO
+from typing import Iterator, Sequence, Set, TextIO
 
 import pygments
 from pygments.formatters import TerminalFormatter
@@ -19,6 +19,7 @@ from ..linter._extractors.pre import format_call_args
 from ..linter._func import Func
 from ._common import get_paths
 from .._colors import COLORS
+from .._trace import trace
 
 
 @contextmanager
@@ -75,9 +76,11 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
     for func_name in names:
         print('  {blue}running {name}{end}'.format(name=func_name, **COLORS), file=stream)
         func = getattr(module, func_name)
+        covered_lines: Set[int] = set()
+        total_lines = 0
         for case in cases(func=func, count=count):
             try:
-                case()
+                result = trace(case)
             except Exception:
                 line = '    {yellow}{name}({args}){end}'.format(
                     name=func_name,
@@ -88,6 +91,21 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
                 print_exception(stream=stream)
                 failed += 1
                 break
+
+            covered_lines.update(result.covered_lines)
+            total_lines = max(total_lines, result.total_lines)
+
+        if total_lines:
+            # print('     ', covered_lines, '/', total_lines)
+            cov = round(len(covered_lines) * 100 / total_lines)
+            if cov >= 85:
+                color = COLORS['green']
+            elif cov >= 50:
+                color = COLORS['yellow']
+            else:
+                color = COLORS['red']
+            tmpl = '    coverage {color}{cov}%{end}'
+            print(tmpl.format(cov=cov, color=color, **COLORS), file=stream)
     return failed
 
 
