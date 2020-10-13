@@ -1,4 +1,4 @@
-from typing import Any, NamedTuple, Optional, Set, Tuple
+from typing import Any, Iterator, NamedTuple, Optional, Set, Tuple
 from trace import Trace
 import ast
 import inspect
@@ -10,7 +10,12 @@ class TraceResult(NamedTuple):
     file_name: str
     func_result: Any
     covered_lines: Set[int]
-    total_lines: int
+    first_line: int
+    last_line: int
+
+    @property
+    def total_lines(self) -> int:
+        return self.last_line - self.first_line + 1
 
     @property
     def coverage(self) -> float:
@@ -41,7 +46,8 @@ def trace(case: TestCase) -> TraceResult:
         file_name=file_name,
         func_result=func_result,
         covered_lines=covered_lines,
-        total_lines=last_line - first_line + 1,
+        first_line=first_line,
+        last_line=last_line,
     )
 
 
@@ -68,3 +74,34 @@ def _get_func_node(func_name: str, tree: ast.Module) -> Optional[ast.FunctionDef
             continue
         return node
     return None
+
+
+def format_lines(statements: Set[int], lines: Set[int]) -> str:
+    return ', '.join(_nice_pair(*pair) for pair in _line_ranges(statements, lines))
+
+
+def _nice_pair(start: int, end: int) -> str:
+    if start == end:
+        return str(start)
+    return '{}-{}'.format(start, end)
+
+
+def _line_ranges(statements: Set[int], lines: Set[int]) -> Iterator[Tuple[int, int]]:
+    statements = sorted(statements)
+    lines = sorted(lines)
+    start = 0
+    end = 0
+    lidx = 0
+    for stmt in statements:
+        if lidx >= len(lines):
+            break
+        if stmt == lines[lidx]:
+            lidx += 1
+            if not start:
+                start = stmt
+            end = stmt
+        elif start:
+            yield (start, end)
+            start = None
+    if start:
+        yield (start, end)

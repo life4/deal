@@ -19,7 +19,7 @@ from ..linter._extractors.pre import format_call_args
 from ..linter._func import Func
 from ._common import get_paths
 from .._colors import COLORS
-from .._trace import trace
+from .._trace import trace, format_lines
 
 
 @contextmanager
@@ -77,7 +77,8 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
         print('  {blue}running {name}{end}'.format(name=func_name, **COLORS), file=stream)
         func = getattr(module, func_name)
         covered_lines: Set[int] = set()
-        total_lines = 0
+        first_line = 0
+        last_line = 0
         for case in cases(func=func, count=count):
             try:
                 result = trace(case)
@@ -93,8 +94,12 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
                 break
 
             covered_lines.update(result.covered_lines)
-            total_lines = max(total_lines, result.total_lines)
+            if first_line == 0:
+                first_line = result.first_line
+            if last_line == 0:
+                last_line = result.last_line
 
+        total_lines = last_line - first_line + 1
         if total_lines:
             cov = round(len(covered_lines) * 100 / total_lines)
             if cov >= 85:
@@ -105,11 +110,11 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
                 color = COLORS['red']
             tmpl = '    coverage {color}{cov}%{end}'
             if cov != 0 and cov != 100 and len(covered_lines) < 20:
-                tmpl += ' ({lines} / {total})'
+                tmpl += ' ({{{lines}}} / {total})'
             line = tmpl.format(
                 cov=cov,
                 color=color,
-                lines=covered_lines,
+                lines=format_lines(statements=set(range(first_line, last_line + 1)), lines=covered_lines),
                 total=total_lines,
                 **COLORS,
             )
