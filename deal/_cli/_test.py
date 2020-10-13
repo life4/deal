@@ -96,7 +96,6 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
             total_lines = max(total_lines, result.total_lines)
 
         if total_lines:
-            # print('     ', covered_lines, '/', total_lines)
             cov = round(len(covered_lines) * 100 / total_lines)
             if cov >= 85:
                 color = COLORS['green']
@@ -105,7 +104,16 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
             else:
                 color = COLORS['red']
             tmpl = '    coverage {color}{cov}%{end}'
-            print(tmpl.format(cov=cov, color=color, **COLORS), file=stream)
+            if cov != 0 and cov != 100 and len(covered_lines) < 20:
+                tmpl += ' ({lines} / {total})'
+            line = tmpl.format(
+                cov=cov,
+                color=color,
+                lines=covered_lines,
+                total=total_lines,
+                **COLORS,
+            )
+            print(line, file=stream)
     return failed
 
 
