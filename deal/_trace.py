@@ -18,16 +18,10 @@ class TraceResult(NamedTuple):
     def total_lines(self) -> int:
         return self.last_line - self.first_line + 1
 
-    @property
-    def coverage(self) -> float:
-        if not self.total_lines:
-            return 0
-        return self.covered_lines / self.total_lines
-
 
 def trace(case: TestCase) -> TraceResult:
     t = Trace(trace=False)
-    func_result = t.runfunc(case)
+    func_result: Any = t.runfunc(case)  # type: ignore
 
     func = inspect.unwrap(case.func)
     file_name = func.__code__.co_filename
@@ -36,7 +30,7 @@ def trace(case: TestCase) -> TraceResult:
     last_line = max(all_lines)
 
     covered_lines: Set[int] = set()
-    for (fname, lineno), _hits in t.counts.items():
+    for (fname, lineno), _hits in t.counts.items():  # type: ignore
         if fname != file_name:
             continue
         if lineno < first_line:
@@ -68,8 +62,8 @@ def _get_func_body_statements(func) -> Set[int]:
         return {first_line}
 
     result: Set[int] = set()
-    for node in func_node.body:
-        for node in ast.walk(node):
+    for statement in func_node.body:
+        for node in ast.walk(statement):
             # skip nodes without lineno
             if not isinstance(node, ast.stmt):
                 continue
@@ -116,6 +110,6 @@ def _line_ranges(statements: Set[int], lines: Set[int]) -> Iterator[Tuple[int, i
             end = stmt
         elif start:
             yield (start, end)
-            start = None
+            start = 0
     if start:
         yield (start, end)
