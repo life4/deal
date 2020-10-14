@@ -136,6 +136,16 @@ change_role('superuser')
 
 However, thumb-up rule is to avoid catching exceptions from contracts. Contracts aren't part of business logic but it's validation. Hence contract error means business logic violation and execution should be stopped to avoid doing something not predicted and even dangerous.
 
+## Colors
+
+If no error message or custom exception specified for a contract, deal will show contract source code and passed parameters as the exception message. By default, deal highlights syntax for this source code. If your terminal doesn't support colors (which is possible on CI), you can specify `NO_COLOR` environment variable to disable syntax highlighting:
+
+```bash
+export NO_COLOR=1
+```
+
+See [no-color.org](https://no-color.org/) for more details.
+
 ## Chaining contracts
 
 You can chain any contracts:
