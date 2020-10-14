@@ -8,9 +8,11 @@ from textwrap import dedent
 import pytest
 
 # project
+import deal
+from deal._trace import TraceResult
 from deal._cli._test import (
     has_pure_contract, sys_path, test_command as command,
-    fast_iterator
+    fast_iterator, format_exception, format_coverage
 )
 from deal.linter._func import Func
 
@@ -125,3 +127,32 @@ def test_has_pure_contract(source: str, has: bool) -> None:
 def test_fast_iterator():
     seq = [1, 2, 3, 4]
     assert list(fast_iterator(iter(seq))) == seq
+
+
+def test_print_exception():
+    try:
+        raise deal.PreContractError
+    except deal.PreContractError:
+        text = format_exception()
+    assert text.startswith('    Traceback (most recent call last):\n')
+    assert 'test_test.py' in text
+    assert 'PreContractError' in text
+    assert text.endswith('\x1b[39;49;00m')
+
+
+@pytest.mark.parametrize('cov_l, all_l, exp', [
+    ({2, 3, 4}, {2, 3, 4}, '    coverage <G>100%<E>'),
+    ({2, 4}, {2, 3, 4}, '    coverage <Y>67%<E> (missing 3)'),
+    ({2, 5}, {2, 3, 4, 5}, '    coverage <Y>50%<E> (missing 3-4)'),
+    (set(), {2, 3, 4, 5}, '    coverage <R>0%<E>'),
+])
+def test_format_coverage_100(cov_l, all_l, exp):
+    fake_colors = dict(
+        red='<R>',
+        yellow='<Y>',
+        green='<G>',
+        end='<E>',
+    )
+    tr = TraceResult(0, 0, covered_lines=cov_l, all_lines=all_l)
+    text = format_coverage(tr, colors=fake_colors)
+    assert text == exp

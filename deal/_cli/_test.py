@@ -1,13 +1,13 @@
 # built-in
-from functools import update_wrapper
 import sys
+import traceback
 from argparse import ArgumentParser
 from contextlib import contextmanager
+from functools import update_wrapper
 from importlib import import_module
 from pathlib import Path
 from textwrap import indent
-from traceback import format_exception
-from typing import Iterable, Iterator, Sequence, TextIO, TypeVar
+from typing import Dict, Iterator, Sequence, TextIO, TypeVar
 
 import pygments
 from pygments.formatters import TerminalFormatter
@@ -61,11 +61,11 @@ def color_exception(text: str) -> str:
     )
 
 
-def print_exception(stream: TextIO) -> None:
-    lines = format_exception(*sys.exc_info())
+def format_exception() -> str:
+    lines = traceback.format_exception(*sys.exc_info())
     text = color_exception(''.join(lines))
-    text = indent(text=text, prefix='    ').rstrip()
-    print(text, file=stream)
+    text = indent(text=text, prefix='    ')
+    return text.rstrip()
 
 
 def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -> int:
@@ -88,8 +88,9 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
             count=count,
             stream=stream,
         )
-        if tresult.func_result:
-            show_coverage(tresult=tresult, stream=stream)
+        if tresult.func_result and tresult.all_lines:
+            text = format_coverage(tresult=tresult, colors=COLORS)
+            print(text, file=stream)
         else:
             failed += 1
     return failed
@@ -125,21 +126,19 @@ def run_cases(cases: Iterator[TestCase], func_name: str, count: int, stream: Tex
                 **COLORS,
             )
             print(line, file=stream)
-            print_exception(stream=stream)
+            print(format_exception(), file=stream)
             return False
     return True
 
 
-def show_coverage(tresult: TraceResult, stream: TextIO):
-    if not tresult.all_lines:
-        return
-    cov = round(len(tresult.covered_lines) * 100 / len(tresult.all_lines))
+def format_coverage(tresult: TraceResult, colors: Dict[str, str]) -> str:
+    cov = tresult.coverage
     if cov >= 85:
-        color = COLORS['green']
+        color = colors['green']
     elif cov >= 50:
-        color = COLORS['yellow']
+        color = colors['yellow']
     else:
-        color = COLORS['red']
+        color = colors['red']
     tmpl = '    coverage {color}{cov}%{end}'
     missing = format_lines(
         statements=tresult.all_lines,
@@ -151,9 +150,9 @@ def show_coverage(tresult: TraceResult, stream: TextIO):
         cov=cov,
         color=color,
         missing=missing,
-        **COLORS,
+        **colors,
     )
-    print(line, file=stream)
+    return line
 
 
 def test_command(

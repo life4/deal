@@ -11,6 +11,10 @@ class TraceResult(NamedTuple):
     covered_lines: Set[int]
     all_lines: Set[int]
 
+    @property
+    def coverage(self) -> int:
+        return round(len(self.covered_lines) * 100 / len(self.all_lines))
+
 
 class Only:
     def __init__(self, file_name: str):
