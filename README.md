@@ -13,12 +13,14 @@
 * [Tracking exceptions and side-effects.][exceptions]
 * [Property-based testing.][tests]
 * [Static checker.][linter]
-* Integration with pytest and flake8.
+* Integration with pytest, flake8, and hypothesis.
 * Type annotations support.
 * [External validators support.][validators]
 * [Contracts for importing modules.][module_load]
 * [Can be enabled or disabled on production.][runtime]
 * [Colorless](colorless): annotate only what you want. Hence, easy integration into an existing project.
+* Colorful: syntax highlighting for every piece of code in every command.
+* DRY: test discovery, error messages generation.
 * Partial execution: linter executes contracts to statically check possible values.
 
 [values]: https://deal.readthedocs.io/basic/values.html
