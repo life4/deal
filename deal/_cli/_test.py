@@ -1,4 +1,5 @@
 # built-in
+from functools import update_wrapper
 import sys
 from argparse import ArgumentParser
 from contextlib import contextmanager
@@ -6,20 +7,20 @@ from importlib import import_module
 from pathlib import Path
 from textwrap import indent
 from traceback import format_exception
-from typing import Callable, Iterator, Sequence, Set, TextIO
+from typing import Iterable, Iterator, Sequence, TextIO
 
 import pygments
 from pygments.formatters import TerminalFormatter
 from pygments.lexers import PythonTracebackLexer
 
 # app
-from .._testing import cases
+from .._testing import cases, TestCase
 from ..linter._contract import Category
 from ..linter._extractors.pre import format_call_args
 from ..linter._func import Func
 from ._common import get_paths
 from .._colors import COLORS
-from .._trace import trace, format_lines
+from .._trace import trace, format_lines, TraceResult
 
 
 @contextmanager
@@ -74,20 +75,28 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
         module = import_module(module_name)
     failed = 0
     for func_name in names:
-        print('  {blue}running {name}{end}'.format(name=func_name, **COLORS), file=stream)
         func = getattr(module, func_name)
-        ok = run_cases(func=func, func_name=func_name, count=count, stream=stream)
-        if not ok:
+        # set `__wrapped__` attr so `trace` can find the original function.
+        runner = update_wrapper(wrapper=run_cases, wrapped=func)
+        tresult = trace(
+            func=runner,
+            cases=cases(func=func, count=count),
+            func_name=func_name,
+            count=count,
+            stream=stream,
+        )
+        if tresult.func_result:
+            show_coverage(tresult=tresult, stream=stream)
+        else:
             failed += 1
     return failed
 
 
-def run_cases(func: Callable, func_name: str, count: int, stream: TextIO) -> bool:
-    covered_lines: Set[int] = set()
-    all_lines: Set[int] = set()
-    for case in cases(func=func, count=count):
+def run_cases(cases: Iterable[TestCase], func_name: str, count: int, stream: TextIO) -> bool:
+    print('  {blue}running {name}{end}'.format(name=func_name, **COLORS), file=stream)
+    for case in cases:
         try:
-            result = trace(case)
+            case()
         except Exception:
             line = '    {yellow}{name}({args}){end}'.format(
                 name=func_name,
@@ -97,34 +106,33 @@ def run_cases(func: Callable, func_name: str, count: int, stream: TextIO) -> boo
             print(line, file=stream)
             print_exception(stream=stream)
             return False
-
-        covered_lines.update(result.covered_lines)
-        all_lines.update(result.all_lines)
-
-    total_lines = len(all_lines)
-    if total_lines:
-        cov = round(len(covered_lines) * 100 / total_lines)
-        if cov >= 85:
-            color = COLORS['green']
-        elif cov >= 50:
-            color = COLORS['yellow']
-        else:
-            color = COLORS['red']
-        tmpl = '    coverage {color}{cov}%{end}'
-        missing = format_lines(
-            statements=all_lines,
-            lines=all_lines - covered_lines,
-        )
-        if cov != 0 and cov != 100 and len(missing) <= 60:
-            tmpl += ' (missing {missing})'
-        line = tmpl.format(
-            cov=cov,
-            color=color,
-            missing=missing,
-            **COLORS,
-        )
-        print(line, file=stream)
     return True
+
+
+def show_coverage(tresult: TraceResult, stream: TextIO):
+    if not tresult.all_lines:
+        return
+    cov = round(len(tresult.covered_lines) * 100 / len(tresult.all_lines))
+    if cov >= 85:
+        color = COLORS['green']
+    elif cov >= 50:
+        color = COLORS['yellow']
+    else:
+        color = COLORS['red']
+    tmpl = '    coverage {color}{cov}%{end}'
+    missing = format_lines(
+        statements=tresult.all_lines,
+        lines=tresult.all_lines - tresult.covered_lines,
+    )
+    if cov != 0 and cov != 100 and len(missing) <= 60:
+        tmpl += ' (missing {missing})'
+    line = tmpl.format(
+        cov=cov,
+        color=color,
+        missing=missing,
+        **COLORS,
+    )
+    print(line, file=stream)
 
 
 def test_command(

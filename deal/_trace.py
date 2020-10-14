@@ -4,8 +4,6 @@ import ast
 import sys
 import inspect
 
-from ._testing import TestCase
-
 
 class TraceResult(NamedTuple):
     file_name: str
@@ -14,18 +12,32 @@ class TraceResult(NamedTuple):
     all_lines: Set[int]
 
 
-def trace(case: TestCase) -> TraceResult:
+class Only:
+    def __init__(self, file_name: str):
+        self.file_name = file_name
+
+    def names(self, filename: str, modulename: str) -> int:
+        return int(filename != self.file_name)
+
+
+def trace(func, **kwargs) -> TraceResult:
+    # find the file where the original function is defined
+    original_func = inspect.unwrap(func)
+    file_name = original_func.__code__.co_filename
+
     t = Trace(trace=False)
+    # Ignore everything except the file where the function is defined.
+    # It makes the tracing much faster.
+    t.ignore = Only(file_name)
+
     old_trace = sys.gettrace()
     try:
-        func_result: Any = t.runfunc(case)  # type: ignore
+        func_result: Any = t.runfunc(func, **kwargs)  # type: ignore
     finally:
         # restore previous tracer
         sys.settrace(old_trace)  # pragma: no cover
 
-    func = inspect.unwrap(case.func)
-    file_name = func.__code__.co_filename
-    all_lines = _get_func_body_statements(func=func)
+    all_lines = _get_func_body_statements(func=original_func)
     first_line = min(all_lines)
     last_line = max(all_lines)
 
