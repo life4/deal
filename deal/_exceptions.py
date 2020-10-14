@@ -145,3 +145,10 @@ class OfflineContractError(MarkerError):
 
 class SilentContractError(MarkerError):
     pass
+
+
+# Patch module name to show in repr `deal` instead of `deal._exceptions`
+for cls in ContractError.__subclasses__():
+    cls.__module__ = 'deal'
+for cls in MarkerError.__subclasses__():
+    cls.__module__ = 'deal'

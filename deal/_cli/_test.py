@@ -1,4 +1,5 @@
 # built-in
+import re
 import sys
 from argparse import ArgumentParser
 from contextlib import contextmanager
@@ -19,6 +20,8 @@ from ..linter._extractors.pre import format_call_args
 from ..linter._func import Func
 from ._common import get_paths
 from .._colors import COLORS
+
+rex_exception = re.compile(r'deal\.(\w*ContractError)')
 
 
 @contextmanager
@@ -48,7 +51,7 @@ def get_func_names(path: Path) -> Iterator[str]:
 
 
 def color_exception(text: str) -> str:
-    text = text.replace('deal._exceptions.', '')
+    text = rex_exception.sub(r'\1', text)
     return pygments.highlight(
         code=text,
         lexer=PythonTracebackLexer(),

@@ -1,5 +1,6 @@
 # built-in
 import doctest
+import re
 
 # external
 import pytest
@@ -9,12 +10,15 @@ import deal._aliases
 from deal._state import state
 
 
+rex = re.compile(r'deal\.(\w*ContractError)')
+
+
 class Checker(doctest.OutputChecker):
     def __init__(self):
         self.diff = []
 
     def check_output(self, want: str, got: str, optionflags: int) -> bool:
-        got = got.replace('deal._exceptions.', '')
+        got = rex.sub(r'\1', got)
         ok = super().check_output(want=want, got=got, optionflags=optionflags)
         if not ok:
             self.diff.append((got, want))
