@@ -3,16 +3,6 @@ import pytest
 from deal._trace import trace, format_lines
 
 
-def make_case(func) -> deal.TestCase:
-    return deal.TestCase(
-        args=(),
-        kwargs={},
-        func=func,
-        exceptions=(),
-        check_types=False,
-    )
-
-
 def just_return():
     return 123
 
@@ -23,17 +13,30 @@ def cond_return(cond=False):
     return 456
 
 
+@deal.safe
+@deal.has()
+def cond_return_dec(cond=False):
+    if cond:
+        return 123
+    return 456
+
+
 def test_trace_100():
-    case = make_case(just_return)
-    result = trace(case)
+    result = trace(just_return)
     assert len(result.covered_lines) == 1
     assert len(result.all_lines) == 1
     assert result.func_result == 123
 
 
 def test_trace_33():
-    case = make_case(cond_return)
-    result = trace(case)
+    result = trace(cond_return)
+    assert len(result.covered_lines) == 2
+    assert len(result.all_lines) == 3
+    assert result.func_result == 456
+
+
+def test_trace_33_dec():
+    result = trace(cond_return_dec)
     assert len(result.covered_lines) == 2
     assert len(result.all_lines) == 3
     assert result.func_result == 456

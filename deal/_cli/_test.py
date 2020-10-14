@@ -113,7 +113,7 @@ def fast_iterator(iterator: Iterator[T]) -> Iterator[T]:
         yield case
 
 
-def run_cases(cases: Iterable[TestCase], func_name: str, count: int, stream: TextIO) -> bool:
+def run_cases(cases: Iterator[TestCase], func_name: str, count: int, stream: TextIO) -> bool:
     print('  {blue}running {name}{end}'.format(name=func_name, **COLORS), file=stream)
     for case in cases:
         try:

@@ -8,7 +8,10 @@ from textwrap import dedent
 import pytest
 
 # project
-from deal._cli._test import has_pure_contract, sys_path, test_command as command
+from deal._cli._test import (
+    has_pure_contract, sys_path, test_command as command,
+    fast_iterator
+)
 from deal.linter._func import Func
 
 
@@ -117,3 +120,8 @@ def test_has_pure_contract(source: str, has: bool) -> None:
     funcs = Func.from_text(source)
     assert len(funcs) == 1
     assert has_pure_contract(funcs[0]) is has
+
+
+def test_fast_iterator():
+    seq = [1, 2, 3, 4]
+    assert list(fast_iterator(iter(seq))) == seq

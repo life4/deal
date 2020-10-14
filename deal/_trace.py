@@ -35,9 +35,18 @@ def trace(func, **kwargs) -> TraceResult:
         func_result: Any = t.runfunc(func, **kwargs)  # type: ignore
     finally:
         # restore previous tracer
-        sys.settrace(old_trace)  # pragma: no cover
+        sys.settrace(old_trace)     # pragma: no cover
+    return _collect_trace_results(  # pragma: no cover
+        t=t,
+        func=original_func,
+        file_name=file_name,
+        func_result=func_result,
+    )
 
-    all_lines = _get_func_body_statements(func=original_func)
+
+# this is a separate function to restore coverage for it after playing with trace hooks.
+def _collect_trace_results(t: Trace, func, file_name: str, func_result) -> TraceResult:
+    all_lines = _get_func_body_statements(func=func)
     first_line = min(all_lines)
     last_line = max(all_lines)
 
