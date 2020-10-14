@@ -58,6 +58,34 @@ Deal already know about some markers and will report if they are violated:
 +---------+--------------+----------------------------------+
 ```
 
+## Exceptions
+
+What you should know:
+
++ For every marker deal raises its own exception.
++ Every such exception is inherited from `MarkerError`.
++ `MarkerError` inherited from `ContractError`.
++ `ContractError` inherited from built-in `AssertionError`.
+
+```eval_rst
++----------+----------------------+
+| marker   | exception            |
++==========+======================+
+| network  | OfflineContractError |
++----------+----------------------+
+| stdout   | SilentContractError  |
++----------+----------------------+
+| stderr   | SilentContractError  |
++----------+----------------------+
+```
+
+Quick Q&A session:
+
++ **Question:** When should I worry about exception type raised by a contract?
+  + **Answer:** Never.
++ **Question:** Where are other markers? What are their exceptions?
+  + **Answer:** Other markers aren't checked in runtime yet. Don't worry, you still have [linter](./linter.md).
+
 ## Markers are properties
 
 Markers and exceptions are properties of a function and don't depend on conditions. That means, if a function only sometimes in some conditions does io operation, the function has `io` marker regardless of possibility of hitting this condition branch. For example:

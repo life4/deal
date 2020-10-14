@@ -196,7 +196,9 @@ def test_exception_hook(capsys):
     exception_hook(exc_info.type, exc_info.value, exc_info.tb)
     captured = capsys.readouterr()
     assert captured.out == ''
-    assert pre_path not in captured.err
+    # the hook doesn't work on python 3.6 and below
+    if sys.version_info[:2] >= (3, 7):
+        assert pre_path not in captured.err
 
 
 def test_exception_hook_ignores_non_contract_exceptions(capsys):
@@ -229,7 +231,7 @@ def test_custom_exc():
 
     with pytest.raises(ZeroDivisionError) as exc_info:
         f(-2)
-    assert repr(exc_info.value) == 'ZeroDivisionError()'
+    assert exc_info.value.args == ()
 
 
 def test_custom_exc_with_message():
@@ -239,7 +241,7 @@ def test_custom_exc_with_message():
 
     with pytest.raises(ZeroDivisionError) as exc_info:
         f(-2)
-    assert repr(exc_info.value) == "ZeroDivisionError('oh hi mark')"
+    assert exc_info.value.args == ('oh hi mark',)
 
 
 def test_custom_exc_and_message():
@@ -249,7 +251,7 @@ def test_custom_exc_and_message():
 
     with pytest.raises(ZeroDivisionError) as exc_info:
         f(-2)
-    assert repr(exc_info.value) == "ZeroDivisionError('oh hi mark')"
+    assert exc_info.value.args == ('oh hi mark',)
 
 
 def test_custom_exc_and_returned_message():
@@ -259,7 +261,7 @@ def test_custom_exc_and_returned_message():
 
     with pytest.raises(ZeroDivisionError) as exc_info:
         f(-2)
-    assert repr(exc_info.value) == "ZeroDivisionError('oh hi mark')"
+    assert exc_info.value.args == ('oh hi mark',)
 
 
 def test_vaa_scheme_and_custom_exception():

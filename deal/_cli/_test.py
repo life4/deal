@@ -1,4 +1,5 @@
 # built-in
+import re
 import sys
 import traceback
 from argparse import ArgumentParser
@@ -24,6 +25,8 @@ from .._trace import trace, format_lines, TraceResult
 
 
 T = TypeVar('T')
+
+rex_exception = re.compile(r'deal\.(\w*ContractError)')
 
 
 @contextmanager
@@ -53,7 +56,7 @@ def get_func_names(path: Path) -> Iterator[str]:
 
 
 def color_exception(text: str) -> str:
-    text = text.replace('deal._exceptions.', '')
+    text = rex_exception.sub(r'\1', text)
     return pygments.highlight(
         code=text,
         lexer=PythonTracebackLexer(),
