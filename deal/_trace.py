@@ -30,7 +30,7 @@ def trace(case: TestCase) -> TraceResult:
     last_line = max(all_lines)
 
     covered_lines: Set[int] = set()
-    for (fname, lineno), _hits in t.counts.items():  # type: ignore
+    for fname, lineno in t.counts:  # type: ignore
         if fname != file_name:
             continue
         if lineno < first_line:

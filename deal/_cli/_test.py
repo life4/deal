@@ -6,7 +6,7 @@ from importlib import import_module
 from pathlib import Path
 from textwrap import indent
 from traceback import format_exception
-from typing import Iterator, Sequence, Set, TextIO
+from typing import Callable, Iterator, Sequence, Set, TextIO
 
 import pygments
 from pygments.formatters import TerminalFormatter
@@ -76,49 +76,55 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
     for func_name in names:
         print('  {blue}running {name}{end}'.format(name=func_name, **COLORS), file=stream)
         func = getattr(module, func_name)
-        covered_lines: Set[int] = set()
-        all_lines: Set[int] = set()
-        for case in cases(func=func, count=count):
-            try:
-                result = trace(case)
-            except Exception:
-                line = '    {yellow}{name}({args}){end}'.format(
-                    name=func_name,
-                    args=format_call_args(args=case.args, kwargs=case.kwargs),
-                    **COLORS,
-                )
-                print(line, file=stream)
-                print_exception(stream=stream)
-                failed += 1
-                break
+        ok = run_cases(func=func, func_name=func_name, count=count, stream=stream)
+        if not ok:
+            failed += 1
+    return failed
 
-            covered_lines.update(result.covered_lines)
-            all_lines.update(result.all_lines)
 
-        total_lines = len(all_lines)
-        if total_lines:
-            cov = round(len(covered_lines) * 100 / total_lines)
-            if cov >= 85:
-                color = COLORS['green']
-            elif cov >= 50:
-                color = COLORS['yellow']
-            else:
-                color = COLORS['red']
-            tmpl = '    coverage {color}{cov}%{end}'
-            missing = format_lines(
-                statements=all_lines,
-                lines=all_lines - covered_lines,
-            )
-            if cov != 0 and cov != 100 and len(missing) <= 60:
-                tmpl += ' (missing {missing})'
-            line = tmpl.format(
-                cov=cov,
-                color=color,
-                missing=missing,
+def run_cases(func: Callable, func_name: str, count: int, stream: TextIO) -> bool:
+    covered_lines: Set[int] = set()
+    all_lines: Set[int] = set()
+    for case in cases(func=func, count=count):
+        try:
+            result = trace(case)
+        except Exception:
+            line = '    {yellow}{name}({args}){end}'.format(
+                name=func_name,
+                args=format_call_args(args=case.args, kwargs=case.kwargs),
                 **COLORS,
             )
             print(line, file=stream)
-    return failed
+            print_exception(stream=stream)
+            return False
+
+        covered_lines.update(result.covered_lines)
+        all_lines.update(result.all_lines)
+
+    total_lines = len(all_lines)
+    if total_lines:
+        cov = round(len(covered_lines) * 100 / total_lines)
+        if cov >= 85:
+            color = COLORS['green']
+        elif cov >= 50:
+            color = COLORS['yellow']
+        else:
+            color = COLORS['red']
+        tmpl = '    coverage {color}{cov}%{end}'
+        missing = format_lines(
+            statements=all_lines,
+            lines=all_lines - covered_lines,
+        )
+        if cov != 0 and cov != 100 and len(missing) <= 60:
+            tmpl += ' (missing {missing})'
+        line = tmpl.format(
+            cov=cov,
+            color=color,
+            missing=missing,
+            **COLORS,
+        )
+        print(line, file=stream)
+    return True
 
 
 def test_command(
