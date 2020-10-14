@@ -56,8 +56,7 @@ def _collect_trace_results(t: Trace, func, file_name: str, func_result) -> Trace
 
     covered_lines: Set[int] = set()
     for fname, lineno in t.counts:  # type: ignore
-        if fname != file_name:
-            continue
+        assert fname == file_name
         if lineno < first_line:
             continue
         if lineno > last_line:

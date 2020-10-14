@@ -77,7 +77,7 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
     with sys_path(path=root):
         module = import_module(module_name)
     failed = 0
-    for func_name in names:
+    for func_name in names:  # pragma: no cover
         func = getattr(module, func_name)
         # set `__wrapped__` attr so `trace` can find the original function.
         runner = update_wrapper(wrapper=run_cases, wrapped=func)
@@ -85,15 +85,15 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
             func=runner,
             cases=fast_iterator(cases(func=func, count=count)),
             func_name=func_name,
-            count=count,
             stream=stream,
+            colors=COLORS,
         )
         if tresult.func_result and tresult.all_lines:
             text = format_coverage(tresult=tresult, colors=COLORS)
             print(text, file=stream)
         else:
             failed += 1
-    return failed
+    return failed   # pragma: no cover
 
 
 def fast_iterator(iterator: Iterator[T]) -> Iterator[T]:
@@ -103,7 +103,7 @@ def fast_iterator(iterator: Iterator[T]) -> Iterator[T]:
     Without it, testing is about 3 times slower.
     """
     default_trace = sys.gettrace()
-    while True:
+    while True:  # pragma: no cover
         sys.settrace(None)
         try:
             case = next(iterator)
@@ -114,8 +114,13 @@ def fast_iterator(iterator: Iterator[T]) -> Iterator[T]:
         yield case
 
 
-def run_cases(cases: Iterator[TestCase], func_name: str, count: int, stream: TextIO) -> bool:
-    print('  {blue}running {name}{end}'.format(name=func_name, **COLORS), file=stream)
+def run_cases(
+    cases: Iterator[TestCase],
+    func_name: str,
+    stream: TextIO,
+    colors: Dict[str, str],
+) -> bool:
+    print('  {blue}running {name}{end}'.format(name=func_name, **colors), file=stream)
     for case in cases:
         try:
             case()
@@ -123,7 +128,7 @@ def run_cases(cases: Iterator[TestCase], func_name: str, count: int, stream: Tex
             line = '    {yellow}{name}({args}){end}'.format(
                 name=func_name,
                 args=format_call_args(args=case.args, kwargs=case.kwargs),
-                **COLORS,
+                **colors,
             )
             print(line, file=stream)
             print(format_exception(), file=stream)

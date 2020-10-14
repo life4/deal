@@ -1,6 +1,6 @@
 import deal
 import pytest
-from deal._trace import trace, format_lines
+from deal._trace import trace, format_lines, _get_func_body_statements, Only
 
 
 def just_return():
@@ -19,6 +19,15 @@ def cond_return_dec(cond=False):
     if cond:
         return 123
     return 456
+
+
+def call_another():
+    cond = something_else()
+    return cond_return(cond=cond)
+
+
+def something_else():
+    return False
 
 
 def test_trace_100():
@@ -42,6 +51,13 @@ def test_trace_33_dec():
     assert result.func_result == 456
 
 
+def test_trace_100_exclude_everythong_else():
+    result = trace(call_another)
+    assert len(result.covered_lines) == 2
+    assert len(result.all_lines) == 2
+    assert result.func_result == 456
+
+
 @pytest.mark.parametrize('statements, lines, result', [
     ({1, 2, 3, 4, 5, 10, 11, 12, 13, 14}, {1, 2, 5, 10, 11, 13, 14}, '1-2, 5-11, 13-14'),
     ({1, 2, 3, 4, 5, 10, 11, 12, 13, 14, 98, 99}, {1, 2, 5, 10, 11, 13, 14, 99}, '1-2, 5-11, 13-14, 99'),
@@ -53,3 +69,31 @@ def test_trace_33_dec():
 ])
 def test_format_lines(statements, lines, result):
     assert format_lines(statements, lines) == result
+
+
+def big_test_func(cond):
+    """docstring
+    """
+    if cond:
+        return dict(
+            a=1,
+            b=2,
+            c=3,
+        )
+    return 42
+
+
+def test_get_func_body_statements():
+    stmts = _get_func_body_statements(big_test_func)
+    assert len(stmts) == 3
+
+
+def test_get_func_body_statements_no_func():
+    stmts = _get_func_body_statements(lambda x: x)
+    assert len(stmts) == 1
+
+
+def test_only():
+    only = Only('excl.py')
+    assert only.names('excl.py', 'anything') == 0
+    assert only.names('something_else.py', 'anything') == 1
