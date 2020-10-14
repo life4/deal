@@ -7,7 +7,7 @@ from importlib import import_module
 from pathlib import Path
 from textwrap import indent
 from traceback import format_exception
-from typing import Iterable, Iterator, Sequence, TextIO
+from typing import Iterable, Iterator, Sequence, TextIO, TypeVar
 
 import pygments
 from pygments.formatters import TerminalFormatter
@@ -21,6 +21,9 @@ from ..linter._func import Func
 from ._common import get_paths
 from .._colors import COLORS
 from .._trace import trace, format_lines, TraceResult
+
+
+T = TypeVar('T')
 
 
 @contextmanager
@@ -80,7 +83,7 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
         runner = update_wrapper(wrapper=run_cases, wrapped=func)
         tresult = trace(
             func=runner,
-            cases=cases(func=func, count=count),
+            cases=fast_iterator(cases(func=func, count=count)),
             func_name=func_name,
             count=count,
             stream=stream,
@@ -90,6 +93,24 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
         else:
             failed += 1
     return failed
+
+
+def fast_iterator(iterator: Iterator[T]) -> Iterator[T]:
+    """
+    Iterate over `iterator` disabling tracer on every iteration step.
+    This is a trick to avoid using our coverage tracer when calling hypothesis machinery.
+    Without it, testing is about 3 times slower.
+    """
+    default_trace = sys.gettrace()
+    while True:
+        sys.settrace(None)
+        try:
+            case = next(iterator)
+        except StopIteration:
+            return
+        finally:
+            sys.settrace(default_trace)
+        yield case
 
 
 def run_cases(cases: Iterable[TestCase], func_name: str, count: int, stream: TextIO) -> bool:
