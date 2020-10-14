@@ -196,7 +196,9 @@ def test_exception_hook(capsys):
     exception_hook(exc_info.type, exc_info.value, exc_info.tb)
     captured = capsys.readouterr()
     assert captured.out == ''
-    assert pre_path not in captured.err
+    # the hook doesn't work on python 3.6 and below
+    if sys.version_info[:2] >= (3, 7):
+        assert pre_path not in captured.err
 
 
 def test_exception_hook_ignores_non_contract_exceptions(capsys):
