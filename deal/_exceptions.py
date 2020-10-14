@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+from contextlib import suppress
 from typing import Any, Dict, Optional, Type
 
 import pygments
@@ -25,7 +26,8 @@ def exception_hook(etype: Type[BaseException], value: BaseException, tb):
     while patched_tb:
         path: str = patched_tb.tb_frame.f_code.co_filename
         if path.startswith(root):
-            prev_tb.tb_next = None
+            with suppress(AttributeError):  # read-only attribute in <3.7
+                prev_tb.tb_next = None
             break
         prev_tb = patched_tb
         patched_tb = patched_tb.tb_next
