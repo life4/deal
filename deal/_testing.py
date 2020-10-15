@@ -67,10 +67,10 @@ class TestCase(typing.NamedTuple):
         )
 
 
-def get_excs(func: typing.Callable) -> typing.Iterator[typing.Type[Exception]]:
+def get_excs(func: typing.Any) -> typing.Iterator[typing.Type[Exception]]:
     while True:
         if getattr(func, '__closure__', None):
-            for cell in func.__closure__:       # type: ignore
+            for cell in func.__closure__:
                 obj = cell.cell_contents
                 if isinstance(obj, Raises):
                     yield from obj.exceptions
@@ -80,9 +80,27 @@ def get_excs(func: typing.Callable) -> typing.Iterator[typing.Type[Exception]]:
                     else:
                         yield obj.exception
 
-        if not hasattr(func, '__wrapped__'):    # type: ignore
+        if not hasattr(func, '__wrapped__'):
             return
-        func = func.__wrapped__                 # type: ignore
+        func = func.__wrapped__
+
+
+def get_validators(func: typing.Any) -> typing.Iterator[typing.Callable]:
+    """Returns pre-condition validators.
+
+    It is used in the process of generating hypothesis strategies
+    To let hypothesis more effectively avoid wrong input values.
+    """
+    while True:
+        if getattr(func, '__closure__', None):
+            for cell in func.__closure__:
+                obj = cell.cell_contents
+                if isinstance(obj, Pre):
+                    yield obj.validate
+
+        if not hasattr(func, '__wrapped__'):
+            return
+        func = func.__wrapped__
 
 
 def get_examples(
@@ -102,6 +120,7 @@ def get_examples(
     pass_along_variables.__signature__ = signature(func)    # type: ignore
     pass_along_variables.__annotations__ = getattr(func, '__annotations__', {})
     strategy = hypothesis.strategies.builds(pass_along_variables, **kwargs)
+    validators = list(get_validators(func))
     examples = []
 
     @hypothesis.given(strategy)
@@ -114,6 +133,11 @@ def get_examples(
         suppress_health_check=hypothesis.HealthCheck.all(),
     )
     def example_generator(ex: ArgsKwargsType) -> None:
+        for validator in validators:
+            try:
+                validator(*ex[0], **ex[1])
+            except Exception:
+                hypothesis.reject()
         examples.append(ex)
 
     example_generator()  # pylint: disable=no-value-for-parameter
