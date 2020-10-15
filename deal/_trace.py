@@ -32,7 +32,7 @@ def trace(func, **kwargs) -> TraceResult:
     t = Trace(trace=False)
     # Ignore everything except the file where the function is defined.
     # It makes the tracing much faster.
-    t.ignore = Only(file_name)
+    t.ignore = Only(file_name)  # type: ignore
 
     old_trace = sys.gettrace()
     try:
