@@ -3,7 +3,7 @@ import inspect
 from asyncio import iscoroutinefunction
 from contextlib import suppress
 from functools import update_wrapper
-from typing import Callable, Generic, TypeVar
+from typing import Any, Callable, Dict, Generic, NoReturn, TypeVar
 
 # external
 import vaa
@@ -59,22 +59,68 @@ class Base(Generic[_CallableType]):
         else:
             self._simple_validation(*args, **kwargs)
 
-    def _vaa_validation(self, *args, **kwargs) -> None:
+    def _raise(self, *, message: str = None, errors=None, params=None) -> NoReturn:
+        exception = self.exception
+        if isinstance(exception, Exception):
+            if not message and exception.args:
+                message = exception.args[0]
+            exception = type(exception)
+
+        # if errors provided, use it as error message
+        if errors and isinstance(errors, str):
+            message = errors
+            errors = None
+
+        # raise beautiful ContractError
+        if issubclass(exception, ContractError):
+            raise exception(
+                message=message or '',
+                validator=self.validator,
+                errors=errors,
+                params=params,
+            )
+
+        # raise boring custom exception
+        args = []
+        if message:
+            args.append(message)
+        if errors:
+            args.append(errors)
+        raise exception(*args)
+
+    def _args_to_vars(self, *, args, kwargs: Dict[str, Any], function=None) -> Dict[str, Any]:
+        """Convert args and kwargs into dict of params based on the given function.
+
+        Function is not passed for `vaa` validators.
+        For simple validators the validator is passed as function.
+        If no function passed, wrapped function will be used.
+        """
+        keep_result = True
+        if function is None:
+            function = getattr(self, 'function', None)
+            keep_result = False
+        if function is None:
+            return kwargs
+
         params = kwargs.copy()
+        # Do not pass argument named `result` into the function.
+        # It is a hack for `deal.ensure` with `vaa` validator.
+        if not keep_result and 'result' in kwargs:
+            kwargs = kwargs.copy()
+            del kwargs['result']
+
+        # detect original function
+        function = inspect.unwrap(function)
+        # assign *args to real names
+        params.update(inspect.getcallargs(function, *args, **kwargs))
+        return params
+
+    def _vaa_validation(self, *args, **kwargs) -> None:
+        """Validate contract using vaa wrapped validator
+        """
 
         # if it is a decorator for a function, convert positional args into named ones.
-        if hasattr(self, 'function'):
-            # detect original function
-            function = self.function
-            while hasattr(function, '__wrapped__'):
-                function = function.__wrapped__     # type: ignore
-            # assign *args to real names
-            kwargs.pop('result', None)
-            params.update(inspect.getcallargs(function, *args, **kwargs))
-            # drop args-kwargs, we already put them on the right places
-            for bad_name in ('args', 'kwargs'):
-                if bad_name in params and bad_name not in kwargs:
-                    del params[bad_name]
+        params = self._args_to_vars(args=args, kwargs=kwargs)
 
         # validate
         validator = self.validator(data=params)
@@ -84,7 +130,7 @@ class Base(Generic[_CallableType]):
         # if no errors returned, raise the default exception
         errors = validator.errors
         if not errors:
-            raise self.exception
+            self._raise(params=params)
 
         # Flatten single error without field to one simple str message.
         # This is for better readability of simple validators.
@@ -94,23 +140,24 @@ class Base(Generic[_CallableType]):
                     if errors[0].field is None:
                         errors = errors[0].message
 
-        # raise errors
-        if isinstance(self.exception, Exception):
-            raise type(self.exception)(errors)
-        raise self.exception(errors)
+        self._raise(errors=errors, params=params)
 
     def _simple_validation(self, *args, **kwargs) -> None:
+        """Validate contract using simple validator.
+
+        Simple validator is a validator that reflects the function signature.
+        """
         validation_result = self.validator(*args, **kwargs)
         # is invalid (validator returns error message)
         if isinstance(validation_result, str):
-            if isinstance(self.exception, Exception):
-                raise type(self.exception)(validation_result)
-            raise self.exception(validation_result)
+            params = self._args_to_vars(args=args, kwargs=kwargs, function=self.validator)
+            self._raise(message=validation_result, params=params)
         # is valid (truely result)
         if validation_result:
             return
         # is invalid (falsy result)
-        raise self.exception
+        params = self._args_to_vars(args=args, kwargs=kwargs, function=self.validator)
+        self._raise(params=params)
 
     @property
     def enabled(self) -> bool:
@@ -125,14 +172,12 @@ class Base(Generic[_CallableType]):
         def wrapped(*args, **kwargs):
             if self.enabled:
                 return self.patched_function(*args, **kwargs)
-            else:
-                return function(*args, **kwargs)
+            return function(*args, **kwargs)
 
         async def async_wrapped(*args, **kwargs):
             if self.enabled:
                 return await self.async_patched_function(*args, **kwargs)
-            else:
-                return await function(*args, **kwargs)
+            return await function(*args, **kwargs)
 
         def wrapped_generator(*args, **kwargs):
             if self.enabled:

@@ -42,7 +42,7 @@ def pre(
     >>> example(1, -2)
     Traceback (most recent call last):
       ...
-    PreContractError
+    PreContractError: expected a + b > 0 (where a=1, b=-2)
 
     ```
 
@@ -85,7 +85,7 @@ def post(
     >>> example(1, -2)
     Traceback (most recent call last):
       ...
-    PostContractError
+    PostContractError: expected res > 0 (where res=-1)
 
     ```
 
@@ -131,7 +131,7 @@ def ensure(
     >>> example(0)
     Traceback (most recent call last):
       ...
-    PostContractError
+    PostContractError: expected a < result (where result=0, a=0)
 
     ```
 
@@ -294,14 +294,14 @@ def inv(
     >>> v.dislike()
     Traceback (most recent call last):
     ...
-    InvContractError
+    InvContractError: expected obj.likes >= 0
     >>> v.likes
     -1
     >>> v.likes = 2
     >>> v.likes = -2
     Traceback (most recent call last):
     ...
-    InvContractError
+    InvContractError: expected obj.likes >= 0
     >>> v.likes
     -2
 
@@ -383,11 +383,11 @@ def chain(*contracts) -> Callable[[_CallableType], _CallableType]:
     >>> sum(2, -3)
     Traceback (most recent call last):
         ...
-    PreContractError
+    PreContractError: expected b > 0 (where a=2, b=-3)
     >>> sum(-2, 3)
     Traceback (most recent call last):
         ...
-    PreContractError
+    PreContractError: expected a > 0 (where a=-2, b=3)
 
     ```
 

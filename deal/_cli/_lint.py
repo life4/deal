@@ -8,7 +8,9 @@ from typing import Iterable, Iterator, Sequence, Union
 
 # app
 from ..linter import Checker
-from ._common import get_paths, highlight, COLORS, NOCOLORS
+from .._state import state
+from ._common import get_paths
+from .._colors import highlight, COLORS, NOCOLORS
 
 
 TEMPLATE = '  {blue}{row}{end}:{blue}{col}{end} {magenta}{code}{end} {yellow}{text}{end}'
@@ -69,8 +71,15 @@ def lint_command(argv: Sequence[str]) -> int:
     prev = None
     errors = list(get_errors(paths=args.paths))
     colors = COLORS
+
+    # disable colors if disabled globally (NO_COLOR specified)
+    if not state.color:
+        args.nocolor = True
+    # disable colors if `--nocolor` specified
     if args.nocolor:
         colors = NOCOLORS
+        state.color = False
+
     for error in errors:
         if args.json:
             print(json.dumps(error))

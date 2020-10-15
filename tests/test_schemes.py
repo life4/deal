@@ -10,6 +10,7 @@ import deal
 @vaa.marshmallow
 class MarshMallowScheme(marshmallow.Schema):
     name = marshmallow.fields.Str()
+    kwargs = marshmallow.fields.Dict(required=False)
 
 
 class CustomScheme(deal.Scheme):
@@ -131,7 +132,9 @@ def test_scheme_errors_rewrite_message(scheme):
     try:
         func(2)
     except deal.PreContractError as exc:
-        assert exc.args[0] == [vaa.Error(field='name', message='Not a valid string.')]
+        assert exc.errors == [vaa.Error(field='name', message='Not a valid string.')]
+    else:
+        raise AssertionError('exception was not raised')
 
 
 def test_underscore_validator():
