@@ -8,7 +8,13 @@ from textwrap import dedent
 import pytest
 
 # project
-from deal._cli._test import has_pure_contract, sys_path, test_command as command
+import deal
+from deal._trace import TraceResult
+from deal._testing import TestCase
+from deal._cli._test import (
+    has_pure_contract, sys_path, test_command as command,
+    fast_iterator, format_exception, format_coverage, run_cases,
+)
 from deal.linter._func import Func
 
 
@@ -117,3 +123,92 @@ def test_has_pure_contract(source: str, has: bool) -> None:
     funcs = Func.from_text(source)
     assert len(funcs) == 1
     assert has_pure_contract(funcs[0]) is has
+
+
+def test_fast_iterator():
+    seq = [1, 2, 3, 4]
+    assert list(fast_iterator(iter(seq))) == seq
+
+
+def test_print_exception():
+    try:
+        raise deal.PreContractError
+    except deal.PreContractError:
+        text = format_exception()
+    assert text.startswith('    Traceback (most recent call last):\n')
+    assert 'test_test.py' in text
+    assert 'PreContractError' in text
+    assert text.endswith('\x1b[39;49;00m')
+
+
+@pytest.mark.parametrize('cov_l, all_l, exp', [
+    ({2, 3, 4}, {2, 3, 4}, '    coverage <G>100%<E>'),
+    ({2, 4}, {2, 3, 4}, '    coverage <Y>67%<E> (missing 3)'),
+    ({2, 5}, {2, 3, 4, 5}, '    coverage <Y>50%<E> (missing 3-4)'),
+    (set(), {2, 3, 4, 5}, '    coverage <R>0%<E>'),
+])
+def test_format_coverage_100(cov_l, all_l, exp):
+    fake_colors = dict(
+        red='<R>',
+        yellow='<Y>',
+        green='<G>',
+        end='<E>',
+    )
+    tr = TraceResult(0, 0, covered_lines=cov_l, all_lines=all_l)
+    text = format_coverage(tr, colors=fake_colors)
+    assert text == exp
+
+
+def test_run_cases_ok():
+    def func():
+        return 123
+
+    case = TestCase(
+        args=(),
+        kwargs={},
+        func=func,
+        exceptions=(),
+        check_types=False,
+    )
+    cases = [case]
+    colors = dict(
+        blue='<B>',
+        yellow='<Y>',
+        end='<E>',
+    )
+    stream = StringIO()
+    ok = run_cases(cases=cases, func_name='fname', stream=stream, colors=colors)
+    assert ok
+    stream.seek(0)
+    captured = stream.read()
+    assert captured
+    assert captured.split('\n')[0] == '  <B>running fname<E>'
+
+
+def test_run_cases_bad():
+    def func(a, b):
+        raise ZeroDivisionError
+
+    case = TestCase(
+        args=(1, ),
+        kwargs=dict(b=2),
+        func=func,
+        exceptions=(),
+        check_types=False,
+    )
+    cases = [case]
+    colors = dict(
+        blue='<B>',
+        yellow='<Y>',
+        end='<E>',
+    )
+    stream = StringIO()
+    ok = run_cases(cases=cases, func_name='fname', stream=stream, colors=colors)
+    assert not ok
+    stream.seek(0)
+    captured = stream.read()
+    assert captured
+    assert captured.split('\n')[0] == '  <B>running fname<E>'
+    assert 'ZeroDivisionError' in captured
+    assert 'Traceback' in captured
+    assert '    <Y>fname(1, b=2)<E>' in captured

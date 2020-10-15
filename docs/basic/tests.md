@@ -29,6 +29,12 @@ There is a CLI command named `test`. It extracts `@deal.has()` (without argument
 python3 -m deal test project/*.py
 ```
 
+The command is helpful when you don't have tests for some pure functions yet but want to get an early feedback.
+
+For every ran function, deal calculates and shows coverage. This is a helpful indication on how good deal was at finding the correct input values.
+
+![test command output](../../assets/test.png)
+
 ## PyTest
 
 A simple snippet to use `deal.cases` with [pytest](https://docs.pytest.org/en/latest/) (type annotations for the test function are optional):
