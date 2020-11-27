@@ -24,7 +24,7 @@ class MemoryTracker:
 
     @classmethod
     def _dump(cls) -> typing.Counter[str]:
-        counter = Counter()
+        counter: typing.Counter[str] = Counter()
         gc.collect()
         for obj in gc.get_objects():
             name: str = type(obj).__qualname__
