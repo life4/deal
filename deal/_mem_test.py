@@ -15,12 +15,13 @@ class MemoryTracker:
     def __enter__(self) -> None:
         self.before = self._dump()
 
-    def __exit__(self, *exc) -> None:
+    def __exit__(self, *exc) -> bool:
         self.after = self._dump()
+        return False
 
     @cached_property
     def diff(self) -> typing.Counter[str]:
-        return self.after - self.before
+        return self.after - self.before - Counter({'weakref': 1})
 
     @classmethod
     def _dump(cls) -> typing.Counter[str]:

@@ -95,9 +95,9 @@ def memtest_command(
     + `--count`: how many input values combinations should be checked.
 
     Exit code is equal to count of leaked functions.
-    See [tests][tests] documentation for more details.
+    See [memory leaks][leaks] documentation for more details.
 
-    [tests]: https://deal.readthedocs.io/basic/tests.html
+    [leaks]: https://deal.readthedocs.io/basic/tests.html#memory-leaks
     """
     if root is None:  # pragma: no cover
         root = Path()
