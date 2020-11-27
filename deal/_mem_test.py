@@ -15,9 +15,8 @@ class MemoryTracker:
     def __enter__(self) -> None:
         self.before = self._dump()
 
-    def __exit__(self, *exc) -> bool:
+    def __exit__(self, *exc) -> None:
         self.after = self._dump()
-        return False
 
     @cached_property
     def diff(self) -> typing.Counter[str]:
