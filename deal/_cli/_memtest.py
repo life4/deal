@@ -54,31 +54,35 @@ def run_cases(
                 case()
         finally:
             state.debug = debug
-        if tracker.diff:
-            line = '    {yellow}{name}({args}){end}'.format(
-                name=func_name,
-                args=format_call_args(args=case.args, kwargs=case.kwargs),
+        if not tracker.diff:
+            continue
+
+        # show the diff and stop testing the func
+        line = '    {yellow}{name}({args}){end}'.format(
+            name=func_name,
+            args=format_call_args(args=case.args, kwargs=case.kwargs),
+            **colors,
+        )
+        print(line, file=stream)
+        longest_name_len = max(len(name) for name in tracker.diff)
+        for name, count in tracker.diff.items():
+            line = '      {red}{name}{end} x{count}'.format(
+                name=name.ljust(longest_name_len),
+                count=count,
                 **colors,
             )
             print(line, file=stream)
-            longest_name_len = max(len(name) for name in tracker.diff)
-            for name, count in tracker.diff.items():
-                line = '      {red}{name}{end} x{count}'.format(
-                    name=name.ljust(longest_name_len),
-                    count=count,
-                    **colors,
-                )
-                print(line, file=stream)
+        return False
     return True
 
 
-def mem_test_command(
+def memtest_command(
     argv: Sequence[str], root: Path = None, stream: TextIO = sys.stdout,
 ) -> int:
-    """Generate and run tests against pure functions.
+    """Generate and run tests against pure functions and report memory leaks.
 
     ```bash
-    python3 -m deal test project/
+    python3 -m deal memtest project/
     ```
 
     Function must be decorated by one of the following to be run:
@@ -90,7 +94,7 @@ def mem_test_command(
 
     + `--count`: how many input values combinations should be checked.
 
-    Exit code is equal to count of failed test cases.
+    Exit code is equal to count of leaked functions.
     See [tests][tests] documentation for more details.
 
     [tests]: https://deal.readthedocs.io/basic/tests.html

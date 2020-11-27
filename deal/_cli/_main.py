@@ -7,13 +7,13 @@ from typing import Callable, Mapping, Sequence
 from ._lint import lint_command
 from ._stub import stub_command
 from ._test import test_command
-from ._mem_test import mem_test_command
+from ._memtest import memtest_command
 
 
 CommandsType = Mapping[str, Callable[[Sequence[str]], int]]
 COMMANDS: CommandsType = MappingProxyType(dict(
     lint=lint_command,
-    memtest=mem_test_command,
+    memtest=memtest_command,
     stub=stub_command,
     test=test_command,
 ))

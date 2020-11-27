@@ -17,8 +17,6 @@ class MemoryTracker:
 
     def __exit__(self, *exc) -> None:
         self.after = self._dump()
-        if 'diff' in vars(self):
-            del vars(self)['diff']
 
     @cached_property
     def diff(self) -> typing.Counter[str]:
@@ -29,15 +27,6 @@ class MemoryTracker:
         counter = Counter()
         gc.collect()
         for obj in gc.get_objects():
-            name = cls._get_type_name(obj)
+            name: str = type(obj).__qualname__
             counter[name] += 1
         return counter
-
-    @staticmethod
-    def _get_type_name(obj) -> str:
-        t = type(obj)
-        if hasattr(t, '__qualname__'):
-            return t.__qualname__
-        if hasattr(t, '__name__'):
-            return t.__name__
-        return repr(t)
