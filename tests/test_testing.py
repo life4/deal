@@ -3,6 +3,7 @@ from typing import NoReturn, TypeVar
 
 # external
 import hypothesis
+import hypothesis.strategies
 import pytest
 
 # project
@@ -146,3 +147,21 @@ def test_type_var():
     msg = 'type of the return value must be exactly str; got int instead'
     with pytest.raises(TypeError, match=msg):
         case()
+
+
+@hypothesis.given(
+    a=hypothesis.strategies.integers(),
+    b=hypothesis.strategies.integers(),
+)
+def test_hypothesis_div1_smoke(a, b):
+    f = deal.hypothesis(div1)
+    f(a, b)
+
+
+@hypothesis.given(
+    a=hypothesis.strategies.integers(),
+    b=hypothesis.strategies.integers(),
+)
+def test_hypothesis_div2_smoke(a, b):
+    f = deal.hypothesis(div2)
+    f(a, b)

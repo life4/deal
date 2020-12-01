@@ -1,13 +1,16 @@
 # built-in
 import typing
+from functools import update_wrapper
 from inspect import signature
 
 # external
 import hypothesis
 import hypothesis.strategies
 import typeguard
+from hypothesis.internal.reflection import proxies
 
 # app
+from ._cached_property import cached_property
 from ._decorators import Pre, Raises
 from ._types import ArgsKwargsType
 
@@ -118,9 +121,9 @@ def get_examples(
         return args, kwargs
 
     pass_along_variables.__signature__ = signature(func)    # type: ignore
-    pass_along_variables.__annotations__ = getattr(func, '__annotations__', {})
+    update_wrapper(wrapper=pass_along_variables, wrapped=func)
     strategy = hypothesis.strategies.builds(pass_along_variables, **kwargs)
-    validators = list(get_validators(func))
+    validators = tuple(get_validators(func))
     examples = []
 
     @hypothesis.given(strategy)
@@ -186,11 +189,60 @@ def cases(
         count=count,
         kwargs=kwargs,
     )
+    exceptions = tuple(get_excs(func))
     for args, kwargs in params_generator:
         yield TestCase(
             args=args,
             kwargs=kwargs,
             func=func,
-            exceptions=tuple(get_excs(func)),
+            exceptions=exceptions,
             check_types=check_types,
         )
+
+
+class HypothesisWrapper:
+    func: typing.Callable
+    check_types: bool = True
+
+    def __init__(self, func: typing.Callable, check_types: bool):
+        self.func = func
+        self.check_types = check_types
+
+    @cached_property
+    def validators(self):
+        return tuple(get_validators(self.func))
+
+    @cached_property
+    def exceptions(self):
+        return tuple(get_excs(self.func))
+
+    def make_case(self, *args, **kwargs) -> TestCase:
+        return TestCase(
+            args=args,
+            kwargs=kwargs,
+            func=self.func,
+            exceptions=self.exceptions,
+            check_types=self.check_types,
+        )
+
+    def wrapper(self, *args, **kwargs):
+        for validator in self.validators:
+            try:
+                validator(*args, **kwargs)
+            except Exception:
+                hypothesis.reject()
+        case = self.make_case(*args, **kwargs)
+        return case()
+
+    def __call__(self, *args, **kwargs):
+        # update_wrapper(wrapper=wrapper, wrapped=func)
+        # wrapper.__signature__ = signature(func)    # type: ignore
+        return self.wrapper(*args, **kwargs)
+
+
+def hypothesis_wrapper(func: typing.Callable, check_types: bool = True):
+    wrapper = HypothesisWrapper(
+        func=func,
+        check_types=check_types,
+    )
+    return proxies(func)(wrapper)
