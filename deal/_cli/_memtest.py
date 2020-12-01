@@ -97,7 +97,7 @@ def memtest_command(
     Exit code is equal to count of leaked functions.
     See [memory leaks][leaks] documentation for more details.
 
-    [leaks]: https://deal.readthedocs.io/basic/tests.html#memory-leaks
+    [leaks]: https://deal.readthedocs.io/details/tests.html#memory-leaks
     """
     if root is None:  # pragma: no cover
         root = Path()
