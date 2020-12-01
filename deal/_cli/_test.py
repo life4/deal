@@ -1,25 +1,30 @@
 # built-in
 import re
 import sys
+import traceback
 from argparse import ArgumentParser
 from contextlib import contextmanager
+from functools import update_wrapper
 from importlib import import_module
 from pathlib import Path
 from textwrap import indent
-from traceback import format_exception
-from typing import Iterator, Sequence, TextIO
+from typing import Dict, Iterator, Sequence, TextIO, TypeVar
 
 import pygments
 from pygments.formatters import TerminalFormatter
 from pygments.lexers import PythonTracebackLexer
 
 # app
-from .._testing import cases
+from .._testing import cases, TestCase
 from ..linter._contract import Category
 from ..linter._extractors.pre import format_call_args
 from ..linter._func import Func
 from ._common import get_paths
 from .._colors import COLORS
+from .._trace import trace, format_lines, TraceResult
+
+
+T = TypeVar('T')
 
 rex_exception = re.compile(r'deal\.(\w*ContractError)')
 
@@ -59,11 +64,11 @@ def color_exception(text: str) -> str:
     )
 
 
-def print_exception(stream: TextIO) -> None:
-    lines = format_exception(*sys.exc_info())
+def format_exception() -> str:
+    lines = traceback.format_exception(*sys.exc_info())
     text = color_exception(''.join(lines))
-    text = indent(text=text, prefix='    ').rstrip()
-    print(text, file=stream)
+    text = indent(text=text, prefix='    ')
+    return text.rstrip()
 
 
 def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -> int:
@@ -75,23 +80,87 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
     with sys_path(path=root):
         module = import_module(module_name)
     failed = 0
-    for func_name in names:
-        print('  {blue}running {name}{end}'.format(name=func_name, **COLORS), file=stream)
+    for func_name in names:  # pragma: no cover
         func = getattr(module, func_name)
-        for case in cases(func=func, count=count):
-            try:
-                case()
-            except Exception:
-                line = '    {yellow}{name}({args}){end}'.format(
-                    name=func_name,
-                    args=format_call_args(args=case.args, kwargs=case.kwargs),
-                    **COLORS,
-                )
-                print(line, file=stream)
-                print_exception(stream=stream)
-                failed += 1
-                break
-    return failed
+        # set `__wrapped__` attr so `trace` can find the original function.
+        runner = update_wrapper(wrapper=run_cases, wrapped=func)
+        tresult = trace(
+            func=runner,
+            cases=fast_iterator(cases(func=func, count=count)),
+            func_name=func_name,
+            stream=stream,
+            colors=COLORS,
+        )
+        if tresult.func_result and tresult.all_lines:
+            text = format_coverage(tresult=tresult, colors=COLORS)
+            print(text, file=stream)
+        else:
+            failed += 1
+    return failed   # pragma: no cover
+
+
+def fast_iterator(iterator: Iterator[T]) -> Iterator[T]:
+    """
+    Iterate over `iterator` disabling tracer on every iteration step.
+    This is a trick to avoid using our coverage tracer when calling hypothesis machinery.
+    Without it, testing is about 3 times slower.
+    """
+    default_trace = sys.gettrace()
+    while True:  # pragma: no cover
+        sys.settrace(None)
+        try:
+            case = next(iterator)
+        except StopIteration:
+            return
+        finally:
+            sys.settrace(default_trace)
+        yield case
+
+
+def run_cases(
+    cases: Iterator[TestCase],
+    func_name: str,
+    stream: TextIO,
+    colors: Dict[str, str],
+) -> bool:
+    print('  {blue}running {name}{end}'.format(name=func_name, **colors), file=stream)
+    for case in cases:
+        try:
+            case()
+        except Exception:
+            line = '    {yellow}{name}({args}){end}'.format(
+                name=func_name,
+                args=format_call_args(args=case.args, kwargs=case.kwargs),
+                **colors,
+            )
+            print(line, file=stream)
+            print(format_exception(), file=stream)
+            return False
+    return True
+
+
+def format_coverage(tresult: TraceResult, colors: Dict[str, str]) -> str:
+    cov = tresult.coverage
+    if cov >= 85:
+        color = colors['green']
+    elif cov >= 50:
+        color = colors['yellow']
+    else:
+        color = colors['red']
+    tmpl = '    coverage {color}{cov}%{end}'
+    missing = format_lines(
+        statements=tresult.all_lines,
+        lines=tresult.all_lines - tresult.covered_lines,
+    )
+    if cov != 0 and cov != 100 and len(missing) <= 60:
+        tmpl += ' (missing {missing})'
+    line = tmpl.format(
+        cov=cov,
+        color=color,
+        missing=missing,
+        **colors,
+    )
+    return line
 
 
 def test_command(
