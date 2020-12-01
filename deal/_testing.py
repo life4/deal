@@ -77,11 +77,6 @@ def get_excs(func: typing.Any) -> typing.Iterator[typing.Type[Exception]]:
                 obj = cell.cell_contents
                 if isinstance(obj, Raises):
                     yield from obj.exceptions
-                elif isinstance(obj, Pre):
-                    if isinstance(obj.exception, Exception):
-                        yield type(obj.exception)
-                    else:
-                        yield obj.exception
 
         if not hasattr(func, '__wrapped__'):
             return
