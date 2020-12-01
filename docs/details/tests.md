@@ -32,3 +32,64 @@ The command `memtest` uses this idea to find memory leaks in pure functions. How
 The return code is equal to the amount of functions with memory leaks.
 
 If the function fails, the command will ignore it and still test the function for leaks. Side-effects shouldn't happen unconditionally, even if the function fails. If you want to find unexpected failures, use `test` command instead.
+
+## Constant value for arguments
+
+The function `deal.cases` accepts `kwargs` argument where you can specify constant values for the function arguments. For example:
+
+```python
+@deal.raises(ZeroDivisionError)
+def div(a: int, b: int) -> float:
+    assert a == 1
+    return a / b
+
+# Every test case calls `div` function with `a=1`.
+# So, random values are generated only for `b`.
+for case in deal.cases(div, kwargs=dict(a=1)):
+    case()
+```
+
+## Hypothesis integration
+
+Under the hood, `deal.cases` uses [hypothesis](https://hypothesis.readthedocs.io/en/latest/index.html) testing framework to generate test cases. This sacred knowledge empowered by reading hypothesis documentation provides you an opportunity to tweak test cases generation to make it more precise.
+
+First of all, `kwargs` argument of `deal.cases` can contain hypothesis strategies:
+
+```python
+import hypothesis.strategies as st
+
+@deal.raises(ZeroDivisionError)
+def div(a: int, b: int) -> float:
+    assert a >= 10
+    return a / b
+
+cases = deal.cases(
+    func=div,
+    kwargs=dict(
+        a=st.integers(min_value=10),
+    ),
+)
+for case in cases:
+    case()
+```
+
+If you want a better integration with hypothesis (like settings, shrinking, reports, repeat, and so on), you can directly use hypothesis and wrap the function into `deal.hypothesis`. In this way, deal will communicate back into hypothesis when the generated strategy doesn't satisfy the contract or when the function failure is expected.
+
+```python
+import hypothesis
+import hypothesis.strategies as st
+
+@deal.raises(ZeroDivisionError)
+def div(a: int, b: int) -> float:
+    return a / b
+
+@hypothesis.given(
+    a=st.integers(),
+    b=st.integers(),
+)
+def test_div(a, b):
+    func = deal.hypothesis(div)
+    func(a, b)
+
+test_div()
+```

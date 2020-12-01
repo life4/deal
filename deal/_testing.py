@@ -231,6 +231,32 @@ class HypothesisWrapper:
 
 
 def hypothesis_wrapper(func: typing.Callable, check_types: bool = True) -> HypothesisWrapper:
+    """Wrapper for a function to communicate back into [hypothesis][hypothesis] contract violations.
+
+    ```pycon
+    >>> import deal
+    >>> import hypothesis
+    >>> import hypothesis.strategies as st
+
+    >>> @deal.raises(ZeroDivisionError)
+    >>> def div(a: int, b: int) -> float:
+    ...     return a / b
+
+    >>> @hypothesis.given(
+    ...     a=st.integers(),
+    ...     b=st.integers(),
+    ... )
+    ... def test_div(a, b):
+    ...     func = deal.hypothesis(div)
+    ...     func(a, b)
+    ...
+    >>> test_div()
+    ```
+    See [hypothesis integration][hypoint] documentation for more details.
+
+    [hypothesis]: https://hypothesis.readthedocs.io/en/latest/
+    [hypoint]: https://deal.readthedocs.io/details/tests.html#hypothesis-integration
+    """
     wrapper = HypothesisWrapper(
         func=func,
         check_types=check_types,
