@@ -224,8 +224,8 @@ def test_resolve_and_run_dependencies_func_astroid():
     assert len(func.contracts) == 1
     c = func.contracts[0]
 
-    c.run(12) is False
-    c.run(34) is True
+    assert c.run(12) is False
+    assert c.run(34) is True
 
 
 def test_resolve_and_run_dependencies_lambda():
@@ -251,8 +251,8 @@ def test_resolve_and_run_dependencies_lambda():
         assert len(func.contracts) == 1
         c = func.contracts[0]
 
-        c.run(12) is False
-        c.run(34) is True
+        assert c.run(12) is False
+        assert c.run(34) is True
 
 
 def test_lazy_import_stdlib():
@@ -270,8 +270,8 @@ def test_lazy_import_stdlib():
     assert len(func.contracts) == 1
     c = func.contracts[0]
 
-    c.run('bcd') is False
-    c.run('abc') is True
+    assert c.run('bcd') is False
+    assert c.run('abc') is True
 
 
 def test_unresolvable():
