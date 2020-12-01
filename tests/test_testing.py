@@ -3,6 +3,7 @@ from typing import NoReturn, TypeVar
 
 # external
 import hypothesis
+import hypothesis.errors
 import hypothesis.strategies
 import pytest
 
@@ -154,14 +155,36 @@ def test_type_var():
     b=hypothesis.strategies.integers(),
 )
 def test_hypothesis_div1_smoke(a, b):
-    f = deal.hypothesis(div1)
-    f(a, b)
+    func = deal.hypothesis(div1)
+    func(a, b)
 
 
+@hypothesis.settings(
+    suppress_health_check=(
+        hypothesis.HealthCheck.filter_too_much,
+    ),
+)
 @hypothesis.given(
     a=hypothesis.strategies.integers(),
     b=hypothesis.strategies.integers(),
 )
 def test_hypothesis_div2_smoke(a, b):
-    f = deal.hypothesis(div2)
-    f(a, b)
+    func = deal.hypothesis(div2)
+    func(a, b)
+
+
+def test_hypothesis_reject_bad():
+    func = deal.hypothesis(div2)
+    with pytest.raises(hypothesis.errors.UnsatisfiedAssumption):
+        func(a=4, b=-2)
+
+
+def test_hypothesis_accept_good():
+    func = deal.hypothesis(div2)
+    func(a=4, b=8)
+
+
+def test_hypothesis_suppress_raises():
+    func = deal.hypothesis(div1)
+    result = func(a=4, b=0)
+    assert result is NoReturn

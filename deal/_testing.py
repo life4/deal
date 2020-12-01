@@ -200,7 +200,7 @@ class HypothesisWrapper:
     check_types: bool = True
 
     def __init__(self, func: typing.Callable, check_types: bool):
-        self.func = func
+        self.func = func  # type: ignore
         self.check_types = check_types
 
     @cached_property
@@ -220,7 +220,7 @@ class HypothesisWrapper:
             check_types=self.check_types,
         )
 
-    def wrapper(self, *args, **kwargs):
+    def __call__(self, *args, **kwargs):
         for validator in self.validators:
             try:
                 validator(*args, **kwargs)
@@ -229,13 +229,8 @@ class HypothesisWrapper:
         case = self.make_case(*args, **kwargs)
         return case()
 
-    def __call__(self, *args, **kwargs):
-        # update_wrapper(wrapper=wrapper, wrapped=func)
-        # wrapper.__signature__ = signature(func)    # type: ignore
-        return self.wrapper(*args, **kwargs)
 
-
-def hypothesis_wrapper(func: typing.Callable, check_types: bool = True):
+def hypothesis_wrapper(func: typing.Callable, check_types: bool = True) -> HypothesisWrapper:
     wrapper = HypothesisWrapper(
         func=func,
         check_types=check_types,
