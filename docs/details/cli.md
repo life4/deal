@@ -17,3 +17,9 @@
 ```eval_rst
 .. autofunction:: deal._cli._test.test_command
 ```
+
+## memtest
+
+```eval_rst
+.. autofunction:: deal._cli._memtest.memtest_command
+```
