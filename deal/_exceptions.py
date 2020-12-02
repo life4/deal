@@ -28,7 +28,7 @@ def exception_hook(etype: Type[BaseException], value: BaseException, tb):
         if path.startswith(root):
             with suppress(AttributeError):  # read-only attribute in <3.7
                 prev_tb.tb_next = None
-            break
+            break  # pragma: no cover
         prev_tb = patched_tb
         patched_tb = patched_tb.tb_next
     else:

@@ -20,6 +20,7 @@
 * [Can be enabled or disabled on production.][runtime]
 * [Colorless](colorless): annotate only what you want. Hence, easy integration into an existing project.
 * Colorful: syntax highlighting for every piece of code in every command.
+* [Memory leaks detection.][leaks] Deal makes sure that a pure function doesn't leave unexpected objects in the memory.
 * DRY: test discovery, error messages generation.
 * Partial execution: linter executes contracts to statically check possible values.
 
@@ -31,6 +32,7 @@
 [module_load]: https://deal.readthedocs.io/details/module_load.html
 [runtime]: https://deal.readthedocs.io/basic/runtime.html
 [colorless]: http://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/
+[leaks]: https://deal.readthedocs.io/basic/tests.html#memory-leaks
 
 ## Deal in 30 seconds
 

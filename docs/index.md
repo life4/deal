@@ -33,6 +33,7 @@
     details/module_load
     details/stubs
     details/validators
+    details/tests
     details/recipes
     details/examples
     details/cli
