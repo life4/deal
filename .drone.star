@@ -10,6 +10,9 @@ def main(ctx):
             step(env="pytest", python="3.6"),
             step(env="pytest", python="3.7"),
             step(env="pytest", python="3.8"),
+            step(env="pytest", python="3.9"),
+            # https://github.com/pypa/wheel/issues/354
+            # step(env="pytest", python="3.10-rc"),
             step(env="flake8", python="3.8"),
             step(env="typing", python="3.8"),
         ],
