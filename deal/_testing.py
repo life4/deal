@@ -101,7 +101,7 @@ def get_validators(func: typing.Any) -> typing.Iterator[typing.Callable]:
         func = func.__wrapped__
 
 
-class TestCases(typing.NamedTuple):
+class TestCases:
     """[summary]
 
     :param func: the function to test. Should be type annotated.
@@ -133,15 +133,34 @@ class TestCases(typing.NamedTuple):
     """
 
     func: typing.Callable
-    count: int = 50
-    kwargs: typing.Dict[str, typing.Any] = None
-    check_types: bool = True
+    count: int
+    kwargs: typing.Dict[str, typing.Any]
+    check_types: bool
+
+    def __init__(
+        self,
+        func: typing.Callable, *,
+        count: int = 50,
+        kwargs: typing.Dict[str, typing.Any] = None,
+        check_types: bool = True,
+    ) -> None:
+        self.func = func
+        self.count = kwargs
+        self.count = count
+        self.kwargs = kwargs
+        self.check_types = check_types
 
     def __iter__(self) -> typing.Iterator[TestCase]:
         cases = []
         test = self(cases.append)
         test()
         yield from cases
+
+    def __repr__(self) -> str:
+        return '{n}({f})'.format(
+            n=type(self).__name__,
+            f=repr(self.func),
+        )
 
     def make_case(self, *args, **kwargs) -> TestCase:
         return TestCase(
@@ -152,15 +171,15 @@ class TestCases(typing.NamedTuple):
             check_types=self.check_types,
         )
 
-    @property
+    @cached_property
     def validators(self) -> typing.Tuple[typing.Callable, ...]:
         return tuple(get_validators(self.func))
 
-    @property
+    @cached_property
     def exceptions(self) -> typing.Tuple[typing.Type[Exception], ...]:
         return tuple(get_excs(self.func))
 
-    @property
+    @cached_property
     def strategy(self) -> hypothesis.strategies.SearchStrategy:
         kwargs = (self.kwargs or {}).copy()
         for name, value in kwargs.items():
