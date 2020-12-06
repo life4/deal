@@ -116,16 +116,15 @@ class TestCases:
         settings: typing.Optional[hypothesis.settings] = None,
         seed: typing.Optional[int] = None,
     ) -> None:
-        self.func = func
-        self.count = kwargs
+        self.func = func  # type: ignore
         self.count = count
-        self.kwargs = kwargs
+        self.kwargs = kwargs or {}
         self.check_types = check_types
         self.settings = settings or self._get_default_settings()
         self.seed = seed
 
     def __iter__(self) -> typing.Iterator[TestCase]:
-        cases = []
+        cases: typing.List[TestCase] = []
         test = self(cases.append)
         test()
         yield from cases
@@ -184,7 +183,7 @@ class TestCases:
 
     @cached_property
     def strategy(self) -> hypothesis.strategies.SearchStrategy:
-        kwargs = (self.kwargs or {}).copy()
+        kwargs = self.kwargs.copy()
         for name, value in kwargs.items():
             if isinstance(value, hypothesis.strategies.SearchStrategy):
                 continue
