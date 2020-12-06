@@ -71,41 +71,25 @@ class TestCase(typing.NamedTuple):
 
 class TestCases:
     """Generate test cases for the given function.
-
-    :param func: the function to test. Should be type annotated.
-    :type func: typing.Callable
-    :param count: how many test cases to generate, defaults to 50.
-    :type count: int, optional
-    :param kwargs: keyword arguments to pass into the function.
-    :type kwargs: typing.Dict[str, typing.Any], optional
-    :param check_types: check that the result matches return type of the function.
-        Enabled by default.
-    :type check_types: bool, optional
-    :yield: Emits test cases.
-    :rtype: typing.Iterator[TestCase]
-
-    ```pycon
-    >>> import deal
-    >>> @deal.pre(lambda a, b: b != 0)
-    ... def div(a: int, b: int) -> float:
-    ...   return a / b
-    ...
-    >>> cases = deal.cases(div)
-    >>> next(cases)
-    TestCase(args=(), kwargs=..., func=<function div ...>, exceptions=(<class 'PreContractError'>,))
-    >>> case = next(cases)
-    >>> case()  # execute the test case
-    ...
-    ```
-
     """
 
     func: typing.Callable
+    """the function to test. Should be type annotated."""
+
     count: int
+    """how many test cases to generate, defaults to 50."""
+
     kwargs: typing.Dict[str, typing.Any]
+    """keyword arguments to pass into the function."""
+
     check_types: bool
+    """check that the result matches return type of the function. Enabled by default."""
+
     settings: hypothesis.settings
+    """Hypothesis settings to use instead of default ones."""
+
     seed: typing.Optional[int]
+    """Random seed to use when generating test cases. Use it to make tests deterministic."""
 
     def __init__(
         self,
@@ -124,6 +108,26 @@ class TestCases:
         self.seed = seed
 
     def __iter__(self) -> typing.Iterator[TestCase]:
+        """Emits test cases.
+
+        It can be helpful when you want to see what test cases are generated.
+        The recommend way is to use `deal.cases` as a decorator instead.
+
+        ```pycon
+        >>> import deal
+        >>> @deal.pre(lambda a, b: b != 0)
+        ... def div(a: int, b: int) -> float:
+        ...   return a / b
+        ...
+        >>> cases = iter(deal.cases(div))
+        >>> next(cases)
+        TestCase(args=(), kwargs=..., func=<function div ...>, exceptions=(<class 'PreContractError'>,))
+        >>> case = next(cases)
+        >>> case()  # execute the test case
+        ...
+        ```
+
+        """
         cases: typing.List[TestCase] = []
         test = self(cases.append)
         test()
@@ -134,6 +138,8 @@ class TestCases:
         return 'deal.cases({})'.format(fname)
 
     def make_case(self, *args, **kwargs) -> TestCase:
+        """Make test case with the given arguments.
+        """
         return TestCase(
             args=args,
             kwargs=kwargs,
@@ -144,15 +150,15 @@ class TestCases:
 
     @cached_property
     def validators(self) -> typing.Tuple[typing.Callable, ...]:
-        return tuple(self._get_validators(self.func))
-
-    @staticmethod
-    def _get_validators(func: typing.Any) -> typing.Iterator[typing.Callable]:
         """Returns pre-condition validators.
 
         It is used in the process of generating hypothesis strategies
         To let hypothesis more effectively avoid wrong input values.
         """
+        return tuple(self._get_validators(self.func))
+
+    @staticmethod
+    def _get_validators(func: typing.Any) -> typing.Iterator[typing.Callable]:
         while True:
             if getattr(func, '__closure__', None):
                 for cell in func.__closure__:
@@ -166,6 +172,10 @@ class TestCases:
 
     @cached_property
     def exceptions(self) -> typing.Tuple[typing.Type[Exception], ...]:
+        """
+        Returns exceptions that will be suppressed by individual test cases.
+        The exceptions are extracted from `@deal.raises` of the tested function.
+        """
         return tuple(self._get_excs(self.func))
 
     @staticmethod
@@ -183,6 +193,8 @@ class TestCases:
 
     @cached_property
     def strategy(self) -> hypothesis.strategies.SearchStrategy:
+        """Hypothesis strategy that is used to generate test cases.
+        """
         kwargs = self.kwargs.copy()
         for name, value in kwargs.items():
             if isinstance(value, hypothesis.strategies.SearchStrategy):
@@ -206,7 +218,7 @@ class TestCases:
             suppress_health_check=hypothesis.HealthCheck.all(),
         )
 
-    def __call__(self, test_func: typing.Callable) -> typing.Callable:
+    def __call__(self, test_func: typing.Callable[..., None]) -> typing.Callable[..., None]:
         @self.settings
         @hypothesis.given(self.strategy)
         def test_wrapper(ex: ArgsKwargsType) -> None:
