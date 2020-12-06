@@ -101,53 +101,7 @@ def get_validators(func: typing.Any) -> typing.Iterator[typing.Callable]:
         func = func.__wrapped__
 
 
-def get_examples(
-    func: typing.Callable,
-    kwargs: typing.Dict[str, typing.Any],
-    count: int,
-) -> typing.List[ArgsKwargsType]:
-    kwargs = kwargs.copy()
-    for name, value in kwargs.items():
-        if isinstance(value, hypothesis.strategies.SearchStrategy):
-            continue
-        kwargs[name] = hypothesis.strategies.just(value)
-
-    def pass_along_variables(*args, **kwargs) -> ArgsKwargsType:
-        return args, kwargs
-
-    pass_along_variables.__signature__ = signature(func)    # type: ignore
-    update_wrapper(wrapper=pass_along_variables, wrapped=func)
-    strategy = hypothesis.strategies.builds(pass_along_variables, **kwargs)
-    validators = tuple(get_validators(func))
-    examples = []
-
-    @hypothesis.given(strategy)
-    @hypothesis.settings(
-        database=None,
-        max_examples=count,
-        deadline=None,
-        verbosity=hypothesis.Verbosity.quiet,
-        phases=(hypothesis.Phase.generate,),
-        suppress_health_check=hypothesis.HealthCheck.all(),
-    )
-    def example_generator(ex: ArgsKwargsType) -> None:
-        for validator in validators:
-            try:
-                validator(*ex[0], **ex[1])
-            except Exception:
-                hypothesis.reject()
-        examples.append(ex)
-
-    example_generator()  # pylint: disable=no-value-for-parameter
-    return examples
-
-
-def cases(
-    func: typing.Callable, *,
-    count: int = 50,
-    kwargs: typing.Dict[str, typing.Any] = None,
-    check_types: bool = True,
-) -> typing.Iterator[TestCase]:
+class TestCases(typing.NamedTuple):
     """[summary]
 
     :param func: the function to test. Should be type annotated.
@@ -177,22 +131,73 @@ def cases(
     ```
 
     """
-    if not kwargs:
-        kwargs = {}
-    params_generator = get_examples(
-        func=func,
-        count=count,
-        kwargs=kwargs,
-    )
-    exceptions = tuple(get_excs(func))
-    for args, kwargs in params_generator:
-        yield TestCase(
+
+    func: typing.Callable
+    count: int = 50
+    kwargs: typing.Dict[str, typing.Any] = None
+    check_types: bool = True
+
+    def __iter__(self) -> typing.Iterator[TestCase]:
+        cases = []
+        test = self(cases.append)
+        test()
+        yield from cases
+
+    def make_case(self, *args, **kwargs) -> TestCase:
+        return TestCase(
             args=args,
             kwargs=kwargs,
-            func=func,
-            exceptions=exceptions,
-            check_types=check_types,
+            func=self.func,
+            exceptions=self.exceptions,
+            check_types=self.check_types,
         )
+
+    @property
+    def validators(self) -> typing.Tuple[typing.Callable, ...]:
+        return tuple(get_validators(self.func))
+
+    @property
+    def exceptions(self) -> typing.Tuple[typing.Type[Exception], ...]:
+        return tuple(get_excs(self.func))
+
+    @property
+    def strategy(self) -> hypothesis.strategies.SearchStrategy:
+        kwargs = (self.kwargs or {}).copy()
+        for name, value in kwargs.items():
+            if isinstance(value, hypothesis.strategies.SearchStrategy):
+                continue
+            kwargs[name] = hypothesis.strategies.just(value)
+
+        def pass_along_variables(*args, **kwargs) -> ArgsKwargsType:
+            return args, kwargs
+
+        pass_along_variables.__signature__ = signature(self.func)    # type: ignore
+        update_wrapper(wrapper=pass_along_variables, wrapped=self.func)
+        return hypothesis.strategies.builds(pass_along_variables, **kwargs)
+
+    def __call__(self, test_func: typing.Callable) -> typing.Callable:
+        @hypothesis.given(self.strategy)
+        @hypothesis.settings(
+            database=None,
+            max_examples=self.count,
+            deadline=None,
+            verbosity=hypothesis.Verbosity.quiet,
+            phases=(hypothesis.Phase.generate,),
+            suppress_health_check=hypothesis.HealthCheck.all(),
+        )
+        def test_wrapper(ex: ArgsKwargsType) -> None:
+            for validator in self.validators:
+                try:
+                    validator(*ex[0], **ex[1])
+                except Exception:
+                    hypothesis.reject()
+            case = self.make_case(*ex[0], **ex[1])
+            test_func(case)
+
+        return test_wrapper
+
+
+cases = TestCases
 
 
 class HypothesisWrapper:

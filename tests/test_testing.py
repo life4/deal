@@ -112,14 +112,14 @@ def test_disable_type_checks():
 
     # type is wrong and checked
     cases = deal.cases(bad, count=1)
-    case = next(cases)
+    case = next(iter(cases))
     msg = 'type of the return value must be str; got int instead'
     with pytest.raises(TypeError, match=msg):
         case()
 
     # type is wrong and ignored
     cases = deal.cases(bad, count=1, check_types=False)
-    case = next(cases)
+    case = next(iter(cases))
     case()
 
     def good(a: int) -> int:
@@ -127,7 +127,7 @@ def test_disable_type_checks():
 
     # type is good
     cases = deal.cases(good, count=1)
-    case = next(cases)
+    case = next(iter(cases))
     case()
 
 
