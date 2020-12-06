@@ -179,3 +179,12 @@ def test_repr():
 
     cases = deal.cases(fn)
     assert repr(cases) == 'deal.cases(fn)'
+
+
+def test_seed():
+    c1 = list(deal.cases(div1, seed=12, count=20))
+    c2 = list(deal.cases(div1, seed=12, count=20))
+    assert c1 == c2
+
+    c3 = list(deal.cases(div1, seed=34, count=20))
+    assert c2 != c3

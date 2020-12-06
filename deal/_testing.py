@@ -7,7 +7,6 @@ from inspect import signature
 import hypothesis
 import hypothesis.strategies
 import typeguard
-from hypothesis.internal.reflection import proxies
 
 # app
 from ._cached_property import cached_property
@@ -70,39 +69,8 @@ class TestCase(typing.NamedTuple):
         )
 
 
-def get_excs(func: typing.Any) -> typing.Iterator[typing.Type[Exception]]:
-    while True:
-        if getattr(func, '__closure__', None):
-            for cell in func.__closure__:
-                obj = cell.cell_contents
-                if isinstance(obj, Raises):
-                    yield from obj.exceptions
-
-        if not hasattr(func, '__wrapped__'):
-            return
-        func = func.__wrapped__
-
-
-def get_validators(func: typing.Any) -> typing.Iterator[typing.Callable]:
-    """Returns pre-condition validators.
-
-    It is used in the process of generating hypothesis strategies
-    To let hypothesis more effectively avoid wrong input values.
-    """
-    while True:
-        if getattr(func, '__closure__', None):
-            for cell in func.__closure__:
-                obj = cell.cell_contents
-                if isinstance(obj, Pre):
-                    yield obj.validate
-
-        if not hasattr(func, '__wrapped__'):
-            return
-        func = func.__wrapped__
-
-
 class TestCases:
-    """[summary]
+    """Generate test cases for the given function.
 
     :param func: the function to test. Should be type annotated.
     :type func: typing.Callable
@@ -136,6 +104,8 @@ class TestCases:
     count: int
     kwargs: typing.Dict[str, typing.Any]
     check_types: bool
+    settings: hypothesis.settings
+    seed: typing.Optional[int]
 
     def __init__(
         self,
@@ -143,12 +113,16 @@ class TestCases:
         count: int = 50,
         kwargs: typing.Dict[str, typing.Any] = None,
         check_types: bool = True,
+        settings: typing.Optional[hypothesis.settings] = None,
+        seed: typing.Optional[int] = None,
     ) -> None:
         self.func = func
         self.count = kwargs
         self.count = count
         self.kwargs = kwargs
         self.check_types = check_types
+        self.settings = settings or self._get_default_settings()
+        self.seed = seed
 
     def __iter__(self) -> typing.Iterator[TestCase]:
         cases = []
@@ -171,11 +145,42 @@ class TestCases:
 
     @cached_property
     def validators(self) -> typing.Tuple[typing.Callable, ...]:
-        return tuple(get_validators(self.func))
+        return tuple(self._get_validators(self.func))
+
+    @staticmethod
+    def _get_validators(func: typing.Any) -> typing.Iterator[typing.Callable]:
+        """Returns pre-condition validators.
+
+        It is used in the process of generating hypothesis strategies
+        To let hypothesis more effectively avoid wrong input values.
+        """
+        while True:
+            if getattr(func, '__closure__', None):
+                for cell in func.__closure__:
+                    obj = cell.cell_contents
+                    if isinstance(obj, Pre):
+                        yield obj.validate
+
+            if not hasattr(func, '__wrapped__'):
+                return
+            func = func.__wrapped__
 
     @cached_property
     def exceptions(self) -> typing.Tuple[typing.Type[Exception], ...]:
-        return tuple(get_excs(self.func))
+        return tuple(self._get_excs(self.func))
+
+    @staticmethod
+    def _get_excs(func: typing.Any) -> typing.Iterator[typing.Type[Exception]]:
+        while True:
+            if getattr(func, '__closure__', None):
+                for cell in func.__closure__:
+                    obj = cell.cell_contents
+                    if isinstance(obj, Raises):
+                        yield from obj.exceptions
+
+            if not hasattr(func, '__wrapped__'):
+                return
+            func = func.__wrapped__
 
     @cached_property
     def strategy(self) -> hypothesis.strategies.SearchStrategy:
@@ -192,9 +197,8 @@ class TestCases:
         update_wrapper(wrapper=pass_along_variables, wrapped=self.func)
         return hypothesis.strategies.builds(pass_along_variables, **kwargs)
 
-    def __call__(self, test_func: typing.Callable) -> typing.Callable:
-        @hypothesis.given(self.strategy)
-        @hypothesis.settings(
+    def _get_default_settings(self) -> hypothesis.settings:
+        return hypothesis.settings(
             database=None,
             max_examples=self.count,
             deadline=None,
@@ -202,6 +206,10 @@ class TestCases:
             phases=(hypothesis.Phase.generate,),
             suppress_health_check=hypothesis.HealthCheck.all(),
         )
+
+    def __call__(self, test_func: typing.Callable) -> typing.Callable:
+        @self.settings
+        @hypothesis.given(self.strategy)
         def test_wrapper(ex: ArgsKwargsType) -> None:
             for validator in self.validators:
                 try:
@@ -211,6 +219,8 @@ class TestCases:
             case = self.make_case(*ex[0], **ex[1])
             test_func(case)
 
+        if self.seed is not None:
+            test_wrapper = hypothesis.seed(self.seed)(test_wrapper)
         return test_wrapper
 
 
