@@ -24,6 +24,12 @@
 .. literalinclude:: ../../examples/div.py
 ```
 
+## fuzzing
+
+```eval_rst
+.. literalinclude:: ../../examples/fuzzing.py
+```
+
 ## index_of
 
 ```eval_rst

@@ -188,3 +188,39 @@ def test_seed():
 
     c3 = list(deal.cases(div1, seed=34, count=20))
     assert c2 != c3
+
+
+def test_run_ok():
+    test = deal.cases(div1)
+    test.run()
+
+
+def test_run_fail():
+    @deal.safe
+    def div(a: int, b: int):
+        return a / b
+
+    test = deal.cases(div, seed=1)
+    with pytest.raises(deal.RaisesContractError):
+        test.run()
+
+
+def test_fuzz_propagate():
+    @deal.safe
+    def div(a: str):
+        assert type(a) is str
+        raise ZeroDivisionError
+
+    cases = deal.cases(div, seed=1)
+    with pytest.raises(deal.RaisesContractError):
+        cases.fuzz(b'g`\xf8\xb07\xf8\xea9')
+
+
+def test_fuzz_bad_input():
+    @deal.safe
+    def div(a: str):
+        raise ZeroDivisionError
+
+    cases = deal.cases(div, seed=1)
+    res = cases.fuzz(b'')
+    assert res is None

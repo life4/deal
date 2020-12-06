@@ -234,5 +234,13 @@ class TestCases:
             test_wrapper = hypothesis.seed(self.seed)(test_wrapper)
         return test_wrapper
 
+    @cached_property
+    def run(self) -> typing.Callable[[], None]:
+        return self(lambda case: case())
+
+    @cached_property
+    def fuzz(self) -> typing.Callable[[typing.Any], typing.Any]:
+        return self.run.hypothesis.fuzz_one_input
+
 
 cases = TestCases
