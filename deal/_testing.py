@@ -157,10 +157,8 @@ class TestCases:
         yield from cases
 
     def __repr__(self) -> str:
-        return '{n}({f})'.format(
-            n=type(self).__name__,
-            f=repr(self.func),
-        )
+        fname = getattr(self.func, '__name__', repr(self.func))
+        return 'deal.cases({})'.format(fname)
 
     def make_case(self, *args, **kwargs) -> TestCase:
         return TestCase(
@@ -217,72 +215,3 @@ class TestCases:
 
 
 cases = TestCases
-
-
-class HypothesisWrapper:
-    func: typing.Callable
-    check_types: bool = True
-
-    def __init__(self, func: typing.Callable, check_types: bool):
-        self.func = func  # type: ignore
-        self.check_types = check_types
-
-    @cached_property
-    def validators(self):
-        return tuple(get_validators(self.func))
-
-    @cached_property
-    def exceptions(self):
-        return tuple(get_excs(self.func))
-
-    def make_case(self, *args, **kwargs) -> TestCase:
-        return TestCase(
-            args=args,
-            kwargs=kwargs,
-            func=self.func,
-            exceptions=self.exceptions,
-            check_types=self.check_types,
-        )
-
-    def __call__(self, *args, **kwargs):
-        for validator in self.validators:
-            try:
-                validator(*args, **kwargs)
-            except Exception:
-                hypothesis.reject()
-        case = self.make_case(*args, **kwargs)
-        return case()
-
-
-def hypothesis_wrapper(func: typing.Callable, check_types: bool = True) -> HypothesisWrapper:
-    """Wrapper for a function to communicate back into [hypothesis][hypothesis] contract violations.
-
-    ```pycon
-    >>> import deal
-    >>> import hypothesis
-    >>> import hypothesis.strategies as st
-
-    >>> @deal.raises(ZeroDivisionError)
-    >>> def div(a: int, b: int) -> float:
-    ...     return a / b
-
-    >>> @hypothesis.given(
-    ...     a=st.integers(),
-    ...     b=st.integers(),
-    ... )
-    ... def test_div(a, b):
-    ...     func = deal.hypothesis(div)
-    ...     func(a, b)
-    ...
-    >>> test_div()
-    ```
-    See [hypothesis integration][hypoint] documentation for more details.
-
-    [hypothesis]: https://hypothesis.readthedocs.io/en/latest/
-    [hypoint]: https://deal.readthedocs.io/details/tests.html#hypothesis-integration
-    """
-    wrapper = HypothesisWrapper(
-        func=func,
-        check_types=check_types,
-    )
-    return proxies(func)(wrapper)

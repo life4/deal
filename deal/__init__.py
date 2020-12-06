@@ -19,12 +19,11 @@ from ._exceptions import *  # noQA
 from ._imports import activate, module_load
 from ._schemes import Scheme
 from ._state import disable, enable, reset
-from ._testing import TestCase, cases, hypothesis_wrapper as hypothesis
+from ._testing import TestCase, cases
 
 
 __all__ = [
     'cases',
-    'hypothesis',
     'Scheme',
     'TestCase',
 

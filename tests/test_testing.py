@@ -150,41 +150,32 @@ def test_type_var():
         case()
 
 
-@hypothesis.given(
-    a=hypothesis.strategies.integers(),
-    b=hypothesis.strategies.integers(),
-)
-def test_hypothesis_div1_smoke(a, b):
-    func = deal.hypothesis(div1)
-    func(a, b)
+@deal.cases(div1)
+def test_decorator_div1_smoke(case):
+    case()
 
 
-@hypothesis.settings(
-    suppress_health_check=(
-        hypothesis.HealthCheck.filter_too_much,
-    ),
-)
-@hypothesis.given(
-    a=hypothesis.strategies.integers(),
-    b=hypothesis.strategies.integers(),
-)
-def test_hypothesis_div2_smoke(a, b):
-    func = deal.hypothesis(div2)
-    func(a, b)
+@deal.cases(div2)
+def test_decorator_div2_smoke(case):
+    case()
 
 
-def test_hypothesis_reject_bad():
-    func = deal.hypothesis(div2)
-    with pytest.raises(hypothesis.errors.UnsatisfiedAssumption):
-        func(a=4, b=-2)
+@deal.cases(div2)
+def test_decorator_rejects_bad(case):
+    assert case.kwargs['a'] > 0
+    assert case.kwargs['b'] > 0
+    case()
 
 
-def test_hypothesis_accept_good():
-    func = deal.hypothesis(div2)
-    func(a=4, b=8)
-
-
-def test_hypothesis_suppress_raises():
-    func = deal.hypothesis(div1)
-    result = func(a=4, b=0)
+@deal.cases(div1, kwargs=dict(b=0))
+def test_decorator_suppress_raises(case):
+    result = case()
     assert result is NoReturn
+
+
+def test_repr():
+    def fn():
+        pass
+
+    cases = deal.cases(fn)
+    assert repr(cases) == 'deal.cases(fn)'
