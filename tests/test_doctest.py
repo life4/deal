@@ -1,12 +1,14 @@
 # built-in
 import doctest
 import re
+from itertools import chain
 
 # external
 import pytest
 
 # project
 import deal._aliases
+import deal._testing
 from deal._state import state
 
 
@@ -28,11 +30,14 @@ class Checker(doctest.OutputChecker):
 finder = doctest.DocTestFinder(exclude_empty=True)
 
 
-@pytest.mark.parametrize('test', finder.find(deal._aliases))
+@pytest.mark.parametrize('test', chain(
+    finder.find(deal._aliases),
+    finder.find(deal._testing),
+))
 def test_doctest(test):
     state.color = False
     try:
-        runner = doctest.DocTestRunner(checker=Checker())
+        runner = doctest.DocTestRunner(checker=Checker(), optionflags=doctest.ELLIPSIS)
         runner.run(test)
         result = runner.summarize(verbose=False)
         if result.failed:

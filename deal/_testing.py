@@ -14,6 +14,11 @@ from ._decorators import Pre, Raises
 from ._types import ArgsKwargsType
 
 
+F = typing.Callable[..., None]
+FuzzInputType = typing.Union[bytes, bytearray, memoryview, typing.BinaryIO]
+FuzzType = typing.Callable[[FuzzInputType], typing.Optional[bytes]]
+
+
 class TestCase(typing.NamedTuple):
     """A callable object, wrapper around a function that must be tested.
 
@@ -71,6 +76,10 @@ class TestCase(typing.NamedTuple):
 
 class TestCases:
     """Generate test cases for the given function.
+
+    If you're reading it from the documentation rather than source code,
+    keep in mind that sphinx skipped some of the docstrings:
+    https://github.com/sphinx-doc/sphinx/issues/7787
     """
 
     func: typing.Callable
@@ -100,6 +109,20 @@ class TestCases:
         settings: typing.Optional[hypothesis.settings] = None,
         seed: typing.Optional[int] = None,
     ) -> None:
+        """
+        Create test cases generator.
+
+        ```pycon
+        >>> import deal
+        >>> @deal.pre(lambda a, b: b != 0)
+        ... def div(a: int, b: int) -> float:
+        ...   return a / b
+        ...
+        >>> cases = iter(deal.cases(div))
+        >>>
+        ```
+
+        """
         self.func = func  # type: ignore
         self.count = count
         self.kwargs = kwargs or {}
@@ -121,10 +144,10 @@ class TestCases:
         ...
         >>> cases = iter(deal.cases(div))
         >>> next(cases)
-        TestCase(args=(), kwargs=..., func=<function div ...>, exceptions=(<class 'PreContractError'>,))
-        >>> case = next(cases)
-        >>> case()  # execute the test case
-        ...
+        TestCase(args=(), kwargs=..., func=<function div ...>, exceptions=(), check_types=True)
+        >>> for case in cases:
+        ...   result = case()  # execute the test case
+        >>>
         ```
 
         """
@@ -218,7 +241,99 @@ class TestCases:
             suppress_health_check=hypothesis.HealthCheck.all(),
         )
 
-    def __call__(self, test_func: typing.Callable[..., None]) -> typing.Callable[..., None]:
+    @typing.overload
+    def __call__(self, test_func: F) -> F:
+        """Wrap a function to turn it into a proper Hypothesis test.
+
+        This is the recommend way to use `deal.cases`. It is powerful and extendable.
+
+        ```python
+        >>> import deal
+        >>> @deal.pre(lambda a, b: b != 0)
+        ... def div(a: int, b: int) -> float:
+        ...   return a / b
+        ...
+        >>> @deal.cases(div)
+        ... def test_div(case):
+        ...   ...     # do something before
+        ...   case()  # run the test case
+        ...   ...     # do something after
+        ...
+        >>> test_div()  # run all test cases for `div`
+        >>>
+        ```
+
+        """
+
+    @typing.overload
+    def __call__(self) -> None:
+        """Generate and run tests for a function.
+
+        This is the fastest way to generate tests for a function.
+
+        ```python
+        >>> import deal
+        >>> @deal.pre(lambda a, b: b != 0)
+        ... def div(a: int, b: int) -> float:
+        ...   return a / b
+        ...
+        >>> test_div = deal.cases(div)
+        >>> test_div()  # run the test
+        ```
+
+        """
+
+    @typing.overload
+    def __call__(self, buffer: FuzzInputType) -> typing.Optional[bytes]:
+        """Use a function as a fuzzing target.
+
+        This is a way to provide a random buffer for Hypothesis.
+        It can be helpful for heavy testing of something really critical.
+
+        ```python
+        >>> import deal
+        >>> @deal.pre(lambda a, b: b != 0)
+        ... def div(a: int, b: int) -> float:
+        ...   return a / b
+        ...
+        >>> # For sake of doctest, we just mock fuzzer here
+        >>> # but you need to use `import atheris` instead.
+        >>> from unittest.mock import Mock
+        >>> atheris = Mock()
+        >>>
+        >>> test_div = deal.cases(div)
+        >>> atheris.Setup([], test_div)
+        ...
+        >>> atheris.Fuzz()
+        ...
+        ```
+
+        """
+
+    def __call__(self, target=None):
+        """Allows deal.cases to be used as decorator, test function, or fuzzing target.
+        """
+        if target is None:
+            self._run()
+            return None
+        if callable(target):
+            return self._wrap(target)
+        return self._fuzz(target)
+
+    # a hack to make the test discoverable by pytest
+    @property
+    def __func__(self) -> F:
+        return self._run
+
+    @cached_property
+    def _run(self) -> F:
+        return self._wrap(lambda case: case())
+
+    @cached_property
+    def _fuzz(self) -> FuzzType:
+        return self._run.hypothesis.fuzz_one_input
+
+    def _wrap(self, test_func: F) -> F:
         @self.settings
         @hypothesis.given(self.strategy)
         def test_wrapper(ex: ArgsKwargsType) -> None:
@@ -233,14 +348,6 @@ class TestCases:
         if self.seed is not None:
             test_wrapper = hypothesis.seed(self.seed)(test_wrapper)
         return test_wrapper
-
-    @cached_property
-    def run(self) -> typing.Callable[[], None]:
-        return self(lambda case: case())
-
-    @cached_property
-    def fuzz(self) -> typing.Callable[[typing.Any], typing.Any]:
-        return self.run.hypothesis.fuzz_one_input
 
 
 cases = TestCases

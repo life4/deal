@@ -28,6 +28,19 @@ def div2(a: int, b: int) -> float:
     return a / b
 
 
+test_div1_short = deal.cases(div1)
+test_div2_short = deal.cases(div2)
+
+
+def test_short_version_is_discoverable():
+    from _pytest.python import PyCollector
+
+    collector = PyCollector.__new__(PyCollector)
+    collector._matches_prefix_or_glob_option = lambda *args: True
+    test = deal.cases(div1)
+    assert collector.istestfunction(test, 'test_div') is True
+
+
 def test_count():
     for count in (1, 10, 20, 50):
         cases = deal.cases(div1, count=count)
@@ -192,7 +205,8 @@ def test_seed():
 
 def test_run_ok():
     test = deal.cases(div1)
-    test.run()
+    res = test()
+    assert res is None
 
 
 def test_run_fail():
@@ -202,7 +216,7 @@ def test_run_fail():
 
     test = deal.cases(div, seed=1)
     with pytest.raises(deal.RaisesContractError):
-        test.run()
+        test()
 
 
 def test_fuzz_propagate():
@@ -213,7 +227,7 @@ def test_fuzz_propagate():
 
     cases = deal.cases(div, seed=1)
     with pytest.raises(deal.RaisesContractError):
-        cases.fuzz(b'g`\xf8\xb07\xf8\xea9')
+        cases(b'g`\xf8\xb07\xf8\xea9')
 
 
 def test_fuzz_bad_input():
@@ -222,5 +236,5 @@ def test_fuzz_bad_input():
         raise ZeroDivisionError
 
     cases = deal.cases(div, seed=1)
-    res = cases.fuzz(b'')
+    res = cases(b'')
     assert res is None

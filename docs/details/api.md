@@ -28,7 +28,9 @@
 ## Testing
 
 ```eval_rst
-.. autofunction:: deal.cases
+.. autoclass:: deal._testing.TestCases
+    :members:
+    :special-members:
 
 .. autoclass:: deal.TestCase
     :members:

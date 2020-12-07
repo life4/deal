@@ -16,8 +16,8 @@ def decode(text: str) -> str:
 
 
 def fuzz():
-    cases = deal.cases(decode)
-    atheris.Setup(sys.argv, cases.fuzz)
+    test = deal.cases(decode)
+    atheris.Setup(sys.argv, test)
     atheris.Fuzz()
 
 
