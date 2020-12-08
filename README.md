@@ -45,7 +45,7 @@ def count(items: List[str], item: str) -> int:
     return items.count(item)
 
 # test case
-@pytest.mark.parametrize('case', deal.cases(count))
+@deal.cases(count)
 def test_count(case: deal.TestCase):
     case()
 ```

@@ -1,9 +1,6 @@
 # built-in
 from typing import List
 
-# external
-import pytest
-
 # project
 import deal
 
@@ -41,6 +38,4 @@ def index_of(items: List[int], item: int) -> int:
     raise LookupError
 
 
-@pytest.mark.parametrize('case', deal.cases(index_of))
-def test_index_of(case):
-    case()
+test_index_of = deal.cases(index_of)

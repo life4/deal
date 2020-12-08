@@ -1,15 +1,11 @@
-from typing import List, TypeVar
+from typing import List
 
 import deal
-import pytest
-
-
-T = TypeVar('T')
 
 
 @deal.pre(lambda items: len(items) > 0)
 @deal.has()
-def my_min(items: List[T]) -> T:
+def my_min(items: List[int]) -> int:
     return min(items)
 
 
@@ -21,6 +17,4 @@ def example():
     print(my_min([]))
 
 
-@pytest.mark.parametrize('case', deal.cases(my_min))
-def test_min(case):
-    case()
+test_min = deal.cases(my_min)

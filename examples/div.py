@@ -1,6 +1,3 @@
-# external
-import pytest
-
 # project
 import deal
 
@@ -27,14 +24,5 @@ def div2(left: float, right: float) -> float:
     return left / right
 
 
-# TESTS
-
-
-@pytest.mark.parametrize('case', deal.cases(div1))
-def test_div1(case):
-    case()
-
-
-@pytest.mark.parametrize('case', deal.cases(div2))
-def test_div2(case):
-    case()
+test_div1 = deal.cases(div1)
+test_div2 = deal.cases(div2)
