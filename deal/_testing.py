@@ -47,6 +47,7 @@ class TestCase(typing.NamedTuple):
         """Calls the given test case returning the called functions result on success or
         Raising an exception on error
         """
+        __tracebackhide__ = True
         try:
             result = self.func(*self.args, **self.kwargs)
         except self.exceptions:
@@ -313,6 +314,7 @@ class TestCases:
     def __call__(self, target=None):
         """Allows deal.cases to be used as decorator, test function, or fuzzing target.
         """
+        __tracebackhide__ = True
         if target is None:
             self._run()
             return None
@@ -337,6 +339,7 @@ class TestCases:
         @self.settings
         @hypothesis.given(self.strategy)
         def test_wrapper(ex: ArgsKwargsType) -> None:
+            __tracebackhide__ = True
             for validator in self.validators:
                 try:
                     validator(*ex[0], **ex[1])
