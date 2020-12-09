@@ -27,8 +27,10 @@
 
 ## Testing
 
+Keep in mind that sphinx [skipped some of the docstrings](https://github.com/sphinx-doc/sphinx/issues/7787) for `deal.cases`.
+
 ```eval_rst
-.. autoclass:: deal._testing.TestCases
+.. autoclass:: deal.cases
     :members:
     :special-members:
 

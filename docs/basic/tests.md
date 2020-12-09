@@ -6,24 +6,37 @@ Deal can automatically test your functions. First of all, your function has to b
 1. All exceptions that function can raise are specified in [@deal.raises](side-effects).
 1. All pre-conditions are specified with [@deal.pre](values).
 
-Then use `deal.cases` to get test cases for the function. Every case is a callable object that gets no arguments. Calling it will call the original function with suppressing allowed exceptions.
-
-## Example
-
 ```python
 @deal.raises(ZeroDivisionError)
 @deal.pre(lambda a, b: a >= 0 and b >= 0)
 def div(a: int, b: int) -> float:
     return a / b
+```
 
+Then you can use `deal.cases` to generate test cases for the function. This is a polimorphic object that can be used in many ways.
 
-for case in deal.cases(div):
+Here is the shortest way to create a test:
+
+```python
+test_div = deal.cases(div)
+```
+
+It is enough for [pytest](https://docs.pytest.org/en/latest/) to find and run the test. Or you can run it manually by just calling it: `test_div()`.
+
+However, it is not scalable. What if we want to use a pytest fixture? What if we need to prepare something before running the test case? Or what if we want to check additional conditions? So, let's make a proper test function:
+
+```python
+# type annotations below are optional
+@deal.cases(div)
+def test_div(case: deal.TestCase) -> None:
     case()
 ```
 
+In this example, when we (or pytest) call `test_div()`, deal will generate test cases (using [hypothesis](https://hypothesis.readthedocs.io/en/latest/)) and run the function body for every case. The test function itself decides when to execute the test case. Here `case` is an instance of [deal.TestCase](../details/api.html#deal.TestCase) class.
+
 ## CLI
 
-There is a CLI command named `test`. It extracts `@deal.has()` (without arguments) wrapped functions and runs `deal.cases` powered tests for it.
+There is a CLI command named `test`. It extracts `deal.pure` and `@deal.has()` (without arguments) wrapped functions and runs `deal.cases` powered tests for it.
 
 ```bash
 python3 -m deal test project/*.py
@@ -34,28 +47,6 @@ The command is helpful when you don't have tests for some pure functions yet but
 For every ran function, deal calculates and shows coverage. This is a helpful indication on how good deal was at finding the correct input values.
 
 ![test command output](../../assets/test.png)
-
-## PyTest
-
-A simple snippet to use `deal.cases` with [pytest](https://docs.pytest.org/en/latest/) (type annotations for the test function are optional):
-
-```python
-@pytest.mark.parametrize('case', deal.cases(div))
-def test_div(case: deal.TestCase) -> None:
-    case()
-```
-
-## How it works
-
-1. Deal generates random values for all function arguments with [hypothesis](https://hypothesis.readthedocs.io/en/latest/).
-1. For every arguments combination `deal.cases` returns `deal.TestCase` object.
-1. `deal.TestCase` on calling is doing the next steps:
-    1. Calling the original function with all decorators and contracts.
-    1. Suppressing exceptions from `deal.pre` and `deal.raises`. In that case, `typing.NoReturn` returned.
-    1. Validating type of the function result if it's annotated.
-    1. Returning the function result.
-
-All uncatched exceptions are raised: everything you forgot to specify in `@deal.raises`, `deal.PostContractError`, `deal.OfflineContractError` etc.
 
 ## Configuring
 
@@ -71,16 +62,7 @@ Explicitly specify arguments to pass into the function:
 deal.cases(div, kwargs=dict(b=3))
 ```
 
-## deal.TestCase
-
-`deal.TestCase` object has the next attributes:
-
-+ `case.args` -- tuple of positional arguments that will be passed into the original function.
-+ `case.kwargs` -- dict of keyword arguments that will be passed into the original function.
-+ `case.func` -- the original function itself
-+ `case.exceptions` -- tuple of all exceptions that will be ignored.
-
-When called, `case` calls `case.func` and returns the call result. If an exception from `case.exceptions` was raised, `typing.NoReturn` returned.
+See [deal.cases](../details/api.html#deal.cases) API documentation and [More about testing](../details/tests) for details.
 
 ## Practical example
 
@@ -140,7 +122,8 @@ And tests, after all, the easiest part. Let's make it a little bit interesting a
 
 ```python
 # test and make examples
-for case in deal.cases(index_of, count=1000):
+@deal.cases(index_of, count=1000)
+def test_div(case):
     # run test case
     result = case()
     if result is not NoReturn:

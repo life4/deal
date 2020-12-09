@@ -75,12 +75,8 @@ class TestCase(typing.NamedTuple):
         )
 
 
-class TestCases:
+class cases:  # noqa: N
     """Generate test cases for the given function.
-
-    If you're reading it from the documentation rather than source code,
-    keep in mind that sphinx skipped some of the docstrings:
-    https://github.com/sphinx-doc/sphinx/issues/7787
     """
 
     func: typing.Callable
@@ -119,7 +115,7 @@ class TestCases:
         ... def div(a: int, b: int) -> float:
         ...   return a / b
         ...
-        >>> cases = iter(deal.cases(div))
+        >>> cases = deal.cases(div)
         >>>
         ```
 
@@ -351,6 +347,3 @@ class TestCases:
         if self.seed is not None:
             test_wrapper = hypothesis.seed(self.seed)(test_wrapper)
         return test_wrapper
-
-
-cases = TestCases
