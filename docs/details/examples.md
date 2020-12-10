@@ -24,10 +24,16 @@
 .. literalinclude:: ../../examples/div.py
 ```
 
-## fuzzing
+## fuzzing_atheris
 
 ```eval_rst
-.. literalinclude:: ../../examples/fuzzing.py
+.. literalinclude:: ../../examples/fuzzing_atheris.py
+```
+
+## fuzzing_pythonfuzz
+
+```eval_rst
+.. literalinclude:: ../../examples/fuzzing_pythonfuzz.py
 ```
 
 ## index_of

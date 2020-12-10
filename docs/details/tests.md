@@ -35,7 +35,7 @@ If the function fails, the command will ignore it and still test the function fo
 
 ## Constant value for arguments
 
-The function `deal.cases` accepts `kwargs` argument where you can specify constant values for the function arguments. For example:
+The `deal.cases` constructor accepts `kwargs` argument where you can specify constant values for the function arguments. For example:
 
 ```python
 @deal.raises(ZeroDivisionError)
@@ -45,15 +45,14 @@ def div(a: int, b: int) -> float:
 
 # Every test case calls `div` function with `a=1`.
 # So, random values are generated only for `b`.
-for case in deal.cases(div, kwargs=dict(a=1)):
+@deal.cases(div, kwargs=dict(a=1))
+def test_div(case):
     case()
 ```
 
-## Hypothesis integration
+## Custom strategies
 
-Under the hood, `deal.cases` uses [hypothesis](https://hypothesis.readthedocs.io/en/latest/index.html) testing framework to generate test cases. This sacred knowledge empowered by reading hypothesis documentation provides you an opportunity to tweak test cases generation to make it more precise.
-
-First of all, `kwargs` argument of `deal.cases` can contain hypothesis strategies:
+Under the hood, `deal.cases` uses [hypothesis](https://hypothesis.readthedocs.io/en/latest/index.html) testing framework to generate test cases. The trick is that `kwargs` argument of `deal.cases` can contain hypothesis strategies:
 
 ```python
 import hypothesis.strategies as st
@@ -73,23 +72,56 @@ for case in cases:
     case()
 ```
 
-If you want a better integration with hypothesis (like settings, shrinking, reports, repeat, and so on), you can directly use hypothesis and wrap the function into `deal.hypothesis`. In this way, deal will communicate back into hypothesis when the generated strategy doesn't satisfy the contract or when the function failure is expected.
+## Reproducible failures
+
+Argument `seed` of `deal.cases` is a random seed. That means, for the same seed value you always get the same test cases. It is a must-have thing for CI. There are a few important things:
+
++ If the seed is different for diferrent pipelines, it will run a bit different test cases every time which increases your chances to find a tricky corner case.
++ If the seed is the same when you re-run the same job, it will help you to identify flaky tests. In other words, if a CI job fails, you re-run it, and it passes, it was a flaky test which happens because of tricky side-effects (database connection failed, another test changed a state etc.) and it will be hard to reproduce. However, if re-run fails with the same error, most probably it is a failure that you can easily reproduce and debug locally, knowing the seed.
++ The seed should be shown in the CI job to make it possible to use it locally to reproduce a failure. It is either printed in the job output or is something known like the pipeline run number.
+
+There is an example for GitLab CI:
 
 ```python
-import hypothesis
-import hypothesis.strategies as st
+import sys
+import deal
 
-@deal.raises(ZeroDivisionError)
-def div(a: int, b: int) -> float:
-    return a / b
+seed = None
+if os.environ.get('CI'):
+    seed = int(os.environ['CI_PIPELINE_ID'])
 
-@hypothesis.given(
-    a=st.integers(),
-    b=st.integers(),
-)
-def test_div(a, b):
-    func = deal.hypothesis(div)
-    func(a, b)
-
-test_div()
+@deal.cases(div, seed=seed)
+def test_div(case):
+    case()
 ```
+
+## Fuzzing
+
+[Fuzzer](https://en.wikipedia.org/wiki/Fuzzing) is when an external tool or library (fuzzer) generates a bunch of random data in hope to break your program. That means, fuzzing requires a lot of resources and is performance-critical. This is why most of the fuzzers are written on C. However, there are few Python wrappers for existing fuzzers, with awful interface but working:
+
++ [atheris](https://github.com/google/atheris)
++ [python-afl](https://github.com/jwilk/python-afl)
++ [pythonfuzz](https://gitlab.com/gitlab-org/security-products/analyzers/fuzzers/pythonfuzz)
+
+The `deal.cases` object can be used as a target for any fuzzer.
+
+Atheris example:
+
+```python
+import atheris
+
+test = deal.cases(div)
+atheris.Setup([], test)
+atheris.Fuzz()
+```
+
+PythonFuzz:
+
+```python
+from pythonfuzz.main import PythonFuzz
+
+test = deal.cases(div)
+PythonFuzz(test)()
+```
+
+See [Examples](./examples.html#fuzzing-atheris) page for full working examples.
