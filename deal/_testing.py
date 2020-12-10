@@ -124,7 +124,7 @@ class cases:  # noqa: N
         self.count = count
         self.kwargs = kwargs or {}
         self.check_types = check_types
-        self.settings = settings or self._get_default_settings()
+        self.settings = settings or self._default_settings
         self.seed = seed
 
     def __iter__(self) -> typing.Iterator[TestCase]:
@@ -228,14 +228,19 @@ class cases:  # noqa: N
         update_wrapper(wrapper=pass_along_variables, wrapped=self.func)
         return hypothesis.strategies.builds(pass_along_variables, **kwargs)
 
-    def _get_default_settings(self) -> hypothesis.settings:
+    @property
+    def _default_settings(self) -> hypothesis.settings:
         return hypothesis.settings(
             database=None,
             max_examples=self.count,
-            deadline=None,
+            # avoid showing deal guts
             verbosity=hypothesis.Verbosity.quiet,
-            phases=(hypothesis.Phase.generate,),
-            suppress_health_check=hypothesis.HealthCheck.all(),
+            # raise the original exception instead of a fake one
+            report_multiple_bugs=False,
+            # print how to reproduce the failure
+            print_blob=True,
+            # if too many cases rejected, it is deal to blame
+            suppress_health_check=[hypothesis.HealthCheck.filter_too_much],
         )
 
     @typing.overload
