@@ -36,6 +36,12 @@
 .. literalinclude:: ../../examples/fuzzing_pythonfuzz.py
 ```
 
+## using_hypothesis
+
+```eval_rst
+.. literalinclude:: ../../examples/using_hypothesis.py
+```
+
 ## index_of
 
 ```eval_rst

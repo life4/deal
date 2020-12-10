@@ -125,3 +125,20 @@ PythonFuzz(test)()
 ```
 
 See [Examples](./examples.html#fuzzing-atheris) page for full working examples.
+
+## Iteration over cases
+
+The `deal.cases` object can be used not only as a function or decorator but also as an iterable. On iteration, it emits the test cases, so you can have more control over what and when to run:
+
+```python
+for case in deal.cases(div):
+    case()
+```
+
+However, in this case deal doesn't know which cases have failed and can't provide that information back into hypothesis for shrinking (finding the smallest example to reproduce a failure). So while it is the same as decorator when everything is fine, it will provide a bit uglier report on failure.
+
+## Mixing with Hypothesis
+
+Under the hood, deal uses hypothesis to generate test cases. So, we can mix `deal.cases` with hypothesis decorators. The only exception is `hypothesis.settings` which should be passed into `deal.cases` as `settings` argument because hypothesis doesn't support application of settings twice but deal applies its own default settings.
+
+See [using_hypothesis](./examples.html#using-hypothesis) example.
