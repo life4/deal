@@ -2,7 +2,6 @@
 import typing
 from functools import update_wrapper
 from inspect import signature
-from types import LambdaType
 
 # external
 import hypothesis
