@@ -238,3 +238,20 @@ def test_fuzz_bad_input():
     cases = deal.cases(div, seed=1)
     res = cases(b'')
     assert res is None
+
+
+def test_pass_fixtures():
+    @deal.safe
+    def div(a: str):
+        raise ZeroDivisionError
+
+    @deal.cases(div)
+    def test_div1(case, fixt):
+        assert fixt == 13
+        case()
+
+    with pytest.raises(deal.RaisesContractError):
+        test_div1(fixt=13)
+
+    with pytest.raises(deal.RaisesContractError):
+        test_div1(13)

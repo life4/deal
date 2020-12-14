@@ -2,11 +2,13 @@
 import typing
 from functools import update_wrapper
 from inspect import signature
+from types import LambdaType
 
 # external
 import hypothesis
 import hypothesis.strategies
 import typeguard
+from hypothesis.internal.reflection import proxies
 
 # app
 from ._cached_property import cached_property
@@ -337,9 +339,8 @@ class cases:  # noqa: N
         return self._run.hypothesis.fuzz_one_input
 
     def _wrap(self, test_func: F) -> F:
-        @self.settings
-        @hypothesis.given(self.strategy)
-        def test_wrapper(ex: ArgsKwargsType) -> None:
+        def wrapper(case: ArgsKwargsType, *args, **kwargs) -> None:
+            ex = case
             __tracebackhide__ = True
             for validator in self.validators:
                 try:
@@ -347,8 +348,21 @@ class cases:  # noqa: N
                 except Exception:
                     hypothesis.reject()
             case = self.make_case(*ex[0], **ex[1])
-            test_func(case)
+            test_func(case, *args, **kwargs)
 
+        wrapper = self._impersonate(wrapper=wrapper, wrapped=test_func)
+        wrapper = hypothesis.given(case=self.strategy)(wrapper)
+        wrapper = self.settings(wrapper)
         if self.seed is not None:
-            test_wrapper = hypothesis.seed(self.seed)(test_wrapper)
-        return test_wrapper
+            wrapper = hypothesis.seed(self.seed)(wrapper)
+        return wrapper
+
+    @staticmethod
+    def _impersonate(wrapper: F, wrapped: F) -> F:
+        if not hasattr(wrapped, '__code__'):
+            def wrapped(case):
+                pass
+        wrapper = proxies(wrapped)(wrapper)
+        if wrapper.__name__ == '<lambda>':
+            wrapper.__name__ = 'test_func'
+        return wrapper

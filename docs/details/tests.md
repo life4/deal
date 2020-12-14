@@ -105,7 +105,7 @@ def test_div(case):
 
 The `deal.cases` object can be used as a target for any fuzzer.
 
-Atheris example:
+Atheris:
 
 ```python
 import atheris
