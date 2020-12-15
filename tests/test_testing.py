@@ -255,3 +255,19 @@ def test_pass_fixtures():
 
     with pytest.raises(deal.RaisesContractError):
         test_div1(13)
+
+
+def test_reproduce_failure():
+    @deal.safe
+    def div(a: str):
+        assert a == ''
+        raise ZeroDivisionError
+
+    @hypothesis.reproduce_failure(hypothesis.__version__, b'AAA=')
+    @deal.cases(div)
+    def test_div(case):
+        assert case.kwargs == dict(a='')
+        case()
+
+    with pytest.raises(deal.RaisesContractError):
+        test_div()

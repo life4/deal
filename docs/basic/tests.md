@@ -32,7 +32,7 @@ def test_div(case: deal.TestCase) -> None:
     case()
 ```
 
-In this example, when we (or pytest) call `test_div()`, deal will generate test cases (using [hypothesis](https://hypothesis.readthedocs.io/en/latest/)) and run the function body for every case. The test function itself decides when to execute the test case. Here `case` is an instance of [deal.TestCase](../details/api.html#deal.TestCase) class.
+In this example, when we (or pytest) call `test_div()`, deal will generate test cases (using [hypothesis](https://hypothesis.readthedocs.io/en/latest/)) and run the function body for every case. The test function itself decides when to execute the test case. Here `case` is an instance of [deal.TestCase](../details/api.html#deal.TestCase) class. This form works as expected with pytest fixtures if the test case is the first argument and has the name `case`.
 
 ## CLI
 

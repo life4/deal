@@ -22,5 +22,5 @@ def test_min(case):
     case()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     test_min()
