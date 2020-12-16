@@ -31,6 +31,21 @@ BIN_OPERATIONS = {
     '*': operator.mul,
     '/': operator.truediv,
     '**': operator.pow,
+    '//': operator.floordiv,
+    '%': operator.mod,
+    '@': operator.matmul,
+
+    # bitwise
+    '&': operator.and_,
+    '|': operator.or_,
+    '^': operator.xor,
+    '~': operator.inv,
+    '<<': operator.lshift,
+    '>>': operator.rshift,
+}
+BOOL_OPERATIONS = {
+    'and': z3.And,
+    'or': z3.Or,
 }
 
 
@@ -71,6 +86,24 @@ def eval_compare(node: astroid.Compare, ctx: Context):
         rights = list(eval_expr(node=right_node, ctx=ctx))
         yield from rights[:-1]
         yield operation(lefts[-1], rights[-1])
+
+
+@eval_expr.register(astroid.BoolOp)
+def eval_bool_op(node: astroid.BoolOp, ctx: Context):
+    if not node.op:
+        raise UnsupportedError('unsupported operator', node.op)
+    operation = BOOL_OPERATIONS.get(node.op)
+    if not operation:
+        raise UnsupportedError(repr(node.op))
+    if not node.values:
+        raise UnsupportedError('empty bool operator')
+
+    subnodes = []
+    for subnode in node.values:
+        rights = list(eval_expr(node=subnode, ctx=ctx))
+        yield from rights[:-1]
+        subnodes.append(rights[-1])
+    yield operation(*subnodes)
 
 
 @eval_expr.register(astroid.Assign)

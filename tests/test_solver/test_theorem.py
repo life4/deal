@@ -45,9 +45,41 @@ def test_assert_add_int():
     assert theorem.conclusion is Conclusion.OK
 
 
+def test_assert_add_int_chain():
+    theorem = prove_f("""
+        def f():
+            assert 3 + 4 + 9 == 16
+    """)
+    assert theorem.conclusion is Conclusion.OK
+
+
 def test_assert_substract_int():
     theorem = prove_f("""
         def f():
             assert 5 - 2 == 3
     """)
     assert theorem.conclusion is Conclusion.OK
+
+
+def test_assert_lt_float():
+    theorem = prove_f("""
+        def f():
+            assert 5.1 < 5.2
+    """)
+    assert theorem.conclusion is Conclusion.OK
+
+
+def test_assert_and_ok():
+    theorem = prove_f("""
+        def f():
+            assert True and True
+    """)
+    assert theorem.conclusion is Conclusion.OK
+
+
+def test_assert_and_fail():
+    theorem = prove_f("""
+        def f():
+            assert True and False
+    """)
+    assert theorem.conclusion is Conclusion.FAIL
