@@ -106,12 +106,11 @@ def eval_bool_op(node: astroid.BoolOp, ctx: Context):
     yield operation(*subnodes)
 
 
-@eval_expr.register(astroid.Assign)
-def eval_assign(node: astroid.Assign, ctx: Context):
-    if not node.targets:
-        raise UnsupportedError('assignment to an empty target')
-    if len(node.targets) > 1:
-        raise UnsupportedError('multiple assignment')
-    # target = node.targets[0]
-    ...
-    raise UnsupportedError()
+@eval_expr.register(astroid.Name)
+def eval_name(node: astroid.Name, ctx: Context):
+    if not isinstance(node, astroid.Name):
+        raise UnsupportedError(type(node))
+    var = ctx.scope.get(node.name)
+    if var is None:
+        raise UnsupportedError('cannot resolve name', node.name)
+    yield var

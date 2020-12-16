@@ -83,3 +83,14 @@ def test_assert_and_fail():
             assert True and False
     """)
     assert theorem.conclusion is Conclusion.FAIL
+
+
+def test_variable():
+    theorem = prove_f("""
+        def f():
+            a = 13
+            assert a == 13
+            assert a != 14
+            assert a == a
+    """)
+    assert theorem.conclusion is Conclusion.OK

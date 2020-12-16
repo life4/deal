@@ -23,5 +23,5 @@ class HandlersRegistry:
         node_type = type(node)
         handler = self._handlers.get(node_type)
         if handler is None:
-            raise UnsupportedError(node_type)
+            raise UnsupportedError('unsupported ast node', node_type)
         yield from handler(node=node, ctx=ctx)
