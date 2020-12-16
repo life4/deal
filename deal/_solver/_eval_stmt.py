@@ -38,5 +38,5 @@ def eval_assign(node: astroid.Assign, ctx: Context):
     value = values[-1]
 
     # var = z3.Const(name=target_name, sort=value.sort())
-    ctx.scope.set(name=target_name, var=value)
+    ctx.scope.set(name=target_name, value=value)
     # yield var == value

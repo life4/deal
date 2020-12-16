@@ -96,6 +96,15 @@ def test_variable():
     assert theorem.conclusion is Conclusion.OK
 
 
+def test_variable_fail():
+    theorem = prove_f("""
+        def f():
+            a = 13
+            assert a == 15
+    """)
+    assert theorem.conclusion is Conclusion.FAIL
+
+
 def test_reassign_var():
     theorem = prove_f("""
         def f():
@@ -123,5 +132,14 @@ def test_ternary_if_expr():
 
             a = 13 if False else 16
             assert a == 16
+    """)
+    assert theorem.conclusion is Conclusion.OK
+
+
+def test_unary_minus():
+    theorem = prove_f("""
+        def f():
+            a = 13
+            assert -a == -13
     """)
     assert theorem.conclusion is Conclusion.OK

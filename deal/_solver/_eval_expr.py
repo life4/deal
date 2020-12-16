@@ -24,6 +24,11 @@ COMAPARISON = {
     '==': operator.eq,
     '!=': operator.ne,
 }
+UNARY_OPERATIONS = {
+    '-': operator.neg,
+    '+': operator.pos,
+    '~': operator.inv,
+}
 BIN_OPERATIONS = {
     # math
     '+': operator.add,
@@ -39,7 +44,6 @@ BIN_OPERATIONS = {
     '&': operator.and_,
     '|': operator.or_,
     '^': operator.xor,
-    '~': operator.inv,
     '<<': operator.lshift,
     '>>': operator.rshift,
 }
@@ -114,6 +118,16 @@ def eval_name(node: astroid.Name, ctx: Context):
     if var is None:
         raise UnsupportedError('cannot resolve name', node.name)
     yield var
+
+
+@eval_expr.register(astroid.UnaryOp)
+def eval_unary_op(node: astroid.UnaryOp, ctx: Context):
+    operation = UNARY_OPERATIONS.get(node.op)
+    if operation is None:
+        raise UnsupportedError('unary operation', node.op)
+    values = list(eval_expr(node=node.operand, ctx=ctx))
+    yield from values[:-1]
+    yield operation(values[-1])
 
 
 @eval_expr.register(astroid.IfExp)

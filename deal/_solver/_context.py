@@ -15,8 +15,8 @@ class Scope:
     def get(self, name: str) -> typing.Optional[z3.Z3PPObject]:
         return self._vars.get(name)
 
-    def set(self, name: str, var: z3.Z3PPObject) -> None:
-        self._vars[name] = var
+    def set(self, name: str, value: z3.Z3PPObject) -> None:
+        self._vars[name] = value
 
 
 class Context(typing.NamedTuple):
