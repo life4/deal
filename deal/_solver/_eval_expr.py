@@ -114,3 +114,23 @@ def eval_name(node: astroid.Name, ctx: Context):
     if var is None:
         raise UnsupportedError('cannot resolve name', node.name)
     yield var
+
+
+@eval_expr.register(astroid.IfExp)
+def eval_ternary_op(node: astroid.IfExp, ctx: Context):
+    if node.test is None:
+        raise UnsupportedError(type(node))
+    if node.body is None:
+        raise UnsupportedError(type(node))
+    if node.orelse is None:
+        raise UnsupportedError(type(node))
+
+    # execute child nodes
+    tests = list(eval_expr(node=node.test, ctx=ctx))
+    yield tests[:-1]
+    bodies = list(eval_expr(node=node.body, ctx=ctx))
+    yield bodies[:-1]
+    elses = list(eval_expr(node=node.orelse, ctx=ctx))
+    yield elses[:-1]
+
+    yield z3.If(tests[-1], bodies[-1], elses[-1])
