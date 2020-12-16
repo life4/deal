@@ -143,3 +143,20 @@ def test_unary_minus():
             assert -a == -13
     """)
     assert theorem.conclusion is Conclusion.OK
+
+
+def test_min_func():
+    theorem = prove_f("""
+        def f():
+            assert min(12, 14) == 12
+    """)
+    assert theorem.conclusion is Conclusion.OK
+
+
+def test_abs_func():
+    theorem = prove_f("""
+        def f():
+            assert abs(12) == 12
+            assert abs(-13) == 13
+    """)
+    assert theorem.conclusion is Conclusion.OK

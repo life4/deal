@@ -148,3 +148,33 @@ def eval_ternary_op(node: astroid.IfExp, ctx: Context):
     yield elses[:-1]
 
     yield z3.If(tests[-1], bodies[-1], elses[-1])
+
+
+@eval_expr.register(astroid.Call)
+def eval_call(node: astroid.Call, ctx: Context):
+    if not isinstance(node.func, astroid.Name):
+        raise UnsupportedError('non-name call target', node.func)
+
+    call_args = []
+    for arg_node in node.args:
+        arg_nodes = list(eval_expr(node=arg_node, ctx=ctx))
+        yield from arg_nodes[:-1]
+        call_args.append(arg_nodes[-1])
+
+    target = node.func.name
+
+    if len(call_args) == 1:
+        a = call_args[0]
+        if target == 'abs':
+            yield z3.If(a >= z3.IntVal(0), a, -a)
+            return
+
+    if len(call_args) == 2:
+        a, b = call_args
+        if target == 'min':
+            yield z3.If(a < b, a, b)
+            return
+        if target == 'max':
+            yield z3.If(a > b, a, b)
+            return
+    raise UnsupportedError('unknown func', target)
