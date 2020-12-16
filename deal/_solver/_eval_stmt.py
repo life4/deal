@@ -40,3 +40,10 @@ def eval_assign(node: astroid.Assign, ctx: Context):
     # var = z3.Const(name=target_name, sort=value.sort())
     ctx.scope.set(name=target_name, value=value)
     # yield var == value
+
+
+@eval_stmt.register(astroid.Return)
+def eval_return(node: astroid.Return, ctx: Context):
+    values = list(eval_expr(node=node.value, ctx=ctx))
+    yield values[:-1]
+    ctx.scope.set(name='return', value=values[-1])

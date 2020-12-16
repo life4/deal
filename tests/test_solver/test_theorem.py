@@ -193,3 +193,22 @@ def test_int_two_args_fail_for_some():
             assert a != b
     """)
     assert theorem.conclusion is Conclusion.FAIL
+
+
+def test_post_condition_ok():
+    theorem = prove_f("""
+        @deal.post(lambda result: result == 0)
+        def f(a: int) -> int:
+            return a - a
+    """)
+    assert theorem.conclusion is Conclusion.OK
+
+
+def test_post_condition_fail():
+    theorem = prove_f("""
+        @deal.post(lambda result: result != 13)
+        def f(a: int) -> int:
+            return a
+    """)
+    assert theorem.conclusion is Conclusion.FAIL
+    assert 'a = 13' in str(theorem.example)
