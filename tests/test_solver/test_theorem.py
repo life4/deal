@@ -35,3 +35,19 @@ def test_assert_not_equal():
             assert 1 != 2
     """)
     assert theorem.conclusion is Conclusion.OK
+
+
+def test_assert_add_int():
+    theorem = prove_f("""
+        def f():
+            assert 1 + 2 == 3
+    """)
+    assert theorem.conclusion is Conclusion.OK
+
+
+def test_assert_substract_int():
+    theorem = prove_f("""
+        def f():
+            assert 5 - 2 == 3
+    """)
+    assert theorem.conclusion is Conclusion.OK

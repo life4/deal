@@ -43,13 +43,18 @@ def eval_const(node: astroid.Const, ctx: Context):
     yield converter(node.value)
 
 
-# @eval_expr.register(astroid.BinOp)
-# def eval_bin_op(node: astroid.BinOp, ctx: Context):
-#     if not node.op:
-#         raise UnsupportedError(repr(node.value))
-#     operation = BIN_OPERATIONS.get(node.op)
-#     if not operation:
-#         raise UnsupportedError(repr(node.value))
+@eval_expr.register(astroid.BinOp)
+def eval_bin_op(node: astroid.BinOp, ctx: Context):
+    if not node.op:
+        raise UnsupportedError('unsupported operator', node.op)
+    operation = BIN_OPERATIONS.get(node.op)
+    if not operation:
+        raise UnsupportedError(repr(node.value))
+    lefts = list(eval_expr(node=node.left, ctx=ctx))
+    yield from lefts[:-1]
+    rights = list(eval_expr(node=node.right, ctx=ctx))
+    yield from rights[:-1]
+    yield operation(lefts[-1], rights[-1])
 
 
 @eval_expr.register(astroid.Compare)
