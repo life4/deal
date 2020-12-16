@@ -160,3 +160,36 @@ def test_abs_func():
             assert abs(-13) == 13
     """)
     assert theorem.conclusion is Conclusion.OK
+
+
+def test_str_concat():
+    theorem = prove_f("""
+        def f():
+            assert 'ab' + 'cd' == 'abcd'
+            assert 'ab' + 'cd' != 'cdab'
+    """)
+    assert theorem.conclusion is Conclusion.OK
+
+
+def test_int_single_arg():
+    theorem = prove_f("""
+        def f(a: int):
+            assert a == a
+    """)
+    assert theorem.conclusion is Conclusion.OK
+
+
+def test_int_two_args():
+    theorem = prove_f("""
+        def f(a: int, b: int):
+            assert a + b == b + a
+    """)
+    assert theorem.conclusion is Conclusion.OK
+
+
+def test_int_two_args_fail_for_some():
+    theorem = prove_f("""
+        def f(a: int, b: int):
+            assert a != b
+    """)
+    assert theorem.conclusion is Conclusion.FAIL

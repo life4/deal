@@ -177,4 +177,5 @@ def eval_call(node: astroid.Call, ctx: Context):
         if target == 'max':
             yield z3.If(a > b, a, b)
             return
+
     raise UnsupportedError('unknown func', target)

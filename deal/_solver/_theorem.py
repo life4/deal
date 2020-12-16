@@ -17,6 +17,12 @@ class Conclusion(enum.Enum):
     FAIL = 'failed'
 
 
+SORTS = {
+    'bool': z3.BoolSort,
+    'int': z3.IntSort,
+    'float': z3.RealSort,
+    'str': z3.StringSort,
+}
 z3.Z3_DEBUG = False
 
 
@@ -47,7 +53,29 @@ class Theorem:
 
     @cached_property
     def context(self) -> Context:
-        return Context.make_empty()
+        ctx = Context.make_empty()
+        for name, value in self.arguments.items():
+            ctx.scope.set(name=name, value=value)
+        return ctx
+
+    @cached_property
+    def arguments(self) -> typing.Dict[str, z3.SortRef]:
+        result = dict()
+        args: astroid.Arguments = self._func.args
+        for arg, annotation in zip(args.args, args.annotations):
+            sort = self._annotation_to_sort(annotation)
+            if sort is None:
+                raise UnsupportedError('unsupported annotation type', annotation)
+            result[arg.name] = z3.Const(name=arg.name, sort=sort())
+        return result
+
+    @staticmethod
+    def _annotation_to_sort(node: astroid.node_classes.NodeNG):
+        if isinstance(node, astroid.Name):
+            return SORTS.get(node.name)
+        if isinstance(node, astroid.Const) and type(node.value) is str:
+            return SORTS.get(node.value)
+        return None
 
     @cached_property
     def constraint(self) -> z3.BoolRef:
