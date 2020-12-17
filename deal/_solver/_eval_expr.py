@@ -69,17 +69,17 @@ def eval_bin_op(node: astroid.BinOp, ctx: Context):
     operation = BIN_OPERATIONS.get(node.op)
     if not operation:
         raise UnsupportedError(repr(node.value))
-    lefts = list(eval_expr(node=node.left, ctx=ctx))
-    yield from lefts[:-1]
-    rights = list(eval_expr(node=node.right, ctx=ctx))
-    yield from rights[:-1]
-    yield operation(lefts[-1], rights[-1])
+    refs, left = eval_expr.split(node=node.left, ctx=ctx)
+    yield from refs
+    refs, right = eval_expr.split(node=node.right, ctx=ctx)
+    yield from refs
+    yield operation(left, right)
 
 
 @eval_expr.register(astroid.Compare)
 def eval_compare(node: astroid.Compare, ctx: Context):
-    lefts = list(eval_expr(node=node.left, ctx=ctx))
-    yield from lefts[:-1]
+    refs, left = eval_expr.split(node=node.left, ctx=ctx)
+    yield from refs
     for op, right_node in node.ops:
         if not op:
             raise UnsupportedError(repr(node))
@@ -87,9 +87,9 @@ def eval_compare(node: astroid.Compare, ctx: Context):
         if not operation:
             raise UnsupportedError('unsupported operation', op, repr(node))
 
-        rights = list(eval_expr(node=right_node, ctx=ctx))
-        yield from rights[:-1]
-        yield operation(lefts[-1], rights[-1])
+        refs, right = eval_expr.split(node=right_node, ctx=ctx)
+        yield from refs
+        yield operation(left, right)
 
 
 @eval_expr.register(astroid.BoolOp)
@@ -104,9 +104,9 @@ def eval_bool_op(node: astroid.BoolOp, ctx: Context):
 
     subnodes = []
     for subnode in node.values:
-        rights = list(eval_expr(node=subnode, ctx=ctx))
-        yield from rights[:-1]
-        subnodes.append(rights[-1])
+        refs, right = eval_expr.split(node=subnode, ctx=ctx)
+        yield from refs
+        subnodes.append(right)
     yield operation(*subnodes)
 
 
@@ -125,9 +125,9 @@ def eval_unary_op(node: astroid.UnaryOp, ctx: Context):
     operation = UNARY_OPERATIONS.get(node.op)
     if operation is None:
         raise UnsupportedError('unary operation', node.op)
-    values = list(eval_expr(node=node.operand, ctx=ctx))
-    yield from values[:-1]
-    yield operation(values[-1])
+    refs, value_ref = eval_expr.split(node=node.operand, ctx=ctx)
+    yield from refs
+    yield operation(value_ref)
 
 
 @eval_expr.register(astroid.IfExp)
@@ -140,14 +140,14 @@ def eval_ternary_op(node: astroid.IfExp, ctx: Context):
         raise UnsupportedError(type(node))
 
     # execute child nodes
-    tests = list(eval_expr(node=node.test, ctx=ctx))
-    yield tests[:-1]
-    bodies = list(eval_expr(node=node.body, ctx=ctx))
-    yield bodies[:-1]
-    elses = list(eval_expr(node=node.orelse, ctx=ctx))
-    yield elses[:-1]
+    refs, test_ref = eval_expr.split(node=node.test, ctx=ctx)
+    yield refs
+    refs, then_ref = eval_expr.split(node=node.body, ctx=ctx)
+    yield refs
+    refs, else_ref = eval_expr.split(node=node.orelse, ctx=ctx)
+    yield refs
 
-    yield z3.If(tests[-1], bodies[-1], elses[-1])
+    yield z3.If(test_ref, then_ref, else_ref)
 
 
 @eval_expr.register(astroid.Call)
@@ -157,9 +157,9 @@ def eval_call(node: astroid.Call, ctx: Context):
 
     call_args = []
     for arg_node in node.args:
-        arg_nodes = list(eval_expr(node=arg_node, ctx=ctx))
-        yield from arg_nodes[:-1]
-        call_args.append(arg_nodes[-1])
+        refs, arg_node = eval_expr.split(node=arg_node, ctx=ctx)
+        yield from refs
+        call_args.append(arg_node)
 
     target = node.func.name
 
