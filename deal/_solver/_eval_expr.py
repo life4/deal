@@ -28,15 +28,16 @@ UNARY_OPERATIONS = {
     '-': operator.neg,
     '+': operator.pos,
     '~': operator.inv,
+    'not': z3.Not,
 }
 BIN_OPERATIONS = {
     # math
     '+': operator.add,
     '-': operator.sub,
     '*': operator.mul,
-    '/': operator.truediv,
+    # '/': operator.truediv,
+    '//': operator.truediv,  # Z3 has Python2-like behavior
     '**': operator.pow,
-    '//': operator.floordiv,
     '%': operator.mod,
     '@': operator.matmul,
 

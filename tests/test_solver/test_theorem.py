@@ -1,3 +1,4 @@
+import pytest
 from deal._solver._theorem import Theorem, Conclusion
 
 
@@ -13,11 +14,55 @@ def prove_f(text: str) -> Theorem:
     return theorem
 
 
-def test_assert_true():
-    theorem = prove_f("""
+@pytest.mark.parametrize('check', [
+    # logic
+    'True',
+    'not False',
+    'True and True',
+    'True or True',
+    'False or True',
+    'True or False',
+
+    # math for int
+    '13 == 13',
+    '-13 == -13',
+    '+13 == --13',
+    '3 + 6 == 9',
+    '7 - 4 == 3',
+    '7 * 4 == 28',
+    # '12 / 5 == 2.4',
+    '13 // 5 == 2',
+    '13 % 5 == 3',
+    '2 ** 3 == 8',
+
+    # math for float
+    '1.4 + 2.7 == 4.1',
+    '2.7 - 1.4 == 1.3',
+
+    # complex math
+    '3 + 5 + 7 == 15',
+
+    # comparison
+    '1 != 2',
+    '2 == 2',
+    '3 < 4',
+    '3 <= 4',
+    '4 <= 4',
+    '4 >= 4',
+    '5 >= 4',
+    '5 > 4',
+
+    # other expressions
+    'True if True else False',
+    'False if False else True',
+])
+def test_asserts_ok(check: str) -> None:
+    text = """
         def f():
-            assert True
-    """)
+            assert {}
+    """
+    text = text.format(check)
+    theorem = prove_f(text)
     assert theorem.conclusion is Conclusion.OK
 
 
@@ -29,50 +74,10 @@ def test_assert_false():
     assert theorem.conclusion is Conclusion.FAIL
 
 
-def test_assert_not_equal():
-    theorem = prove_f("""
-        def f():
-            assert 1 != 2
-    """)
-    assert theorem.conclusion is Conclusion.OK
-
-
-def test_assert_add_int():
-    theorem = prove_f("""
-        def f():
-            assert 1 + 2 == 3
-    """)
-    assert theorem.conclusion is Conclusion.OK
-
-
-def test_assert_add_int_chain():
-    theorem = prove_f("""
-        def f():
-            assert 3 + 4 + 9 == 16
-    """)
-    assert theorem.conclusion is Conclusion.OK
-
-
-def test_assert_substract_int():
-    theorem = prove_f("""
-        def f():
-            assert 5 - 2 == 3
-    """)
-    assert theorem.conclusion is Conclusion.OK
-
-
 def test_assert_lt_float():
     theorem = prove_f("""
         def f():
             assert 5.1 < 5.2
-    """)
-    assert theorem.conclusion is Conclusion.OK
-
-
-def test_assert_and_ok():
-    theorem = prove_f("""
-        def f():
-            assert True and True
     """)
     assert theorem.conclusion is Conclusion.OK
 
