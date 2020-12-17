@@ -9,7 +9,8 @@ def prove_f(text: str) -> Theorem:
     assert theorem.error is None
     assert theorem.example is None
     theorem.prove()
-    print('error:', theorem.error)
+    print('error:', repr(theorem.error))
+    print('constraint:', repr(theorem.constraint))
     print('example:', theorem.example)
     return theorem
 
@@ -217,3 +218,21 @@ def test_post_condition_fail():
     """)
     assert theorem.conclusion is Conclusion.FAIL
     assert 'a = 13' in str(theorem.example)
+
+
+def test_pre_condition_ok():
+    theorem = prove_f("""
+        @deal.pre(lambda a: a > 10)
+        def f(a: int) -> int:
+            assert a > 5
+    """)
+    assert theorem.conclusion is Conclusion.OK
+
+
+def test_pre_condition_fail():
+    theorem = prove_f("""
+        @deal.pre(lambda a: a > 5)
+        def f(a: int) -> int:
+            assert a > 10
+    """)
+    assert theorem.conclusion is Conclusion.FAIL

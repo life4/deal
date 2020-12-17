@@ -60,31 +60,35 @@ class Theorem:
             ctx.scope.set(name=name, value=value)
         return ctx
 
-    def _get_post(self) -> z3.Z3PPObject:
-        goal = z3.Goal()
+    @cached_property
+    def contracts(self) -> typing.Dict[str, z3.Goal]:
+        goals = dict(
+            pre=z3.Goal(),
+            post=z3.Goal(),
+        )
         if not self._func.decorators:
-            return goal.as_expr()
-        value = self.context.scope.get('return')
-        if value is None:
-            return goal.as_expr()
-        for name, args in get_contracts(self._func.decorators.nodes):
-            if name != 'post':
+            return goals
+        return_value = self.context.scope.get('return')
+        for contract_name, args in get_contracts(self._func.decorators.nodes):
+            if contract_name not in {'pre', 'post'}:
+                continue
+            if contract_name == 'post' and return_value is None:
                 continue
             contract = args[0]
             if not isinstance(contract, astroid.Lambda):
                 continue
             if not contract.args:
                 continue
+
             cargs = contract.args.arguments
-            if len(cargs) != 1:
-                continue
-            self.context.scope.set(
-                name=cargs[0].name,
-                value=value,
-            )
+            if contract_name == 'post':
+                self.context.scope.set(
+                    name=cargs[0].name,
+                    value=return_value,
+                )
             for value in eval_expr(node=contract.body, ctx=self.context):
-                goal.add(value)
-        return goal.as_expr()
+                goals[contract_name].add(value)
+        return goals
 
     @cached_property
     def arguments(self) -> typing.Dict[str, z3.SortRef]:
@@ -107,11 +111,17 @@ class Theorem:
 
     @cached_property
     def constraint(self) -> z3.BoolRef:
-        post_goal = z3.Goal(ctx=self.context.z3_ctx)
+        asserts = z3.Goal(ctx=self.context.z3_ctx)
         for constraint in eval_stmt(node=self._func, ctx=self.context):
-            post_goal.add(constraint)
-        post_goal.add(self._get_post())
-        return z3.Not(post_goal.as_expr())
+            asserts.add(constraint)
+        asserts.add(self.contracts['post'].as_expr())
+
+        return z3.And(
+            # pre-condition must be always true
+            self.contracts['pre'].as_expr(),
+            # try to break body asserts or post-condition
+            z3.Not(asserts.as_expr()),
+        )
 
     @cached_property
     def solver(self) -> z3.Solver:
