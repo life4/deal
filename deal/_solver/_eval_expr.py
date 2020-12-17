@@ -6,6 +6,7 @@ import z3
 from ._context import Context
 from ._registry import HandlersRegistry
 from ._exceptions import UnsupportedError
+from ._funcs import FUNCTIONS
 
 
 eval_expr = HandlersRegistry()
@@ -161,22 +162,12 @@ def eval_call(node: astroid.Call, ctx: Context):
         refs, arg_node = eval_expr.split(node=arg_node, ctx=ctx)
         yield from refs
         call_args.append(arg_node)
-
     target = node.func.name
 
-    if len(call_args) == 1:
-        a = call_args[0]
-        if target == 'abs':
-            yield z3.If(a >= z3.IntVal(0), a, -a)
-            return
-
-    if len(call_args) == 2:
-        a, b = call_args
-        if target == 'min':
-            yield z3.If(a < b, a, b)
-            return
-        if target == 'max':
-            yield z3.If(a > b, a, b)
-            return
+    # resolve built-in functions
+    func = FUNCTIONS.get(target)
+    if func is not None:
+        yield func(*call_args)
+        return
 
     raise UnsupportedError('unknown func', target)

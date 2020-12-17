@@ -39,6 +39,9 @@ def prove_f(text: str) -> Theorem:
     # math for float
     '1.4 + 2.7 == 4.1',
     '2.7 - 1.4 == 1.3',
+    '2.7 > 1.4',
+    '1.4 < 2.7',
+    '2.7 == 2.7',
 
     # complex math
     '3 + 5 + 7 == 15',
@@ -61,6 +64,7 @@ def prove_f(text: str) -> Theorem:
     '"ab" != "cd"',
     '"ab" + "cd" == "abcd"',
     '"ab" + "cd" != "cdab"',
+    # '"ab" * 3 == "ababab"',
 
     # int functions
     'abs(12) == 12',
@@ -69,12 +73,19 @@ def prove_f(text: str) -> Theorem:
     'min(5, 13) == 5',
     'max(13, 5) == 13',
     'max(5, 13) == 13',
+    'float(4) == 4.0',
+    'str(42) == "42"',
 
     # string functions
     'min("ab", "cd") == "ab"',
     'min("cd", "ab") == "ab"',
     'max("ab", "cd") == "cd"',
     'max("cd", "ab") == "cd"',
+    # 'float("12.3") == 12.3',
+
+    # float functions
+    'int(4.2) == 4',
+    # 'str(4.2) == "4.2"',
 
     # other expressions
     'True if True else False',
@@ -96,14 +107,6 @@ def test_assert_false():
             assert False
     """)
     assert theorem.conclusion is Conclusion.FAIL
-
-
-def test_assert_lt_float():
-    theorem = prove_f("""
-        def f():
-            assert 5.1 < 5.2
-    """)
-    assert theorem.conclusion is Conclusion.OK
 
 
 def test_assert_and_fail():
