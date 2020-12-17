@@ -42,6 +42,8 @@ def prove_f(text: str) -> Theorem:
 
     # complex math
     '3 + 5 + 7 == 15',
+    '3 * 5 * 2 == 30',
+    '3 + 5 * 2 == 13',
 
     # comparison
     '1 != 2',
@@ -52,6 +54,27 @@ def prove_f(text: str) -> Theorem:
     '4 >= 4',
     '5 >= 4',
     '5 > 4',
+
+    # strings
+    '"ab" < "cd"',
+    '"ab" == "ab"',
+    '"ab" != "cd"',
+    '"ab" + "cd" == "abcd"',
+    '"ab" + "cd" != "cdab"',
+
+    # int functions
+    'abs(12) == 12',
+    'abs(-13) == 13',
+    'min(13, 5) == 5',
+    'min(5, 13) == 5',
+    'max(13, 5) == 13',
+    'max(5, 13) == 13',
+
+    # string functions
+    'min("ab", "cd") == "ab"',
+    'min("cd", "ab") == "ab"',
+    'max("ab", "cd") == "cd"',
+    'max("cd", "ab") == "cd"',
 
     # other expressions
     'True if True else False',
@@ -147,32 +170,6 @@ def test_unary_minus():
         def f():
             a = 13
             assert -a == -13
-    """)
-    assert theorem.conclusion is Conclusion.OK
-
-
-def test_min_func():
-    theorem = prove_f("""
-        def f():
-            assert min(12, 14) == 12
-    """)
-    assert theorem.conclusion is Conclusion.OK
-
-
-def test_abs_func():
-    theorem = prove_f("""
-        def f():
-            assert abs(12) == 12
-            assert abs(-13) == 13
-    """)
-    assert theorem.conclusion is Conclusion.OK
-
-
-def test_str_concat():
-    theorem = prove_f("""
-        def f():
-            assert 'ab' + 'cd' == 'abcd'
-            assert 'ab' + 'cd' != 'cdab'
     """)
     assert theorem.conclusion is Conclusion.OK
 
