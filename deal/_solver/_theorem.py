@@ -5,7 +5,7 @@ from textwrap import dedent
 import astroid
 import z3
 
-from ._context import Context
+from ._context import Context, Scope
 from ._exceptions import UnsupportedError, ProveError
 from ._eval_expr import eval_expr
 from ._eval_stmt import eval_stmt
@@ -73,20 +73,27 @@ class Theorem:
             if contract_name not in {'pre', 'post'}:
                 continue
             if contract_name == 'post' and return_value is None:
-                continue
+                raise UnsupportedError('cannot resolve return value to check deal.post')
             contract = args[0]
             if not isinstance(contract, astroid.Lambda):
                 continue
             if not contract.args:
                 continue
 
+            # make context
             cargs = contract.args.arguments
+            context = self.context
             if contract_name == 'post':
-                self.context.scope.set(
+                # check post-condition in a new clear scope
+                # with mapping `return` value in it as an argument.
+                context = context.evolve(scope=Scope.make_empty())
+                context.scope.set(
                     name=cargs[0].name,
                     value=return_value,
                 )
-            for value in eval_expr(node=contract.body, ctx=self.context):
+
+            # eval contract
+            for value in eval_expr(node=contract.body, ctx=context):
                 goals[contract_name].add(value)
         return goals
 
