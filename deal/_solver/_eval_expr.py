@@ -42,7 +42,7 @@ BIN_OPERATIONS = {
     '-': operator.sub,
     '*': operator.mul,
     '/': FUNCTIONS['syntax./'],
-    '//': operator.truediv,  # Z3 has Python2-like behavior
+    '//': FUNCTIONS['syntax.//'],
     '**': operator.pow,
     '%': operator.mod,
     '@': operator.matmul,

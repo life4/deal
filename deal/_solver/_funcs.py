@@ -35,7 +35,7 @@ def builtin_len(items):
 
 
 @register('syntax./')
-def builtin_div(left, right):
+def syntax_truediv(left, right):
     if z3.is_int(left):
         left = z3.ToReal(left)
     if z3.is_int(right):
@@ -43,8 +43,23 @@ def builtin_div(left, right):
     return left / right
 
 
+@register('syntax.//')
+def syntax_floordiv(left, right):
+    has_real = False
+    if z3.is_real(left):
+        has_real = True
+        left = z3.ToInt(left)
+    if z3.is_real(right):
+        has_real = True
+        right = z3.ToInt(right)
+    result = left / right
+    if has_real:
+        result = z3.ToReal(result)
+    return result
+
+
 @register('syntax.in')
-def builtin_in(item, items):
+def syntax_in(item, items):
     # str
     if z3.is_string(items):
         return z3.Contains(items, item)
