@@ -1,5 +1,6 @@
 import operator
 import typing
+from types import GeneratorType
 
 import astroid
 import z3
@@ -135,10 +136,20 @@ def eval_list(node: astroid.List, ctx: Context):
 def eval_name(node: astroid.Name, ctx: Context):
     if not isinstance(node, astroid.Name):
         raise UnsupportedError(type(node))
-    var = ctx.scope.get(node.name)
-    if var is None:
-        raise UnsupportedError('cannot resolve name', node.name)
-    yield var
+
+    # resolve local vars
+    value = ctx.scope.get(node.name)
+    if value is not None:
+        yield value
+        return
+
+    # resolve built-in functions
+    value = FUNCTIONS.get('builtins.' + node.name)
+    if value is not None:
+        yield value
+        return
+
+    raise UnsupportedError('cannot resolve name', node.name)
 
 
 @eval_expr.register(astroid.UnaryOp)
@@ -190,21 +201,15 @@ def eval_call(node: astroid.Call, ctx: Context):
 
 
 def _eval_call_name(node: astroid.Name, ctx: Context, call_args=typing.List[z3.Z3PPObject]):
-    # resolve local vars
-    value = ctx.scope.get(name=node.name)
-    if value is not None:
-        if callable(value):
-            yield from value(*call_args)
-            return
-
-    # resolve built-in functions
-    target_name = 'builtins.' + node.name
-    func = FUNCTIONS.get(target_name)
-    if func is not None:
-        yield func(*call_args)
-        return
-
-    raise UnsupportedError('no definition for', node.name)
+    refs, value = eval_expr.split(node=node, ctx=ctx)
+    yield from refs
+    if not callable(value):
+        raise UnsupportedError('the object is not callable ', node.name)
+    result = value(*call_args)
+    if isinstance(result, GeneratorType):
+        yield from result
+    else:
+        yield result
 
 
 def _eval_call_attr(node: astroid.Attribute, ctx: Context, call_args=typing.List[z3.Z3PPObject]):
