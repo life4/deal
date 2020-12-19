@@ -143,3 +143,22 @@ def test_lambda_two_args():
             assert a(7, 3) == 4
     """)
     assert theorem.conclusion is Conclusion.OK
+
+
+def test_lambda_no_args():
+    theorem = prove_f("""
+        def f():
+            a = lambda: 13
+            assert a() == 13
+    """)
+    assert theorem.conclusion is Conclusion.OK
+
+
+def test_lambda_untyped():
+    theorem = prove_f("""
+        def f():
+            a = lambda x: x + x
+            assert a(3) == 6
+            assert a("ab") == "abab"
+    """)
+    assert theorem.conclusion is Conclusion.OK
