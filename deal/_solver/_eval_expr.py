@@ -1,5 +1,5 @@
 import operator
-from typing import OrderedDict
+import typing
 
 import astroid
 import z3
@@ -8,6 +8,7 @@ from ._context import Context
 from ._registry import HandlersRegistry
 from ._exceptions import UnsupportedError
 from ._funcs import FUNCTIONS
+from ..linter._extractors.common import get_full_name, infer
 
 
 eval_expr = HandlersRegistry()
@@ -155,30 +156,59 @@ def eval_ternary_op(node: astroid.IfExp, ctx: Context):
 
 @eval_expr.register(astroid.Call)
 def eval_call(node: astroid.Call, ctx: Context):
-    if not isinstance(node.func, astroid.Name):
-        raise UnsupportedError('non-name call target', node.func)
-
     call_args = []
     for arg_node in node.args:
         refs, arg_node = eval_expr.split(node=arg_node, ctx=ctx)
         yield from refs
         call_args.append(arg_node)
-    target = node.func.name
+    if isinstance(node.func, astroid.Name):
+        yield from _eval_call_name(node=node.func, ctx=ctx, call_args=call_args)
+        return
 
+    if isinstance(node.func, astroid.Attribute):
+        yield from _eval_call_attr(node=node.func, ctx=ctx, call_args=call_args)
+        return
+
+    yield UnsupportedError('unsupported call target', node)
+
+
+def _eval_call_name(node: astroid.Name, ctx: Context, call_args=typing.List[z3.Z3PPObject]):
     # resolve local vars
-    value = ctx.scope.get(name=target)
+    value = ctx.scope.get(name=node.name)
     if value is not None:
         if callable(value):
             yield from value(*call_args)
             return
 
     # resolve built-in functions
-    func = FUNCTIONS.get(target)
+    target_name = 'builtins.' + node.name
+    func = FUNCTIONS.get(target_name)
     if func is not None:
         yield func(*call_args)
         return
 
-    raise UnsupportedError('unknown func', target)
+    raise UnsupportedError('no definition for', node.name)
+
+
+def _eval_call_attr(node: astroid.Attribute, ctx: Context, call_args=typing.List[z3.Z3PPObject]):
+    # resolve methods
+    definitions = infer(node)
+    if len(definitions) != 1:
+        raise UnsupportedError('cannot resolve', node)
+
+    target = definitions[0]
+    if isinstance(target, astroid.BoundMethod):
+        refs, obj_ref = eval_expr.split(node=node.expr, ctx=ctx)
+        yield from refs
+        call_args = [obj_ref] + call_args
+
+    target_name = '.'.join(get_full_name(target))
+    func = FUNCTIONS.get(target_name)
+    if func is not None:
+        yield func(*call_args)
+        return
+
+    raise UnsupportedError('no definition for', target_name, node)
 
 
 @eval_expr.register(astroid.Lambda)

@@ -85,6 +85,10 @@ def prove_f(text: str) -> Theorem:
     'len("abcd") == 4',
     # 'float("12.3") == 12.3',
 
+    # string methods
+    '"abcd".startswith("ab")',
+    '"abcd".endswith("cd")',
+
     # float functions
     'int(4.2) == 4',
     # 'str(4.2) == "4.2"',
