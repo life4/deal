@@ -26,6 +26,7 @@ COMAPARISON = {
     '>=': operator.ge,
     '==': operator.eq,
     '!=': operator.ne,
+    'in': FUNCTIONS['syntax.in'],
 }
 UNARY_OPERATIONS = {
     '-': operator.neg,

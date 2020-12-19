@@ -65,6 +65,7 @@ def prove_f(text: str) -> Theorem:
     '"ab" != "cd"',
     '"ab" + "cd" == "abcd"',
     '"ab" + "cd" != "cdab"',
+    '"bc" in "abcd"',
     # '"ab" * 3 == "ababab"',
 
     # int functions

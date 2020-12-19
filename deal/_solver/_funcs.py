@@ -32,7 +32,7 @@ def builtin_len(a):
     return z3.Length(a)
 
 
-@register('builtins.in')
+@register('syntax.in')
 def builtin_in(a, b):
     return z3.Contains(b, a)
 
