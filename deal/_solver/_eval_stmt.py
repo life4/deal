@@ -1,4 +1,5 @@
 import astroid
+import z3
 
 from ._context import Context
 from ._registry import HandlersRegistry
@@ -46,3 +47,31 @@ def eval_return(node: astroid.Return, ctx: Context):
     refs, value_ref = eval_expr.split(node=node.value, ctx=ctx)
     yield refs
     ctx.scope.set(name='return', value=value_ref)
+
+
+@eval_stmt.register(astroid.If)
+def eval_if_else(node: astroid.If, ctx: Context):
+    if node.test is None:
+        raise UnsupportedError(type(node))
+    if node.body is None:
+        raise UnsupportedError(type(node))
+
+    refs, test_ref = eval_expr.split(node=node.test, ctx=ctx)
+    yield refs
+
+    ctx_then = ctx.make_child()
+    for subnode in node.body:
+        yield from eval_stmt(node=subnode, ctx=ctx_then)
+    ctx_else = ctx.make_child()
+    for subnode in (node.orelse or []):
+        yield from eval_stmt(node=subnode, ctx=ctx_else)
+
+    changed_vars = set(ctx_then.scope.layer) | set(ctx_else.scope.layer)
+    for var_name in changed_vars:
+        val_then = ctx_then.scope.get(name=var_name)
+        val_else = ctx_else.scope.get(name=var_name)
+        if val_then is None or val_else is None:
+            raise UnsupportedError('unbound variable', var_name)
+
+        value = z3.If(test_ref, val_then, val_else)
+        ctx.scope.set(name=var_name, value=value)

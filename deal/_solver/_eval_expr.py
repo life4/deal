@@ -143,11 +143,11 @@ def eval_ternary_op(node: astroid.IfExp, ctx: Context):
 
     # execute child nodes
     refs, test_ref = eval_expr.split(node=node.test, ctx=ctx)
-    yield refs
+    yield from refs
     refs, then_ref = eval_expr.split(node=node.body, ctx=ctx)
-    yield refs
+    yield from refs
     refs, else_ref = eval_expr.split(node=node.orelse, ctx=ctx)
-    yield refs
+    yield from refs
 
     yield z3.If(test_ref, then_ref, else_ref)
 

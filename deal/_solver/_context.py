@@ -5,11 +5,11 @@ import z3
 
 class Scope:
     _parent: typing.Optional['Scope']
-    _vars: typing.Dict[str, z3.Z3PPObject]
+    layer: typing.Dict[str, z3.Z3PPObject]
 
     def __init__(self, parent: 'Scope', vars) -> None:
         self._parent = parent
-        self._vars = vars
+        self.layer = vars
 
     @classmethod
     def make_empty(cls) -> 'Scope':
@@ -23,10 +23,15 @@ class Scope:
         )
 
     def get(self, name: str) -> typing.Optional[z3.Z3PPObject]:
-        return self._vars.get(name)
+        var = self.layer.get(name)
+        if var is not None:
+            return var
+        if self._parent is not None:
+            return self._parent.get(name=name)
+        return None
 
     def set(self, name: str, value: z3.Z3PPObject) -> None:
-        self._vars[name] = value
+        self.layer[name] = value
 
 
 class Context(typing.NamedTuple):
@@ -45,4 +50,4 @@ class Context(typing.NamedTuple):
         return self._replace
 
     def make_child(self) -> 'Context':
-        return self.evolve(scope=self.scope.child())
+        return self.evolve(scope=self.scope.make_child())
