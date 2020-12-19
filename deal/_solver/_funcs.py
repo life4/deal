@@ -34,6 +34,15 @@ def builtin_len(items):
     return z3.Length(items)
 
 
+@register('syntax./')
+def builtin_div(left, right):
+    if z3.is_int(left):
+        left = z3.ToReal(left)
+    if z3.is_int(right):
+        right = z3.ToReal(right)
+    return left / right
+
+
 @register('syntax.in')
 def builtin_in(item, items):
     # str
