@@ -127,8 +127,23 @@ def eval_list(node: astroid.List, ctx: Context):
 
     sort = items[0].sort() if items else z3.IntSort()
     container = ListSort.make(sort=sort)
-    for index, item in enumerate(items):
+    for item in items:
         container = ListSort.append(container, item)
+    yield container
+
+
+@eval_expr.register(astroid.Set)
+def eval_set(node: astroid.Set, ctx: Context):
+    items = []
+    for subnode in node.elts:
+        refs, item = eval_expr.split(node=subnode, ctx=ctx)
+        yield from refs
+        items.append(item)
+
+    sort = items[0].sort() if items else z3.IntSort()
+    container = z3.EmptySet(sort)
+    for item in items:
+        container = z3.SetAdd(s=container, e=item)
     yield container
 
 

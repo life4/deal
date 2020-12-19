@@ -28,14 +28,23 @@ def builtin_abs(a):
 
 
 @register('builtins.len')
-def builtin_len(a):
-    return z3.Length(a)
+def builtin_len(items):
+    if isinstance(items, z3.ArrayRef):
+        raise UnsupportedError('set length is unsupported')
+    return z3.Length(items)
 
 
 @register('syntax.in')
 def builtin_in(item, items):
-    if items.is_string():
+    # str
+    if z3.is_string(items):
         return z3.Contains(items, item)
+
+    # set
+    if isinstance(items, z3.ArrayRef):
+        return z3.IsMember(e=item, s=items)
+
+    # list
     return z3.Contains(items, z3.Unit(item))
 
 
