@@ -125,3 +125,21 @@ def test_asserts_fail(check: str) -> None:
     text = text.format(check)
     theorem = prove_f(text)
     assert theorem.conclusion is Conclusion.FAIL
+
+
+def test_lambda_one_arg():
+    theorem = prove_f("""
+        def f():
+            a = lambda x: x * 2
+            assert a(3) == 6
+    """)
+    assert theorem.conclusion is Conclusion.OK
+
+
+def test_lambda_two_args():
+    theorem = prove_f("""
+        def f():
+            a = lambda x, y: x - y
+            assert a(7, 3) == 4
+    """)
+    assert theorem.conclusion is Conclusion.OK

@@ -1,4 +1,5 @@
 import operator
+from typing import OrderedDict
 
 import astroid
 import z3
@@ -164,6 +165,15 @@ def eval_call(node: astroid.Call, ctx: Context):
         call_args.append(arg_node)
     target = node.func.name
 
+    # resolve local vars
+    value = ctx.scope.get(name=target)
+    if value is not None:
+        if z3.is_quantifier(value) and value.is_lambda():
+            for arg in call_args:
+                value = value[arg]
+            yield value
+            return
+
     # resolve built-in functions
     func = FUNCTIONS.get(target)
     if func is not None:
@@ -171,3 +181,26 @@ def eval_call(node: astroid.Call, ctx: Context):
         return
 
     raise UnsupportedError('unknown func', target)
+
+
+@eval_expr.register(astroid.Lambda)
+def eval_lambda(node: astroid.Lambda, ctx: Context):
+    # detect lambda arguments
+    args = OrderedDict()
+    for arg in node.args.arguments:
+        # TODO: how to detect the type of lambda args???
+        args[arg.name] = z3.Const(name=arg.name, sort=z3.IntSort())
+
+    # make scope
+    body_ctx = ctx.make_child()
+    for arg_name, arg_value in args.items():
+        body_ctx.scope.set(name=arg_name, value=arg_value)
+
+    # evaluate body, make z3 lambda
+    refs, body_ref = eval_expr.split(node=node.body, ctx=body_ctx)
+    yield from refs
+
+    names = list(args.values())
+    for arg in reversed(names):
+        body_ref = z3.Lambda(vs=[arg], body=body_ref)
+    yield body_ref
