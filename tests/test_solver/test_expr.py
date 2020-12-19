@@ -104,17 +104,24 @@ def test_asserts_ok(check: str) -> None:
     assert theorem.conclusion is Conclusion.OK
 
 
-def test_assert_false():
-    theorem = prove_f("""
+@pytest.mark.parametrize('check', [
+    'False',
+    'not True',
+    'True and False',
+    'False and True',
+    'False and False',
+    'False or False',
+    '13 == -13',
+    '3 + 6 == 10',
+    'False if True else True',
+    'True if False else False',
+])
+def test_asserts_fail(check: str) -> None:
+    assert not eval(check)
+    text = """
         def f():
-            assert False
-    """)
-    assert theorem.conclusion is Conclusion.FAIL
-
-
-def test_assert_and_fail():
-    theorem = prove_f("""
-        def f():
-            assert True and False
-    """)
+            assert {}
+    """
+    text = text.format(check)
+    theorem = prove_f(text)
     assert theorem.conclusion is Conclusion.FAIL
