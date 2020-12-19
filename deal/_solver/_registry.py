@@ -23,7 +23,7 @@ class HandlersRegistry:
         node_type = type(node)
         handler = self._handlers.get(node_type)
         if handler is None:
-            raise UnsupportedError('unsupported ast node', node_type)
+            raise UnsupportedError('unsupported ast node', node_type.__name__)
         yield from handler(node=node, ctx=ctx)
 
     def split(self, node: Node, ctx: Context):

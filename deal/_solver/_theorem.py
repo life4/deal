@@ -18,6 +18,14 @@ class Conclusion(enum.Enum):
     SKIP = 'skipped'
     FAIL = 'failed'
 
+    @property
+    def color(self) -> str:
+        if self == Conclusion.OK:
+            return 'green'
+        if self == Conclusion.FAIL:
+            return 'red'
+        return 'yellow'
+
 
 SORTS = {
     'bool': z3.BoolSort,
@@ -102,18 +110,24 @@ class Theorem:
         result = dict()
         args: astroid.Arguments = self._func.args
         for arg, annotation in zip(args.args, args.annotations):
+            if annotation is None:
+                raise UnsupportedError('missed annotation for', arg.name)
             sort = self._annotation_to_sort(annotation)
             if sort is None:
-                raise UnsupportedError('unsupported annotation type', annotation)
-            result[arg.name] = z3.Const(name=arg.name, sort=sort())
+                raise UnsupportedError('unsupported annotation type', annotation.as_string())
+            result[arg.name] = z3.Const(name=arg.name, sort=sort)
         return result
 
     @staticmethod
     def _annotation_to_sort(node: astroid.node_classes.NodeNG):
         if isinstance(node, astroid.Name):
-            return SORTS.get(node.name)
+            sort = SORTS.get(node.name)
+            if sort is not None:
+                return sort()
         if isinstance(node, astroid.Const) and type(node.value) is str:
-            return SORTS.get(node.value)
+            sort = SORTS.get(node.value)
+            if sort is not None:
+                return sort()
         return None
 
     @cached_property

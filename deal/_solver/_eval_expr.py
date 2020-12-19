@@ -72,10 +72,10 @@ def eval_const(node: astroid.Const, ctx: Context):
 @eval_expr.register(astroid.BinOp)
 def eval_bin_op(node: astroid.BinOp, ctx: Context):
     if not node.op:
-        raise UnsupportedError('unsupported operator', node.op)
+        raise UnsupportedError('missed operator', node)
     operation = BIN_OPERATIONS.get(node.op)
     if not operation:
-        raise UnsupportedError(repr(node.value))
+        raise UnsupportedError('unsupported operator', node.op)
     refs, left = eval_expr.split(node=node.left, ctx=ctx)
     yield from refs
     refs, right = eval_expr.split(node=node.right, ctx=ctx)
@@ -245,7 +245,7 @@ def _eval_call_attr(node: astroid.Attribute, ctx: Context, call_args=typing.List
         yield func(*call_args)
         return
 
-    raise UnsupportedError('no definition for', target_name, node)
+    raise UnsupportedError('no definition for', target_name)
 
 
 @eval_expr.register(astroid.Lambda)
