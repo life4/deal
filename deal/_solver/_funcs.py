@@ -33,8 +33,10 @@ def builtin_len(a):
 
 
 @register('syntax.in')
-def builtin_in(a, b):
-    return z3.Contains(b, a)
+def builtin_in(item, items):
+    if items.is_string():
+        return z3.Contains(items, item)
+    return z3.Contains(items, z3.Unit(item))
 
 
 @register('builtins.int')
@@ -66,3 +68,8 @@ def str_startswith(a, b):
 @register('builtins.str.endswith')
 def str_endswith(a, b):
     return z3.SuffixOf(b, a)
+
+
+# @register('builtins.list.append')
+# def list_append(a, b):
+#     return z3.SuffixOf(b, a)

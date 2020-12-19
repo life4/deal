@@ -8,6 +8,7 @@ from ._context import Context
 from ._registry import HandlersRegistry
 from ._exceptions import UnsupportedError
 from ._funcs import FUNCTIONS
+from ._sorts import ListSort
 from ..linter._extractors.common import get_full_name, infer
 
 
@@ -113,6 +114,21 @@ def eval_bool_op(node: astroid.BoolOp, ctx: Context):
         yield from refs
         subnodes.append(right)
     yield operation(*subnodes)
+
+
+@eval_expr.register(astroid.List)
+def eval_list(node: astroid.List, ctx: Context):
+    items = []
+    for subnode in node.elts:
+        refs, item = eval_expr.split(node=subnode, ctx=ctx)
+        yield from refs
+        items.append(item)
+
+    sort = items[0].sort() if items else z3.IntSort()
+    container = ListSort.make(sort=sort)
+    for index, item in enumerate(items):
+        container = ListSort.append(container, item)
+    yield container
 
 
 @eval_expr.register(astroid.Name)

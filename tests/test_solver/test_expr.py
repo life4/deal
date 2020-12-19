@@ -94,6 +94,11 @@ def prove_f(text: str) -> Theorem:
     'int(4.2) == 4',
     # 'str(4.2) == "4.2"',
 
+    # list
+    '[1, 2, 3] == [1, 2, 3]',
+    'len([7, 9, 11]) == 3',
+    '10 in [3, 6, 10, 17]',
+
     # other expressions
     'True if True else False',
     'False if False else True',
