@@ -1,6 +1,5 @@
 import operator
 import typing
-from types import GeneratorType
 
 import astroid
 import z3
@@ -66,7 +65,7 @@ def eval_const(node: astroid.Const, ctx: Context):
     converter = CONSTS.get(t)
     if not converter:
         raise UnsupportedError(repr(node.value))
-    yield converter(node.value)
+    return converter(node.value)
 
 
 @eval_expr.register(astroid.BinOp)
@@ -76,17 +75,14 @@ def eval_bin_op(node: astroid.BinOp, ctx: Context):
     operation = BIN_OPERATIONS.get(node.op)
     if not operation:
         raise UnsupportedError('unsupported operator', node.op)
-    refs, left = eval_expr.split(node=node.left, ctx=ctx)
-    yield from refs
-    refs, right = eval_expr.split(node=node.right, ctx=ctx)
-    yield from refs
-    yield operation(left, right)
+    left = eval_expr(node=node.left, ctx=ctx)
+    right = eval_expr(node=node.right, ctx=ctx)
+    return operation(left, right)
 
 
 @eval_expr.register(astroid.Compare)
 def eval_compare(node: astroid.Compare, ctx: Context):
-    refs, left = eval_expr.split(node=node.left, ctx=ctx)
-    yield from refs
+    left = eval_expr(node=node.left, ctx=ctx)
     for op, right_node in node.ops:
         if not op:
             raise UnsupportedError(repr(node))
@@ -94,9 +90,9 @@ def eval_compare(node: astroid.Compare, ctx: Context):
         if not operation:
             raise UnsupportedError('unsupported operation', op, repr(node))
 
-        refs, right = eval_expr.split(node=right_node, ctx=ctx)
-        yield from refs
-        yield operation(left, right)
+        right = eval_expr(node=right_node, ctx=ctx)
+        # TODO: proper chain
+        return operation(left, right)
 
 
 @eval_expr.register(astroid.BoolOp)
@@ -111,40 +107,37 @@ def eval_bool_op(node: astroid.BoolOp, ctx: Context):
 
     subnodes = []
     for subnode in node.values:
-        refs, right = eval_expr.split(node=subnode, ctx=ctx)
-        yield from refs
+        right = eval_expr(node=subnode, ctx=ctx)
         subnodes.append(right)
-    yield operation(*subnodes)
+    return operation(*subnodes)
 
 
 @eval_expr.register(astroid.List)
 def eval_list(node: astroid.List, ctx: Context):
     items = []
     for subnode in node.elts:
-        refs, item = eval_expr.split(node=subnode, ctx=ctx)
-        yield from refs
+        item = eval_expr(node=subnode, ctx=ctx)
         items.append(item)
 
     sort = items[0].sort() if items else z3.IntSort()
     container = ListSort.make(sort=sort)
     for item in items:
         container = ListSort.append(container, item)
-    yield container
+    return container
 
 
 @eval_expr.register(astroid.Set)
 def eval_set(node: astroid.Set, ctx: Context):
     items = []
     for subnode in node.elts:
-        refs, item = eval_expr.split(node=subnode, ctx=ctx)
-        yield from refs
+        item = eval_expr(node=subnode, ctx=ctx)
         items.append(item)
 
     sort = items[0].sort() if items else z3.IntSort()
     container = z3.EmptySet(sort)
     for item in items:
         container = z3.SetAdd(s=container, e=item)
-    yield container
+    return container
 
 
 @eval_expr.register(astroid.Name)
@@ -155,14 +148,12 @@ def eval_name(node: astroid.Name, ctx: Context):
     # resolve local vars
     value = ctx.scope.get(node.name)
     if value is not None:
-        yield value
-        return
+        return value
 
     # resolve built-in functions
     value = FUNCTIONS.get('builtins.' + node.name)
     if value is not None:
-        yield value
-        return
+        return value
 
     raise UnsupportedError('cannot resolve name', node.name)
 
@@ -172,9 +163,8 @@ def eval_unary_op(node: astroid.UnaryOp, ctx: Context):
     operation = UNARY_OPERATIONS.get(node.op)
     if operation is None:
         raise UnsupportedError('unary operation', node.op)
-    refs, value_ref = eval_expr.split(node=node.operand, ctx=ctx)
-    yield from refs
-    yield operation(value_ref)
+    value_ref = eval_expr(node=node.operand, ctx=ctx)
+    return operation(value_ref)
 
 
 @eval_expr.register(astroid.IfExp)
@@ -187,44 +177,33 @@ def eval_ternary_op(node: astroid.IfExp, ctx: Context):
         raise UnsupportedError(type(node))
 
     # execute child nodes
-    refs, test_ref = eval_expr.split(node=node.test, ctx=ctx)
-    yield from refs
-    refs, then_ref = eval_expr.split(node=node.body, ctx=ctx)
-    yield from refs
-    refs, else_ref = eval_expr.split(node=node.orelse, ctx=ctx)
-    yield from refs
+    test_ref = eval_expr(node=node.test, ctx=ctx)
+    then_ref = eval_expr(node=node.body, ctx=ctx)
+    else_ref = eval_expr(node=node.orelse, ctx=ctx)
 
-    yield z3.If(test_ref, then_ref, else_ref)
+    return z3.If(test_ref, then_ref, else_ref)
 
 
 @eval_expr.register(astroid.Call)
 def eval_call(node: astroid.Call, ctx: Context):
     call_args = []
     for arg_node in node.args:
-        refs, arg_node = eval_expr.split(node=arg_node, ctx=ctx)
-        yield from refs
+        arg_node = eval_expr(node=arg_node, ctx=ctx)
         call_args.append(arg_node)
     if isinstance(node.func, astroid.Name):
-        yield from _eval_call_name(node=node.func, ctx=ctx, call_args=call_args)
-        return
+        return _eval_call_name(node=node.func, ctx=ctx, call_args=call_args)
 
     if isinstance(node.func, astroid.Attribute):
-        yield from _eval_call_attr(node=node.func, ctx=ctx, call_args=call_args)
-        return
+        return _eval_call_attr(node=node.func, ctx=ctx, call_args=call_args)
 
-    yield UnsupportedError('unsupported call target', node)
+    raise UnsupportedError('unsupported call target', node)
 
 
 def _eval_call_name(node: astroid.Name, ctx: Context, call_args=typing.List[z3.Z3PPObject]):
-    refs, value = eval_expr.split(node=node, ctx=ctx)
-    yield from refs
+    value = eval_expr(node=node, ctx=ctx)
     if not callable(value):
         raise UnsupportedError('the object is not callable ', node.name)
-    result = value(*call_args)
-    if isinstance(result, GeneratorType):
-        yield from result
-    else:
-        yield result
+    return value(*call_args)
 
 
 def _eval_call_attr(node: astroid.Attribute, ctx: Context, call_args=typing.List[z3.Z3PPObject]):
@@ -235,15 +214,13 @@ def _eval_call_attr(node: astroid.Attribute, ctx: Context, call_args=typing.List
 
     target = definitions[0]
     if isinstance(target, astroid.BoundMethod):
-        refs, obj_ref = eval_expr.split(node=node.expr, ctx=ctx)
-        yield from refs
+        obj_ref = eval_expr(node=node.expr, ctx=ctx)
         call_args = [obj_ref] + call_args
 
     target_name = '.'.join(get_full_name(target))
     func = FUNCTIONS.get(target_name)
     if func is not None:
-        yield func(*call_args)
-        return
+        return func(*call_args)
 
     raise UnsupportedError('no definition for', target_name)
 
@@ -256,4 +233,4 @@ def eval_lambda(node: astroid.Lambda, ctx: Context):
             body_ctx.scope.set(name=arg.name, value=value)
         return eval_expr(node=node.body, ctx=body_ctx)
 
-    yield fake_func
+    return fake_func

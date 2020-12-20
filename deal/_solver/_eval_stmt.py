@@ -13,14 +13,14 @@ eval_stmt = HandlersRegistry()
 @eval_stmt.register(astroid.FunctionDef)
 def eval_func(node: astroid.FunctionDef, ctx: Context):
     for statement in node.body:
-        yield from eval_stmt(node=statement, ctx=ctx)
+        eval_stmt(node=statement, ctx=ctx)
 
 
 @eval_stmt.register(astroid.Assert)
 def eval_assert(node: astroid.Assert, ctx: Context):
     if node.test is None:
         raise UnsupportedError('assert without condition')
-    yield from eval_expr(node=node.test, ctx=ctx)
+    ctx.expected.add(eval_expr(node=node.test, ctx=ctx))
 
 
 @eval_stmt.register(astroid.Assign)
@@ -32,20 +32,14 @@ def eval_assign(node: astroid.Assign, ctx: Context):
     target = node.targets[0]
     if not isinstance(target, astroid.AssignName):
         raise UnsupportedError('assignment target', type(target))
-    target_name = target.name
 
-    refs, value_ref = eval_expr.split(node=node.value, ctx=ctx)
-    yield from refs
-
-    # var = z3.Const(name=target_name, sort=value.sort())
-    ctx.scope.set(name=target_name, value=value_ref)
-    # yield var == value
+    value_ref = eval_expr(node=node.value, ctx=ctx)
+    ctx.scope.set(name=target.name, value=value_ref)
 
 
 @eval_stmt.register(astroid.Return)
 def eval_return(node: astroid.Return, ctx: Context):
-    refs, value_ref = eval_expr.split(node=node.value, ctx=ctx)
-    yield refs
+    value_ref = eval_expr(node=node.value, ctx=ctx)
     ctx.scope.set(name='return', value=value_ref)
 
 
@@ -56,15 +50,14 @@ def eval_if_else(node: astroid.If, ctx: Context):
     if node.body is None:
         raise UnsupportedError(type(node))
 
-    refs, test_ref = eval_expr.split(node=node.test, ctx=ctx)
-    yield refs
+    test_ref = eval_expr(node=node.test, ctx=ctx)
 
     ctx_then = ctx.make_child()
     for subnode in node.body:
-        yield from eval_stmt(node=subnode, ctx=ctx_then)
+        eval_stmt(node=subnode, ctx=ctx_then)
     ctx_else = ctx.make_child()
     for subnode in (node.orelse or []):
-        yield from eval_stmt(node=subnode, ctx=ctx_else)
+        eval_stmt(node=subnode, ctx=ctx_else)
 
     changed_vars = set(ctx_then.scope.layer) | set(ctx_else.scope.layer)
     for var_name in changed_vars:

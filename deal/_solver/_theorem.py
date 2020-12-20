@@ -101,8 +101,8 @@ class Theorem:
                 )
 
             # eval contract
-            for value in eval_expr(node=contract.body, ctx=context):
-                goals[contract_name].add(value)
+            value = eval_expr(node=contract.body, ctx=context)
+            goals[contract_name].add(value)
         return goals
 
     @cached_property
@@ -133,8 +133,8 @@ class Theorem:
     @cached_property
     def constraint(self) -> z3.BoolRef:
         asserts = z3.Goal(ctx=self.context.z3_ctx)
-        for constraint in eval_stmt(node=self._func, ctx=self.context):
-            asserts.add(constraint)
+        eval_stmt(node=self._func, ctx=self.context)
+        asserts.add(*self.context.expected)
         asserts.add(self.contracts['post'].as_expr())
 
         return z3.And(

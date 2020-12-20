@@ -24,8 +24,4 @@ class HandlersRegistry:
         handler = self._handlers.get(node_type)
         if handler is None:
             raise UnsupportedError('unsupported ast node', node_type.__name__)
-        yield from handler(node=node, ctx=ctx)
-
-    def split(self, node: Node, ctx: Context):
-        refs = list(self(node=node, ctx=ctx))
-        return refs[:-1], refs[-1]
+        return handler(node=node, ctx=ctx)

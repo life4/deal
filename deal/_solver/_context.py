@@ -3,6 +3,19 @@ import typing
 import z3
 
 
+class Asserts:
+    _asserts: typing.List[z3.BoolRef]
+
+    def __init__(self) -> None:
+        self._asserts = []
+
+    def add(self, cond: z3.BoolRef) -> None:
+        self._asserts.append(cond)
+
+    def __iter__(self):
+        return iter(self._asserts)
+
+
 class Scope:
     _parent: typing.Optional['Scope']
     layer: typing.Dict[str, z3.Z3PPObject]
@@ -13,7 +26,10 @@ class Scope:
 
     @classmethod
     def make_empty(cls) -> 'Scope':
-        return cls(vars=dict(), parent=None)
+        return cls(
+            vars=dict(),
+            parent=None,
+        )
 
     def make_child(self) -> 'Scope':
         cls = type(self)
@@ -37,12 +53,16 @@ class Scope:
 class Context(typing.NamedTuple):
     z3_ctx: typing.Optional[z3.Context]
     scope: Scope
+    given: Asserts
+    expected: Asserts
 
     @classmethod
     def make_empty(cls) -> 'Context':
         return cls(
             z3_ctx=None,
             scope=Scope.make_empty(),
+            given=Asserts(),
+            expected=Asserts(),
         )
 
     @property
