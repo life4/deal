@@ -1,5 +1,5 @@
 import z3
-from ._sorts import wrap, StrSort, unwrap
+from ._sorts import wrap, StrSort, SetSort, unwrap
 
 
 FUNCTIONS = dict()
@@ -78,6 +78,11 @@ def builtin_float(a):
 @register('builtins.str')
 def builtin_str(obj) -> StrSort:
     return StrSort.convert(obj)
+
+
+@register('builtins.set')
+def builtin_set() -> StrSort:
+    return SetSort.make_empty()
 
 
 @register('builtins.str.startswith')

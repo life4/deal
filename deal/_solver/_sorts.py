@@ -3,9 +3,12 @@ from ._exceptions import UnsupportedError
 
 
 def unwrap(obj) -> z3.Z3PPObject:
-    if isinstance(obj, ProxySort):
-        return obj.expr
-    return obj
+    if not isinstance(obj, ProxySort):
+        return obj
+    expr = obj.expr
+    if expr is None:
+        return obj.make_empty_expr(z3.IntSort())
+    return expr
 
 
 def wrap(expr):
@@ -21,38 +24,65 @@ def wrap(expr):
 class ProxySort:
     expr: z3.Z3PPObject
 
-    def _ensure(self, item):
-        pass
+    @staticmethod
+    def make_empty_expr():
+        raise NotImplementedError
+
+    def _ensure(self, item, seq=False):
+        """
+        Sometimes, the subtype for sequences is not known in advance.
+        In that case, we set `expr=None`.
+
+        What `_ensure` does is it takes another item or sequence,
+        extracts type from it, and sets the type for the current sequence
+        to match the another one. For example, if `a` is an empty list,
+        operation `a.append(1)` will set the subtype of `a` to `int`.
+        """
+        if self.expr is not None:
+            return
+        item = unwrap(item)
+        if item is None:
+            sort = z3.IntSort()
+        else:
+            sort = item.sort()
+
+        if seq:
+            if isinstance(sort, z3.ArraySortRef):
+                sort = sort.domain()
+            elif isinstance(sort, z3.SeqSortRef):
+                sort = sort.basis()
+
+        self.expr = self.make_empty_expr(sort)
 
     def __init__(self, expr) -> None:
         self.expr = expr
 
     def __eq__(self, other):
-        self._ensure(other)
+        self._ensure(other, seq=True)
         return unwrap(self) == unwrap(other)
 
     def __ne__(self, other):
-        self._ensure(other)
+        self._ensure(other, seq=True)
         return unwrap(self) != unwrap(other)
 
     def __lt__(self, other):
-        self._ensure(other)
+        self._ensure(other, seq=True)
         return unwrap(self) < unwrap(other)
 
     def __le__(self, other):
-        self._ensure(other)
+        self._ensure(other, seq=True)
         return unwrap(self) <= unwrap(other)
 
     def __gt__(self, other):
-        self._ensure(other)
+        self._ensure(other, seq=True)
         return unwrap(self) > unwrap(other)
 
     def __ge__(self, other):
-        self._ensure(other)
+        self._ensure(other, seq=True)
         return unwrap(self) >= unwrap(other)
 
     def __add__(self, other):
-        self._ensure(other)
+        self._ensure(other, seq=True)
         cls = type(self)
         return cls(expr=unwrap(self) + unwrap(other))
 
@@ -60,21 +90,16 @@ class ProxySort:
 class SeqSort(ProxySort):
     expr: z3.SeqRef
 
+    @staticmethod
+    def make_empty_expr(sort):
+        return z3.Empty(z3.SeqSort(sort))
+
     @classmethod
     def make_empty(cls, sort: z3.SortRef = None) -> 'SeqSort':
         expr = None
         if sort is not None:
-            expr = z3.Empty(z3.SeqSort(sort))
+            expr = cls.make_empty_expr(sort)
         return cls(expr=expr)
-
-    def _ensure(self, item):
-        if self.expr is not None:
-            return
-        sort = item.sort()
-        # if isinstance(sort, z3.SeqSortRef):
-        #     import pdb
-        #     pdb.set_trace()
-        self.expr = z3.Empty(z3.SeqSort(sort))
 
     def append(self, item: z3.ExprRef) -> 'SeqSort':
         cls = type(self)
@@ -123,20 +148,15 @@ class StrSort(SeqSort):
 
 
 class SetSort(ProxySort):
-    def _ensure(self, item):
-        if self.expr is not None:
-            return
-        sort = item.sort()
-        # if isinstance(sort, z3.SeqSortRef):
-        #     import pdb
-        #     pdb.set_trace()
-        self.expr = z3.EmptySet(sort)
+    @staticmethod
+    def make_empty_expr(sort):
+        return z3.EmptySet(sort)
 
     @classmethod
     def make_empty(cls, sort: z3.SortRef = None) -> 'SetSort':
         expr = None
         if sort is not None:
-            expr = z3.EmptySet(sort)
+            expr = cls.make_empty_expr(sort)
         return cls(expr=expr)
 
     def add(self, item: z3.ExprRef) -> 'SetSort':

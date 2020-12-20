@@ -115,6 +115,14 @@ def prove_f(text: str) -> Theorem:
     # other expressions
     'True if True else False',
     'False if False else True',
+
+    # empty sequences
+    # 'len(set()) == 0',
+    'len([]) == 0',
+    'len("") == 0',
+    'set() == set()',
+    '[] == []',
+    '"" == ""',
 ])
 def test_asserts_ok(check: str) -> None:
     assert eval(check)
