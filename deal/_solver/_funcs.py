@@ -1,6 +1,5 @@
 import z3
-from ._exceptions import UnsupportedError
-from ._sorts import CustomSort
+from ._sorts import wrap, StrSort, unwrap
 
 
 FUNCTIONS = dict()
@@ -15,12 +14,12 @@ def register(name: str):
 
 @register('builtins.min')
 def builtin_min(a, b):
-    return z3.If(a < b, a, b)
+    return wrap(z3.If(a < b, unwrap(a), unwrap(b)))
 
 
 @register('builtins.max')
 def builtin_max(a, b):
-    return z3.If(a > b, a, b)
+    return wrap(z3.If(a > b, unwrap(a), unwrap(b)))
 
 
 @register('builtins.abs')
@@ -30,11 +29,7 @@ def builtin_abs(a):
 
 @register('builtins.len')
 def builtin_len(items):
-    if isinstance(items, z3.ArrayRef):
-        raise UnsupportedError('set length is unsupported')
-    if isinstance(items, CustomSort):
-        return items.length()
-    return z3.Length(items)
+    return items.length()
 
 
 @register('syntax./')
@@ -63,18 +58,7 @@ def syntax_floordiv(left, right):
 
 @register('syntax.in')
 def syntax_in(item, items):
-    # str
-    if z3.is_string(items):
-        return z3.Contains(items, item)
-
-    # set
-    if isinstance(items, z3.ArrayRef):
-        return z3.IsMember(e=item, s=items)
-
-    if isinstance(items, CustomSort):
-        return items.contains(item)
-
-    return z3.Contains(items, z3.Unit(item))
+    return items.contains(item)
 
 
 @register('builtins.int')
@@ -92,20 +76,18 @@ def builtin_float(a):
 
 
 @register('builtins.str')
-def builtin_str(a):
-    if z3.is_int(a):
-        return z3.IntToStr(a)
-    raise UnsupportedError('convert to str', type(a))
+def builtin_str(obj) -> StrSort:
+    return StrSort.convert(obj)
 
 
 @register('builtins.str.startswith')
-def str_startswith(a, b):
-    return z3.PrefixOf(b, a)
+def str_startswith(seq, prefix):
+    return seq.startswith(prefix)
 
 
 @register('builtins.str.endswith')
-def str_endswith(a, b):
-    return z3.SuffixOf(b, a)
+def str_endswith(seq, suffix):
+    return seq.endswith(suffix)
 
 
 # @register('builtins.list.append')

@@ -8,7 +8,7 @@ from ._context import Context
 from ._registry import HandlersRegistry
 from ._exceptions import UnsupportedError
 from ._funcs import FUNCTIONS
-from ._sorts import ListSort
+from ._sorts import ListSort, wrap, SetSort
 from ..linter._extractors.common import get_full_name, infer
 
 
@@ -65,7 +65,7 @@ def eval_const(node: astroid.Const, ctx: Context):
     converter = CONSTS.get(t)
     if not converter:
         raise UnsupportedError(repr(node.value))
-    return converter(node.value)
+    return wrap(converter(node.value))
 
 
 @eval_expr.register(astroid.BinOp)
@@ -123,15 +123,10 @@ def eval_list(node: astroid.List, ctx: Context):
 
 @eval_expr.register(astroid.Set)
 def eval_set(node: astroid.Set, ctx: Context):
-    items = []
+    container = SetSort.make_empty()
     for subnode in node.elts:
         item = eval_expr(node=subnode, ctx=ctx)
-        items.append(item)
-
-    sort = items[0].sort() if items else z3.IntSort()
-    container = z3.EmptySet(sort)
-    for item in items:
-        container = z3.SetAdd(s=container, e=item)
+        container = SetSort.add(container, item)
     return container
 
 
