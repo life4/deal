@@ -123,6 +123,11 @@ def prove_f(text: str) -> Theorem:
     'set() == set()',
     '[] == []',
     '"" == ""',
+
+    # sequences in sequences
+    'len([""]) == 1',
+    'len([[]]) == 1',
+    'len([[], []]) == 2',
 ])
 def test_asserts_ok(check: str) -> None:
     assert eval(check)

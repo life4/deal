@@ -1,5 +1,8 @@
+import typing
+import astroid
 import z3
 from ._exceptions import UnsupportedError
+from ._context import Context
 
 
 def unwrap(obj) -> z3.Z3PPObject:
@@ -169,3 +172,17 @@ class SetSort(ProxySort):
     def contains(self, item):
         self._ensure(item)
         return z3.IsMember(e=unwrap(item), s=self.expr)
+
+
+class LambdaSort(typing.NamedTuple):
+    ctx: Context
+    args: astroid.Arguments
+    body: astroid.Expr
+
+    def __call__(self, *values, ctx=None):
+        from ._eval_expr import eval_expr
+
+        body_ctx = self.ctx.make_child()
+        for arg, value in zip(self.args.arguments, values):
+            body_ctx.scope.set(name=arg.name, value=value)
+        return eval_expr(node=self.body, ctx=body_ctx)

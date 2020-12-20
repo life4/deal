@@ -8,7 +8,7 @@ from ._context import Context
 from ._registry import HandlersRegistry
 from ._exceptions import UnsupportedError
 from ._funcs import FUNCTIONS
-from ._sorts import ListSort, wrap, SetSort
+from ._sorts import ListSort, wrap, SetSort, LambdaSort
 from ..linter._extractors.common import get_full_name, infer
 
 
@@ -217,10 +217,8 @@ def _eval_call_attr(node: astroid.Attribute, ctx: Context, call_args=typing.List
 
 @eval_expr.register(astroid.Lambda)
 def eval_lambda(node: astroid.Lambda, ctx: Context):
-    def fake_func(*values):
-        body_ctx = ctx.make_child()
-        for arg, value in zip(node.args.arguments, values):
-            body_ctx.scope.set(name=arg.name, value=value)
-        return eval_expr(node=node.body, ctx=body_ctx)
-
-    return fake_func
+    return LambdaSort(
+        ctx=ctx,
+        args=node.args,
+        body=node.body,
+    )
