@@ -1,5 +1,6 @@
 import z3
 from ._exceptions import UnsupportedError
+from ._sorts import CustomSort
 
 
 FUNCTIONS = dict()
@@ -31,6 +32,8 @@ def builtin_abs(a):
 def builtin_len(items):
     if isinstance(items, z3.ArrayRef):
         raise UnsupportedError('set length is unsupported')
+    if isinstance(items, CustomSort):
+        return items.length()
     return z3.Length(items)
 
 
@@ -68,7 +71,9 @@ def syntax_in(item, items):
     if isinstance(items, z3.ArrayRef):
         return z3.IsMember(e=item, s=items)
 
-    # list
+    if isinstance(items, CustomSort):
+        return items.contains(item)
+
     return z3.Contains(items, z3.Unit(item))
 
 

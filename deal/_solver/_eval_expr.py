@@ -114,14 +114,9 @@ def eval_bool_op(node: astroid.BoolOp, ctx: Context):
 
 @eval_expr.register(astroid.List)
 def eval_list(node: astroid.List, ctx: Context):
-    items = []
+    container = ListSort.make_empty()
     for subnode in node.elts:
         item = eval_expr(node=subnode, ctx=ctx)
-        items.append(item)
-
-    sort = items[0].sort() if items else z3.IntSort()
-    container = ListSort.make(sort=sort)
-    for item in items:
         container = ListSort.append(container, item)
     return container
 
