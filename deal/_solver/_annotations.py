@@ -15,7 +15,6 @@ GENERIC_SORTS = {
 
 
 def ann2sort(node: astroid.node_classes.NodeNG):
-    print(type(node))
     if isinstance(node, astroid.Name):
         return _sort_from_name(node=node)
     if isinstance(node, astroid.Const) and type(node.value) is str:
@@ -40,12 +39,12 @@ def _sort_from_str(node: astroid.Const):
 
 
 def _sort_from_getattr(node: astroid.Subscript):
-    definitions = infer(node)
+    definitions = infer(node.value)
     if len(definitions) != 1:
         return None
 
-    _, type_name = get_full_name(definitions[0])
-    if type_name != '_SpecialGenericAlias':
+    module_name, type_name = get_full_name(definitions[0])
+    if type_name != '_SpecialGenericAlias' and module_name != 'builtins':
         return
 
     type_name = get_name(node.value).lower()
