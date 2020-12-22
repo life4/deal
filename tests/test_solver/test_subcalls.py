@@ -33,3 +33,13 @@ def test_call_another_two_args():
             assert another(7, 2) == 5
     """)
     assert theorem.conclusion is Conclusion.OK
+
+
+def test_recursion():
+    # TODO: detect infinite recursion?
+    theorem = prove_f("""
+        def f(a: int) -> int:
+            # this is math, baby
+            assert f(a) == f(a)
+    """)
+    assert theorem.conclusion is Conclusion.OK

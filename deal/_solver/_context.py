@@ -1,4 +1,6 @@
 import typing
+from collections import Counter
+from contextlib import contextmanager
 
 import z3
 
@@ -50,12 +52,31 @@ class Scope:
         self.layer[name] = value
 
 
+class Trace:
+    __slots__ = ['_names']
+    _names: Counter
+
+    def __init__(self) -> None:
+        self._names = Counter()
+
+    @contextmanager
+    def guard(self, name: str) -> None:
+        self._names[name] += 1
+        try:
+            yield
+        finally:
+            self._names[name] -= 1
+
+    def __contains__(self, name: str) -> bool:
+        return self._names[name] > 0
+
+
 class Context(typing.NamedTuple):
     z3_ctx: typing.Optional[z3.Context]
     scope: Scope
     given: Asserts
     expected: Asserts
-    trace: typing.Set[str]
+    trace: Trace
 
     @classmethod
     def make_empty(cls) -> 'Context':
@@ -64,7 +85,7 @@ class Context(typing.NamedTuple):
             scope=Scope.make_empty(),
             given=Asserts(),
             expected=Asserts(),
-            trace=set(),
+            trace=Trace(),
         )
 
     @property
