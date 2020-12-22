@@ -15,6 +15,8 @@ GENERIC_SORTS = {
 
 
 def ann2sort(node: astroid.node_classes.NodeNG):
+    if isinstance(node, astroid.Index):
+        return ann2sort(node=node.value)
     if isinstance(node, astroid.Name):
         return _sort_from_name(node=node)
     if isinstance(node, astroid.Const) and type(node.value) is str:
@@ -55,5 +57,4 @@ def _sort_from_getattr(node: astroid.Subscript):
     subsort = ann2sort(node=node.slice)
     if subsort is None:
         return None
-    print(5, type(subsort))
     return sort(subsort)

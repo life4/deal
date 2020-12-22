@@ -129,6 +129,12 @@ class ListSort(SeqSort):
         unit = z3.Unit(unwrap(item))
         return z3.Contains(self.expr, unit)
 
+    def index(self, other, start=None):
+        if start is None:
+            start = z3.IntVal(0)
+        unit = z3.Unit(unwrap(other))
+        return z3.IndexOf(self.expr, unit, start)
+
 
 class StrSort(SeqSort):
     @staticmethod
@@ -162,6 +168,11 @@ class StrSort(SeqSort):
         if self.expr is None:
             return z3.BoolVal(False)
         return z3.SuffixOf(unwrap(suffix), self.expr)
+
+    def index(self, other, start=None):
+        if start is None:
+            start = z3.IntVal(0)
+        return z3.IndexOf(self.expr, unwrap(other), start)
 
 
 class SetSort(ProxySort):

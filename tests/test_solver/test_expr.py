@@ -82,6 +82,7 @@ from .helpers import prove_f
     # string methods
     '"abcd".startswith("ab")',
     '"abcd".endswith("cd")',
+    '"abcd".index("bc") == 1',
 
     # float functions
     'int(4.2) == 4',
@@ -92,6 +93,9 @@ from .helpers import prove_f
     '[1, 2, 3] != [1, 2, 3, 3]',
     'len([7, 9, 9, 9, 11]) == 5',
     '10 in [3, 6, 10, 17]',
+
+    # list methods
+    '[7, 8, 9].index(8) == 1',
 
     # set
     '{1, 2, 3} == {1, 2, 3}',

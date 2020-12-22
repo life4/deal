@@ -95,6 +95,16 @@ def str_endswith(seq, suffix):
     return seq.endswith(suffix)
 
 
+@register('builtins.str.index')
+def str_index(items, item, start=None):
+    return items.index(item, start=start)
+
+
+@register('builtins.list.index')
+def list_index(items, item, start=None):
+    return items.index(item, start=start)
+
+
 # @register('builtins.list.append')
 # def list_append(a, b):
 #     return z3.SuffixOf(b, a)
