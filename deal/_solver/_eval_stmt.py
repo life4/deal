@@ -17,14 +17,12 @@ def eval_func(node: astroid.FunctionDef, ctx: Context):
     if node.name in ctx.trace:
         args = list(ctx.scope.layer.values())
         # generate function signature
-        sig = []
-        for arg in args:
-            sig.append(arg.sort())
+        sorts = [arg.sort() for arg in args]
         if not node.returns:
             raise UnsupportedError('no return type annotation for', node.name)
-        sig.append(ann2sort(node.returns))
+        sorts.append(ann2sort(node.returns))
 
-        func = z3.Function(node.name, *sig)
+        func = z3.Function(node.name, *sorts)
         ctx.scope.set(
             name='return',
             value=func(*args),

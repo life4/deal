@@ -17,6 +17,12 @@ class Asserts:
     def __iter__(self):
         return iter(self._asserts)
 
+    def __repr__(self) -> str:
+        return '{n}({r})'.format(
+            n=type(self).__name__,
+            r=repr(self._asserts),
+        )
+
 
 class Scope:
     _parent: typing.Optional['Scope']
@@ -51,6 +57,12 @@ class Scope:
     def set(self, name: str, value: z3.Z3PPObject) -> None:
         self.layer[name] = value
 
+    def __repr__(self) -> str:
+        return '{n}({r})'.format(
+            n=type(self).__name__,
+            r=repr(self.layer),
+        )
+
 
 class Trace:
     __slots__ = ['_names']
@@ -69,6 +81,12 @@ class Trace:
 
     def __contains__(self, name: str) -> bool:
         return self._names[name] > 0
+
+    def __repr__(self) -> str:
+        return '{n}({r})'.format(
+            n=type(self).__name__,
+            r=', '.join(sorted(self._names)),
+        )
 
 
 class Context(typing.NamedTuple):

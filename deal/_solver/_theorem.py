@@ -99,6 +99,7 @@ class Theorem:
         return z3.And(
             # pre-condition must be always true
             self.contracts['pre'].as_expr(),
+            *self.context.given,
             # try to break body asserts or post-condition
             z3.Not(asserts.as_expr()),
         )

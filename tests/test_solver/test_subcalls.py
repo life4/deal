@@ -43,3 +43,42 @@ def test_recursion():
             assert f(a) == f(a)
     """)
     assert theorem.conclusion is Conclusion.OK
+
+
+def test_subcall_post_contract():
+    theorem = prove_f("""
+        @deal.post(lambda r: r > 10)
+        def another(a: int) -> int:
+            return a + 10
+
+        @deal.pre(lambda a: a > -3)
+        def f(a: int) -> int:
+            assert another(a + 3) > 10
+    """)
+    assert theorem.conclusion is Conclusion.OK
+
+
+def test_subcall_pre_contract_ok():
+    theorem = prove_f("""
+        @deal.pre(lambda a: a > 0)
+        def another(a: int) -> int:
+            return a
+
+        @deal.pre(lambda a: a > 5)
+        def f(a: int) -> int:
+            assert another(a) > 5
+    """)
+    assert theorem.conclusion is Conclusion.OK
+
+
+def test_subcall_pre_contract_fail():
+    theorem = prove_f("""
+        @deal.pre(lambda a: a > 0)
+        def another(a: int) -> int:
+            return a
+
+        @deal.pre(lambda a: a > -5)
+        def f(a: int) -> int:
+            assert another(a) > 5
+    """)
+    assert theorem.conclusion is Conclusion.FAIL
