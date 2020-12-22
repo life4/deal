@@ -23,6 +23,11 @@ def eval_assert(node: astroid.Assert, ctx: Context):
     ctx.expected.add(eval_expr(node=node.test, ctx=ctx))
 
 
+@eval_stmt.register(astroid.Expr)
+def eval_expr_stmt(node: astroid.Expr, ctx: Context):
+    eval_expr(node=node.value, ctx=ctx)
+
+
 @eval_stmt.register(astroid.Assign)
 def eval_assign(node: astroid.Assign, ctx: Context):
     if not node.targets:

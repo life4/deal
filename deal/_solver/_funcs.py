@@ -1,4 +1,5 @@
 import z3
+from ._context import Context
 from ._sorts import wrap, StrSort, SetSort, unwrap
 
 
@@ -13,41 +14,41 @@ def register(name: str):
 
 
 @register('builtins.min')
-def builtin_min(a, b):
+def builtin_min(a, b, **kwargs):
     return wrap(z3.If(a < b, unwrap(a), unwrap(b)))
 
 
 @register('builtins.max')
-def builtin_max(a, b):
+def builtin_max(a, b, **kwargs):
     return wrap(z3.If(a > b, unwrap(a), unwrap(b)))
 
 
 @register('builtins.abs')
-def builtin_abs(a):
+def builtin_abs(a, **kwargs):
     return z3.If(a >= z3.IntVal(0), a, -a)
 
 
 @register('builtins.len')
-def builtin_len(items):
+def builtin_len(items, **kwargs):
     return items.length()
 
 
 @register('syntax./')
-def syntax_truediv(left, right):
-    if z3.is_int(left):
+def syntax_truediv(left, right, **kwargs):
+    if z3.is_int(left, **kwargs):
         left = z3.ToReal(left)
-    if z3.is_int(right):
+    if z3.is_int(right, **kwargs):
         right = z3.ToReal(right)
     return left / right
 
 
 @register('syntax.//')
-def syntax_floordiv(left, right):
+def syntax_floordiv(left, right, **kwargs):
     has_real = False
-    if z3.is_real(left):
+    if z3.is_real(left, **kwargs):
         has_real = True
         left = z3.ToInt(left)
-    if z3.is_real(right):
+    if z3.is_real(right, **kwargs):
         has_real = True
         right = z3.ToInt(right)
     result = left / right
@@ -57,20 +58,20 @@ def syntax_floordiv(left, right):
 
 
 @register('syntax.in')
-def syntax_in(item, items):
+def syntax_in(item, items, **kwargs):
     return items.contains(item)
 
 
 @register('builtins.int')
-def builtin_int(a):
-    if z3.is_string(a):
+def builtin_int(a, **kwargs):
+    if z3.is_string(a, **kwargs):
         return z3.StrToInt(a)
     return z3.ToInt(a)
 
 
 @register('builtins.float')
-def builtin_float(a):
-    if z3.is_string(a):
+def builtin_float(a, **kwargs):
+    if z3.is_string(a, **kwargs):
         return z3.ToReal(z3.StrToInt(a))
     return z3.ToReal(a)
 
@@ -86,25 +87,30 @@ def builtin_set() -> StrSort:
 
 
 @register('builtins.str.startswith')
-def str_startswith(seq, prefix):
+def str_startswith(seq, prefix, **kwargs):
     return seq.startswith(prefix)
 
 
 @register('builtins.str.endswith')
-def str_endswith(seq, suffix):
+def str_endswith(seq, suffix, **kwargs):
     return seq.endswith(suffix)
 
 
 @register('builtins.str.index')
-def str_index(items, item, start=None):
+def str_index(items, item, start=None, **kwargs):
     return items.index(item, start=start)
 
 
 @register('builtins.list.index')
-def list_index(items, item, start=None):
+def list_index(items, item, start=None, **kwargs):
     return items.index(item, start=start)
 
 
-# @register('builtins.list.append')
-# def list_append(a, b):
-#     return z3.SuffixOf(b, a)
+@register('builtins.list.append')
+def list_append(items, item, ctx: Context, var_name, **kwargs) -> None:
+    if var_name is None:
+        return
+    ctx.scope.set(
+        name=var_name,
+        value=items.append(item),
+    )

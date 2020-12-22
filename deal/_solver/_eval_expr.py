@@ -210,7 +210,7 @@ def _eval_call_attr(node: astroid.Attribute, ctx: Context, call_args=typing.List
     target_name = '.'.join(get_full_name(target))
     func = FUNCTIONS.get(target_name)
     if func is not None:
-        return func(*call_args)
+        return func(*call_args, ctx=ctx, var_name=node.expr.as_string())
 
     raise UnsupportedError('no definition for', target_name)
 

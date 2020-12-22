@@ -204,7 +204,7 @@ class LambdaSort(typing.NamedTuple):
     args: astroid.Arguments
     body: astroid.Expr
 
-    def __call__(self, *values, ctx=None):
+    def __call__(self, *values, **kwargs):
         from ._eval_expr import eval_expr
 
         body_ctx = self.ctx.make_child()

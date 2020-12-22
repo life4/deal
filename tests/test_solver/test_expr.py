@@ -191,3 +191,15 @@ def test_lambda_untyped():
             assert a("ab") == "abab"
     """)
     assert theorem.conclusion is Conclusion.OK
+
+
+def test_list_append():
+    theorem = prove_f("""
+        def f():
+            a = []
+            a.append(1)
+            a.append(2)
+            a.append(2)
+            assert a == [1, 2, 2]
+    """)
+    assert theorem.conclusion is Conclusion.OK
