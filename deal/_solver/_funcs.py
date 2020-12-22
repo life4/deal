@@ -1,6 +1,7 @@
 import z3
 from ._context import Context
 from ._sorts import wrap, StrSort, SetSort, unwrap
+from ._exceptions import UnsupportedError
 
 
 FUNCTIONS = dict()
@@ -14,18 +15,28 @@ def register(name: str):
 
 
 @register('builtins.min')
-def builtin_min(a, b, **kwargs):
+def builtin_min(a, b=None, **kwargs):
+    if b is None:
+        raise UnsupportedError('min from iterable is unsupported')
     return wrap(z3.If(a < b, unwrap(a), unwrap(b)))
 
 
 @register('builtins.max')
-def builtin_max(a, b, **kwargs):
+def builtin_max(a, b=None, **kwargs):
+    if b is None:
+        raise UnsupportedError('max from iterable is unsupported')
     return wrap(z3.If(a > b, unwrap(a), unwrap(b)))
 
 
 @register('builtins.abs')
 def builtin_abs(a, **kwargs):
-    return z3.If(a >= z3.IntVal(0), a, -a)
+    if z3.is_int(a):
+        val = z3.IntVal(0)
+    elif z3.is_real(a):
+        val = z3.RealVal(0)
+    else:
+        raise UnsupportedError('abs from not a number is unsupported')
+    return z3.If(a >= val, a, -a)
 
 
 @register('builtins.len')
