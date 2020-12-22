@@ -10,6 +10,7 @@ from .helpers import prove_f
     ('', 'str', 'len(a) >= 0'),
     ('from typing import List', 'List[int]', 'len(a) >= 0'),
     ('from typing import List', 'List[int]', '(a != []) or (a == [])'),
+    ('from typing import Set', 'Set[int]', '(a != set()) or (a == set())'),
 ])
 def test_asserts_ok(setup: str, ann: str, check: str) -> None:
     text = """

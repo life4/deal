@@ -131,6 +131,18 @@ class ListSort(SeqSort):
 
 
 class StrSort(SeqSort):
+    @staticmethod
+    def make_empty_expr(sort=None):
+        return z3.Empty(z3.StringSort())
+
+    def _ensure(self, item, seq=False):
+        pass
+
+    @classmethod
+    def make_empty(cls, sort: z3.SortRef = None) -> 'StrSort':
+        expr = cls.make_empty_expr(sort)
+        return cls(expr=expr)
+
     @classmethod
     def convert(cls, obj):
         if z3.is_int(obj):

@@ -10,6 +10,7 @@ SIMPLE_SORTS = {
 }
 GENERIC_SORTS = {
     'list': z3.SeqSort,
+    'set': z3.SetSort,
 }
 
 
