@@ -43,8 +43,8 @@ def _sort_from_getattr(node: astroid.Subscript):
     if len(definitions) != 1:
         return None
 
-    module_name, type_name = get_full_name(definitions[0])
-    if type_name != '_SpecialGenericAlias' and module_name != 'builtins':
+    module_name, _ = get_full_name(definitions[0])
+    if module_name != 'typing' and module_name != 'builtins':
         return
 
     type_name = get_name(node.value).lower()
