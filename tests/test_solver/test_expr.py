@@ -203,3 +203,14 @@ def test_list_append():
             assert a == [1, 2, 2]
     """)
     assert theorem.conclusion is Conclusion.OK
+
+
+def test_list_extend():
+    theorem = prove_f("""
+        def f():
+            a = []
+            a.extend([1, 2])
+            a.extend([2])
+            assert a == [1, 2, 2]
+    """)
+    assert theorem.conclusion is Conclusion.OK

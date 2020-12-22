@@ -106,12 +106,6 @@ class SeqSort(ProxySort):
             expr = cls.make_empty_expr(sort)
         return cls(expr=expr)
 
-    def append(self, item: z3.ExprRef) -> 'SeqSort':
-        cls = type(self)
-        unit = z3.Unit(unwrap(item))
-        self._ensure(item)
-        return cls(expr=self.expr + unit)
-
     def length(self) -> z3.ArithRef:
         if self.expr is None:
             return z3.IntVal(0)
@@ -124,6 +118,12 @@ class SeqSort(ProxySort):
 
 
 class ListSort(SeqSort):
+    def append(self, item: z3.ExprRef) -> 'SeqSort':
+        cls = type(self)
+        unit = z3.Unit(unwrap(item))
+        self._ensure(item)
+        return cls(expr=self.expr + unit)
+
     def contains(self, item):
         self._ensure(item)
         unit = z3.Unit(unwrap(item))

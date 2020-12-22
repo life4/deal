@@ -107,10 +107,20 @@ def list_index(items, item, start=None, **kwargs):
 
 
 @register('builtins.list.append')
-def list_append(items, item, ctx: Context, var_name, **kwargs) -> None:
-    if var_name is None:
+def list_append(items, item, ctx: Context, var_name: str, **kwargs) -> None:
+    if not var_name.isidentifier():
         return
     ctx.scope.set(
         name=var_name,
         value=items.append(item),
+    )
+
+
+@register('builtins.list.extend')
+def list_extend(items, other, ctx: Context, var_name: str, **kwargs) -> None:
+    if not var_name.isidentifier():
+        return
+    ctx.scope.set(
+        name=var_name,
+        value=items + other,
     )
