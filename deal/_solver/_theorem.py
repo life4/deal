@@ -11,6 +11,8 @@ from ._eval_expr import eval_expr
 from ._eval_stmt import eval_stmt
 from .._cached_property import cached_property
 from ..linter._extractors.contracts import get_contracts
+from ._annotations import ann2sort
+from ._sorts import wrap
 
 
 class Conclusion(enum.Enum):
@@ -112,23 +114,11 @@ class Theorem:
         for arg, annotation in zip(args.args, args.annotations):
             if annotation is None:
                 raise UnsupportedError('missed annotation for', arg.name)
-            sort = self._annotation_to_sort(annotation)
+            sort = ann2sort(annotation)
             if sort is None:
                 raise UnsupportedError('unsupported annotation type', annotation.as_string())
-            result[arg.name] = z3.Const(name=arg.name, sort=sort)
+            result[arg.name] = wrap(z3.Const(name=arg.name, sort=sort))
         return result
-
-    @staticmethod
-    def _annotation_to_sort(node: astroid.node_classes.NodeNG):
-        if isinstance(node, astroid.Name):
-            sort = SORTS.get(node.name)
-            if sort is not None:
-                return sort()
-        if isinstance(node, astroid.Const) and type(node.value) is str:
-            sort = SORTS.get(node.value)
-            if sort is not None:
-                return sort()
-        return None
 
     @cached_property
     def constraint(self) -> z3.BoolRef:

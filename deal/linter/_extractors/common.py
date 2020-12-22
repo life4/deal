@@ -125,7 +125,7 @@ def infer(expr) -> Tuple[astroid.node_classes.NodeNG, ...]:
         guesses = expr.infer()
         if guesses is astroid.Uninferable:  # pragma: no cover
             return tuple()
-        return tuple(g for g in guesses if type(g) is not astroid.Uninferable)
+        return tuple(g for g in guesses if repr(g) != 'Uninferable')
     return tuple()
 
 

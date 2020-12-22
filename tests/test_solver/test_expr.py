@@ -1,18 +1,6 @@
 import pytest
-from deal._solver._theorem import Theorem, Conclusion
-
-
-def prove_f(text: str) -> Theorem:
-    theorems = list(Theorem.from_text(text))
-    theorem = theorems[-1]
-    assert theorem.name == 'f'
-    assert theorem.error is None
-    assert theorem.example is None
-    theorem.prove()
-    print('error:', repr(theorem.error))
-    print('constraint:', repr(theorem.constraint))
-    print('example:', theorem.example)
-    return theorem
+from deal._solver._theorem import Conclusion
+from .helpers import prove_f
 
 
 @pytest.mark.parametrize('check', [
@@ -62,6 +50,7 @@ def prove_f(text: str) -> Theorem:
     '4 >= 4',
     '5 >= 4',
     '5 > 4',
+    '(5 > 4) and (7 > 3)',
 
     # strings
     '"ab" < "cd"',

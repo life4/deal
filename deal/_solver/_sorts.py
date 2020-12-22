@@ -15,6 +15,8 @@ def unwrap(obj) -> z3.Z3PPObject:
 
 
 def wrap(expr):
+    if isinstance(expr, ProxySort):
+        return expr
     if z3.is_string(expr):
         return StrSort(expr=expr)
     if z3.is_seq(expr):

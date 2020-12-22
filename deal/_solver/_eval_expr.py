@@ -200,7 +200,7 @@ def _eval_call_attr(node: astroid.Attribute, ctx: Context, call_args=typing.List
     # resolve methods
     definitions = infer(node)
     if len(definitions) != 1:
-        raise UnsupportedError('cannot resolve', node)
+        raise UnsupportedError('cannot resolve attribute', node.as_string())
 
     target = definitions[0]
     if isinstance(target, astroid.BoundMethod):
