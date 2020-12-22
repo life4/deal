@@ -5,14 +5,13 @@ from textwrap import dedent
 import astroid
 import z3
 
-from ._context import Context, Scope
+from ._context import Context
 from ._exceptions import UnsupportedError, ProveError
-from ._eval_expr import eval_expr
 from ._eval_stmt import eval_stmt
 from .._cached_property import cached_property
-from ..linter._extractors.contracts import get_contracts
 from ._annotations import ann2sort
 from ._sorts import wrap
+from ._eval_contracts import eval_contracts
 
 
 class Conclusion(enum.Enum):
@@ -72,40 +71,10 @@ class Theorem:
 
     @cached_property
     def contracts(self) -> typing.Dict[str, z3.Goal]:
-        goals = dict(
-            pre=z3.Goal(),
-            post=z3.Goal(),
+        return eval_contracts(
+            decorators=self._func.decorators,
+            ctx=self.context,
         )
-        if not self._func.decorators:
-            return goals
-        return_value = self.context.scope.get('return')
-        for contract_name, args in get_contracts(self._func.decorators.nodes):
-            if contract_name not in {'pre', 'post'}:
-                continue
-            if contract_name == 'post' and return_value is None:
-                raise UnsupportedError('cannot resolve return value to check deal.post')
-            contract = args[0]
-            if not isinstance(contract, astroid.Lambda):
-                continue
-            if not contract.args:
-                continue
-
-            # make context
-            cargs = contract.args.arguments
-            context = self.context
-            if contract_name == 'post':
-                # check post-condition in a new clear scope
-                # with mapping `return` value in it as an argument.
-                context = context.evolve(scope=Scope.make_empty())
-                context.scope.set(
-                    name=cargs[0].name,
-                    value=return_value,
-                )
-
-            # eval contract
-            value = eval_expr(node=contract.body, ctx=context)
-            goals[contract_name].add(value)
-        return goals
 
     @cached_property
     def arguments(self) -> typing.Dict[str, z3.SortRef]:

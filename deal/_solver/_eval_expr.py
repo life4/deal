@@ -140,6 +140,11 @@ def eval_name(node: astroid.Name, ctx: Context):
     if value is not None:
         return value
 
+    # resolve definitions
+    inferred = infer(node)
+    if inferred and isinstance(inferred[0], astroid.FunctionDef):
+        return inferred[0]
+
     # resolve built-in functions
     value = FUNCTIONS.get('builtins.' + node.name)
     if value is not None:
@@ -191,6 +196,8 @@ def eval_call(node: astroid.Call, ctx: Context):
 
 def _eval_call_name(node: astroid.Name, ctx: Context, call_args=typing.List[z3.Z3PPObject]):
     value = eval_expr(node=node, ctx=ctx)
+    if isinstance(value, astroid.FunctionDef):
+        return _call_function(node=value, call_args=call_args)
     if not callable(value):
         raise UnsupportedError('the object is not callable ', node.name)
     return value(*call_args)
@@ -213,6 +220,18 @@ def _eval_call_attr(node: astroid.Attribute, ctx: Context, call_args=typing.List
         return func(*call_args, ctx=ctx, var_name=node.expr.as_string())
 
     raise UnsupportedError('no definition for', target_name)
+
+
+def _call_function(node: astroid.FunctionDef, call_args=typing.List[z3.Z3PPObject]):
+    from ._eval_stmt import eval_stmt
+    func_ctx = Context.make_empty()
+    for arg, value in zip(node.args.args, call_args):
+        func_ctx.scope.set(name=arg.name, value=value)
+    eval_stmt(node=node, ctx=func_ctx)
+    result = func_ctx.scope.get(name='return')
+    if result is None:
+        raise UnsupportedError('cannot find return value for', node.name)
+    return result
 
 
 @eval_expr.register(astroid.Lambda)

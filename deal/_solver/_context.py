@@ -55,6 +55,7 @@ class Context(typing.NamedTuple):
     scope: Scope
     given: Asserts
     expected: Asserts
+    trace: typing.Set[str]
 
     @classmethod
     def make_empty(cls) -> 'Context':
@@ -63,6 +64,7 @@ class Context(typing.NamedTuple):
             scope=Scope.make_empty(),
             given=Asserts(),
             expected=Asserts(),
+            trace=set(),
         )
 
     @property

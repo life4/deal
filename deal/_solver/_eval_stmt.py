@@ -5,6 +5,7 @@ from ._context import Context
 from ._registry import HandlersRegistry
 from ._eval_expr import eval_expr
 from ._exceptions import UnsupportedError
+from ._annotations import ann2sort
 
 
 eval_stmt = HandlersRegistry()
@@ -12,8 +13,36 @@ eval_stmt = HandlersRegistry()
 
 @eval_stmt.register(astroid.FunctionDef)
 def eval_func(node: astroid.FunctionDef, ctx: Context):
-    for statement in node.body:
-        eval_stmt(node=statement, ctx=ctx)
+    # if it is a recursive call, fake the function
+    if node.name in ctx.trace:
+        names = list(ctx.scope.layer.keys())
+
+        args = []
+        for name in names:
+            args.append(ctx.scope.get(name=name))
+
+        # generate function signature
+        sig = []
+        for name, arg in zip(names, args):
+            sig.append(z3.Const(name=name, sort=arg.sort()))
+        if not node.returns:
+            raise UnsupportedError('no return type annotation for', node.name)
+        sig.append(ann2sort(node.returns))
+
+        func = z3.Function(node.name, *sig)
+        ctx.scope.set(
+            name='return',
+            value=func(*args),
+        )
+        return
+
+    # otherwise, try to execute it
+    ctx.trace.add(node.name)
+    try:
+        for statement in node.body:
+            eval_stmt(node=statement, ctx=ctx)
+    finally:
+        ctx.trace.remove(node.name)
 
 
 @eval_stmt.register(astroid.Assert)
