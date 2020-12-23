@@ -8,7 +8,7 @@ from ._context import Context
 from ._registry import HandlersRegistry
 from ._exceptions import UnsupportedError
 from ._funcs import FUNCTIONS
-from ._sorts import ListSort, wrap, SetSort, LambdaSort, FloatSort, if_expr
+from ._proxies import ListSort, wrap, SetSort, LambdaSort, FloatSort, if_expr
 from ..linter._extractors.common import get_full_name, infer
 
 

@@ -6,7 +6,7 @@ from ._registry import HandlersRegistry
 from ._eval_expr import eval_expr
 from ._exceptions import UnsupportedError
 from ._annotations import ann2sort
-from ._sorts import if_expr, unwrap
+from ._proxies import if_expr, unwrap
 
 
 eval_stmt = HandlersRegistry()

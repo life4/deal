@@ -1,7 +1,7 @@
 import astroid
 import z3
 from ..linter._extractors.common import get_full_name, get_name, infer
-from ._sorts import FloatSort
+from ._proxies import FloatSort
 
 SIMPLE_SORTS = {
     'bool': z3.BoolSort,

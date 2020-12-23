@@ -1,6 +1,6 @@
 import z3
 from ._context import Context
-from ._sorts import wrap, StrSort, SetSort, unwrap
+from ._proxies import wrap, StrSort, SetSort, unwrap
 from ._exceptions import UnsupportedError
 
 

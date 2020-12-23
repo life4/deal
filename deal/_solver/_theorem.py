@@ -10,7 +10,7 @@ from ._exceptions import UnsupportedError, ProveError
 from ._eval_stmt import eval_stmt
 from .._cached_property import cached_property
 from ._annotations import ann2sort
-from ._sorts import wrap
+from ._proxies import wrap
 from ._eval_contracts import eval_contracts
 
 

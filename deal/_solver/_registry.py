@@ -3,7 +3,7 @@ import typing
 from ._context import Context
 from ._exceptions import UnsupportedError
 from ._types import Node, HandlerType, Z3Nodes
-from ._sorts import wrap
+from ._proxies import wrap
 
 
 class HandlersRegistry:
