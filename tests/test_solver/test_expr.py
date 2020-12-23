@@ -1,3 +1,5 @@
+import hypothesis
+import hypothesis.strategies
 import pytest
 from deal._solver._theorem import Conclusion
 from .helpers import prove_f
@@ -214,4 +216,26 @@ def test_list_extend():
             a.extend([2])
             assert a == [1, 2, 2]
     """)
+    assert theorem.conclusion is Conclusion.OK
+
+
+@hypothesis.given(
+    left=hypothesis.strategies.integers(),
+    right=hypothesis.strategies.integers(),
+    op=hypothesis.strategies.sampled_from(['+', '-', '*']),
+)
+def test_fuzz_math_int(left, right, op):
+    expr = '{l} {op} {r}'.format(l=left, op=op, r=right)
+    expected = 0
+    try:
+        expected = eval(expr)
+    except ZeroDivisionError:
+        hypothesis.reject()
+
+    text = """
+        def f():
+            assert {expr} == {expected}
+    """
+    text = text.format(expr=expr, expected=expected)
+    theorem = prove_f(text)
     assert theorem.conclusion is Conclusion.OK

@@ -1,4 +1,4 @@
-from deal._solver._theorem import Theorem
+from deal._solver._theorem import Theorem, Conclusion
 
 
 def prove_f(text: str) -> Theorem:
@@ -8,7 +8,8 @@ def prove_f(text: str) -> Theorem:
     assert theorem.error is None
     assert theorem.example is None
     theorem.prove()
-    print('error:', repr(theorem.error))
-    print('constraint:', repr(theorem.constraint))
-    print('example:', theorem.example)
+    if theorem.conclusion != Conclusion.OK:
+        print('error:', repr(theorem.error))
+        print('constraint:', repr(theorem.constraint))
+        print('example:', theorem.example)
     return theorem
