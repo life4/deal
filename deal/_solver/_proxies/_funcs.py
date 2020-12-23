@@ -25,9 +25,9 @@ def wrap(expr):
     if z3.is_array(expr):
         return registry['set'](expr=expr)
     if z3.is_fp(expr):
-        return registry['float'](expr=expr)
+        return registry['float'].wrap(expr)
     if z3.is_real(expr):
-        return registry['float'](expr=expr)
+        return registry['float'].wrap(expr=expr)
     if z3.is_int(expr):
         return registry['int'](expr=expr)
     return expr
