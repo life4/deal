@@ -1,3 +1,4 @@
+from sys import float_info
 import typing
 import astroid
 import z3
@@ -23,7 +24,17 @@ def wrap(expr):
         return ListSort(expr=expr)
     if z3.is_array(expr):
         return SetSort(expr=expr)
+    if z3.is_fp(expr):
+        return FloatSort(expr=expr)
+    if z3.is_real(expr):
+        return FloatSort(expr=expr)
+    if z3.is_int(expr):
+        return IntSort(expr=expr)
     return expr
+
+
+def if_expr(test, val_then, val_else):
+    return wrap(z3.If(test, unwrap(val_then), unwrap(val_else)))
 
 
 class ProxySort:
@@ -62,34 +73,232 @@ class ProxySort:
     def __init__(self, expr) -> None:
         self.expr = expr
 
+    # comparison
+
     def __eq__(self, other):
         self._ensure(other, seq=True)
-        return unwrap(self) == unwrap(other)
+        return self.expr == unwrap(other)
 
     def __ne__(self, other):
         self._ensure(other, seq=True)
-        return unwrap(self) != unwrap(other)
+        return self.expr != unwrap(other)
 
     def __lt__(self, other):
         self._ensure(other, seq=True)
-        return unwrap(self) < unwrap(other)
+        return self.expr < unwrap(other)
 
     def __le__(self, other):
         self._ensure(other, seq=True)
-        return unwrap(self) <= unwrap(other)
+        return self.expr <= unwrap(other)
 
     def __gt__(self, other):
         self._ensure(other, seq=True)
-        return unwrap(self) > unwrap(other)
+        return self.expr > unwrap(other)
 
     def __ge__(self, other):
         self._ensure(other, seq=True)
-        return unwrap(self) >= unwrap(other)
+        return self.expr >= unwrap(other)
+
+    # unary operations
+
+    def __neg__(self):
+        cls = type(self)
+        return cls(expr=-self.expr)
+
+    def __pos__(self):
+        cls = type(self)
+        return cls(expr=+self.expr)
+
+    def __inv__(self):
+        cls = type(self)
+        return cls(expr=~self.expr)
+
+    # binary operations
 
     def __add__(self, other):
         self._ensure(other, seq=True)
         cls = type(self)
-        return cls(expr=unwrap(self) + unwrap(other))
+        return cls(expr=self.expr + unwrap(other))
+
+    def __sub__(self, other):
+        self._ensure(other, seq=True)
+        cls = type(self)
+        return cls(expr=self.expr - unwrap(other))
+
+    def __mul__(self, other):
+        self._ensure(other, seq=True)
+        cls = type(self)
+        return cls(expr=self.expr * unwrap(other))
+
+    def __truediv__(self, other):
+        self._ensure(other, seq=True)
+        cls = type(self)
+        return cls(expr=self.expr / unwrap(other))
+
+    def __floordiv__(self, other):
+        self._ensure(other, seq=True)
+        cls = type(self)
+        return cls(expr=self.expr // unwrap(other))
+
+    def __mod__(self, other):
+        self._ensure(other, seq=True)
+        cls = type(self)
+        return cls(expr=self.expr % unwrap(other))
+
+    def __pow__(self, other):
+        self._ensure(other, seq=True)
+        cls = type(self)
+        return cls(expr=self.expr ** unwrap(other))
+
+    def __matmul__(self, other):
+        self._ensure(other, seq=True)
+        cls = type(self)
+        return cls(expr=self.expr @ unwrap(other))
+
+
+class IntSort(ProxySort):
+    @classmethod
+    def sort(cls):
+        return z3.IntSort()
+
+    @classmethod
+    def val(cls, x):
+        return z3.IntVal(x)
+
+    @property
+    def as_int(self):
+        return self
+
+    @property
+    def as_float(self):
+        # TODO: int to fp?
+        return self.as_real
+
+    @property
+    def as_real(self):
+        return FloatSort(expr=z3.ToReal(self.expr))
+
+    @property
+    def as_fp(self):
+        expr = z3.fpToFP(z3.ToReal(self.expr))
+        return FloatSort(expr=expr)
+
+    @property
+    def as_str(self):
+        return StrSort(expr=z3.IntToStr(self.expr))
+
+    def abs(self):
+        cls = type(self)
+        expr = z3.If(self.expr >= z3.IntVal(0), self.expr, -self.expr)
+        return cls(expr=expr)
+
+    def __truediv__(self, other):
+        real = z3.ToReal(self.expr)
+        if isinstance(other, IntSort):
+            return FloatSort(expr=real / other.as_real.expr)
+        if not isinstance(other, FloatSort):
+            raise UnsupportedError('unsupported denominator sort', other.sort())
+        if other.is_real:
+            expr = real / other.as_real.expr
+        else:
+            expr = self.as_fp / other.as_fp.expr
+        return FloatSort(expr=expr)
+
+    def __floordiv__(self, other):
+        if isinstance(other, IntSort):
+            return IntSort(expr=self.expr / other.expr)
+        if isinstance(other, FloatSort):
+            return IntSort(expr=self.expr / other.as_int.expr)
+        raise UnsupportedError('unsupported denominator sort', other.sort())
+
+
+class FloatSort(ProxySort):
+    prefer_real = True
+
+    @staticmethod
+    def fp_sort():
+        return z3.FPSort(ebits=float_info.dig, sbits=float_info.mant_dig)
+
+    @staticmethod
+    def real_sort():
+        return z3.RealSort()
+
+    @classmethod
+    def sort(cls):
+        if cls.prefer_real:
+            return cls.real_sort()
+        return cls.fp_sort()
+
+    @classmethod
+    def val(cls, x):
+        if cls.prefer_real:
+            return z3.RealVal(x)
+        return z3.FPVal(x, cls.sort())
+
+    @classmethod
+    def _real2fp(cls, x):
+        return z3.fpRealToFP(z3.RNE(), x, cls.fp_sort())
+
+    @classmethod
+    def _fp2real(cls, x):
+        return z3.fpToReal(x)
+
+    @property
+    def as_float(self):
+        return self
+
+    @property
+    def is_real(self) -> bool:
+        return z3.is_real(self.expr)
+
+    @property
+    def is_fp(self) -> bool:
+        return z3.is_fp(self.expr)
+
+    @property
+    def as_real(self):
+        if self.is_real:
+            return self
+        cls = type(self)
+        return cls(expr=self._fp2real(self.expr))
+
+    @property
+    def as_fp(self):
+        if self.is_fp:
+            return self
+        cls = type(self)
+        return cls(expr=self._real2fp(self.expr))
+
+    @property
+    def as_int(self):
+        return IntSort(expr=z3.ToInt(self.as_real.expr))
+
+    @property
+    def as_str(self):
+        raise UnsupportedError('cannot convert float to str')
+
+    def abs(self):
+        if self.is_fp:
+            return z3.fpAbs(self.expr)
+        return z3.If(self.expr >= z3.RealVal(0), self.expr, -self.expr)
+
+    def __truediv__(self, other):
+        if isinstance(other, IntSort):
+            if self.is_real:
+                return FloatSort(expr=self.as_real.expr / other.as_real.expr)
+            return FloatSort(expr=self.as_fp.expr / other.as_fp.expr)
+
+        if self.is_real and other.is_real:
+            return FloatSort(expr=self.expr / other.expr)
+        if self.is_fp and other.is_fp:
+            return FloatSort(expr=self.expr / other.expr)
+        if self.prefer_real:
+            return FloatSort(expr=self.expr.as_real / other.as_real.expr)
+        return FloatSort(expr=self.expr.as_fp / other.as_fp.expr)
+
+    def __floordiv__(self, other):
+        val = IntSort(expr=self.as_int.expr / other.as_int.expr)
+        return val.as_float
 
 
 class SeqSort(ProxySort):
@@ -154,6 +363,14 @@ class StrSort(SeqSort):
         if z3.is_int(obj):
             return cls(expr=z3.IntToStr(obj))
         raise UnsupportedError('cannot convert', obj, 'to str')
+
+    @property
+    def as_int(self):
+        return IntSort(expr=z3.StrToInt(self.expr))
+
+    @property
+    def as_str(self):
+        return self
 
     def contains(self, item):
         self._ensure(item)

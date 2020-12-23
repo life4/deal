@@ -30,42 +30,12 @@ def builtin_max(a, b=None, **kwargs):
 
 @register('builtins.abs')
 def builtin_abs(a, **kwargs):
-    if z3.is_int(a):
-        val = z3.IntVal(0)
-    elif z3.is_real(a):
-        val = z3.RealVal(0)
-    else:
-        raise UnsupportedError('abs from not a number is unsupported')
-    return z3.If(a >= val, a, -a)
+    return a.abs()
 
 
 @register('builtins.len')
 def builtin_len(items, **kwargs):
     return items.length()
-
-
-@register('syntax./')
-def syntax_truediv(left, right, **kwargs):
-    if z3.is_int(left, **kwargs):
-        left = z3.ToReal(left)
-    if z3.is_int(right, **kwargs):
-        right = z3.ToReal(right)
-    return left / right
-
-
-@register('syntax.//')
-def syntax_floordiv(left, right, **kwargs):
-    has_real = False
-    if z3.is_real(left, **kwargs):
-        has_real = True
-        left = z3.ToInt(left)
-    if z3.is_real(right, **kwargs):
-        has_real = True
-        right = z3.ToInt(right)
-    result = left / right
-    if has_real:
-        result = z3.ToReal(result)
-    return result
 
 
 @register('syntax.in')
@@ -75,21 +45,17 @@ def syntax_in(item, items, **kwargs):
 
 @register('builtins.int')
 def builtin_int(a, **kwargs):
-    if z3.is_string(a, **kwargs):
-        return z3.StrToInt(a)
-    return z3.ToInt(a)
+    return a.as_int
 
 
 @register('builtins.float')
 def builtin_float(a, **kwargs):
-    if z3.is_string(a, **kwargs):
-        return z3.ToReal(z3.StrToInt(a))
-    return z3.ToReal(a)
+    return a.as_float
 
 
 @register('builtins.str')
 def builtin_str(obj) -> StrSort:
-    return StrSort.convert(obj)
+    return obj.as_str
 
 
 @register('builtins.set')

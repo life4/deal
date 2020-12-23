@@ -8,7 +8,7 @@ from ._context import Context
 from ._registry import HandlersRegistry
 from ._exceptions import UnsupportedError
 from ._funcs import FUNCTIONS
-from ._sorts import ListSort, wrap, SetSort, LambdaSort
+from ._sorts import ListSort, wrap, SetSort, LambdaSort, FloatSort, if_expr
 from ..linter._extractors.common import get_full_name, infer
 
 
@@ -17,7 +17,7 @@ eval_expr = HandlersRegistry()
 CONSTS = {
     bool: z3.BoolVal,
     int: z3.IntVal,
-    float: z3.RealVal,
+    float: FloatSort.val,
     str: z3.StringVal,
 }
 COMAPARISON = {
@@ -40,8 +40,8 @@ BIN_OPERATIONS = {
     '+': operator.add,
     '-': operator.sub,
     '*': operator.mul,
-    '/': FUNCTIONS['syntax./'],
-    '//': FUNCTIONS['syntax.//'],
+    '/': operator.truediv,
+    '//': operator.floordiv,
     '**': operator.pow,
     '%': operator.mod,
     '@': operator.matmul,
@@ -77,7 +77,7 @@ def eval_bin_op(node: astroid.BinOp, ctx: Context):
         raise UnsupportedError('unsupported operator', node.op)
     left = eval_expr(node=node.left, ctx=ctx)
     right = eval_expr(node=node.right, ctx=ctx)
-    return operation(left, right)
+    return wrap(operation(left, right))
 
 
 @eval_expr.register(astroid.Compare)
@@ -178,7 +178,7 @@ def eval_ternary_op(node: astroid.IfExp, ctx: Context):
     then_ref = eval_expr(node=node.body, ctx=ctx)
     else_ref = eval_expr(node=node.orelse, ctx=ctx)
 
-    return z3.If(test_ref, then_ref, else_ref)
+    return if_expr(test_ref, then_ref, else_ref)
 
 
 @eval_expr.register(astroid.Call)

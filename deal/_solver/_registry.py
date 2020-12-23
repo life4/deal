@@ -3,6 +3,7 @@ import typing
 from ._context import Context
 from ._exceptions import UnsupportedError
 from ._types import Node, HandlerType, Z3Nodes
+from ._sorts import wrap
 
 
 class HandlersRegistry:
@@ -24,4 +25,4 @@ class HandlersRegistry:
         handler = self._handlers.get(node_type)
         if handler is None:
             raise UnsupportedError('unsupported ast node', node_type.__name__)
-        return handler(node=node, ctx=ctx)
+        return wrap(handler(node=node, ctx=ctx))

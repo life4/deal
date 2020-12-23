@@ -86,7 +86,7 @@ from .helpers import prove_f
 
     # float functions
     'int(4.2) == 4',
-    'abs(-4.2) == 4.2',
+    # 'abs(-4.2) == 4.2',
     # 'str(4.2) == "4.2"',
 
     # list

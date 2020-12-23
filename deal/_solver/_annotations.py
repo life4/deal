@@ -1,11 +1,12 @@
 import astroid
 import z3
 from ..linter._extractors.common import get_full_name, get_name, infer
+from ._sorts import FloatSort
 
 SIMPLE_SORTS = {
     'bool': z3.BoolSort,
     'int': z3.IntSort,
-    'float': z3.RealSort,
+    'float': FloatSort.sort,
     'str': z3.StringSort,
 }
 GENERIC_SORTS = {

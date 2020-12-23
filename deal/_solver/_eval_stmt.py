@@ -6,6 +6,7 @@ from ._registry import HandlersRegistry
 from ._eval_expr import eval_expr
 from ._exceptions import UnsupportedError
 from ._annotations import ann2sort
+from ._sorts import if_expr, unwrap
 
 
 eval_stmt = HandlersRegistry()
@@ -15,7 +16,7 @@ eval_stmt = HandlersRegistry()
 def eval_func(node: astroid.FunctionDef, ctx: Context):
     # if it is a recursive call, fake the function
     if node.name in ctx.trace:
-        args = list(ctx.scope.layer.values())
+        args = [unwrap(v) for v in ctx.scope.layer.values()]
         # generate function signature
         sorts = [arg.sort() for arg in args]
         if not node.returns:
@@ -39,7 +40,7 @@ def eval_func(node: astroid.FunctionDef, ctx: Context):
 def eval_assert(node: astroid.Assert, ctx: Context):
     if node.test is None:
         raise UnsupportedError('assert without condition')
-    ctx.expected.add(eval_expr(node=node.test, ctx=ctx))
+    ctx.expected.add(unwrap(eval_expr(node=node.test, ctx=ctx)))
 
 
 @eval_stmt.register(astroid.Expr)
@@ -90,5 +91,5 @@ def eval_if_else(node: astroid.If, ctx: Context):
         if val_then is None or val_else is None:
             raise UnsupportedError('unbound variable', var_name)
 
-        value = z3.If(test_ref, val_then, val_else)
+        value = if_expr(test_ref, val_then, val_else)
         ctx.scope.set(name=var_name, value=value)
