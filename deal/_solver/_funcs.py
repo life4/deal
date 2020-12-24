@@ -1,6 +1,6 @@
 import z3
 from ._context import Context
-from ._proxies import wrap, StrSort, SetSort, unwrap
+from ._proxies import wrap, StrSort, SetSort, FloatSort, IntSort, unwrap, if_expr
 from ._exceptions import UnsupportedError
 
 
@@ -30,7 +30,7 @@ def builtin_max(a, b=None, **kwargs):
 
 @register('builtins.abs')
 def builtin_abs(a, **kwargs):
-    return a.abs()
+    return a.abs
 
 
 @register('builtins.len')
@@ -100,4 +100,29 @@ def list_extend(items, other, ctx: Context, var_name: str, **kwargs) -> None:
     ctx.scope.set(
         name=var_name,
         value=items + other,
+    )
+
+
+@register('math.isclose')
+def math_isclose(left, right, rel_tol=None, abs_tol=None, **kwargs) -> None:
+    if isinstance(left, IntSort) and isinstance(right, IntSort):
+        return left == right
+
+    if isinstance(left, IntSort):
+        left = left.as_float
+    if isinstance(right, IntSort):
+        right = right.as_float
+    assert isinstance(left, FloatSort)
+    assert isinstance(right, FloatSort)
+
+    if rel_tol is None:
+        rel_tol = wrap(FloatSort.val(1e-09))
+    if abs_tol is None:
+        abs_tol = wrap(FloatSort.val(0.0))
+
+    delta = builtin_max(rel_tol * builtin_max(left.abs, right.abs), abs_tol)
+    return if_expr(
+        z3.And(left.is_nan, right.is_nan),
+        z3.BoolVal(True),
+        (left - right).abs <= delta,
     )

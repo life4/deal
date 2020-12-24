@@ -41,6 +41,7 @@ class IntSort(ProxySort):
         cls = registry['str']
         return cls(expr=z3.IntToStr(self.expr))
 
+    @property
     def abs(self):
         cls = type(self)
         expr = z3.If(self.expr >= z3.IntVal(0), self.expr, -self.expr)

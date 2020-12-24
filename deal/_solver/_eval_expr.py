@@ -158,7 +158,21 @@ def eval_name(node: astroid.Name, ctx: Context):
 
 @eval_expr.register(astroid.Attribute)
 def eval_attr(node: astroid.Attribute, ctx: Context):
-    expr_ref = eval_expr(node=node.expr, ctx=ctx)
+    try:
+        expr_ref = eval_expr(node=node.expr, ctx=ctx)
+    except UnsupportedError:
+        # resolve functions
+        definitions = infer(node)
+        if len(definitions) != 1:
+            raise UnsupportedError('cannot resolve attribute', node.as_string())
+        target = definitions[0]
+        target_name = '.'.join(get_full_name(target))
+        func = FUNCTIONS.get(target_name)
+        if func is None:
+            raise UnsupportedError('no definition for', target_name)
+        return func
+
+    # resolve methods
     if isinstance(expr_ref, ProxySort):
         target = 'builtins.{}.{}'.format(expr_ref.type_name, node.attrname)
         func = FUNCTIONS.get(target)

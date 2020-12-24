@@ -104,8 +104,14 @@ class RealSort(FloatSort):
     def as_bool(self):
         return self.expr == z3.RealVal(0)
 
+    @property
     def abs(self):
-        return z3.If(self.expr >= z3.RealVal(0), self.expr, -self.expr)
+        expr = z3.If(self.expr >= z3.RealVal(0), self.expr, -self.expr)
+        return RealSort(expr=expr)
+
+    @property
+    def is_nan(self):
+        return z3.BoolVal(False)
 
     def _binary_op(self, other, handler):
         int_proxy = registry['int']
@@ -167,8 +173,13 @@ class FPSort(FloatSort):
     def as_bool(self):
         return self.expr == z3.FPVal(0, self.fp_sort())
 
+    @property
+    def is_nan(self):
+        return z3.fpIsNaN(self.expr)
+
+    @property
     def abs(self):
-        return z3.fpAbs(self.expr)
+        return FPSort(expr=z3.fpAbs(self.expr))
 
     def _binary_op(self, other, handler):
         int_proxy = registry['int']
