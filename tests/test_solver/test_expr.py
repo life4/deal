@@ -88,6 +88,8 @@ from .helpers import prove_f
 
     # float functions
     'int(4.2) == 4',
+    'float("NaN") != 2.3',
+    'float("Inf") > 100000',
     # 'abs(-4.2) == 4.2',
     # 'str(4.2) == "4.2"',
 

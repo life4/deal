@@ -12,7 +12,7 @@ from .helpers import prove_f
     (
         '',
         'float',
-        'a + 0.0 == a',
+        'a + 0.0 == a or not (a > 10 or a <= 10)',
     ),
     # (
     #     '',

@@ -21,12 +21,6 @@ class StrSort(ProxySort):
         expr = cls.make_empty_expr(sort)
         return cls(expr=expr)
 
-    @classmethod
-    def convert(cls, obj):
-        if z3.is_int(obj):
-            return cls(expr=z3.IntToStr(obj))
-        raise UnsupportedError('cannot convert', obj, 'to str')
-
     @property
     def as_int(self):
         int_proxy = registry['int']
@@ -35,6 +29,14 @@ class StrSort(ProxySort):
     @property
     def as_str(self):
         return self
+
+    @property
+    def as_float(self):
+        float_proxy = registry['float']
+        if z3.is_string_value(self.expr):
+            val = float(self.expr.as_string())
+            return float_proxy.val(val)
+        raise UnsupportedError('cannot convert str to float')
 
     def contains(self, item):
         self._ensure(item)

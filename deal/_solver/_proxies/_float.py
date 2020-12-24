@@ -8,7 +8,7 @@ from ._registry import registry
 @registry.add
 class FloatSort(ProxySort):
     type_name = 'float'
-    prefer_real = True
+    prefer_real = False
 
     def __new__(cls, expr=None):
         if cls is not FloatSort or expr is None:
@@ -133,12 +133,6 @@ class RealSort(FloatSort):
 
 class FPSort(FloatSort):
 
-    def __init__(self, expr) -> None:
-        # forbid negative zero
-        minus_zero = z3.fpMinusZero(self.sort())
-        plus_zero = z3.fpPlusZero(self.sort())
-        self.expr = z3.If(expr == minus_zero, plus_zero, expr)
-
     @staticmethod
     def sort():
         # return z3.Float32()
@@ -198,3 +192,21 @@ class FPSort(FloatSort):
         if self.prefer_real:
             return RealSort(expr=self.as_real.expr / other.as_real.expr)
         return FPSort(expr=self.expr / other.as_fp.expr)
+
+    def __eq__(self, other):
+        return self._comp_op(other=other, handler=z3.fpEQ)
+
+    def __ne__(self, other):
+        return self._comp_op(other=other, handler=z3.fpNEQ)
+
+    def __gt__(self, other):
+        return self._comp_op(other=other, handler=z3.fpGT)
+
+    def __ge__(self, other):
+        return self._comp_op(other=other, handler=z3.fpGEQ)
+
+    def __lt__(self, other):
+        return self._comp_op(other=other, handler=z3.fpLT)
+
+    def __le__(self, other):
+        return self._comp_op(other=other, handler=z3.fpLEQ)
