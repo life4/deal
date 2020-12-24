@@ -1,3 +1,4 @@
+from functools import partial
 import operator
 import typing
 
@@ -8,7 +9,7 @@ from ._context import Context
 from ._registry import HandlersRegistry
 from ._exceptions import UnsupportedError
 from ._funcs import FUNCTIONS
-from ._proxies import ListSort, wrap, SetSort, LambdaSort, FloatSort, if_expr
+from ._proxies import ListSort, wrap, SetSort, LambdaSort, FloatSort, ProxySort, if_expr
 from ..linter._extractors.common import get_full_name, infer
 
 
@@ -155,6 +156,17 @@ def eval_name(node: astroid.Name, ctx: Context):
     raise UnsupportedError('cannot resolve name', node.name)
 
 
+@eval_expr.register(astroid.Attribute)
+def eval_attr(node: astroid.Attribute, ctx: Context):
+    expr_ref = eval_expr(node=node.expr, ctx=ctx)
+    if isinstance(expr_ref, ProxySort):
+        target = 'builtins.{}.{}'.format(expr_ref.type_name, node.attrname)
+        func = FUNCTIONS.get(target)
+        if func is None:
+            raise UnsupportedError('no definition for', target)
+        return partial(func, expr_ref)
+
+
 @eval_expr.register(astroid.UnaryOp)
 def eval_unary_op(node: astroid.UnaryOp, ctx: Context):
     operation = UNARY_OPERATIONS.get(node.op)
@@ -183,45 +195,26 @@ def eval_ternary_op(node: astroid.IfExp, ctx: Context):
 
 @eval_expr.register(astroid.Call)
 def eval_call(node: astroid.Call, ctx: Context):
+    if node.keywords:
+        raise UnsupportedError('keyword function arguments are unsupported')
+
     call_args = []
     for arg_node in node.args:
         arg_node = eval_expr(node=arg_node, ctx=ctx)
         call_args.append(arg_node)
-    if isinstance(node.func, astroid.Name):
-        return _eval_call_name(node=node.func, ctx=ctx, call_args=call_args)
 
-    if isinstance(node.func, astroid.Attribute):
-        return _eval_call_attr(node=node.func, ctx=ctx, call_args=call_args)
-
-    raise UnsupportedError('unsupported call target', node)
-
-
-def _eval_call_name(node: astroid.Name, ctx: Context, call_args=typing.List[z3.Z3PPObject]):
-    value = eval_expr(node=node, ctx=ctx)
+    value = eval_expr(node=node.func, ctx=ctx)
     if isinstance(value, astroid.FunctionDef):
         return _call_function(node=value, ctx=ctx, call_args=call_args)
     if not callable(value):
-        raise UnsupportedError('the object is not callable ', node.name)
-    return value(*call_args)
+        raise UnsupportedError('the object is not callable ', node.func.as_string())
 
+    if isinstance(node.func, astroid.Attribute):
+        var_name = node.func.expr.as_string()
+    else:
+        var_name = node.func.as_string()
 
-def _eval_call_attr(node: astroid.Attribute, ctx: Context, call_args=typing.List[z3.Z3PPObject]):
-    # resolve methods
-    definitions = infer(node)
-    if len(definitions) != 1:
-        raise UnsupportedError('cannot resolve attribute', node.as_string())
-
-    target = definitions[0]
-    if isinstance(target, astroid.BoundMethod):
-        obj_ref = eval_expr(node=node.expr, ctx=ctx)
-        call_args = [obj_ref] + call_args
-
-    target_name = '.'.join(get_full_name(target))
-    func = FUNCTIONS.get(target_name)
-    if func is not None:
-        return func(*call_args, ctx=ctx, var_name=node.expr.as_string())
-
-    raise UnsupportedError('no definition for', target_name)
+    return value(*call_args, ctx=ctx, var_name=var_name)
 
 
 def _call_function(node: astroid.FunctionDef, ctx: Context, call_args=typing.List[z3.Z3PPObject]):

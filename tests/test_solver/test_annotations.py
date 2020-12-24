@@ -14,11 +14,11 @@ from .helpers import prove_f
         'float',
         'a + 0.0 == a or not (a > 10 or a <= 10)',
     ),
-    # (
-    #     '',
-    #     'str',
-    #     'len(a) >= 0 and a.startswith(a)',
-    # ),
+    (
+        '',
+        'str',
+        'len(a) >= 0 and a.startswith(a)',
+    ),
     (
         '',
         'str',

@@ -54,12 +54,12 @@ def builtin_float(a, **kwargs):
 
 
 @register('builtins.str')
-def builtin_str(obj) -> StrSort:
+def builtin_str(obj, **kwargs) -> StrSort:
     return obj.as_str
 
 
 @register('builtins.set')
-def builtin_set() -> StrSort:
+def builtin_set(**kwargs) -> StrSort:
     return SetSort.make_empty()
 
 
