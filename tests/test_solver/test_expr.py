@@ -239,3 +239,34 @@ def test_fuzz_math_int(left, right, op):
     text = text.format(expr=expr, expected=expected)
     theorem = prove_f(text)
     assert theorem.conclusion is Conclusion.OK
+
+
+float_strategy = hypothesis.strategies.floats(
+    min_value=1,
+    max_value=1000,
+    allow_nan=False,
+    allow_infinity=False,
+)
+
+
+@pytest.mark.skip(msg="TODO: fix precision issues")
+@hypothesis.given(
+    left=float_strategy,
+    right=float_strategy,
+    op=hypothesis.strategies.sampled_from(['+', '-', '*']),
+)
+def test_fuzz_math_floats(left, right, op):
+    expr = '{l} {op} {r}'.format(l=left, op=op, r=right)
+    expected = 0
+    try:
+        expected = eval(expr)
+    except ZeroDivisionError:
+        hypothesis.reject()
+
+    text = """
+        def f():
+            assert {expr} == {expected}
+    """
+    text = text.format(expr=expr, expected=expected)
+    theorem = prove_f(text)
+    assert theorem.conclusion is Conclusion.OK

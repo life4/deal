@@ -12,7 +12,7 @@ from .helpers import prove_f
     (
         '',
         'float',
-        'a - a == 0',
+        'a + 0.0 == a',
     ),
     # (
     #     '',

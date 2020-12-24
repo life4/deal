@@ -2,6 +2,7 @@ import z3
 from .._exceptions import UnsupportedError
 from ._proxy import ProxySort
 from ._registry import registry
+from ._funcs import wrap
 
 
 @registry.add
@@ -32,9 +33,8 @@ class IntSort(ProxySort):
 
     @property
     def as_fp(self):
-        cls = registry['float']
-        expr = z3.fpToFP(z3.ToReal(self.expr))
-        return cls(expr=expr)
+        expr = z3.ToReal(self.expr)
+        return wrap(expr).as_fp
 
     @property
     def as_str(self):

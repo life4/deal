@@ -10,6 +10,16 @@ class FloatSort(ProxySort):
     type_name = 'float'
     prefer_real = True
 
+    def __new__(cls, expr=None):
+        if cls is not FloatSort or expr is None:
+            return super().__new__(cls)
+        if z3.is_real(expr):
+            return RealSort.__new__(RealSort)
+        return FPSort.__new__(FPSort)
+
+    def __init__(self, expr) -> None:
+        self.expr = expr
+
     @classmethod
     def sort(cls):
         if cls.prefer_real:
@@ -32,7 +42,7 @@ class FloatSort(ProxySort):
 
     @staticmethod
     def fp_sort():
-        return z3.FPSort(ebits=float_info.dig, sbits=float_info.mant_dig)
+        return FPSort.sort()
 
     @staticmethod
     def real_sort():
@@ -83,7 +93,7 @@ class RealSort(FloatSort):
 
     @property
     def as_fp(self):
-        return FPSort(expr=self._real2fp(self.expr))
+        return FPSort(expr=self._as_fp(self.expr))
 
     @property
     def as_int(self):
@@ -96,6 +106,18 @@ class RealSort(FloatSort):
 
     def abs(self):
         return z3.If(self.expr >= z3.RealVal(0), self.expr, -self.expr)
+
+    def _binary_op(self, other, handler):
+        int_proxy = registry['int']
+        if isinstance(other, int_proxy):
+            return handler(self.expr, other.as_real.expr)
+        if not isinstance(other, FloatSort):
+            raise UnsupportedError('cannot combine float and', type(other))
+        if other.is_real:
+            return handler(self.expr, other.expr)
+        if self.prefer_real:
+            return handler(self.expr, other.as_real.expr)
+        return handler(self.as_fp.expr, other.expr)
 
     def __truediv__(self, other):
         int_proxy = registry['int']
@@ -111,8 +133,15 @@ class RealSort(FloatSort):
 
 class FPSort(FloatSort):
 
+    def __init__(self, expr) -> None:
+        # forbid negative zero
+        minus_zero = z3.fpMinusZero(self.sort())
+        plus_zero = z3.fpPlusZero(self.sort())
+        self.expr = z3.If(expr == minus_zero, plus_zero, expr)
+
     @staticmethod
     def sort():
+        # return z3.Float32()
         return z3.FPSort(ebits=float_info.dig, sbits=float_info.mant_dig)
 
     @classmethod
@@ -146,6 +175,18 @@ class FPSort(FloatSort):
 
     def abs(self):
         return z3.fpAbs(self.expr)
+
+    def _binary_op(self, other, handler):
+        int_proxy = registry['int']
+        if isinstance(other, int_proxy):
+            return handler(self.expr, other.as_fp.expr)
+        if not isinstance(other, FloatSort):
+            raise UnsupportedError('cannot combine float and', type(other))
+        if other.is_fp:
+            return handler(self.expr, other.expr)
+        if self.prefer_real:
+            return handler(self.as_real.expr, other.expr)
+        return handler(self.expr, other.as_fp.expr)
 
     def __truediv__(self, other):
         int_proxy = registry['int']
