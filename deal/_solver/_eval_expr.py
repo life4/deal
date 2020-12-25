@@ -28,7 +28,7 @@ COMAPARISON = {
     '>=': operator.ge,
     '==': operator.eq,
     '!=': operator.ne,
-    'in': FUNCTIONS['syntax.in'],
+    'in': lambda item, items: items.contains(item),
 }
 UNARY_OPERATIONS = {
     '-': operator.neg,
