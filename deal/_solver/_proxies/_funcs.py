@@ -34,4 +34,8 @@ def wrap(expr):
 
 
 def if_expr(test, val_then, val_else):
+    from ._proxy import ProxySort
+
+    if isinstance(test, ProxySort):
+        test = test.as_bool
     return wrap(z3.If(test, unwrap(val_then), unwrap(val_else)))

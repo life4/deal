@@ -6,7 +6,7 @@ from ._registry import HandlersRegistry
 from ._eval_expr import eval_expr
 from ._exceptions import UnsupportedError
 from ._annotations import ann2sort
-from ._proxies import if_expr, unwrap
+from ._proxies import if_expr, unwrap, ProxySort
 
 
 eval_stmt = HandlersRegistry()
@@ -40,7 +40,10 @@ def eval_func(node: astroid.FunctionDef, ctx: Context):
 def eval_assert(node: astroid.Assert, ctx: Context):
     if node.test is None:
         raise UnsupportedError('assert without condition')
-    ctx.expected.add(unwrap(eval_expr(node=node.test, ctx=ctx)))
+    expr = eval_expr(node=node.test, ctx=ctx)
+    if isinstance(expr, ProxySort):
+        expr = expr.as_bool
+    ctx.expected.add(expr)
 
 
 @eval_stmt.register(astroid.Expr)

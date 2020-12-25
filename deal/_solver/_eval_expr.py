@@ -34,7 +34,6 @@ UNARY_OPERATIONS = {
     '-': operator.neg,
     '+': operator.pos,
     '~': operator.inv,
-    'not': z3.Not,
 }
 BIN_OPERATIONS = {
     # math
@@ -109,6 +108,8 @@ def eval_bool_op(node: astroid.BoolOp, ctx: Context):
     subnodes = []
     for subnode in node.values:
         right = eval_expr(node=subnode, ctx=ctx)
+        if isinstance(right, ProxySort):
+            right = right.as_bool
         subnodes.append(right)
     return operation(*subnodes)
 
@@ -183,10 +184,16 @@ def eval_attr(node: astroid.Attribute, ctx: Context):
 
 @eval_expr.register(astroid.UnaryOp)
 def eval_unary_op(node: astroid.UnaryOp, ctx: Context):
+    value_ref = eval_expr(node=node.operand, ctx=ctx)
+
+    if node.op == 'not':
+        if isinstance(value_ref, ProxySort):
+            value_ref = value_ref.as_bool
+        return z3.Not(value_ref)
+
     operation = UNARY_OPERATIONS.get(node.op)
     if operation is None:
         raise UnsupportedError('unary operation', node.op)
-    value_ref = eval_expr(node=node.operand, ctx=ctx)
     return operation(value_ref)
 
 

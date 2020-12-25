@@ -139,6 +139,16 @@ from .helpers import prove_f
     'int(1) == 1',
     'int(1.5) == 1',
     'int("12") == 12',
+
+    # implicit bool
+    'not 0',
+    '1',
+    '1 and 3',
+    '0 or 3',
+    '2 if 3 else 0',
+    '0 if 0 else 4',
+    'not []',
+    '[1, 2]',
 ])
 def test_asserts_ok(check: str) -> None:
     assert eval(check)
