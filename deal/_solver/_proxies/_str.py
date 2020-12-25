@@ -53,11 +53,13 @@ class StrSort(ProxySort):
         return z3.SuffixOf(unwrap(suffix), self.expr)
 
     def index(self, other, start=None):
+        int_proxy = registry['int']
         if start is None:
             start = z3.IntVal(0)
-        return z3.IndexOf(self.expr, unwrap(other), start)
+        return int_proxy(expr=z3.IndexOf(self.expr, unwrap(other), start))
 
     def length(self) -> z3.ArithRef:
+        int_proxy = registry['int']
         if self.expr is None:
-            return z3.IntVal(0)
-        return z3.Length(self.expr)
+            return int_proxy(expr=z3.IntVal(0))
+        return int_proxy(expr=z3.Length(self.expr))

@@ -77,7 +77,7 @@ class RealSort(FloatSort):
 
     @classmethod
     def val(cls, x):
-        return z3.RealVal(x)
+        return RealSort(expr=z3.RealVal(x))
 
     @classmethod
     def _as_fp(cls, x):
@@ -146,7 +146,7 @@ class FPSort(FloatSort):
 
     @classmethod
     def val(cls, x):
-        return z3.FPVal(x, cls.sort())
+        return FPSort(expr=z3.FPVal(x, cls.sort()))
 
     @classmethod
     def _as_real(cls, x):

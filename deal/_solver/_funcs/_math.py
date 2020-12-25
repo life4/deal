@@ -1,5 +1,5 @@
 import z3
-from .._proxies import wrap, FloatSort, IntSort, if_expr
+from .._proxies import FloatSort, IntSort, if_expr
 from ._registry import register, FUNCTIONS
 
 
@@ -14,9 +14,9 @@ def math_isclose(left, right, rel_tol=None, abs_tol=None, **kwargs) -> None:
         right = right.as_float
 
     if rel_tol is None:
-        rel_tol = wrap(FloatSort.val(1e-09))
+        rel_tol = FloatSort.val(1e-09)
     if abs_tol is None:
-        abs_tol = wrap(FloatSort.val(0.0))
+        abs_tol = FloatSort.val(0.0)
 
     if FloatSort.prefer_real:
         left = left.as_real

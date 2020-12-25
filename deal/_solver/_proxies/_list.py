@@ -40,9 +40,11 @@ class ListSort(ProxySort):
         if start is None:
             start = z3.IntVal(0)
         unit = z3.Unit(unwrap(other))
-        return z3.IndexOf(self.expr, unit, start)
+        int_proxy = registry['int']
+        return int_proxy(expr=z3.IndexOf(self.expr, unit, start))
 
     def length(self) -> z3.ArithRef:
+        int_proxy = registry['int']
         if self.expr is None:
-            return z3.IntVal(0)
-        return z3.Length(self.expr)
+            return int_proxy(expr=z3.IntVal(0))
+        return int_proxy(expr=z3.Length(self.expr))
