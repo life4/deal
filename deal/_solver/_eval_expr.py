@@ -64,7 +64,7 @@ def eval_const(node: astroid.Const, ctx: Context):
     t = type(node.value)
     converter = CONSTS.get(t)
     if not converter:
-        raise UnsupportedError(repr(node.value))
+        raise UnsupportedError('unsupported constant', repr(node.value))
     return wrap(converter(node.value))
 
 

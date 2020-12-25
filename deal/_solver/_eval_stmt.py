@@ -96,3 +96,11 @@ def eval_if_else(node: astroid.If, ctx: Context):
 
         value = if_expr(test_ref, val_then, val_else)
         ctx.scope.set(name=var_name, value=value)
+
+
+@eval_stmt.register(astroid.Global)
+@eval_stmt.register(astroid.ImportFrom)
+@eval_stmt.register(astroid.Import)
+@eval_stmt.register(astroid.Pass)
+def eval_skip(node, ctx: Context):
+    pass
