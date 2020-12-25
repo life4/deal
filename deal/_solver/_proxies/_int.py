@@ -43,7 +43,7 @@ class IntSort(ProxySort):
 
     @property
     def as_bool(self):
-        return self.expr == z3.IntVal(0)
+        return self.expr != z3.IntVal(0)
 
     @property
     def abs(self):

@@ -125,6 +125,20 @@ from .helpers import prove_f
     'len([""]) == 1',
     'len([[]]) == 1',
     'len([[], []]) == 2',
+
+    # converters
+    'not bool(0)',
+    'bool(1)',
+    'bool(2)',
+    'bool(-2)',
+    'not bool("")',
+    'bool("abc")',
+    'not bool([])',
+    'bool([1, 2])',
+    'bool([[]])',
+    'int(1) == 1',
+    'int(1.5) == 1',
+    'int("12") == 12',
 ])
 def test_asserts_ok(check: str) -> None:
     assert eval(check)

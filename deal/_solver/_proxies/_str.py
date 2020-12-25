@@ -38,6 +38,10 @@ class StrSort(ProxySort):
             return float_proxy.val(val)
         raise UnsupportedError('cannot convert str to float')
 
+    @property
+    def as_bool(self):
+        return self.expr != z3.Empty(z3.StringSort())
+
     def contains(self, item):
         self._ensure(item)
         return z3.Contains(self.expr, unwrap(item))

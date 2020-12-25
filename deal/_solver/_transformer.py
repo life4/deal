@@ -69,13 +69,13 @@ if_transformer = IfTransformer()
 
 @if_transformer.add_handler(astroid.ExceptHandler)
 def handle_except(transformer: IfTransformer, node: astroid.ExceptHandler) -> astroid.ExceptHandler:
-    node.handlers = transformer.transform_body(node.handlers)
+    node.body = transformer.transform_body(node.body)
     return node
 
 
 @if_transformer.add_handler(astroid.For)
 def handle_for(transformer: IfTransformer, node: astroid.For) -> astroid.ExceptHandler:
-    node.handlers = transformer.transform_body(node.handlers)
+    node.body = transformer.transform_body(node.body)
     return node
 
 

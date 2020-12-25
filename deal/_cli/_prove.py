@@ -15,18 +15,27 @@ TEMPLATE_FUN = '  {magenta}{name}{end}'
 TEMPLATE_CON = '    {color}{c.value}{end} {e}'
 
 
-def run_solver(path: Path, stream):
-    line = TEMPLATE_MOD.format(name=path, **COLORS)
-    print(line, file=stream)
+def run_solver(path: Path, stream, show_skipped: bool):
+    file_name_shown = False
     text = path.read_text()
     theorems = Theorem.from_text(text)
     failed_count = 0
     for theorem in theorems:
         if theorem.name.startswith('test_'):
             continue
+
+        theorem.prove()
+        if theorem.conclusion == Conclusion.SKIP and not show_skipped:
+            continue
+
+        if not file_name_shown:
+            line = TEMPLATE_MOD.format(name=path, **COLORS)
+            print(line, file=stream)
+            file_name_shown = True
+
         line = TEMPLATE_FUN.format(name=theorem.name, **COLORS)
         print(line, file=stream)
-        theorem.prove()
+
         color = COLORS[theorem.conclusion.color]
         descr = theorem.example or ''
         if theorem.error:
@@ -52,6 +61,7 @@ def prove_command(
     if root is None:  # pragma: no cover
         root = Path()
     parser = ArgumentParser(prog='python3 -m deal test')
+    parser.add_argument('--skipped', action='store_true', help='show skipped')
     parser.add_argument('paths', nargs='+')
     args = parser.parse_args(argv)
 
@@ -61,5 +71,6 @@ def prove_command(
             failed += run_solver(
                 path=Path(path),
                 stream=stream,
+                show_skipped=args.skipped,
             )
     return failed

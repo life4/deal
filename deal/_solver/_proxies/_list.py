@@ -23,7 +23,7 @@ class ListSort(ProxySort):
     def as_bool(self):
         if self.expr is None:
             return z3.BoolVal(False)
-        return z3.Length(self.expr) == z3.IntVal(0)
+        return z3.Length(self.expr) != z3.IntVal(0)
 
     def append(self, item: z3.ExprRef) -> 'ListSort':
         cls = type(self)
