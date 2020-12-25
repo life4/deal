@@ -12,6 +12,7 @@ from .._cached_property import cached_property
 from ._annotations import ann2sort
 from ._proxies import wrap
 from ._eval_contracts import eval_contracts
+from ._transformer import if_transformer
 
 
 class Conclusion(enum.Enum):
@@ -49,7 +50,7 @@ class Theorem:
     @classmethod
     def from_text(cls, content: str) -> typing.Iterator['Theorem']:
         content = dedent(content)
-        module = astroid.parse(content)
+        module = cls._parse(content)
         yield from cls.from_astroid(module)
 
     @classmethod
@@ -140,3 +141,10 @@ class Theorem:
             return
 
         raise RuntimeError('unreachable')
+
+    @staticmethod
+    def _parse(text: str) -> astroid.Module:
+        if_transformer.register()
+        module = astroid.parse(text)
+        if_transformer.unregister()
+        return module

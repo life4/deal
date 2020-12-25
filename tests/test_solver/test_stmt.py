@@ -133,38 +133,3 @@ def test_pre_post_condition_name_conflict():
             return a * 2
     """)
     assert theorem.conclusion is Conclusion.OK
-
-
-def test_if_then():
-    theorem = prove_f("""
-        def f():
-            if True:
-                a = 2
-            else:
-                a = 3
-            assert a == 2
-    """)
-    assert theorem.conclusion is Conclusion.OK
-
-
-def test_if_else():
-    theorem = prove_f("""
-        def f():
-            if False:
-                a = 2
-            else:
-                a = 3
-            assert a == 3
-    """)
-    assert theorem.conclusion is Conclusion.OK
-
-
-def test_if_no_else():
-    theorem = prove_f("""
-        def f():
-            a = 3
-            if True:
-                a = 2
-            assert a == 2
-    """)
-    assert theorem.conclusion is Conclusion.OK
