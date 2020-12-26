@@ -62,6 +62,7 @@ class StrSort(ProxySort):
             start = z3.IntVal(0)
         return int_proxy(expr=z3.IndexOf(self.expr, unwrap(other), start))
 
+    @property
     def length(self) -> z3.ArithRef:
         int_proxy = registry['int']
         if self.expr is None:

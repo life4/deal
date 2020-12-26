@@ -132,6 +132,29 @@ def eval_set(node: astroid.Set, ctx: Context):
     return container
 
 
+@eval_expr.register(astroid.Subscript)
+def eval_getitem(node: astroid.Subscript, ctx: Context):
+    value_ref = eval_expr(node=node.value, ctx=ctx)
+    if not isinstance(value_ref, ListSort):
+        raise UnsupportedError('cannot get item from', type(value_ref))
+
+    if not isinstance(node.slice, astroid.Slice):
+        item_ref = eval_expr(node=node.slice, ctx=ctx)
+        return value_ref.get_item(item_ref)
+
+    if node.slice.step:
+        raise UnsupportedError('slice step is not supported')
+    if node.slice.lower:
+        lower_ref = eval_expr(node=node.slice.lower, ctx=ctx)
+    else:
+        lower_ref = z3.IntVal(0)
+    if node.slice.upper:
+        upper_ref = eval_expr(node=node.slice.upper, ctx=ctx)
+    else:
+        upper_ref = value_ref.length
+    return value_ref.get_slice(start=lower_ref, stop=upper_ref)
+
+
 @eval_expr.register(astroid.Name)
 def eval_name(node: astroid.Name, ctx: Context):
     if not isinstance(node, astroid.Name):

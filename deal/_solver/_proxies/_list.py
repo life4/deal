@@ -1,5 +1,5 @@
 import z3
-from ._funcs import unwrap
+from ._funcs import unwrap, wrap
 from ._proxy import ProxySort
 from ._registry import registry
 
@@ -25,6 +25,18 @@ class ListSort(ProxySort):
             return z3.BoolVal(False)
         return z3.Length(self.expr) != z3.IntVal(0)
 
+    def get_item(self, index):
+        return wrap(self.expr[unwrap(index)])
+
+    def get_slice(self, start, stop):
+        start = unwrap(start)
+        stop = unwrap(stop)
+        return wrap(z3.SubSeq(
+            s=self.expr,
+            offset=start,
+            length=stop - start,
+        ))
+
     def append(self, item: z3.ExprRef) -> 'ListSort':
         cls = type(self)
         unit = z3.Unit(unwrap(item))
@@ -43,6 +55,7 @@ class ListSort(ProxySort):
         int_proxy = registry['int']
         return int_proxy(expr=z3.IndexOf(self.expr, unit, start))
 
+    @property
     def length(self) -> z3.ArithRef:
         int_proxy = registry['int']
         if self.expr is None:

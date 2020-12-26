@@ -73,7 +73,7 @@ def builtins_abs(a, **kwargs):
 
 @register('builtins.len')
 def builtins_len(items, **kwargs):
-    return items.length()
+    return items.length
 
 
 @register('builtins.int')
@@ -82,7 +82,7 @@ def builtins_int(a, **kwargs):
 
 
 @register('builtins.float')
-def builtin_sfloat(a, **kwargs):
+def builtins_float(a, **kwargs):
     return a.as_float
 
 
