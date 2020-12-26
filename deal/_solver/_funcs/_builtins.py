@@ -1,35 +1,83 @@
 import z3
 from .._proxies import wrap, StrSort, SetSort, unwrap
-from .._exceptions import UnsupportedError
 from ._registry import register
 
 
+@register('builtins.sum')
+def builtins_sum(items, **kwargs):
+    items = unwrap(items)
+    f = z3.RecFunction('min', z3.IntSort(), items.sort().basis())
+    i = z3.Int('i')
+    one = z3.IntVal(1)
+    zero = z3.IntVal(0)
+    z3.RecAddDefinition(f, i, z3.If(
+        i == zero,
+        items[zero],
+        items[i] + f(i - one),
+    ))
+    result = f(z3.Length(items) - one)
+    return wrap(result)
+
+
+# TODO: support more than 2 explicit arguments.
 @register('builtins.min')
-def builtisn_min(a, b=None, **kwargs):
-    if b is None:
-        raise UnsupportedError('min from iterable is unsupported')
-    return wrap(z3.If(a < b, unwrap(a), unwrap(b)))
+def builtins_min(a, b=None, **kwargs):
+    if b is not None:
+        return wrap(z3.If(a < b, unwrap(a), unwrap(b)))
+
+    items = unwrap(a)
+    f = z3.RecFunction('min', z3.IntSort(), items.sort().basis())
+    i = z3.Int('i')
+    one = z3.IntVal(1)
+    zero = z3.IntVal(0)
+    z3.RecAddDefinition(f, i, z3.If(
+        i == zero,
+        items[zero],
+        z3.If(
+            items[i] < f(i - one),
+            items[i],
+            f(i - one),
+        ),
+    ))
+    result = f(z3.Length(items) - one)
+    return wrap(result)
 
 
 @register('builtins.max')
-def builtisn_max(a, b=None, **kwargs):
-    if b is None:
-        raise UnsupportedError('max from iterable is unsupported')
-    return wrap(z3.If(a > b, unwrap(a), unwrap(b)))
+def builtins_max(a, b=None, **kwargs):
+    if b is not None:
+        return wrap(z3.If(a > b, unwrap(a), unwrap(b)))
+
+    items = unwrap(a)
+    f = z3.RecFunction('min', z3.IntSort(), items.sort().basis())
+    i = z3.Int('i')
+    one = z3.IntVal(1)
+    zero = z3.IntVal(0)
+    z3.RecAddDefinition(f, i, z3.If(
+        i == zero,
+        items[zero],
+        z3.If(
+            items[i] > f(i - one),
+            items[i],
+            f(i - one),
+        ),
+    ))
+    result = f(z3.Length(items) - one)
+    return wrap(result)
 
 
 @register('builtins.abs')
-def builtisn_abs(a, **kwargs):
+def builtins_abs(a, **kwargs):
     return a.abs
 
 
 @register('builtins.len')
-def builtisn_len(items, **kwargs):
+def builtins_len(items, **kwargs):
     return items.length()
 
 
 @register('builtins.int')
-def builtisn_int(a, **kwargs):
+def builtins_int(a, **kwargs):
     return a.as_int
 
 
@@ -39,7 +87,7 @@ def builtin_sfloat(a, **kwargs):
 
 
 @register('builtins.str')
-def builtisn_str(obj, **kwargs) -> StrSort:
+def builtins_str(obj, **kwargs) -> StrSort:
     return obj.as_str
 
 
@@ -49,5 +97,5 @@ def builtins_bool(obj, **kwargs) -> z3.BoolRef:
 
 
 @register('builtins.set')
-def builtisn_set(**kwargs) -> StrSort:
+def builtins_set(**kwargs) -> StrSort:
     return SetSort.make_empty()
