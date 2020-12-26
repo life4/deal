@@ -36,6 +36,9 @@ from .helpers import prove_f
     '2.7 > 1.4',
     '1.4 < 2.7',
     '2.7 == 2.7',
+    'float("nan") != float("nan")',
+    'float("inf") == float("inf")',
+    '-0.0 == +0.0',
 
     # complex math
     '3 + 5 + 7 == 15',
@@ -162,25 +165,6 @@ from .helpers import prove_f
 def test_asserts_ok(check: str) -> None:
     assert eval(check)
     text = """
-        def f():
-            assert {}
-    """
-    text = text.format(check)
-    theorem = prove_f(text)
-    assert theorem.conclusion is Conclusion.OK
-
-
-@pytest.mark.parametrize('check', [
-    'math.isclose(5, 5)',
-    'not math.isclose(5, 4)',
-
-    'math.isclose(7.8 / 2.5, 3.12)',
-    'math.isclose(2.7 - 1.4, 1.3)',
-])
-def test_math_module(check: str) -> None:
-    text = """
-        import math
-
         def f():
             assert {}
     """

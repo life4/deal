@@ -190,11 +190,16 @@ def eval_attr(node: astroid.Attribute, ctx: Context):
         if len(definitions) != 1:
             raise UnsupportedError('cannot resolve attribute', node.as_string())
         target = definitions[0]
-        target_name = '.'.join(get_full_name(target))
-        func = FUNCTIONS.get(target_name)
-        if func is None:
-            raise UnsupportedError('no definition for', target_name)
-        return func
+
+        if isinstance(target, (astroid.FunctionDef, astroid.UnboundMethod)):
+            target_name = '.'.join(get_full_name(target))
+            func = FUNCTIONS.get(target_name)
+            if func is None:
+                raise UnsupportedError('no definition for', target_name)
+            return func
+
+        # resolve constants
+        return eval_expr(node=target, ctx=ctx)
 
     # resolve methods
     if isinstance(expr_ref, ProxySort):
