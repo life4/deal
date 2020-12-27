@@ -1,16 +1,20 @@
+# built-in
 import sys
-from pathlib import Path
 from contextlib import suppress
+from pathlib import Path
 from typing import Any, Dict, Optional, Type
 
+# external
 import pygments
 from pygments.formatters.terminal import TerminalFormatter
 from pygments.lexers.python import PythonLexer
 
+# app
 from ._cached_property import cached_property
+from ._colors import COLORS, NOCOLORS
 from ._source import get_validator_source
 from ._state import state
-from ._colors import COLORS, NOCOLORS
+
 
 root = str(Path(__file__).parent)
 

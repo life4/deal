@@ -1,6 +1,9 @@
-import deal
+# external
 import pytest
-from deal._trace import trace, format_lines, _get_func_body_statements, Only
+
+# project
+import deal
+from deal._trace import Only, _get_func_body_statements, format_lines, trace
 
 
 def just_return():

@@ -10,18 +10,19 @@ from pathlib import Path
 from textwrap import indent
 from typing import Dict, Iterable, Iterator, Sequence, TextIO, TypeVar
 
+# external
 import pygments
 from pygments.formatters import TerminalFormatter
 from pygments.lexers import PythonTracebackLexer
 
 # app
-from .._testing import cases, TestCase
+from .._colors import COLORS
+from .._testing import TestCase, cases
+from .._trace import TraceResult, format_lines, trace
 from ..linter._contract import Category
 from ..linter._extractors.pre import format_call_args
 from ..linter._func import Func
 from ._common import get_paths
-from .._colors import COLORS
-from .._trace import trace, format_lines, TraceResult
 
 
 T = TypeVar('T')

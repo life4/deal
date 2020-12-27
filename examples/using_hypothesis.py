@@ -1,7 +1,10 @@
+# built-in
 from typing import List
 
+# external
 import hypothesis
 
+# project
 import deal
 
 

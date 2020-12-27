@@ -1,7 +1,11 @@
+# built-in
 import codecs
 
-import deal
+# external
 from pythonfuzz.main import PythonFuzz
+
+# project
+import deal
 
 
 def encode(text: str) -> str:

@@ -1,7 +1,11 @@
+# built-in
 import codecs
 import sys
 
+# external
 import atheris
+
+# project
 import deal
 
 
