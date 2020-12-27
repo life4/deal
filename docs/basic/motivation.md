@@ -149,9 +149,7 @@ def cat(left: str, right: str) -> str:
 Now, it's not just properties, but [contracts](https://en.wikipedia.org/wiki/Design_by_contract). They can be checked in the runtime, simplify tests, tell humans about the function behavior. And tests for this implementation are trivial:
 
 ```python
-@pytest.mark.parametrize('case', deal.cases(cat))
-def test_cat(case):
-    case()
+test_cat = deal.cases(cat)
 ```
 
 ## Contracts for machines

@@ -8,7 +8,7 @@ from functools import update_wrapper
 from importlib import import_module
 from pathlib import Path
 from textwrap import indent
-from typing import Dict, Iterator, Sequence, TextIO, TypeVar
+from typing import Dict, Iterable, Iterator, Sequence, TextIO, TypeVar
 
 import pygments
 from pygments.formatters import TerminalFormatter
@@ -99,12 +99,13 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
     return failed   # pragma: no cover
 
 
-def fast_iterator(iterator: Iterator[T]) -> Iterator[T]:
+def fast_iterator(items: Iterable[T]) -> Iterator[T]:
     """
     Iterate over `iterator` disabling tracer on every iteration step.
     This is a trick to avoid using our coverage tracer when calling hypothesis machinery.
     Without it, testing is about 3 times slower.
     """
+    iterator = iter(items)
     default_trace = sys.gettrace()
     while True:  # pragma: no cover
         sys.settrace(None)

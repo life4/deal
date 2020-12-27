@@ -4,7 +4,7 @@ import sys
 from argparse import ArgumentParser
 from importlib import import_module
 from pathlib import Path
-from typing import Dict, Iterator, Sequence, TextIO
+from typing import Dict, Iterable, Sequence, TextIO
 
 # app
 from .._testing import cases, TestCase
@@ -39,7 +39,7 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
 
 
 def run_cases(
-    cases: Iterator[TestCase],
+    cases: Iterable[TestCase],
     func_name: str,
     stream: TextIO,
     colors: Dict[str, str],
