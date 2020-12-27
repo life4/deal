@@ -191,7 +191,10 @@ def test_repr():
         pass
 
     cases = deal.cases(fn)
-    assert repr(cases) == 'deal.cases(fn)'
+    assert repr(cases) == 'deal.cases(fn, count=50)'
+
+    cases = deal.cases(fn, count=13, seed=2, kwargs=dict(a=2))
+    assert repr(cases) == "deal.cases(fn, count=13, seed=2, kwargs={'a': 2})"
 
 
 def test_seed():

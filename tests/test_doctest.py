@@ -1,7 +1,9 @@
 # built-in
 import doctest
 import re
+import sys
 from itertools import chain
+from unittest.mock import Mock
 
 # external
 import pytest
@@ -36,6 +38,7 @@ finder = doctest.DocTestFinder(exclude_empty=True)
 ))
 def test_doctest(test):
     state.color = False
+    sys.modules['atheris'] = Mock()
     try:
         runner = doctest.DocTestRunner(checker=Checker(), optionflags=doctest.ELLIPSIS)
         runner.run(test)
@@ -46,3 +49,4 @@ def test_doctest(test):
         assert not result.failed
     finally:
         state.color = True
+        del sys.modules['atheris']
