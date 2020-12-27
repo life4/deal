@@ -87,7 +87,7 @@ import sys
 import deal
 
 seed = None
-if os.environ.get('CI'):
+if os.environ.get('CI_PIPELINE_ID'):
     seed = int(os.environ['CI_PIPELINE_ID'])
 
 @deal.cases(div, seed=seed)
@@ -97,7 +97,7 @@ def test_div(case):
 
 ## Fuzzing
 
-[Fuzzer](https://en.wikipedia.org/wiki/Fuzzing) is when an external tool or library (fuzzer) generates a bunch of random data in hope to break your program. That means, fuzzing requires a lot of resources and is performance-critical. This is why most of the fuzzers are written on C. However, there are few Python wrappers for existing fuzzers, with awful interface but working:
+[Fuzzer](https://en.wikipedia.org/wiki/Fuzzing) is when an external tool or library (fuzzer) generates a bunch of random data in hope to break your program. That means, fuzzing requires a lot of resources and is performance-critical. This is why most of the fuzzers are written on C. However, there are few Python wrappers for existing fuzzers to simplify fuzzing for Python functions:
 
 + [atheris](https://github.com/google/atheris)
 + [python-afl](https://github.com/jwilk/python-afl)
