@@ -43,10 +43,8 @@
 def count(items: List[str], item: str) -> int:
     return items.count(item)
 
-# test case
-@deal.cases(count)
-def test_count(case: deal.TestCase):
-    case()
+# generate test function
+test_count = deal.cases(count)
 ```
 
 Now we can:

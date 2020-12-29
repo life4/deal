@@ -1,3 +1,10 @@
+"""
+Get help for libFuzzer:
+    python3 examples/fuzzing_atheris.py -help=1
+
+Run 1000 test cases:
+    python3 examples/fuzzing_atheris.py -runs=1000
+"""
 # built-in
 import codecs
 import sys

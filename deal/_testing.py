@@ -155,8 +155,15 @@ class cases:  # noqa: N
         yield from cases
 
     def __repr__(self) -> str:
-        fname = getattr(self.func, '__name__', repr(self.func))
-        return 'deal.cases({})'.format(fname)
+        args = [
+            getattr(self.func, '__name__', repr(self.func)),
+            'count={}'.format(self.count),
+        ]
+        if self.seed is not None:
+            args.append('seed={}'.format(self.seed))
+        if self.kwargs:
+            args.append('kwargs={!r}'.format(self.kwargs))
+        return 'deal.cases({})'.format(', '.join(args))
 
     def make_case(self, *args, **kwargs) -> TestCase:
         """Make test case with the given arguments.
@@ -299,11 +306,7 @@ class cases:  # noqa: N
         ... def div(a: int, b: int) -> float:
         ...   return a / b
         ...
-        >>> # For sake of doctest, we just mock fuzzer here
-        >>> # but you need to use `import atheris` instead.
-        >>> from unittest.mock import Mock
-        >>> atheris = Mock()
-        >>>
+        >>> import atheris
         >>> test_div = deal.cases(div)
         >>> atheris.Setup([], test_div)
         ...
@@ -322,7 +325,7 @@ class cases:  # noqa: N
             return None
         if callable(target):
             return self._wrap(target)
-        return self._fuzz(target)
+        return self._run.hypothesis.fuzz_one_input(target)
 
     # a hack to make the test discoverable by pytest
     @property
@@ -332,10 +335,6 @@ class cases:  # noqa: N
     @cached_property
     def _run(self) -> F:
         return self._wrap(lambda case: case())
-
-    @cached_property
-    def _fuzz(self) -> FuzzType:
-        return self._run.hypothesis.fuzz_one_input
 
     def _wrap(self, test_func: F) -> F:
         def wrapper(case: ArgsKwargsType, *args, **kwargs) -> None:
