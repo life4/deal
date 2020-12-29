@@ -33,6 +33,7 @@ test_div2_short = deal.cases(div2)
 
 
 def test_short_version_is_discoverable():
+    # external
     from _pytest.python import PyCollector
 
     collector = PyCollector.__new__(PyCollector)

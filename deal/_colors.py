@@ -1,7 +1,9 @@
 
+# external
 import pygments
 from pygments.formatters import TerminalFormatter
 from pygments.lexers import PythonLexer
+
 
 COLORS = dict(
     red='\033[91m',

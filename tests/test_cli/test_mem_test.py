@@ -1,8 +1,11 @@
+# built-in
 import sys
-from pathlib import Path
-from deal._cli._memtest import memtest_command
-from textwrap import dedent
 from io import StringIO
+from pathlib import Path
+from textwrap import dedent
+
+# project
+from deal._cli._memtest import memtest_command
 
 
 def test_has_side_effect(tmp_path: Path, capsys):

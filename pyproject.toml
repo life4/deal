@@ -28,7 +28,7 @@ command = "mypy --ignore-missing-imports --allow-redefinition deal/"
 [tool.dephell.isort]
 from = {format = "poetry", path = "pyproject.toml"}
 envs = ["main", "tests"]
-command = "isort -rc -y ."
+command = "isort ."
 
 
 [tool.flakehell.plugins]

@@ -5,10 +5,14 @@ Get help for libFuzzer:
 Run 1000 test cases:
     python3 examples/fuzzing_atheris.py -runs=1000
 """
+# built-in
 import codecs
 import sys
 
+# external
 import atheris
+
+# project
 import deal
 
 
