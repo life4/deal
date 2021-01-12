@@ -1,0 +1,61 @@
+# https://taskfile.dev/
+version: "3"
+
+vars:
+  PYTHON_BIN: python3.7
+  FLAKE8_ENV: ./venvs/flake8
+  MYPY_ENV: ./venvs/mypy
+  FLIT_ENV: ./venvs/flit
+
+tasks:
+  venv:create:
+    status:
+      - "test -f {{.ENV}}/bin/activate"
+    cmds:
+      - "{{.PYTHON_BIN}} -m venv {{.ENV}}"
+      - "{{.ENV}}/bin/python3 -m pip install -U pip setuptools wheel"
+
+  flit:install:
+    status:
+      - "test -f {{.FLIT_ENV}}/bin/flit"
+    deps:
+      - task: venv:create
+        vars:
+          ENV: "{{.FLIT_ENV}}"
+    cmds:
+      - "{{.FLIT_ENV}}/bin/python3 -m pip install flit"
+
+  flake8:install:
+    status:
+      - "test -f {{.FLAKE8_ENV}}/bin/flake8"
+    deps:
+      - task: venv:create
+        vars:
+          ENV: "{{.FLAKE8_ENV}}"
+    cmds:
+      - "{{.FLAKE8_ENV}}/bin/python3 -m pip install -r requirements-flake.txt"
+  flake8:run:
+    deps:
+      - flake8:install
+    cmds:
+      - "{{.FLAKE8_ENV}}/bin/flake8 ."
+
+  mypy:install:
+    status:
+      - "test -f {{.MYPY_ENV}}/bin/mypy"
+    deps:
+      - flit:install
+      - task: venv:create
+        vars:
+          ENV: "{{.MYPY_ENV}}"
+    env:
+      VIRTUAL_ENV: "{{.MYPY_ENV}}"
+    cmds:
+      - "{{.FLIT_ENV}}/bin/flit install --python={{.MYPY_ENV}}/bin/python3 --extras=tests"
+  mypy:run:
+    sources:
+      - deal/**/*.py
+    deps:
+      - mypy:install
+    cmds:
+      - "{{.MYPY_ENV}}/bin/mypy --ignore-missing-imports --allow-redefinition deal/"

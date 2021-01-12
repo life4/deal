@@ -3,6 +3,7 @@
 __pycache__/
 *.egg-info/
 dist/
+/venvs/
 
 # coverage
 .coverage
@@ -20,3 +21,5 @@ docs/build/
 .pytest_cache/
 /tmp.py
 .hypothesis/
+.task/
+poetry.lock
