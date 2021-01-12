@@ -41,7 +41,7 @@ def step(env, python):
             COVERAGE_FILE=".coverage.{}.{}".format(env, python),
         ),
         commands=[
-            "./bin/task {env}:run PYTHON_BIN=python{python}".format(env=env, python=python),
+            "./bin/task --force {env}:run PYTHON_BIN=python3".format(env=env),
         ],
     )
     return result
