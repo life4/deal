@@ -42,7 +42,7 @@ def step(env, python):
         ),
         commands=[
             "apk add curl git gcc libc-dev",
-            "./bin/task --force {env}:run PYTHON_BIN=python3".format(env=env),
+            "./bin/task --force --silent {env}:run PYTHON_BIN=python3".format(env=env),
         ],
     )
     return result
