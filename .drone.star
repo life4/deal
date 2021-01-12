@@ -12,7 +12,7 @@ def main(ctx):
                 image="alpine:latest",
                 commands=[
                     "apk add --no-cache wget",
-                    "wget https://taskfile.dev/install.sh"
+                    "wget https://taskfile.dev/install.sh",
                     "sh install.sh -- latest",
                     "rm install.sh",
                 ],
