@@ -36,13 +36,15 @@ def step(env, python):
         depends_on=["install task"],
         environment=dict(
             FLIT_ROOT_INSTALL="1",
-            # set coverage database file name
-            # to avoid conflicts between steps
+            # set coverage database file name to avoid conflicts between steps
             COVERAGE_FILE=".coverage.{}.{}".format(env, python),
+            PYTHON_BIN="python3",
+            # store venvs outside of the project dir to avoid sharing them among jobs
+            VENVS="/opt/venvs/",
         ),
         commands=[
             "apk add curl git gcc libc-dev",
-            "./bin/task --force --silent {env}:run PYTHON_BIN=python3".format(env=env),
+            "./bin/task --force --silent {env}:run".format(env=env),
         ],
     )
     return result
