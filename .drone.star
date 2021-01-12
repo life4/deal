@@ -35,6 +35,7 @@ def step(env, python):
         image="python:{}-alpine".format(python),
         depends_on=["install task"],
         environment=dict(
+            FLIT_ROOT_INSTALL="1",
             # set coverage database file name
             # to avoid conflicts between steps
             COVERAGE_FILE=".coverage.{}.{}".format(env, python),
