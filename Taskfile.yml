@@ -11,6 +11,9 @@ vars:
   SPHINX_ENV: "{{.VENVS}}sphinx"
   ISORT_ENV:  "{{.VENVS}}isort"
 
+env:
+  FLIT_ROOT_INSTALL: "1"
+
 tasks:
   venv:create:
     status:
