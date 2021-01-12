@@ -71,4 +71,3 @@ docs = [
 
 [tool.flit.entrypoints."flake8.extension"]
 DEAL = "deal.linter:Checker"
-
