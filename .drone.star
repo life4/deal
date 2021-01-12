@@ -41,6 +41,7 @@ def step(env, python):
             COVERAGE_FILE=".coverage.{}.{}".format(env, python),
         ),
         commands=[
+            "apk add curl git gcc libc-dev",
             "./bin/task --force {env}:run PYTHON_BIN=python3".format(env=env),
         ],
     )
