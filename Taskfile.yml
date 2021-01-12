@@ -4,8 +4,11 @@ version: "3"
 vars:
   PYTHON_BIN: python3.7
   FLAKE8_ENV: ./venvs/flake8
-  MYPY_ENV: ./venvs/mypy
-  FLIT_ENV: ./venvs/flit
+  MYPY_ENV:   ./venvs/mypy
+  FLIT_ENV:   ./venvs/flit
+  PYTEST_ENV: ./venvs/pytest
+  SPHINX_ENV: ./venvs/sphinx
+  ISORT_ENV:  ./venvs/isort
 
 tasks:
   venv:create:
@@ -14,8 +17,7 @@ tasks:
     cmds:
       - "{{.PYTHON_BIN}} -m venv {{.ENV}}"
       - "{{.ENV}}/bin/python3 -m pip install -U pip setuptools wheel"
-
-  flit:install:
+  flit:init:
     status:
       - "test -f {{.FLIT_ENV}}/bin/flit"
     deps:
@@ -24,6 +26,21 @@ tasks:
           ENV: "{{.FLIT_ENV}}"
     cmds:
       - "{{.FLIT_ENV}}/bin/python3 -m pip install flit"
+  flit:install:
+    sources:
+      - pyproject.toml
+      - "{{.ENV}}/bin/activate"
+    deps:
+      - flit:init
+      - task: venv:create
+        vars:
+          ENV: "{{.ENV}}"
+    cmds:
+      - >
+        {{.FLIT_ENV}}/bin/flit install
+        --python={{.ENV}}/bin/python3
+        --deps=production
+        --extras={{.EXTRA}}
 
   flake8:install:
     status:
@@ -40,22 +57,47 @@ tasks:
     cmds:
       - "{{.FLAKE8_ENV}}/bin/flake8 ."
 
-  mypy:install:
-    status:
-      - "test -f {{.MYPY_ENV}}/bin/mypy"
-    deps:
-      - flit:install
-      - task: venv:create
-        vars:
-          ENV: "{{.MYPY_ENV}}"
-    env:
-      VIRTUAL_ENV: "{{.MYPY_ENV}}"
-    cmds:
-      - "{{.FLIT_ENV}}/bin/flit install --python={{.MYPY_ENV}}/bin/python3 --extras=tests"
   mypy:run:
     sources:
       - deal/**/*.py
     deps:
-      - mypy:install
+      - task: flit:install
+        vars:
+          ENV: "{{.MYPY_ENV}}"
+          EXTRA: tests
     cmds:
       - "{{.MYPY_ENV}}/bin/mypy --ignore-missing-imports --allow-redefinition deal/"
+
+  pytest:run:
+    sources:
+      - deal/
+    deps:
+      - task: flit:install
+        vars:
+          ENV: "{{.PYTEST_ENV}}"
+          EXTRA: tests
+    cmds:
+      - "{{.PYTEST_ENV}}/bin/pytest tests/"
+
+  isort:run:
+    sources:
+      - deal/
+    deps:
+      - task: flit:install
+        vars:
+          ENV: "{{.ISORT_ENV}}"
+          EXTRA: tests
+    cmds:
+      - "{{.ISORT_ENV}}/bin/isort ."
+
+  sphinx:run:
+    sources:
+      - deal/**/*.py
+      - docs/**/*.md
+    deps:
+      - task: flit:install
+        vars:
+          ENV: "{{.SPHINX_ENV}}"
+          EXTRA: docs
+    cmds:
+      - "{{.SPHINX_ENV}}/bin/sphinx-build -W docs docs/build"

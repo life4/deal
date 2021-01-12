@@ -7,23 +7,6 @@ from = {format = "poetry", path = "pyproject.toml"}
 to = {format = "setuppy", path = "setup.py"}
 tag = "v."
 
-# generate report:
-# dephell venv run --env=pytest coverage report --show-missing
-[tool.dephell.pytest]
-from = {format = "poetry", path = "pyproject.toml"}
-envs = ["main", "tests"]
-command = "pytest tests/"
-
-[tool.dephell.docs]
-from = {format = "poetry", path = "pyproject.toml"}
-envs = ["main", "docs"]
-command = "sphinx-build -W docs docs/build"
-
-[tool.dephell.isort]
-from = {format = "poetry", path = "pyproject.toml"}
-envs = ["main", "tests"]
-command = "isort ."
-
 
 [tool.isort]
 line_length = 90
@@ -73,7 +56,7 @@ requires = [
 tests = [
     "coverage",
     "pytest-cov",
-    "isort[pyproject]",
+    "isort",
     "marshmallow",
     "mypy",
     "pytest",
