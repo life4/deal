@@ -83,7 +83,7 @@ tasks:
           ENV: "{{.PYTEST_ENV}}"
           EXTRA: tests
     cmds:
-      - "{{.PYTEST_ENV}}/bin/pytest tests/"
+      - "{{.PYTEST_ENV}}/bin/pytest -v tests/"
 
   isort:run:
     sources:
