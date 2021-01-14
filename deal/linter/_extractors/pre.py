@@ -67,7 +67,8 @@ def handle_call(expr: astroid.Call, context: Dict[str, ast.stmt] = None) -> Iter
 def format_call_args(args: Sequence, kwargs: Dict[str, Any]) -> str:
     sep = ', '
     args_s = sep.join(map(repr, args))
-    kwargs_s = sep.join(['{}={!r}'.format(k, v) for k, v in kwargs.items()])
+    items = sorted(kwargs.items())
+    kwargs_s = sep.join(['{}={!r}'.format(k, v) for k, v in items])
     if args and kwargs:
         return args_s + sep + kwargs_s
     return args_s + kwargs_s
