@@ -3,6 +3,8 @@ from typing import NoReturn, TypeVar
 
 # external
 import hypothesis
+import hypothesis.errors
+import hypothesis.strategies
 import pytest
 
 # project
@@ -24,6 +26,20 @@ def div2(a: int, b: int) -> float:
     assert a > 0
     assert b > 0
     return a / b
+
+
+test_div1_short = deal.cases(div1)
+test_div2_short = deal.cases(div2)
+
+
+def test_short_version_is_discoverable():
+    # external
+    from _pytest.python import PyCollector
+
+    collector = PyCollector.__new__(PyCollector)
+    collector._matches_prefix_or_glob_option = lambda *args: True
+    test = deal.cases(div1)
+    assert collector.istestfunction(test, 'test_div') is True
 
 
 def test_count():
@@ -110,14 +126,14 @@ def test_disable_type_checks():
 
     # type is wrong and checked
     cases = deal.cases(bad, count=1)
-    case = next(cases)
+    case = next(iter(cases))
     msg = 'type of the return value must be str; got int instead'
     with pytest.raises(TypeError, match=msg):
         case()
 
     # type is wrong and ignored
     cases = deal.cases(bad, count=1, check_types=False)
-    case = next(cases)
+    case = next(iter(cases))
     case()
 
     def good(a: int) -> int:
@@ -125,7 +141,7 @@ def test_disable_type_checks():
 
     # type is good
     cases = deal.cases(good, count=1)
-    case = next(cases)
+    case = next(iter(cases))
     case()
 
 
@@ -146,3 +162,116 @@ def test_type_var():
     msg = 'type of the return value must be exactly str; got int instead'
     with pytest.raises(TypeError, match=msg):
         case()
+
+
+@deal.cases(div1)
+def test_decorator_div1_smoke(case):
+    case()
+
+
+@deal.cases(div2)
+def test_decorator_div2_smoke(case):
+    case()
+
+
+@deal.cases(div2)
+def test_decorator_rejects_bad(case):
+    assert case.kwargs['a'] > 0
+    assert case.kwargs['b'] > 0
+    case()
+
+
+@deal.cases(div1, kwargs=dict(b=0))
+def test_decorator_suppress_raises(case):
+    result = case()
+    assert result is NoReturn
+
+
+def test_repr():
+    def fn():
+        pass
+
+    cases = deal.cases(fn)
+    assert repr(cases) == 'deal.cases(fn, count=50)'
+
+    cases = deal.cases(fn, count=13, seed=2, kwargs=dict(a=2))
+    assert repr(cases) == "deal.cases(fn, count=13, seed=2, kwargs={'a': 2})"
+
+
+def test_seed():
+    c1 = list(deal.cases(div1, seed=12, count=20))
+    c2 = list(deal.cases(div1, seed=12, count=20))
+    assert c1 == c2
+
+    c3 = list(deal.cases(div1, seed=34, count=20))
+    assert c2 != c3
+
+
+def test_run_ok():
+    test = deal.cases(div1)
+    res = test()
+    assert res is None
+
+
+def test_run_fail():
+    @deal.safe
+    def div(a: int, b: int):
+        return a / b
+
+    test = deal.cases(div, seed=1)
+    with pytest.raises(deal.RaisesContractError):
+        test()
+
+
+def test_fuzz_propagate():
+    @deal.safe
+    def div(a: str):
+        assert type(a) is str
+        raise ZeroDivisionError
+
+    cases = deal.cases(div, seed=1)
+    with pytest.raises(deal.RaisesContractError):
+        cases(b'g`\xf8\xb07\xf8\xea9')
+
+
+def test_fuzz_bad_input():
+    @deal.safe
+    def div(a: str):
+        raise ZeroDivisionError
+
+    cases = deal.cases(div, seed=1)
+    res = cases(b'')
+    assert res is None
+
+
+def test_pass_fixtures():
+    @deal.safe
+    def div(a: str):
+        raise ZeroDivisionError
+
+    @deal.cases(div)
+    def test_div1(case, fixt):
+        assert fixt == 13
+        case()
+
+    with pytest.raises(deal.RaisesContractError):
+        test_div1(fixt=13)
+
+    with pytest.raises(deal.RaisesContractError):
+        test_div1(13)
+
+
+def test_reproduce_failure():
+    @deal.safe
+    def div(a: str):
+        assert a == ''
+        raise ZeroDivisionError
+
+    @hypothesis.reproduce_failure(hypothesis.__version__, b'AAA=')
+    @deal.cases(div)
+    def test_div(case):
+        assert case.kwargs == dict(a='')
+        case()
+
+    with pytest.raises(deal.RaisesContractError):
+        test_div()

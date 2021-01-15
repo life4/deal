@@ -1,6 +1,3 @@
-# external
-import pytest
-
 # project
 import deal
 
@@ -17,6 +14,4 @@ def concat(left: str, right: str) -> str:
     return left + right
 
 
-@pytest.mark.parametrize('case', deal.cases(concat))
-def test_concat(case):
-    case()
+test_concat = deal.cases(concat)

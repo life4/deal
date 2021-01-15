@@ -9,12 +9,12 @@ import pytest
 
 # project
 import deal
-from deal._trace import TraceResult
-from deal._testing import TestCase
 from deal._cli._test import (
-    has_pure_contract, sys_path, test_command as command,
-    fast_iterator, format_exception, format_coverage, run_cases,
+    fast_iterator, format_coverage, format_exception,
+    has_pure_contract, run_cases, sys_path, test_command as command,
 )
+from deal._testing import TestCase
+from deal._trace import TraceResult
 from deal.linter._func import Func
 
 

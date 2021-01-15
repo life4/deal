@@ -1,6 +1,9 @@
+# built-in
 from pathlib import Path
-from deal.linter._rules import rules, CheckMarkers
+
+# project
 from deal._cli._main import COMMANDS
+from deal.linter._rules import CheckMarkers, rules
 
 
 root = Path(__file__).parent.parent / 'docs'

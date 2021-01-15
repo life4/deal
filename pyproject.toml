@@ -1,38 +1,11 @@
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
 [tool.dephell.main]
 from = {format = "poetry", path = "pyproject.toml"}
 to = {format = "setuppy", path = "setup.py"}
 tag = "v."
-
-[tool.dephell.flake8]
-from = {format = "pip", path = "requirements-flake.txt"}
-python = ">=3.6"
-command = "flake8"
-
-# generate report:
-# dephell venv run --env=pytest coverage report --show-missing
-[tool.dephell.pytest]
-from = {format = "poetry", path = "pyproject.toml"}
-envs = ["main", "tests"]
-command = "pytest tests/"
-
-[tool.dephell.docs]
-from = {format = "poetry", path = "pyproject.toml"}
-envs = ["main", "docs"]
-command = "sphinx-build -W docs docs/build"
-
-[tool.dephell.typing]
-from = {format = "poetry", path = "pyproject.toml"}
-envs = ["main", "tests"]
-command = "mypy --ignore-missing-imports --allow-redefinition deal/"
-
-[tool.dephell.isort]
-from = {format = "poetry", path = "pyproject.toml"}
-envs = ["main", "tests"]
-command = "isort -rc -y ."
-
-
-[tool.flakehell.plugins]
-deal = ["+*"]
 
 
 [tool.isort]
@@ -50,18 +23,16 @@ import_heading_firstparty = "project"
 import_heading_localfolder = "app"
 
 
-[tool.poetry]
-name = "deal"
-version = "4.4.0"
-description = "Programming by contract"
+[tool.flit.metadata]
+module = "deal"
 license = "MIT"
-authors = ["Gram <master_fess@mail.ru>"]
-repository = "https://github.com/orsinium/deal"
-readme = "README.md"
-keywords = [
-    "deal", "contracts", "pre", "post", "invariant", "decorators",
-    "validation", "pythonic", "functional",
-]
+author = "Gram"
+author-email = "gram@orsinium.dev"
+home-page = "https://github.com/orsinium/deal"
+description-file = "README.md"
+requires-python = ">=3.6"
+keywords = "deal,contracts,pre,post,invariant,decorators,validation,pythonic,functional"
+
 classifiers=[
     "Development Status :: 5 - Production/Stable",
     "Environment :: Plugins",
@@ -73,35 +44,30 @@ classifiers=[
     "Topic :: Software Development :: Quality Assurance",
 ]
 
-[tool.poetry.dependencies]
-python = ">=3.6"
-astroid = "*"
-hypothesis = "*"
-pygments = "*"
-typeguard = "*"
-vaa = ">=0.2.1"
+requires = [
+    "astroid",
+    "hypothesis",
+    "pygments",
+    "typeguard",
+    "vaa>=0.2.1",
+]
 
-[tool.poetry.dev-dependencies]
-# coverage squad
-coverage = "*"
-pytest-cov = "*"
+[tool.flit.metadata.requires-extra]
+tests = [
+    "coverage",
+    "pytest-cov",
+    "isort",
+    "marshmallow",
+    "mypy",
+    "pytest",
+    "urllib3",
+]
+docs = [
+    "m2r",
+    "recommonmark",
+    "sphinx",
+    "sphinx-rtd-theme",
+]
 
-# tests
-isort = {extras = ["pyproject"], version = "*"}
-marshmallow = "*"
-mypy = "*"
-pytest = "*"
-urllib3 = "*"
-
-# docs
-m2r = "*"
-recommonmark = "*"
-sphinx = "*"
-sphinx-rtd-theme = "*"
-
-[tool.poetry.extras]
-tests = ["coverage", "isort", "marshmallow", "mypy", "pytest", "pytest-cov", "urllib3"]
-docs = ["m2r", "recommonmark", "sphinx", "sphinx-rtd-theme", "urllib3"]
-
-[tool.poetry.plugins."flake8.extension"]
+[tool.flit.entrypoints."flake8.extension"]
 DEAL = "deal.linter:Checker"

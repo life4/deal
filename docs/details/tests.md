@@ -32,3 +32,113 @@ The command `memtest` uses this idea to find memory leaks in pure functions. How
 The return code is equal to the amount of functions with memory leaks.
 
 If the function fails, the command will ignore it and still test the function for leaks. Side-effects shouldn't happen unconditionally, even if the function fails. If you want to find unexpected failures, use `test` command instead.
+
+## Constant value for arguments
+
+The `deal.cases` constructor accepts `kwargs` argument where you can specify constant values for the function arguments. For example:
+
+```python
+@deal.raises(ZeroDivisionError)
+def div(a: int, b: int) -> float:
+    assert a == 1
+    return a / b
+
+# Every test case calls `div` function with `a=1`.
+# So, random values are generated only for `b`.
+@deal.cases(div, kwargs=dict(a=1))
+def test_div(case):
+    case()
+```
+
+## Custom strategies
+
+Under the hood, `deal.cases` uses [hypothesis](https://hypothesis.readthedocs.io/en/latest/index.html) testing framework to generate test cases. The trick is that `kwargs` argument of `deal.cases` can contain hypothesis strategies:
+
+```python
+import hypothesis.strategies as st
+
+@deal.raises(ZeroDivisionError)
+def div(a: int, b: int) -> float:
+    assert a >= 10
+    return a / b
+
+cases = deal.cases(
+    func=div,
+    kwargs=dict(
+        a=st.integers(min_value=10),
+    ),
+)
+for case in cases:
+    case()
+```
+
+## Reproducible failures
+
+Argument `seed` of `deal.cases` is a random seed. That means, for the same seed value you always get the same test cases. It is a must-have thing for CI. There are a few important things:
+
++ If the seed is different for diferrent pipelines, it will run a bit different test cases every time which increases your chances to find a tricky corner case.
++ If the seed is the same when you re-run the same job, it will help you to identify flaky tests. In other words, if a CI job fails, you re-run it, and it passes, it was a flaky test which happens because of tricky side-effects (database connection failed, another test changed a state etc.) and it will be hard to reproduce. However, if re-run fails with the same error, most probably it is a failure that you can easily reproduce and debug locally, knowing the seed.
++ The seed should be shown in the CI job to make it possible to use it locally to reproduce a failure. It is either printed in the job output or is something known like the pipeline run number.
+
+There is an example for GitLab CI:
+
+```python
+import sys
+import deal
+
+seed = None
+if os.environ.get('CI_PIPELINE_ID'):
+    seed = int(os.environ['CI_PIPELINE_ID'])
+
+@deal.cases(div, seed=seed)
+def test_div(case):
+    case()
+```
+
+## Fuzzing
+
+[Fuzzer](https://en.wikipedia.org/wiki/Fuzzing) is when an external tool or library (fuzzer) generates a bunch of random data in hope to break your program. That means, fuzzing requires a lot of resources and is performance-critical. This is why most of the fuzzers are written on C. However, there are few Python wrappers for existing fuzzers to simplify fuzzing for Python functions:
+
++ [atheris](https://github.com/google/atheris)
++ [python-afl](https://github.com/jwilk/python-afl)
++ [pythonfuzz](https://gitlab.com/gitlab-org/security-products/analyzers/fuzzers/pythonfuzz)
+
+The `deal.cases` object can be used as a target for any fuzzer.
+
+Atheris:
+
+```python
+import atheris
+
+test = deal.cases(div)
+atheris.Setup([], test)
+atheris.Fuzz()
+```
+
+PythonFuzz:
+
+```python
+from pythonfuzz.main import PythonFuzz
+
+test = deal.cases(div)
+PythonFuzz(test)()
+```
+
+See [Examples](./examples.html#fuzzing-atheris) page for full working examples.
+
+## Iteration over cases
+
+The `deal.cases` object can be used not only as a function or decorator but also as an iterable. On iteration, it emits the test cases, so you can have more control over what and when to run:
+
+```python
+for case in deal.cases(div):
+    case()
+```
+
+However, in this case deal doesn't know which cases have failed and can't provide that information back into hypothesis for shrinking (finding the smallest example to reproduce a failure). So while it is the same as decorator when everything is fine, it will provide a bit uglier report on failure.
+
+## Mixing with Hypothesis
+
+Under the hood, deal uses hypothesis to generate test cases. So, we can mix `deal.cases` with hypothesis decorators. The only exception is `hypothesis.settings` which should be passed into `deal.cases` as `settings` argument because hypothesis doesn't support application of settings twice but deal applies its own default settings.
+
+See [using_hypothesis](./examples.html#using-hypothesis) example.

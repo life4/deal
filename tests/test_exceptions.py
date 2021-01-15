@@ -1,14 +1,18 @@
 # autopep8: off
+# built-in
 import sys
 from pathlib import Path
 
-import deal
+# external
+import marshmallow
 import pytest
 import vaa
-import marshmallow
-from deal._state import state
+
+# project
+import deal
 from deal._decorators.base import Base
-from deal._exceptions import exception_hook, _excepthook
+from deal._exceptions import _excepthook, exception_hook
+from deal._state import state
 
 
 def test_source_get_lambda_from_dec():

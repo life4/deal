@@ -1,8 +1,9 @@
-from typing import Any, Iterator, NamedTuple, Optional, Set, Tuple
-from trace import Trace
+# built-in
 import ast
-import sys
 import inspect
+import sys
+from trace import Trace
+from typing import Any, Iterator, NamedTuple, Optional, Set, Tuple
 
 
 class TraceResult(NamedTuple):

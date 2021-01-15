@@ -1,9 +1,6 @@
 # built-in
 from typing import List
 
-# external
-import pytest
-
 # project
 import deal
 
@@ -25,6 +22,4 @@ def count(items: List[str], item: str) -> int:
     return items.count(item)
 
 
-@pytest.mark.parametrize('case', deal.cases(count))
-def test_count(case: deal.TestCase):
-    case()
+test_count = deal.cases(count)

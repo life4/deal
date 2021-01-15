@@ -2,9 +2,6 @@
 import random
 from typing import List
 
-# external
-import pytest
-
 # project
 import deal
 
@@ -20,6 +17,4 @@ def choice(items: List[str]) -> str:
     return random.choice(items)
 
 
-@pytest.mark.parametrize('case', deal.cases(choice))
-def test_choice(case):
-    case()
+test_choice = deal.cases(choice)

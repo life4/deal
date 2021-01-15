@@ -5,10 +5,10 @@ from typing import Callable, Mapping, Sequence
 
 # app
 from ._lint import lint_command
-from ._stub import stub_command
-from ._test import test_command
 from ._memtest import memtest_command
 from ._prove import prove_command
+from ._stub import stub_command
+from ._test import test_command
 
 
 CommandsType = Mapping[str, Callable[[Sequence[str]], int]]

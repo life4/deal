@@ -8,20 +8,21 @@ from functools import update_wrapper
 from importlib import import_module
 from pathlib import Path
 from textwrap import indent
-from typing import Dict, Iterator, Sequence, TextIO, TypeVar
+from typing import Dict, Iterable, Iterator, Sequence, TextIO, TypeVar
 
+# external
 import pygments
 from pygments.formatters import TerminalFormatter
 from pygments.lexers import PythonTracebackLexer
 
 # app
-from .._testing import cases, TestCase
+from .._colors import COLORS
+from .._testing import TestCase, cases
+from .._trace import TraceResult, format_lines, trace
 from ..linter._contract import Category
 from ..linter._extractors.pre import format_call_args
 from ..linter._func import Func
 from ._common import get_paths
-from .._colors import COLORS
-from .._trace import trace, format_lines, TraceResult
 
 
 T = TypeVar('T')
@@ -99,12 +100,13 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
     return failed   # pragma: no cover
 
 
-def fast_iterator(iterator: Iterator[T]) -> Iterator[T]:
+def fast_iterator(items: Iterable[T]) -> Iterator[T]:
     """
     Iterate over `iterator` disabling tracer on every iteration step.
     This is a trick to avoid using our coverage tracer when calling hypothesis machinery.
     Without it, testing is about 3 times slower.
     """
+    iterator = iter(items)
     default_trace = sys.gettrace()
     while True:  # pragma: no cover
         sys.settrace(None)

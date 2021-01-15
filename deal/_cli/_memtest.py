@@ -1,19 +1,19 @@
 # built-in
-from contextlib import suppress
 import sys
 from argparse import ArgumentParser
+from contextlib import suppress
 from importlib import import_module
 from pathlib import Path
-from typing import Dict, Iterator, Sequence, TextIO
+from typing import Dict, Iterable, Sequence, TextIO
 
 # app
-from .._testing import cases, TestCase
+from .._colors import COLORS
 from .._mem_test import MemoryTracker
 from .._state import state
+from .._testing import TestCase, cases
 from ..linter._extractors.pre import format_call_args
 from ._common import get_paths
-from .._colors import COLORS
-from ._test import sys_path, get_func_names
+from ._test import get_func_names, sys_path
 
 
 def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -> int:
@@ -39,7 +39,7 @@ def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -
 
 
 def run_cases(
-    cases: Iterator[TestCase],
+    cases: Iterable[TestCase],
     func_name: str,
     stream: TextIO,
     colors: Dict[str, str],

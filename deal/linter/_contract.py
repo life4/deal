@@ -9,6 +9,7 @@ from typing import Dict, FrozenSet, Iterable, List
 # external
 import astroid
 
+# app
 from .._cached_property import cached_property
 
 

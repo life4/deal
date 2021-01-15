@@ -1,12 +1,16 @@
 # built-in
 import doctest
 import re
+import sys
+from itertools import chain
+from unittest.mock import Mock
 
 # external
 import pytest
 
 # project
 import deal._aliases
+import deal._testing
 from deal._state import state
 
 
@@ -28,11 +32,15 @@ class Checker(doctest.OutputChecker):
 finder = doctest.DocTestFinder(exclude_empty=True)
 
 
-@pytest.mark.parametrize('test', finder.find(deal._aliases))
+@pytest.mark.parametrize('test', chain(
+    finder.find(deal._aliases),
+    finder.find(deal._testing),
+))
 def test_doctest(test):
     state.color = False
+    sys.modules['atheris'] = Mock()
     try:
-        runner = doctest.DocTestRunner(checker=Checker())
+        runner = doctest.DocTestRunner(checker=Checker(), optionflags=doctest.ELLIPSIS)
         runner.run(test)
         result = runner.summarize(verbose=False)
         if result.failed:
@@ -41,3 +49,4 @@ def test_doctest(test):
         assert not result.failed
     finally:
         state.color = True
+        del sys.modules['atheris']

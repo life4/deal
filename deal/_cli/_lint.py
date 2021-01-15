@@ -7,10 +7,10 @@ from textwrap import dedent, indent
 from typing import Iterable, Iterator, Sequence, Union
 
 # app
-from ..linter import Checker
+from .._colors import COLORS, NOCOLORS, highlight
 from .._state import state
+from ..linter import Checker
 from ._common import get_paths
-from .._colors import highlight, COLORS, NOCOLORS
 
 
 TEMPLATE = '  {blue}{row}{end}:{blue}{col}{end} {magenta}{code}{end} {yellow}{text}{end}'
