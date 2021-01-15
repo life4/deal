@@ -137,12 +137,41 @@ def eval_list_comp(node: astroid.ListComp, ctx: Context):
     if len(node.generators) > 1:
         raise UnsupportedError('to many loops inside list compr')
 
-    body_ctx = ctx.make_child()
     comp: astroid.Comprehension
     comp = node.generators[0]
 
-    index = z3.Int('index')
+    one = z3.IntVal(1)
+    zero = z3.IntVal(0)
     items = unwrap(eval_expr(node=comp.iter, ctx=ctx))
+
+    if comp.ifs:
+        index = z3.Int('index2')
+        body_ctx = ctx.make_child()
+        body_ctx.scope.set(
+            name=comp.target.name,
+            value=wrap(items[index]),
+        )
+
+        conds = []
+        for cond_node in comp.ifs:
+            cond = unwrap(eval_expr(node=cond_node, ctx=body_ctx))
+            conds.append(cond)
+
+        f = z3.RecFunction('comp_ifs', z3.IntSort(), items.sort())
+        if_body = z3.If(
+            z3.And(*conds),
+            z3.Unit(items[index]),
+            z3.Empty(items.sort()),
+        )
+        z3.RecAddDefinition(f, index, z3.If(
+            index == zero,
+            if_body,
+            f(index - one) + if_body,
+        ))
+        items = f(z3.Length(items) - one)
+
+    index = z3.Int('index3')
+    body_ctx = ctx.make_child()
     body_ctx.scope.set(
         name=comp.target.name,
         value=wrap(items[index]),
@@ -150,15 +179,14 @@ def eval_list_comp(node: astroid.ListComp, ctx: Context):
     body_ref = unwrap(eval_expr(node=node.elt, ctx=body_ctx))
 
     f = z3.RecFunction('comp', z3.IntSort(), z3.SeqSort(body_ref.sort()))
-    one = z3.IntVal(1)
-    zero = z3.IntVal(0)
     z3.RecAddDefinition(f, index, z3.If(
         index == zero,
         z3.Unit(body_ref),
         f(index - one) + z3.Unit(body_ref),
     ))
-    result = f(z3.Length(items) - one)
-    return wrap(result)
+    items = f(z3.Length(items) - one)
+
+    return wrap(items)
 
 
 @eval_expr.register(astroid.Subscript)

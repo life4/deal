@@ -173,11 +173,14 @@ from .helpers import prove_f
     # comprehensions
     '[i for i in [4, 5, 6]] == [4, 5, 6]',
     '[i + i for i in [4, 5, 6]] == [8, 10, 12]',
+    '[i for i in [4, 5, 6] if i != 5] == [4, 6]',
+    '[i+i for i in [4, 5, 6, 7, 8] if i % 2 == 0] == [8, 12, 16]',
 ])
 def test_asserts_ok(check: str) -> None:
-    assert eval(check)
+    # assert eval(check)
     text = """
-        def f():
+        from typing import List
+        def f(x: List[int]):
             assert {}
     """
     text = text.format(check)
