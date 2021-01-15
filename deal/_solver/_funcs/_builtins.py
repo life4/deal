@@ -3,6 +3,11 @@ from .._proxies import wrap, StrSort, SetSort, unwrap, if_expr, ProxySort, rando
 from ._registry import register
 
 
+@register('builtins.print')
+def builtins_ignore(*args, **kwargs):
+    return None
+
+
 @register('builtins.sum')
 def builtins_sum(items, **kwargs):
     items = unwrap(items)
