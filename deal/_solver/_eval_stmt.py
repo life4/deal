@@ -21,7 +21,7 @@ def eval_func(node: astroid.FunctionDef, ctx: Context):
         sorts = [arg.sort() for arg in args]
         if not node.returns:
             raise UnsupportedError('no return type annotation for', node.name)
-        sorts.append(ann2sort(node.returns))
+        sorts.append(ann2sort(node.returns, ctx=ctx.z3_ctx))
 
         func = z3.Function(node.name, *sorts)
         ctx.scope.set(

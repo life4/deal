@@ -29,15 +29,6 @@ class Conclusion(enum.Enum):
         return 'yellow'
 
 
-SORTS = {
-    'bool': z3.BoolSort,
-    'int': z3.IntSort,
-    'float': z3.RealSort,
-    'str': z3.StringSort,
-}
-z3.Z3_DEBUG = False
-
-
 class Theorem:
     _func: astroid.FunctionDef
     conclusion: typing.Optional[Conclusion] = None
@@ -64,8 +55,14 @@ class Theorem:
         return self._func.name or 'unknown_function'
 
     @cached_property
+    def z3_context(self) -> typing.Optional[z3.Context]:
+        # return z3.Context()
+        return None
+
+    @cached_property
     def context(self) -> Context:
         ctx = Context.make_empty()
+        ctx = ctx.evolve(z3_ctx=self.z3_context)
         for name, value in self.arguments.items():
             ctx.scope.set(name=name, value=value)
         return ctx
@@ -84,7 +81,7 @@ class Theorem:
         for arg, annotation in zip(args.args, args.annotations):
             if annotation is None:
                 raise UnsupportedError('missed annotation for', arg.name)
-            sort = ann2sort(annotation)
+            sort = ann2sort(annotation, ctx=self.z3_context)
             if sort is None:
                 raise UnsupportedError('unsupported annotation type', annotation.as_string())
             result[arg.name] = wrap(z3.Const(name=arg.name, sort=sort))
@@ -92,7 +89,7 @@ class Theorem:
 
     @cached_property
     def constraint(self) -> z3.BoolRef:
-        asserts = z3.Goal(ctx=self.context.z3_ctx)
+        asserts = z3.Goal(ctx=self.z3_context)
         eval_stmt(node=self._func, ctx=self.context)
         asserts.add(*self.context.expected)
         asserts.add(self.contracts['post'].as_expr())
@@ -108,7 +105,7 @@ class Theorem:
     @cached_property
     def solver(self) -> z3.Solver:
         # z3.get_ctx(None).__init__()
-        solver = z3.Solver(ctx=self.context.z3_ctx)
+        solver = z3.Solver(ctx=self.z3_context)
         solver.add(self.constraint)
         return solver
 

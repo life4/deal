@@ -21,10 +21,10 @@ class FloatSort(ProxySort):
         self.expr = expr
 
     @classmethod
-    def sort(cls):
+    def sort(cls, ctx: z3.Context = None):
         if cls.prefer_real:
-            return RealSort.sort()
-        return FPSort.sort()
+            return RealSort.sort(ctx=ctx)
+        return FPSort.sort(ctx=ctx)
 
     @classmethod
     def val(cls, x, ctx: z3.Context = None):
@@ -72,8 +72,8 @@ class FloatSort(ProxySort):
 
 class RealSort(FloatSort):
     @classmethod
-    def sort(cls):
-        return z3.RealSort()
+    def sort(cls, ctx: z3.Context = None):
+        return z3.RealSort(ctx=ctx)
 
     @classmethod
     def val(cls, x, ctx: z3.Context = None):
@@ -140,9 +140,9 @@ class RealSort(FloatSort):
 class FPSort(FloatSort):
 
     @staticmethod
-    def sort():
+    def sort(ctx: z3.Context = None):
         # return z3.Float32()
-        return z3.FPSort(ebits=float_info.dig, sbits=float_info.mant_dig)
+        return z3.FPSort(ebits=float_info.dig, sbits=float_info.mant_dig, ctx=ctx)
 
     @classmethod
     def val(cls, x, ctx: z3.Context = None):

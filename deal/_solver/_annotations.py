@@ -15,33 +15,33 @@ GENERIC_SORTS = {
 }
 
 
-def ann2sort(node: astroid.node_classes.NodeNG):
+def ann2sort(node: astroid.node_classes.NodeNG, ctx: z3.Context):
     if isinstance(node, astroid.Index):
-        return ann2sort(node=node.value)
+        return ann2sort(node=node.value, ctx=ctx)
     if isinstance(node, astroid.Name):
-        return _sort_from_name(node=node)
+        return _sort_from_name(node=node, ctx=ctx)
     if isinstance(node, astroid.Const) and type(node.value) is str:
-        return _sort_from_str(node=node)
+        return _sort_from_str(node=node, ctx=ctx)
     if isinstance(node, astroid.Subscript):
-        return _sort_from_getattr(node=node)
+        return _sort_from_getattr(node=node, ctx=ctx)
     return None
 
 
-def _sort_from_name(node: astroid.Name):
+def _sort_from_name(node: astroid.Name, ctx: z3.Context):
     sort = SIMPLE_SORTS.get(node.name)
     if sort is None:
         return None
-    return sort()
+    return sort(ctx=ctx)
 
 
-def _sort_from_str(node: astroid.Const):
+def _sort_from_str(node: astroid.Const, ctx: z3.Context):
     sort = SIMPLE_SORTS.get(node.value)
     if sort is None:
         return None
-    return sort()
+    return sort(ctx=ctx)
 
 
-def _sort_from_getattr(node: astroid.Subscript):
+def _sort_from_getattr(node: astroid.Subscript, ctx: z3.Context):
     definitions = infer(node.value)
     if len(definitions) != 1:
         return None
@@ -50,12 +50,12 @@ def _sort_from_getattr(node: astroid.Subscript):
     if module_name != 'typing' and module_name != 'builtins':
         return
 
-    type_name = get_name(node.value).lower()
+    type_name = (get_name(node.value) or '').lower()
     sort = GENERIC_SORTS.get(type_name)
     if sort is None:
         return None
 
-    subsort = ann2sort(node=node.slice)
+    subsort = ann2sort(node=node.slice, ctx=ctx)
     if subsort is None:
         return None
     return sort(subsort)
