@@ -65,7 +65,7 @@ def eval_const(node: astroid.Const, ctx: Context):
     converter = CONSTS.get(t)
     if not converter:
         raise UnsupportedError('unsupported constant', repr(node.value))
-    return wrap(converter(node.value))
+    return wrap(converter(node.value, ctx=ctx.z3_ctx))
 
 
 @eval_expr.register(astroid.BinOp)
@@ -153,8 +153,8 @@ def _compr_apply_ifs(
     comp: astroid.Comprehension,
     items: z3.Z3PPObject,
 ) -> z3.Z3PPObject:
-    one = z3.IntVal(1)
-    zero = z3.IntVal(0)
+    one = z3.IntVal(1, ctx=ctx.z3_ctx)
+    zero = z3.IntVal(0, ctx=ctx.z3_ctx)
 
     index = z3.Int(random_name('index'))
     body_ctx = ctx.make_child()
@@ -170,7 +170,7 @@ def _compr_apply_ifs(
 
     f = z3.RecFunction(
         random_name('compr_cond'),
-        z3.IntSort(), items.sort(),
+        z3.IntSort(ctx=ctx.z3_ctx), items.sort(),
     )
     if_body = z3.If(
         z3.And(*conds),
@@ -191,8 +191,8 @@ def _compr_apply_body(
     comp: astroid.Comprehension,
     items: z3.Z3PPObject,
 ) -> z3.Z3PPObject:
-    one = z3.IntVal(1)
-    zero = z3.IntVal(0)
+    one = z3.IntVal(1, ctx=ctx.z3_ctx)
+    zero = z3.IntVal(0, ctx=ctx.z3_ctx)
     index = z3.Int(random_name('index'))
     body_ctx = ctx.make_child()
     body_ctx.scope.set(
@@ -203,7 +203,7 @@ def _compr_apply_body(
 
     f = z3.RecFunction(
         random_name('compr_body'),
-        z3.IntSort(), z3.SeqSort(body_ref.sort()),
+        z3.IntSort(ctx=ctx.z3_ctx), z3.SeqSort(body_ref.sort()),
     )
     z3.RecAddDefinition(f, index, z3.If(
         index == zero,
@@ -228,7 +228,7 @@ def eval_getitem(node: astroid.Subscript, ctx: Context):
     if node.slice.lower:
         lower_ref = eval_expr(node=node.slice.lower, ctx=ctx)
     else:
-        lower_ref = z3.IntVal(0)
+        lower_ref = z3.IntVal(0, ctx=ctx.z3_ctx)
     if node.slice.upper:
         upper_ref = eval_expr(node=node.slice.upper, ctx=ctx)
     else:
@@ -303,7 +303,7 @@ def eval_unary_op(node: astroid.UnaryOp, ctx: Context):
     if node.op == 'not':
         if isinstance(value_ref, ProxySort):
             value_ref = value_ref.as_bool
-        return z3.Not(value_ref)
+        return z3.Not(value_ref, ctx=ctx.z3_ctx)
 
     operation = UNARY_OPERATIONS.get(node.op)
     if operation is None:

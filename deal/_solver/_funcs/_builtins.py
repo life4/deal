@@ -1,6 +1,7 @@
 import z3
 from .._proxies import wrap, StrSort, SetSort, unwrap, if_expr, ProxySort, random_name
 from ._registry import register
+from .._context import Context
 
 
 @register('builtins.print')
@@ -9,15 +10,16 @@ def builtins_ignore(*args, **kwargs):
 
 
 @register('builtins.sum')
-def builtins_sum(items, **kwargs):
+def builtins_sum(items, ctx: Context, **kwargs):
     items = unwrap(items)
     f = z3.RecFunction(
         random_name('sum'),
-        z3.IntSort(), items.sort().basis(),
+        z3.IntSort(ctx=ctx.z3_ctx),
+        items.sort().basis(),
     )
-    i = z3.Int(random_name('index'))
-    one = z3.IntVal(1)
-    zero = z3.IntVal(0)
+    i = z3.Int(random_name('index'), ctx=ctx.z3_ctx)
+    one = z3.IntVal(1, ctx=ctx.z3_ctx)
+    zero = z3.IntVal(0, ctx=ctx.z3_ctx)
     z3.RecAddDefinition(f, i, z3.If(
         i == zero,
         items[zero],
@@ -29,18 +31,19 @@ def builtins_sum(items, **kwargs):
 
 # TODO: support more than 2 explicit arguments.
 @register('builtins.min')
-def builtins_min(a, b=None, **kwargs):
+def builtins_min(a, b=None, *, ctx: Context, **kwargs):
     if b is not None:
         return wrap(z3.If(a < b, unwrap(a), unwrap(b)))
 
     items = unwrap(a)
     f = z3.RecFunction(
         random_name('min'),
-        z3.IntSort(), items.sort().basis(),
+        z3.IntSort(ctx=ctx.z3_ctx),
+        items.sort().basis(),
     )
     i = z3.Int(random_name('index'))
-    one = z3.IntVal(1)
-    zero = z3.IntVal(0)
+    one = z3.IntVal(1, ctx=ctx.z3_ctx)
+    zero = z3.IntVal(0, ctx=ctx.z3_ctx)
     z3.RecAddDefinition(f, i, z3.If(
         i == zero,
         items[zero],
@@ -48,6 +51,7 @@ def builtins_min(a, b=None, **kwargs):
             items[i] < f(i - one),
             items[i],
             f(i - one),
+            ctx=ctx.z3_ctx,
         ),
     ))
     result = f(z3.Length(items) - one)
@@ -55,18 +59,23 @@ def builtins_min(a, b=None, **kwargs):
 
 
 @register('builtins.max')
-def builtins_max(a, b=None, **kwargs):
+def builtins_max(a, b=None, *, ctx: Context, **kwargs):
     if b is not None:
-        return wrap(z3.If(a > b, unwrap(a), unwrap(b)))
+        return wrap(z3.If(
+            a > b,
+            unwrap(a), unwrap(b),
+            ctx=ctx.z3_ctx,
+        ))
 
     items = unwrap(a)
     f = z3.RecFunction(
         random_name('max'),
-        z3.IntSort(), items.sort().basis(),
+        z3.IntSort(ctx=ctx.z3_ctx),
+        items.sort().basis(),
     )
-    i = z3.Int(random_name('index'))
-    one = z3.IntVal(1)
-    zero = z3.IntVal(0)
+    i = z3.Int(random_name('index'), ctx=ctx.z3_ctx)
+    one = z3.IntVal(1, ctx=ctx.z3_ctx)
+    zero = z3.IntVal(0, ctx=ctx.z3_ctx)
     z3.RecAddDefinition(f, i, z3.If(
         i == zero,
         items[zero],
@@ -74,7 +83,9 @@ def builtins_max(a, b=None, **kwargs):
             items[i] > f(i - one),
             items[i],
             f(i - one),
+            ctx=ctx.z3_ctx,
         ),
+        ctx=ctx.z3_ctx,
     ))
     result = f(z3.Length(items) - one)
     return wrap(result)
@@ -91,10 +102,12 @@ def builtins_len(items, **kwargs):
 
 
 @register('builtins.int')
-def builtins_int(a, **kwargs):
+def builtins_int(a, *, ctx: Context, **kwargs):
     if isinstance(a, ProxySort):
         return a.as_int
-    return wrap(if_expr(a, z3.IntVal(1), z3.IntVal(0)))
+    one = z3.IntVal(1, ctx=ctx.z3_ctx)
+    zero = z3.IntVal(0, ctx=ctx.z3_ctx)
+    return wrap(if_expr(a, one, zero, ctx=ctx.z3_ctx))
 
 
 @register('builtins.float')
