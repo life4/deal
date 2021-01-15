@@ -1,5 +1,5 @@
 import z3
-from ._funcs import unwrap, wrap
+from ._funcs import unwrap, wrap, random_name
 from ._proxy import ProxySort
 from ._registry import registry
 
@@ -61,3 +61,21 @@ class ListSort(ProxySort):
         if self.expr is None:
             return int_proxy(expr=z3.IntVal(0))
         return int_proxy(expr=z3.Length(self.expr))
+
+    def count(self, item) -> None:
+        item = unwrap(item)
+        items = unwrap(self)
+        f = z3.RecFunction(
+            random_name('list_count'),
+            z3.IntSort(), z3.IntSort(),
+        )
+        i = z3.Int(random_name('index'))
+        one = z3.IntVal(1)
+        zero = z3.IntVal(0)
+        z3.RecAddDefinition(f, i, z3.If(
+            i < zero,
+            zero,
+            f(i - one) + z3.If(items[i] == item, one, zero),
+        ))
+        result = f(z3.Length(items) - one)
+        return wrap(result)

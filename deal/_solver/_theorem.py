@@ -107,7 +107,7 @@ class Theorem:
 
     @cached_property
     def solver(self) -> z3.Solver:
-        z3.get_ctx(None).__init__()
+        # z3.get_ctx(None).__init__()
         solver = z3.Solver(ctx=self.context.z3_ctx)
         solver.add(self.constraint)
         return solver

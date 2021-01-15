@@ -28,7 +28,7 @@ class Scope:
     _parent: typing.Optional['Scope']
     layer: typing.Dict[str, z3.Z3PPObject]
 
-    def __init__(self, parent: 'Scope', vars) -> None:
+    def __init__(self, parent: typing.Optional['Scope'], vars) -> None:
         self._parent = parent
         self.layer = vars
 
@@ -72,7 +72,7 @@ class Trace:
         self._names = Counter()
 
     @contextmanager
-    def guard(self, name: str) -> None:
+    def guard(self, name: str) -> typing.Iterator[None]:
         self._names[name] += 1
         try:
             yield

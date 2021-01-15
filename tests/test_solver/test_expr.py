@@ -114,6 +114,9 @@ from .helpers import prove_f
 
     # list methods
     '[7, 8, 9].index(8) == 1',
+    '[1, 2, 4, 6, 5, 6].count(6) == 2',
+    '[1, 1, 1].count(1) == 3',
+    '[1, 1, 1].count(2) == 0',
 
     # list functions
     'len([7, 9, 9, 9, 11]) == 5',
