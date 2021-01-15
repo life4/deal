@@ -9,7 +9,7 @@ from ._context import Context
 from ._registry import HandlersRegistry
 from ._exceptions import UnsupportedError
 from ._funcs import FUNCTIONS
-from ._proxies import ListSort, wrap, SetSort, LambdaSort, FloatSort, ProxySort, if_expr
+from ._proxies import ListSort, wrap, unwrap, SetSort, LambdaSort, FloatSort, ProxySort, if_expr
 from ..linter._extractors.common import get_full_name, infer
 
 
@@ -130,6 +130,35 @@ def eval_set(node: astroid.Set, ctx: Context):
         item = eval_expr(node=subnode, ctx=ctx)
         container = SetSort.add(container, item)
     return container
+
+
+@eval_expr.register(astroid.ListComp)
+def eval_list_comp(node: astroid.ListComp, ctx: Context):
+    if len(node.generators) > 1:
+        raise UnsupportedError('to many loops inside list compr')
+
+    body_ctx = ctx.make_child()
+    comp: astroid.Comprehension
+    comp = node.generators[0]
+
+    index = z3.Int('index')
+    items = unwrap(eval_expr(node=comp.iter, ctx=ctx))
+    body_ctx.scope.set(
+        name=comp.target.name,
+        value=wrap(items[index]),
+    )
+    body_ref = unwrap(eval_expr(node=node.elt, ctx=body_ctx))
+
+    f = z3.RecFunction('comp', z3.IntSort(), z3.SeqSort(body_ref.sort()))
+    one = z3.IntVal(1)
+    zero = z3.IntVal(0)
+    z3.RecAddDefinition(f, index, z3.If(
+        index == zero,
+        z3.Unit(body_ref),
+        f(index - one) + z3.Unit(body_ref),
+    ))
+    result = f(z3.Length(items) - one)
+    return wrap(result)
 
 
 @eval_expr.register(astroid.Subscript)

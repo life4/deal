@@ -2,7 +2,7 @@ import typing
 
 from ._context import Context
 from ._exceptions import UnsupportedError
-from ._types import Node, HandlerType, Z3Nodes
+from ._types import Node, HandlerType, Z3Node
 
 
 class HandlersRegistry:
@@ -19,7 +19,7 @@ class HandlersRegistry:
             return handler
         return wrapper
 
-    def __call__(self, node: Node, ctx: Context) -> Z3Nodes:
+    def __call__(self, node: Node, ctx: Context) -> Z3Node:
         node_type = type(node)
         handler = self._handlers.get(node_type)
         if handler is None:

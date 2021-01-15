@@ -169,6 +169,10 @@ from .helpers import prove_f
     '0 if 0 else 4',
     'not []',
     '[1, 2]',
+
+    # comprehensions
+    '[i for i in [4, 5, 6]] == [4, 5, 6]',
+    '[i + i for i in [4, 5, 6]] == [8, 10, 12]',
 ])
 def test_asserts_ok(check: str) -> None:
     assert eval(check)
