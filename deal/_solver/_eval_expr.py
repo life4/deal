@@ -140,36 +140,56 @@ def eval_list_comp(node: astroid.ListComp, ctx: Context):
     comp: astroid.Comprehension
     comp = node.generators[0]
 
+    items = unwrap(eval_expr(node=comp.iter, ctx=ctx))
+    if comp.ifs:
+        items = _compr_apply_ifs(ctx=ctx, comp=comp, items=items)
+    items = _compr_apply_body(node=node, ctx=ctx, comp=comp, items=items)
+
+    return wrap(items)
+
+
+def _compr_apply_ifs(
+    ctx: Context,
+    comp: astroid.Comprehension,
+    items: z3.Z3PPObject,
+) -> z3.Z3PPObject:
     one = z3.IntVal(1)
     zero = z3.IntVal(0)
-    items = unwrap(eval_expr(node=comp.iter, ctx=ctx))
 
-    if comp.ifs:
-        index = z3.Int('index2')
-        body_ctx = ctx.make_child()
-        body_ctx.scope.set(
-            name=comp.target.name,
-            value=wrap(items[index]),
-        )
+    index = z3.Int('index2')
+    body_ctx = ctx.make_child()
+    body_ctx.scope.set(
+        name=comp.target.name,
+        value=wrap(items[index]),
+    )
 
-        conds = []
-        for cond_node in comp.ifs:
-            cond = unwrap(eval_expr(node=cond_node, ctx=body_ctx))
-            conds.append(cond)
+    conds = []
+    for cond_node in comp.ifs:
+        cond = unwrap(eval_expr(node=cond_node, ctx=body_ctx))
+        conds.append(cond)
 
-        f = z3.RecFunction('comp_ifs', z3.IntSort(), items.sort())
-        if_body = z3.If(
-            z3.And(*conds),
-            z3.Unit(items[index]),
-            z3.Empty(items.sort()),
-        )
-        z3.RecAddDefinition(f, index, z3.If(
-            index == zero,
-            if_body,
-            f(index - one) + if_body,
-        ))
-        items = f(z3.Length(items) - one)
+    f = z3.RecFunction('comp_ifs', z3.IntSort(), items.sort())
+    if_body = z3.If(
+        z3.And(*conds),
+        z3.Unit(items[index]),
+        z3.Empty(items.sort()),
+    )
+    z3.RecAddDefinition(f, index, z3.If(
+        index == zero,
+        if_body,
+        f(index - one) + if_body,
+    ))
+    return f(z3.Length(items) - one)
 
+
+def _compr_apply_body(
+    node: astroid.ListComp,
+    ctx: Context,
+    comp: astroid.Comprehension,
+    items: z3.Z3PPObject,
+) -> z3.Z3PPObject:
+    one = z3.IntVal(1)
+    zero = z3.IntVal(0)
     index = z3.Int('index3')
     body_ctx = ctx.make_child()
     body_ctx.scope.set(
@@ -184,9 +204,7 @@ def eval_list_comp(node: astroid.ListComp, ctx: Context):
         z3.Unit(body_ref),
         f(index - one) + z3.Unit(body_ref),
     ))
-    items = f(z3.Length(items) - one)
-
-    return wrap(items)
+    return f(z3.Length(items) - one)
 
 
 @eval_expr.register(astroid.Subscript)
