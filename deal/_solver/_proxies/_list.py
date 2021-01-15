@@ -29,6 +29,8 @@ class ListSort(ProxySort):
         return wrap(self.expr[unwrap(index)])
 
     def get_slice(self, start, stop):
+        if self.expr is None:
+            return self
         start = unwrap(start)
         stop = unwrap(stop)
         return wrap(z3.SubSeq(
