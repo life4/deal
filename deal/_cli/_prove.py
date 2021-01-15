@@ -25,6 +25,7 @@ def run_solver(path: Path, stream, show_skipped: bool):
             continue
 
         theorem.prove()
+        assert theorem.conclusion is not None
         if theorem.conclusion == Conclusion.SKIP and not show_skipped:
             continue
 

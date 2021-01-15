@@ -10,6 +10,7 @@ vars:
   PYTEST_ENV: "{{.VENVS}}pytest"
   SPHINX_ENV: "{{.VENVS}}sphinx"
   ISORT_ENV:  "{{.VENVS}}isort"
+  DEAL_ENV:   "{{.VENVS}}deal"
 
   TESTS_PATH: tests/
 
@@ -85,7 +86,7 @@ tasks:
           ENV: "{{.PYTEST_ENV}}"
           EXTRA: tests
     cmds:
-      - "{{.PYTEST_ENV}}/bin/pytest {{.TESTS_PATH}}"
+      - "{{.PYTEST_ENV}}/bin/pytest {{.ARGS}} {{.TESTS_PATH}}"
 
   isort:run:
     sources:
@@ -109,3 +110,11 @@ tasks:
           EXTRA: docs
     cmds:
       - "{{.SPHINX_ENV}}/bin/sphinx-build -W docs docs/build"
+
+  deal:prove:
+    deps:
+      - task: flit:install
+        vars:
+          ENV: "{{.DEAL_ENV}}"
+    cmds:
+      - "{{.DEAL_ENV}}/bin/python -m deal prove {{.ARGS}}"

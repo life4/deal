@@ -53,6 +53,14 @@ class ProxySort:
     def as_int(self):
         raise UnsupportedError('cannot convert {} to int'.format(self.type_name))
 
+    @property
+    def length(self):
+        raise UnsupportedError('{}.__len__ is not defined'.format(self.type_name))
+
+    @property
+    def get_item(self):
+        raise UnsupportedError('{}.__getitem__ is not defined'.format(self.type_name))
+
     def _binary_op(self, other, handler):
         self._ensure(other, seq=True)
         return handler(self.expr, unwrap(other))
