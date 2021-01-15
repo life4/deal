@@ -1,3 +1,5 @@
+from random import choices
+from string import ascii_letters
 import z3
 from ._registry import registry
 
@@ -39,3 +41,8 @@ def if_expr(test, val_then, val_else):
     if isinstance(test, ProxySort):
         test = test.as_bool
     return wrap(z3.If(test, unwrap(val_then), unwrap(val_else)))
+
+
+def random_name(prefix: str = 'v') -> str:
+    suffix = ''.join(choices(ascii_letters, k=20))
+    return prefix + '__' + suffix

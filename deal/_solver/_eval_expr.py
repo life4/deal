@@ -9,7 +9,7 @@ from ._context import Context
 from ._registry import HandlersRegistry
 from ._exceptions import UnsupportedError
 from ._funcs import FUNCTIONS
-from ._proxies import ListSort, wrap, unwrap, SetSort, LambdaSort, FloatSort, ProxySort, if_expr
+from ._proxies import ListSort, wrap, unwrap, SetSort, LambdaSort, FloatSort, ProxySort, if_expr, random_name
 from ..linter._extractors.common import get_full_name, infer
 
 
@@ -156,7 +156,7 @@ def _compr_apply_ifs(
     one = z3.IntVal(1)
     zero = z3.IntVal(0)
 
-    index = z3.Int('index2')
+    index = z3.Int(random_name('index'))
     body_ctx = ctx.make_child()
     body_ctx.scope.set(
         name=comp.target.name,
@@ -168,7 +168,10 @@ def _compr_apply_ifs(
         cond = unwrap(eval_expr(node=cond_node, ctx=body_ctx))
         conds.append(cond)
 
-    f = z3.RecFunction('comp_ifs', z3.IntSort(), items.sort())
+    f = z3.RecFunction(
+        random_name('compr_cond'),
+        z3.IntSort(), items.sort(),
+    )
     if_body = z3.If(
         z3.And(*conds),
         z3.Unit(items[index]),
@@ -190,7 +193,7 @@ def _compr_apply_body(
 ) -> z3.Z3PPObject:
     one = z3.IntVal(1)
     zero = z3.IntVal(0)
-    index = z3.Int('index3')
+    index = z3.Int(random_name('index'))
     body_ctx = ctx.make_child()
     body_ctx.scope.set(
         name=comp.target.name,
@@ -198,7 +201,10 @@ def _compr_apply_body(
     )
     body_ref = unwrap(eval_expr(node=node.elt, ctx=body_ctx))
 
-    f = z3.RecFunction('comp', z3.IntSort(), z3.SeqSort(body_ref.sort()))
+    f = z3.RecFunction(
+        random_name('compr_body'),
+        z3.IntSort(), z3.SeqSort(body_ref.sort()),
+    )
     z3.RecAddDefinition(f, index, z3.If(
         index == zero,
         z3.Unit(body_ref),
