@@ -66,6 +66,10 @@ from .helpers import prove_f
     # '"ab" * 3 == "ababab"',
 
     # int functions
+    'bool(0) == False',
+    'bool(1) == True',
+    'bool(14) == True',
+    'bool(-23) == True',
     'abs(12) == 12',
     'abs(-13) == 13',
     'min(13, 5) == 5',
@@ -94,6 +98,10 @@ from .helpers import prove_f
     'float("Inf") > 100000',
     # 'abs(-4.2) == 4.2',
     # 'str(4.2) == "4.2"',
+
+    # bool functions
+    'int(True) == 1',
+    'int(False) == 0',
 
     # list
     '[1, 2, 3] == [1, 2, 3]',

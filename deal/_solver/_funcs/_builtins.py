@@ -1,5 +1,5 @@
 import z3
-from .._proxies import wrap, StrSort, SetSort, unwrap
+from .._proxies import wrap, StrSort, SetSort, unwrap, if_expr, ProxySort
 from ._registry import register
 
 
@@ -78,7 +78,9 @@ def builtins_len(items, **kwargs):
 
 @register('builtins.int')
 def builtins_int(a, **kwargs):
-    return a.as_int
+    if isinstance(a, ProxySort):
+        return a.as_int
+    return wrap(if_expr(a, z3.IntVal(1), z3.IntVal(0)))
 
 
 @register('builtins.float')
@@ -93,9 +95,11 @@ def builtins_str(obj, **kwargs) -> StrSort:
 
 @register('builtins.bool')
 def builtins_bool(obj, **kwargs) -> z3.BoolRef:
-    return obj.as_bool
+    if isinstance(obj, ProxySort):
+        return obj.as_bool
+    return obj
 
 
 @register('builtins.set')
-def builtins_set(**kwargs) -> StrSort:
+def builtins_set(**kwargs) -> SetSort:
     return SetSort.make_empty()

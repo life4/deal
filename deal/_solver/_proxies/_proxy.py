@@ -3,6 +3,7 @@ import operator
 import z3
 
 from ._funcs import unwrap
+from .._exceptions import UnsupportedError
 
 
 class ProxySort:
@@ -10,7 +11,7 @@ class ProxySort:
     expr: z3.Z3PPObject
 
     @staticmethod
-    def make_empty_expr():
+    def make_empty_expr(sort):
         raise NotImplementedError
 
     def _ensure(self, item, seq=False) -> None:
@@ -41,6 +42,16 @@ class ProxySort:
 
     def __init__(self, expr) -> None:
         self.expr = expr
+
+    # abstract methods
+
+    @property
+    def as_bool(self):
+        raise UnsupportedError('cannot convert {} to bool'.format(self.type_name))
+
+    @property
+    def as_int(self):
+        raise UnsupportedError('cannot convert {} to int'.format(self.type_name))
 
     def _binary_op(self, other, handler):
         self._ensure(other, seq=True)
