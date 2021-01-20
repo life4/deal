@@ -61,7 +61,7 @@ def prove_command(
     """
     if root is None:  # pragma: no cover
         root = Path()
-    parser = ArgumentParser(prog='python3 -m deal test')
+    parser = ArgumentParser(prog='python3 -m deal prove')
     parser.add_argument('--skipped', action='store_true', help='show skipped')
     parser.add_argument('paths', nargs='+')
     args = parser.parse_args(argv)
