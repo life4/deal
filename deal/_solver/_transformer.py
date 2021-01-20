@@ -2,7 +2,7 @@ import typing
 import astroid
 from functools import partial
 
-StmtType = astroid.node_classes.Statement
+StmtType = typing.TypeVar('StmtType')
 
 
 class IfTransformer:
@@ -41,7 +41,7 @@ class IfTransformer:
     def _has_return(self, node):
         if isinstance(node, astroid.Return):
             return True
-        if not isinstance(node, StmtType):
+        if not isinstance(node, astroid.node_classes.Statement):
             return False
         for subnode in node.get_children():
             if self._has_return(subnode):

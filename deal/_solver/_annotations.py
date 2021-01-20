@@ -1,7 +1,9 @@
+import typing
 import astroid
 import z3
 from ..linter._extractors.common import get_full_name, get_name, infer
 from ._proxies import FloatSort
+from ._types import AstNode, SortType
 
 SIMPLE_SORTS = {
     'bool': z3.BoolSort,
@@ -13,9 +15,10 @@ GENERIC_SORTS = {
     'list': z3.SeqSort,
     'set': z3.SetSort,
 }
+MaybeSort = typing.Optional[SortType]
 
 
-def ann2sort(node: astroid.node_classes.NodeNG, ctx: z3.Context):
+def ann2sort(node: AstNode, ctx: z3.Context) -> MaybeSort:
     if isinstance(node, astroid.Index):
         return ann2sort(node=node.value, ctx=ctx)
     if isinstance(node, astroid.Name):
@@ -27,28 +30,28 @@ def ann2sort(node: astroid.node_classes.NodeNG, ctx: z3.Context):
     return None
 
 
-def _sort_from_name(node: astroid.Name, ctx: z3.Context):
+def _sort_from_name(node: astroid.Name, ctx: z3.Context) -> MaybeSort:
     sort = SIMPLE_SORTS.get(node.name)
     if sort is None:
         return None
     return sort(ctx=ctx)
 
 
-def _sort_from_str(node: astroid.Const, ctx: z3.Context):
+def _sort_from_str(node: astroid.Const, ctx: z3.Context) -> MaybeSort:
     sort = SIMPLE_SORTS.get(node.value)
     if sort is None:
         return None
     return sort(ctx=ctx)
 
 
-def _sort_from_getattr(node: astroid.Subscript, ctx: z3.Context):
+def _sort_from_getattr(node: astroid.Subscript, ctx: z3.Context) -> MaybeSort:
     definitions = infer(node.value)
     if len(definitions) != 1:
         return None
 
     module_name, _ = get_full_name(definitions[0])
     if module_name != 'typing' and module_name != 'builtins':
-        return
+        return None
 
     type_name = (get_name(node.value) or '').lower()
     sort = GENERIC_SORTS.get(type_name)

@@ -6,6 +6,7 @@ from ._registry import registry
 
 @registry.add
 class ListSort(ProxySort):
+    expr: z3.SeqRef
     type_name = 'list'
 
     @classmethod
@@ -58,15 +59,14 @@ class ListSort(ProxySort):
         return int_proxy(expr=z3.IndexOf(self.expr, unit, start))
 
     @property
-    def length(self) -> z3.ArithRef:
+    def length(self):
         int_proxy = registry['int']
         if self.expr is None:
             return int_proxy(expr=z3.IntVal(0))
         return int_proxy(expr=z3.Length(self.expr))
 
-    def count(self, item) -> None:
+    def count(self, item):
         item = unwrap(item)
-        items = unwrap(self)
         f = z3.RecFunction(
             random_name('list_count'),
             z3.IntSort(), z3.IntSort(),
@@ -77,7 +77,7 @@ class ListSort(ProxySort):
         z3.RecAddDefinition(f, i, z3.If(
             i < zero,
             zero,
-            f(i - one) + z3.If(items[i] == item, one, zero),
+            f(i - one) + z3.If(self.expr[i] == item, one, zero),
         ))
-        result = f(z3.Length(items) - one)
+        result = f(z3.Length(self.expr) - one)
         return wrap(result)

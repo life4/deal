@@ -8,7 +8,7 @@ class cached_property(Generic[T]):  # noqa: N801
     func: Callable[[Any], T]
 
     def __init__(self, func: Callable[[Any], T]) -> None:
-        self.func = func
+        self.func = func  # type: ignore
 
     @overload
     def __get__(self, instance: None, owner: Optional[Type[Any]] = ...) -> 'cached_property[T]':

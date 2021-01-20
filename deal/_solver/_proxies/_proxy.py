@@ -4,6 +4,7 @@ import z3
 
 from ._funcs import unwrap
 from .._exceptions import UnsupportedError
+from .._types import Z3Bool
 
 
 class ProxySort:
@@ -46,7 +47,7 @@ class ProxySort:
     # abstract methods
 
     @property
-    def as_bool(self):
+    def as_bool(self) -> Z3Bool:
         raise UnsupportedError('cannot convert {} to bool'.format(self.type_name))
 
     @property
@@ -60,6 +61,9 @@ class ProxySort:
     @property
     def get_item(self):
         raise UnsupportedError('{}.__getitem__ is not defined'.format(self.type_name))
+
+    def sort(self):
+        return self.expr.sort()
 
     def _binary_op(self, other, handler):
         self._ensure(other, seq=True)

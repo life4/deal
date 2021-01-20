@@ -11,16 +11,19 @@ from ._exceptions import UnsupportedError
 from ._funcs import FUNCTIONS
 from ._proxies import ListSort, wrap, unwrap, SetSort, LambdaSort, FloatSort, ProxySort, if_expr, random_name
 from ..linter._extractors.common import get_full_name, infer
+from ._types import SortType
 
 
 eval_expr = HandlersRegistry()
 
+CONSTS: typing.Mapping[type, typing.Callable[..., SortType]]
 CONSTS = {
     bool: z3.BoolVal,
     int: z3.IntVal,
     float: FloatSort.val,
     str: z3.StringVal,
 }
+COMAPARISON: typing.Mapping[str, typing.Callable]
 COMAPARISON = {
     '<': operator.lt,
     '<=': operator.le,
@@ -30,11 +33,13 @@ COMAPARISON = {
     '!=': operator.ne,
     'in': lambda item, items: items.contains(item),
 }
+UNARY_OPERATIONS: typing.Mapping[str, typing.Callable]
 UNARY_OPERATIONS = {
     '-': operator.neg,
     '+': operator.pos,
     '~': operator.inv,
 }
+BIN_OPERATIONS: typing.Mapping[str, typing.Callable]
 BIN_OPERATIONS = {
     # math
     '+': operator.add,
@@ -53,6 +58,7 @@ BIN_OPERATIONS = {
     '<<': operator.lshift,
     '>>': operator.rshift,
 }
+BOOL_OPERATIONS: typing.Mapping[str, typing.Callable]
 BOOL_OPERATIONS = {
     'and': z3.And,
     'or': z3.Or,

@@ -1,5 +1,5 @@
 from ._registry import register
-from .._proxies import ListSort
+from .._proxies import ListSort, IntSort
 from .._context import Context
 
 
@@ -29,5 +29,5 @@ def list_extend(items: ListSort, other, ctx: Context, var_name: str, **kwargs) -
 
 
 @register('builtins.list.count')
-def list_count(items: ListSort, item, **kwargs) -> None:
+def list_count(items: ListSort, item, **kwargs) -> IntSort:
     return items.count(item)

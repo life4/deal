@@ -4,17 +4,19 @@ from contextlib import contextmanager
 
 import z3
 
+from ._types import Z3Bool, SortType
+
 
 class Asserts:
-    _asserts: typing.List[z3.BoolRef]
+    _asserts: typing.List[Z3Bool]
 
     def __init__(self) -> None:
         self._asserts = []
 
-    def add(self, cond: z3.BoolRef) -> None:
+    def add(self, cond: Z3Bool) -> None:
         self._asserts.append(cond)
 
-    def __iter__(self):
+    def __iter__(self) -> typing.Iterator[Z3Bool]:
         return iter(self._asserts)
 
     def __repr__(self) -> str:
@@ -26,7 +28,7 @@ class Asserts:
 
 class Scope:
     _parent: typing.Optional['Scope']
-    layer: typing.Dict[str, z3.Z3PPObject]
+    layer: typing.Dict[str, SortType]
 
     def __init__(self, parent: typing.Optional['Scope'], vars) -> None:
         self._parent = parent
@@ -46,7 +48,7 @@ class Scope:
             vars=dict(),
         )
 
-    def get(self, name: str) -> typing.Optional[z3.Z3PPObject]:
+    def get(self, name: str) -> typing.Optional[SortType]:
         var = self.layer.get(name)
         if var is not None:
             return var
@@ -54,7 +56,7 @@ class Scope:
             return self._parent.get(name=name)
         return None
 
-    def set(self, name: str, value: z3.Z3PPObject) -> None:
+    def set(self, name: str, value: SortType) -> None:
         self.layer[name] = value
 
     def __repr__(self) -> str:
