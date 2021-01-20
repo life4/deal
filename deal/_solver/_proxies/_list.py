@@ -69,6 +69,9 @@ class ListSort(ProxySort):
         return int_proxy(expr=z3.Length(self.expr))
 
     def count(self, item):
+        if self.expr is None:
+            int_proxy = registry['int']
+            return int_proxy(expr=z3.IntVal(0))
         item = unwrap(item)
         f = z3.RecFunction(
             random_name('list_count'),
