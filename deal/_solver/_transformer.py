@@ -1,6 +1,10 @@
+# built-in
 import typing
-import astroid
 from functools import partial
+
+# external
+import astroid
+
 
 StmtType = typing.TypeVar('StmtType')
 

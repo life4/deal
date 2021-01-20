@@ -1,4 +1,5 @@
-from deal._solver._theorem import Theorem, Conclusion
+# project
+from deal._solver._theorem import Conclusion, Theorem
 
 
 def prove_f(text: str) -> Theorem:

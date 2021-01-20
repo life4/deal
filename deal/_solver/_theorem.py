@@ -1,17 +1,20 @@
+# built-in
 import enum
 import typing
 from textwrap import dedent
 
+# external
 import astroid
 import z3
 
-from ._context import Context
-from ._exceptions import UnsupportedError, ProveError
-from ._eval_stmt import eval_stmt
+# app
 from .._cached_property import cached_property
 from ._annotations import ann2sort
-from ._proxies import wrap
+from ._context import Context
 from ._eval_contracts import eval_contracts
+from ._eval_stmt import eval_stmt
+from ._exceptions import ProveError, UnsupportedError
+from ._proxies import wrap
 from ._transformer import if_transformer
 
 

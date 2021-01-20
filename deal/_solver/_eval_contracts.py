@@ -1,12 +1,15 @@
+# built-in
 import typing
 
+# external
 import astroid
 import z3
 
-from ._exceptions import UnsupportedError
+# app
 from ..linter._extractors.contracts import get_contracts
+from ._context import Context, Scope
 from ._eval_expr import eval_expr
-from ._context import Scope, Context
+from ._exceptions import UnsupportedError
 
 
 def eval_contracts(decorators: astroid.Decorators, ctx: Context) -> typing.Dict[str, z3.Goal]:

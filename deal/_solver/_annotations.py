@@ -1,9 +1,15 @@
+# built-in
 import typing
+
+# external
 import astroid
 import z3
+
+# app
 from ..linter._extractors.common import get_full_name, get_name, infer
 from ._proxies import FloatSort
 from ._types import AstNode, SortType
+
 
 SIMPLE_SORTS = {
     'bool': z3.BoolSort,

@@ -1,4 +1,7 @@
+# external
 import z3
+
+# app
 from .._proxies import wrap
 from ._registry import register
 

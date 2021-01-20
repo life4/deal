@@ -1,10 +1,13 @@
+# built-in
 import operator
 
+# external
 import z3
 
-from ._funcs import unwrap
+# app
 from .._exceptions import UnsupportedError
 from .._types import Z3Bool
+from ._funcs import unwrap
 
 
 class ProxySort:

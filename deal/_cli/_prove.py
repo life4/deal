@@ -5,9 +5,9 @@ from pathlib import Path
 from typing import Sequence, TextIO
 
 # app
-from .._solver import Theorem, Conclusion
-from ._common import get_paths
 from .._colors import COLORS
+from .._solver import Conclusion, Theorem
+from ._common import get_paths
 
 
 TEMPLATE_MOD = '{blue}{name}{end}'

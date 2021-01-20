@@ -1,7 +1,12 @@
+# built-in
 import typing
+
+# external
 import astroid
 
+
 if typing.TYPE_CHECKING:
+    # app
     from .._context import Context
 
 
@@ -11,6 +16,7 @@ class LambdaSort(typing.NamedTuple):
     body: astroid.Expr
 
     def __call__(self, *values, **kwargs):
+        # app
         from .._eval_expr import eval_expr
 
         body_ctx = self.ctx.make_child()

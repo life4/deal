@@ -1,7 +1,10 @@
+# external
 import z3
-from .._proxies import wrap, StrSort, SetSort, unwrap, if_expr, ProxySort, random_name
-from ._registry import register
+
+# app
 from .._context import Context
+from .._proxies import ProxySort, SetSort, StrSort, if_expr, random_name, unwrap, wrap
+from ._registry import register
 
 
 @register('builtins.print')

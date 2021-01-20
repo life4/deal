@@ -1,5 +1,10 @@
+# built-in
 from sys import float_info
+
+# external
 import z3
+
+# app
 from .._exceptions import UnsupportedError
 from ._proxy import ProxySort
 from ._registry import registry

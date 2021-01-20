@@ -1,8 +1,11 @@
+# external
 import z3
-from .._proxies import wrap, random_name, ProxySort, FloatSort, IntSort
-from ._registry import register
+
+# app
 from .._context import Context
 from .._exceptions import UnsupportedError
+from .._proxies import FloatSort, IntSort, ProxySort, random_name, wrap
+from ._registry import register
 
 
 @register('random.Random.randint')

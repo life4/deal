@@ -1,5 +1,8 @@
+# external
 import z3
-from ._funcs import unwrap, wrap, random_name
+
+# app
+from ._funcs import random_name, unwrap, wrap
 from ._proxy import ProxySort
 from ._registry import registry
 

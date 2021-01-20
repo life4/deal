@@ -1,8 +1,11 @@
+# external
 import z3
+
+# app
 from .._exceptions import UnsupportedError
+from ._funcs import wrap
 from ._proxy import ProxySort
 from ._registry import registry
-from ._funcs import wrap
 
 
 @registry.add

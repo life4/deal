@@ -1,7 +1,9 @@
+# built-in
 import typing
 
 
 if typing.TYPE_CHECKING:
+    # app
     from ._proxy import ProxySort
 
 

@@ -1,6 +1,9 @@
+# external
 import z3
-from ._proxy import ProxySort
+
+# app
 from ._funcs import unwrap
+from ._proxy import ProxySort
 from ._registry import registry
 
 

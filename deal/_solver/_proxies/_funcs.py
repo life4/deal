@@ -1,12 +1,18 @@
+# built-in
 from random import choices
 from string import ascii_letters
 from typing import Optional
+
+# external
 import z3
-from ._registry import registry
+
+# app
 from .._types import SortType, Z3Node
+from ._registry import registry
 
 
 def unwrap(obj) -> Z3Node:
+    # app
     from ._proxy import ProxySort
 
     if not isinstance(obj, ProxySort):
@@ -18,8 +24,9 @@ def unwrap(obj) -> Z3Node:
 
 
 def wrap(expr) -> SortType:
-    from ._proxy import ProxySort
+    # app
     from ._float import FPSort, RealSort
+    from ._proxy import ProxySort
 
     if isinstance(expr, ProxySort):
         return expr
@@ -39,6 +46,7 @@ def wrap(expr) -> SortType:
 
 
 def if_expr(test, val_then, val_else, ctx: Optional[z3.Context] = None):
+    # app
     from ._proxy import ProxySort
 
     if isinstance(test, ProxySort):

@@ -1,8 +1,13 @@
+# built-in
 import math
+
+# external
 import z3
-from .._proxies import FloatSort, IntSort, if_expr, wrap
-from ._registry import register, FUNCTIONS
+
+# app
 from .._context import Context
+from .._proxies import FloatSort, IntSort, if_expr, wrap
+from ._registry import FUNCTIONS, register
 
 
 @register('math.isclose')

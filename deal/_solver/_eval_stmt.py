@@ -1,12 +1,14 @@
+# external
 import astroid
 import z3
 
+# app
+from ._annotations import ann2sort
 from ._context import Context
-from ._registry import HandlersRegistry
 from ._eval_expr import eval_expr
 from ._exceptions import UnsupportedError
-from ._annotations import ann2sort
-from ._proxies import if_expr, unwrap, ProxySort
+from ._proxies import ProxySort, if_expr, unwrap
+from ._registry import HandlersRegistry
 
 
 eval_stmt = HandlersRegistry()

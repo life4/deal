@@ -1,8 +1,15 @@
+# built-in
 import math
+
+# external
 import hypothesis
 import hypothesis.strategies
 import pytest
+
+# project
 from deal._solver._theorem import Conclusion
+
+# app
 from .helpers import prove_f
 
 

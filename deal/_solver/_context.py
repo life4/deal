@@ -1,10 +1,13 @@
+# built-in
 import typing
 from collections import Counter
 from contextlib import contextmanager
 
+# external
 import z3
 
-from ._types import Z3Bool, SortType
+# app
+from ._types import SortType, Z3Bool
 
 
 class Asserts:

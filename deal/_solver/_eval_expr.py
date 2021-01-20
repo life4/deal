@@ -1,16 +1,22 @@
-from functools import partial
+# built-in
 import operator
 import typing
+from functools import partial
 
+# external
 import astroid
 import z3
 
+# app
+from ..linter._extractors.common import get_full_name, infer
 from ._context import Context
-from ._registry import HandlersRegistry
 from ._exceptions import UnsupportedError
 from ._funcs import FUNCTIONS
-from ._proxies import ListSort, wrap, unwrap, SetSort, LambdaSort, FloatSort, ProxySort, if_expr, random_name
-from ..linter._extractors.common import get_full_name, infer
+from ._proxies import (
+    FloatSort, LambdaSort, ListSort, ProxySort,
+    SetSort, if_expr, random_name, unwrap, wrap,
+)
+from ._registry import HandlersRegistry
 from ._types import SortType
 
 
@@ -359,8 +365,9 @@ def eval_call(node: astroid.Call, ctx: Context):
 
 
 def _call_function(node: astroid.FunctionDef, ctx: Context, call_args=typing.List[z3.Z3PPObject]):
-    from ._eval_stmt import eval_stmt
+    # app
     from ._eval_contracts import eval_contracts
+    from ._eval_stmt import eval_stmt
 
     # put arguments into the scope
     func_ctx = Context.make_empty().evolve(trace=ctx.trace)
