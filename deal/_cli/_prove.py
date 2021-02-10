@@ -4,9 +4,10 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Sequence, TextIO
 
+from deal_solver import Conclusion, Theorem
+
 # app
 from .._colors import COLORS
-from .._solver import Conclusion, Theorem
 from ._common import get_paths
 
 
