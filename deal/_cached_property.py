@@ -3,7 +3,6 @@ from typing import Any, Callable, Generic, Optional, Type, TypeVar, overload
 
 
 T = TypeVar('T')
-S = TypeVar('S')
 
 
 class cached_property(Generic[T]):  # noqa: N801
@@ -17,7 +16,7 @@ class cached_property(Generic[T]):  # noqa: N801
         pass
 
     @overload
-    def __get__(self, instance: S, owner: Optional[Type[Any]] = ...) -> T:
+    def __get__(self, instance, owner: Optional[Type[Any]] = ...) -> T:
         pass
 
     def __get__(self, obj, cls):
