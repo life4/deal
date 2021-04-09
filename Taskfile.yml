@@ -111,10 +111,18 @@ tasks:
     cmds:
       - "{{.SPHINX_ENV}}/bin/sphinx-build -W docs docs/build"
 
-  deal:prove:
+  solver:inject:
+    status:
+      - "test -d {{.DEAL_ENV}}/lib/python3.7/site-packages/deal_solver"
     deps:
       - task: flit:install
         vars:
           ENV: "{{.DEAL_ENV}}"
+    cmds:
+      - "{{.DEAL_ENV}}/bin/pip install ../deal-solver/"
+
+  solver:run:
+    deps:
+      - task: solver:inject
     cmds:
       - "{{.DEAL_ENV}}/bin/python -m deal prove {{.ARGS}}"

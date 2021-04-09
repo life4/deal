@@ -2,32 +2,43 @@
 import sys
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Sequence, TextIO
+from typing import Iterator, Sequence, TextIO
 
-from deal_solver import Conclusion, Theorem
+import astroid
+from deal_solver import Conclusion, Contract, Theorem
 
 # app
 from .._colors import COLORS
 from ._common import get_paths
+from ..linter._extractors import get_contracts
 
 
 TEMPLATE_MOD = '{blue}{name}{end}'
 TEMPLATE_FUN = '  {magenta}{name}{end}'
-TEMPLATE_CON = '    {color}{c.value}{end} {e}'
+TEMPLATE_CON = '    {color}{p.conclusion}{end} {p}'
 
 
-def run_solver(path: Path, stream, show_skipped: bool):
+class DealTheorem(Theorem):
+    @staticmethod
+    def get_contracts(func: astroid.FunctionDef) -> Iterator[Contract]:
+        if not func.decorators:
+            return
+        for name, args in get_contracts(func.decorators.nodes):
+            yield Contract(name=name, args=args)
+
+
+def run_solver(path: Path, stream: TextIO, show_skipped: bool) -> int:
     file_name_shown = False
     text = path.read_text()
-    theorems = Theorem.from_text(text)
+    theorems = DealTheorem.from_text(text)
     failed_count = 0
     for theorem in theorems:
         if theorem.name.startswith('test_'):
             continue
 
-        theorem.prove()
-        assert theorem.conclusion is not None
-        if theorem.conclusion == Conclusion.SKIP and not show_skipped:
+        proof = theorem.prove()
+        assert proof.conclusion is not None
+        if proof.conclusion == Conclusion.SKIP and not show_skipped:
             continue
 
         if not file_name_shown:
@@ -37,20 +48,9 @@ def run_solver(path: Path, stream, show_skipped: bool):
 
         line = TEMPLATE_FUN.format(name=theorem.name, **COLORS)
         print(line, file=stream)
-
-        color = COLORS[theorem.conclusion.color]
-        descr = theorem.example or ''
-        if theorem.error:
-            descr = ' '.join([str(arg) for arg in theorem.error.args])
-            descr = ' '.join(descr.split())[:80]
-        line = TEMPLATE_CON.format(
-            c=theorem.conclusion,
-            e=descr,
-            color=color,
-            **COLORS,
-        )
+        line = TEMPLATE_CON.format(p=proof, color=COLORS[proof.color], **COLORS)
         print(line, file=stream)
-        failed_count += theorem.conclusion == Conclusion.FAIL
+        failed_count += proof.conclusion == Conclusion.FAIL
     return failed_count
 
 
@@ -71,7 +71,7 @@ def prove_command(
     for arg in args.paths:
         for path in get_paths(Path(arg)):
             failed += run_solver(
-                path=Path(path),
+                path=path,
                 stream=stream,
                 show_skipped=args.skipped,
             )
