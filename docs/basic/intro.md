@@ -17,7 +17,7 @@ Read [Contract-Driven Development](motivation) section if you want to know more 
 
 ## Open-world assumption
 
-Deal can say you if something goes wrong but can't say if something can't go wrong. It is known as [open-world assumption](https://en.wikipedia.org/wiki/Open-world_assumption). For example, if the function explicitly raises an exception or does it almost on every input, Deal will say you about it. However, if the function does it somewhere deep inside of call stack and only on one value from million, chances that it will be caught are small. So, if you say "this function can raise ValueError" but Deal doesn't see it anywhere, it will trust you and don't argue about it. Deal assumes that the developer is smart and can see something that the framework can't.
+Deal can tell you if something goes wrong but can't tell you if something can't go wrong. It is known as [open-world assumption](https://en.wikipedia.org/wiki/Open-world_assumption). For example, if the function explicitly raises an exception or does it almost on every input, Deal will tell you about it. However, if the function does it somewhere deep inside of call stack and only on one value from million, chances that it will be caught are small. So, if you say "this function can raise ValueError" but Deal doesn't see it anywhere, it will trust you and don't argue about it. Deal assumes that the developer is smart and can see something that the framework can't.
 
 ## Writing contracts
 
