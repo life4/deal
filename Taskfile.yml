@@ -10,6 +10,9 @@ vars:
   PYTEST_ENV: "{{.VENVS}}pytest"
   SPHINX_ENV: "{{.VENVS}}sphinx"
   ISORT_ENV:  "{{.VENVS}}isort"
+  DEAL_ENV:   "{{.VENVS}}deal"
+
+  TESTS_PATH: tests/
 
 env:
   FLIT_ROOT_INSTALL: "1"
@@ -75,15 +78,15 @@ tasks:
       - "{{.MYPY_ENV}}/bin/mypy --ignore-missing-imports --allow-redefinition deal/"
 
   pytest:run:
-    sources:
-      - deal/
+    # sources:
+    #   - deal/
     deps:
       - task: flit:install
         vars:
           ENV: "{{.PYTEST_ENV}}"
           EXTRA: tests
     cmds:
-      - "{{.PYTEST_ENV}}/bin/pytest tests/"
+      - "{{.PYTEST_ENV}}/bin/pytest {{.ARGS}} {{.TESTS_PATH}}"
 
   isort:run:
     sources:
