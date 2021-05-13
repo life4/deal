@@ -8,14 +8,19 @@ See [documentation][docs] for more details.
 
 # main package info
 __title__ = 'deal'
-__version__ = '4.5.0'
+__version__ = '4.6.0'
 __author__ = 'Gram Orsinium'
 __license__ = 'MIT'
 
 
 # app
-from ._aliases import chain, ensure, has, inv, post, pre, pure, raises, reason, safe
-from ._exceptions import *  # noQA
+from ._aliases import (
+    chain, ensure, has, implies, inv, post, pre, pure, raises, reason, safe,
+)
+from ._exceptions import (
+    ContractError, InvContractError, MarkerError, OfflineContractError, PostContractError,
+    PreContractError, RaisesContractError, ReasonContractError, SilentContractError,
+)
 from ._imports import activate, module_load
 from ._schemes import Scheme
 from ._state import disable, enable, reset
@@ -41,12 +46,24 @@ __all__ = [
     'pre',
     'raises',
     'reason',
-    'safe',
 
     # aliases
+    'safe',
     'pure',
+    'implies',
 
     # module level
     'module_load',
     'activate',
+
+    # exceptions
+    'ContractError',
+    'InvContractError',
+    'MarkerError',
+    'OfflineContractError',
+    'PostContractError',
+    'PreContractError',
+    'RaisesContractError',
+    'ReasonContractError',
+    'SilentContractError',
 ]

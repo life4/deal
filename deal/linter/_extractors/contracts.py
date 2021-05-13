@@ -8,8 +8,15 @@ import astroid
 from .common import TOKENS, get_name
 
 
-SUPPORTED_CONTRACTS = {'deal.pre', 'deal.post', 'deal.raises', 'deal.pure', 'deal.has'}
-SUPPORTED_MARKERS = {'deal.pure'}
+SUPPORTED_CONTRACTS = {
+    'deal.has',
+    'deal.post',
+    'deal.pre',
+    'deal.pure',
+    'deal.raises',
+    'deal.safe',
+}
+SUPPORTED_MARKERS = {'deal.pure', 'deal.safe'}
 
 
 def get_contracts(decorators: List) -> Iterator[Tuple[str, list]]:

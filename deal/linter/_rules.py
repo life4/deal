@@ -114,8 +114,9 @@ class CheckRaises:
     required = Required.FUNC
 
     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+        cats = {Category.RAISES, Category.SAFE, Category.PURE}
         for contract in func.contracts:
-            if contract.category != Category.RAISES:
+            if contract.category not in cats:
                 continue
             yield from self._check(func=func, contract=contract, stubs=stubs)
 

@@ -23,6 +23,7 @@
 .. autofunction:: deal.chain
 .. autofunction:: deal.pure
 .. autofunction:: deal.safe
+.. autofunction:: deal.implies
 ```
 
 ## Testing

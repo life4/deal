@@ -1,5 +1,5 @@
 # built-in
-from typing import Callable, Type, TypeVar, overload
+from typing import Callable, Type, TypeVar, Union, overload
 
 # app
 from . import _decorators
@@ -436,3 +436,27 @@ def pure(_func: _CallableType) -> _CallableType:
     [wiki]: https://en.wikipedia.org/wiki/Pure_function
     """
     return chain(has(), safe)(_func)
+
+
+def implies(test, then: _T) -> Union[bool, _T]:
+    """Check `then` only if `test` is true.
+
+    A convenient helper for contracts that must be checked only for some cases.
+    It is known as "implication" or [material conditional][wiki].
+
+    ```pycon
+    >>> import deal
+    >>> deal.implies(False, False)
+    True
+    >>> deal.implies(False, True)
+    True
+    >>> deal.implies(True, False)
+    False
+    >>> deal.implies(True, True)
+    True
+
+    ```
+
+    [wiki]: https://en.wikipedia.org/wiki/Material_conditional
+    """
+    return not test or then

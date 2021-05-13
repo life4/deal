@@ -73,3 +73,26 @@ docs = [
 
 [tool.flit.entrypoints."flake8.extension"]
 DEAL = "deal.linter:Checker"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--cov=deal",
+    "--cov-report=html",
+    "--cov-report=term-missing:skip-covered",
+    "--cov-fail-under=100",
+]
+
+[tool.coverage.run]
+branch = true
+omit = [
+    "deal/linter/_template.py",
+    "deal/__main__.py",
+    "deal/linter/__main__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "pass",
+]
