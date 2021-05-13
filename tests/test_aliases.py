@@ -2,6 +2,8 @@
 from inspect import getdoc
 from typing import get_type_hints
 
+import pytest
+
 # project
 import deal
 
@@ -38,3 +40,15 @@ def test_preserve_type_annotations():
 def test_preserve_docstring():
     func = get_func()
     assert getdoc(func).strip() == 'docs were before docker'
+
+
+def test_implies():
+    @deal.pre(lambda x, y: deal.implies(x, y))
+    def f(x, y):
+        pass
+
+    f(True, True)
+    f(False, True)
+    f(False, False)
+    with pytest.raises(deal.PreContractError):
+        f(True, False)

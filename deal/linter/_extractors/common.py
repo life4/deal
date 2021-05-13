@@ -129,7 +129,11 @@ def infer(expr) -> Tuple[astroid.node_classes.NodeNG, ...]:
     return tuple()
 
 
-def get_stub(module_name: Optional[str], expr: astroid.FunctionDef, stubs: StubsManager) -> Optional[StubFile]:
+def get_stub(
+    module_name: Optional[str],
+    expr: astroid.FunctionDef,
+    stubs: StubsManager,
+) -> Optional[StubFile]:
     if not module_name:
         return None
     stub = stubs.get(module_name)

@@ -117,6 +117,38 @@ def test_check_raises():
         assert actual == expected
 
 
+def test_check_raises_safe():
+    checker = CheckRaises()
+    text = """
+    @deal.safe
+    def test(a):
+        raise ValueError
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    for func in (funcs1[0], funcs2[0]):
+        actual = [tuple(err) for err in checker(func)]
+        expected = [(3, 10, 'DEAL021 raises contract error (ValueError)')]
+        assert actual == expected
+
+
+def test_check_raises_pure():
+    checker = CheckRaises()
+    text = """
+    @deal.pure
+    def test(a):
+        raise ValueError
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    for func in (funcs1[0], funcs2[0]):
+        actual = [tuple(err) for err in checker(func)]
+        expected = [(3, 10, 'DEAL021 raises contract error (ValueError)')]
+        assert actual == expected
+
+
 def test_check_raises_without_allowed():
     checker = CheckRaises()
     text = """
