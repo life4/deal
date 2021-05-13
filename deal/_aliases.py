@@ -445,6 +445,7 @@ def implies(test, then: _T) -> Union[bool, _T]:
     It is known as "implication" or [material conditional][wiki].
 
     ```pycon
+    >>> import deal
     >>> deal.implies(False, False)
     True
     >>> deal.implies(False, True)
@@ -453,6 +454,7 @@ def implies(test, then: _T) -> Union[bool, _T]:
     False
     >>> deal.implies(True, True)
     True
+
     ```
 
     [wiki]: https://en.wikipedia.org/wiki/Material_conditional

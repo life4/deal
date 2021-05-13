@@ -59,8 +59,6 @@ tasks:
     cmds:
       - "{{.FLAKE8_ENV}}/bin/python3 -m pip install -r requirements-flake.txt"
   flake8:run:
-    sources:
-      - "**/*.py"
     deps:
       - flake8:install
     cmds:
@@ -78,8 +76,6 @@ tasks:
       - "{{.MYPY_ENV}}/bin/mypy --ignore-missing-imports --allow-redefinition deal/"
 
   pytest:run:
-    # sources:
-    #   - deal/
     deps:
       - task: flit:install
         vars:
