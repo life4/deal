@@ -325,7 +325,7 @@ class cases:  # noqa: N
             return None
         if callable(target):
             return self._wrap(target)
-        return self._run.hypothesis.fuzz_one_input(target)
+        return self._run.hypothesis.fuzz_one_input(target)  # type: ignore[attr-defined]
 
     # a hack to make the test discoverable by pytest
     @property

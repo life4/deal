@@ -33,6 +33,14 @@ def test_reason_exception(value, exc):
         func(value)
 
 
+def test_reason_custom_exc():
+    @deal.reason(KeyError, lambda: False, exception=ValueError('hello'))
+    def func():
+        raise KeyError
+    with pytest.raises(ValueError):
+        func()
+
+
 @pytest.mark.parametrize('value, exc', [
     (0, ZeroDivisionError),
     (1, ValueError),
