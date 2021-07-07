@@ -107,7 +107,11 @@ show_error_codes = true
 allow_redefinition = true
 check_untyped_defs = true
 # no_implicit_optional = true
-# strict_equality = true
+strict_equality = true
 warn_redundant_casts = true
 # warn_unreachable = true
 warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = 'deal._imports'
+ignore_errors = true

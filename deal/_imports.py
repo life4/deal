@@ -5,7 +5,7 @@ from types import ModuleType
 from typing import Any, Callable, List, Optional
 
 # external
-from _frozen_importlib_external import PathFinder
+from _frozen_importlib_external import PathFinder  # pyright: reportMissingImports=false
 
 # app
 from . import _aliases
@@ -95,7 +95,7 @@ class DealLoader:
 
         if not isinstance(node, ast.Attribute):
             return None
-        if node.value.id != 'deal':  # type: ignore
+        if node.value.id != 'deal':
             return None
         contract = getattr(_aliases, node.attr, None)
         if contract is None:
@@ -155,7 +155,7 @@ def activate() -> bool:
     if DealFinder in sys.meta_path:
         return False
     index = sys.meta_path.index(PathFinder)
-    sys.meta_path[index] = DealFinder  # type: ignore
+    sys.meta_path[index] = DealFinder
     return True
 
 
@@ -164,6 +164,6 @@ def deactivate() -> bool:
     """
     if DealFinder not in sys.meta_path:
         return False
-    index = sys.meta_path.index(DealFinder)  # type: ignore
+    index = sys.meta_path.index(DealFinder)
     sys.meta_path[index] = PathFinder
     return True
