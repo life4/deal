@@ -58,9 +58,12 @@ def test_io_hardcoded(text, expected):
     ('from pathlib import Path\np = Path()\np.open(mode="r")', ()),     # allowed mode
     ('from pathlib import Path\np = Path()\np.read_text()', ()),    # read, not write
     ('from pathlib import Path\np = Path()\np.open()', ()),         # implicit read
-    ('with something.open("w"): ...', ()),                          # not pathlib
-    ('something = file\nwith something.open("w"): ...', ()),        # not pathlib
-    ('class Path:\n def write_text(): pass\np = Path()\np.write_text()', ()),   # not pathlib
+
+    # not pathlib
+    ('with something.open("w"): ...', ()),
+    ('something = file\nwith something.open("w"): ...', ()),
+    ('class Path:\n def write_text(): pass\np = Path()\np.write_text()', ()),
+    ('class Path:\n def write_text(): pass\nPath.write_text()', ()),
 ])
 def test_io_infer(text, expected):
     tree = astroid.parse(text)
