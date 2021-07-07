@@ -52,7 +52,7 @@ class TestCase(typing.NamedTuple):
         try:
             result = self.func(*self.args, **self.kwargs)
         except self.exceptions:
-            return typing.NoReturn  # type: ignore
+            return typing.NoReturn
         self._check_result(result)
         return result
 

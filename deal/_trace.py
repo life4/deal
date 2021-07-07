@@ -37,7 +37,7 @@ def trace(func, **kwargs) -> TraceResult:
 
     old_trace = sys.gettrace()
     try:
-        func_result: Any = t.runfunc(func, **kwargs)  # type: ignore
+        func_result: Any = t.runfunc(func, **kwargs)
     finally:
         # restore previous tracer
         sys.settrace(old_trace)     # pragma: no cover

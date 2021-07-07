@@ -36,7 +36,7 @@ class Checker:
 
     def run(self) -> typing.Iterator[tuple]:
         for error in self.get_errors():
-            yield tuple(error) + (type(self),)  # type: ignore
+            yield tuple(error) + (type(self),)
 
     def get_funcs(self) -> typing.List['Func']:
         if self._filename == 'stdin':

@@ -142,7 +142,7 @@ def _get_funcs_from_expr(expr, prefix='') -> Iterator[PseudoFunc]:
 
     # functions
     if type(expr) is astroid.FunctionDef:
-        yield PseudoFunc(name=name, body=expr.body)  # type: ignore
+        yield PseudoFunc(name=name, body=expr.body)
 
     # methods
     if type(expr) is astroid.ClassDef:

@@ -24,7 +24,7 @@ class Raises(Base[_CallableType]):
         """
         self.exceptions: Tuple[Type[Exception], ...] = exceptions
         super().__init__(
-            validator=None,  # type: ignore
+            validator=None,
             message=message,
             exception=exception,
         )

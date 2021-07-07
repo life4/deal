@@ -68,7 +68,7 @@ class DealLoader:
         wrapped(module)
 
     @staticmethod
-    def _get_contracts(tree: ast.Module) -> List[ast.AST]:
+    def _get_contracts(tree: ast.Module) -> List[ast.expr]:
         for node in tree.body:  # type: Any
             if type(node) is not ast.Expr:
                 continue
