@@ -17,7 +17,6 @@ def main(ctx):
                     "rm install.sh",
                 ],
             ),
-            step(env="pytest", python="3.6"),
             step(env="pytest", python="3.7"),
             step(env="pytest", python="3.8"),
             step(env="pytest", python="3.9"),

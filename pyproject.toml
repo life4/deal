@@ -31,7 +31,7 @@ author = "Gram"
 author-email = "gram@orsinium.dev"
 home-page = "https://github.com/orsinium/deal"
 description-file = "README.md"
-requires-python = ">=3.6"
+requires-python = ">=3.7"
 keywords = "deal,contracts,pre,post,invariant,decorators,validation,pythonic,functional"
 
 classifiers=[
@@ -61,7 +61,7 @@ tests = [
     "pytest-cov",
     "isort",
     "marshmallow",
-    "mypy",
+    "mypy>=0.900",
     "pytest",
     "urllib3",
 ]
@@ -97,3 +97,17 @@ exclude_lines = [
     "raise NotImplementedError",
     "pass",
 ]
+
+[tool.mypy]
+files = ["deal"]
+python_version = 3.7
+ignore_missing_imports = true
+show_error_codes = true
+
+allow_redefinition = true
+# check_untyped_defs = true
+# no_implicit_optional = true
+# strict_equality = true
+warn_redundant_casts = true
+# warn_unreachable = true
+warn_unused_ignores = true
