@@ -7,8 +7,7 @@ from textwrap import dedent, indent
 from typing import Iterable, Iterator, Sequence, Union
 
 # app
-from .._colors import COLORS, NOCOLORS, highlight
-from .._state import state
+from .._colors import get_colors, highlight
 from ..linter import Checker
 from ._common import get_paths
 
@@ -70,16 +69,7 @@ def lint_command(argv: Sequence[str]) -> int:
     args = parser.parse_args(argv)
     prev = None
     errors = list(get_errors(paths=args.paths))
-    colors = COLORS
-
-    # disable colors if disabled globally (NO_COLOR specified)
-    if not state.color:
-        args.nocolor = True
-    # disable colors if `--nocolor` specified
-    if args.nocolor:
-        colors = NOCOLORS
-        state.color = False
-
+    colors = get_colors(args)
     for error in errors:
         if args.json:
             print(json.dumps(error))

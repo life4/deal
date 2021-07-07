@@ -23,3 +23,9 @@
 ```eval_rst
 .. autofunction:: deal._cli._memtest.memtest_command
 ```
+
+## prove
+
+```eval_rst
+.. autofunction:: deal._cli._prove.prove_command
+```

@@ -2,20 +2,20 @@
 import sys
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Iterator, Sequence, TextIO
+from typing import Dict, Iterator, Sequence, TextIO
 
 import astroid
 from deal_solver import Conclusion, Contract, Theorem
 
 # app
-from .._colors import COLORS
+from .._colors import get_colors
 from ._common import get_paths
 from ..linter._extractors import get_contracts
 
 
 TEMPLATE_MOD = '{blue}{name}{end}'
 TEMPLATE_FUN = '  {magenta}{name}{end}'
-TEMPLATE_CON = '    {color}{p.conclusion}{end} {p}'
+TEMPLATE_CON = '    {color}{p.conclusion.value}{end} {p}'
 
 
 class DealTheorem(Theorem):
@@ -27,7 +27,12 @@ class DealTheorem(Theorem):
             yield Contract(name=name, args=args)
 
 
-def run_solver(path: Path, stream: TextIO, show_skipped: bool) -> int:
+def run_solver(
+    path: Path,
+    stream: TextIO,
+    show_skipped: bool,
+    colors: Dict[str, str],
+) -> int:
     file_name_shown = False
     text = path.read_text()
     theorems = DealTheorem.from_text(text)
@@ -42,13 +47,13 @@ def run_solver(path: Path, stream: TextIO, show_skipped: bool) -> int:
             continue
 
         if not file_name_shown:
-            line = TEMPLATE_MOD.format(name=path, **COLORS)
+            line = TEMPLATE_MOD.format(name=path, **colors)
             print(line, file=stream)
             file_name_shown = True
 
-        line = TEMPLATE_FUN.format(name=theorem.name, **COLORS)
+        line = TEMPLATE_FUN.format(name=theorem.name, **colors)
         print(line, file=stream)
-        line = TEMPLATE_CON.format(p=proof, color=COLORS[proof.color], **COLORS)
+        line = TEMPLATE_CON.format(p=proof, color=colors[proof.color], **colors)
         print(line, file=stream)
         failed_count += proof.conclusion == Conclusion.FAIL
     return failed_count
@@ -64,8 +69,10 @@ def prove_command(
         root = Path()
     parser = ArgumentParser(prog='python3 -m deal prove')
     parser.add_argument('--skipped', action='store_true', help='show skipped')
+    parser.add_argument('--nocolor', action='store_true', help='colorless output')
     parser.add_argument('paths', nargs='+')
     args = parser.parse_args(argv)
+    colors = get_colors(args)
 
     failed = 0
     for arg in args.paths:
@@ -74,5 +81,6 @@ def prove_command(
                 path=path,
                 stream=stream,
                 show_skipped=args.skipped,
+                colors=colors,
             )
     return failed

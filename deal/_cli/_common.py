@@ -6,8 +6,6 @@ from typing import Iterator
 def get_paths(path: Path) -> Iterator[Path]:
     """Recursively yields python files.
     """
-    if path.is_symlink():
-        return
     if not path.exists():
         raise FileNotFoundError(str(path))
     if path.is_file():

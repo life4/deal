@@ -47,6 +47,7 @@ classifiers=[
 
 requires = [
     "astroid",
+    "deal-solver",
     "hypothesis",
     "pygments",
     "typeguard",
