@@ -54,7 +54,7 @@ def test_exec_contract(text, expected):
     assert actual == expected
 
 
-class FakeException(Exception):
+class FakeError(Exception):
     pass
 
 
@@ -74,7 +74,7 @@ class SubLoader:
     def exec_module(self, module):
         assert module is FakeModule
         if not self.ok:
-            raise FakeException
+            raise FakeError
         print(1)
 
 
@@ -86,7 +86,7 @@ def test_exec_module():
         """
     text = dedent(text)
 
-    with pytest.raises(FakeException):
+    with pytest.raises(FakeError):
         DealLoader(loader=SubLoader(ok=False, text=text)).exec_module(FakeModule)
 
     with pytest.raises(deal.SilentContractError):
@@ -97,9 +97,9 @@ def test_not_path_loader():
     class SubLoaderNoGetSource:
         def exec_module(self, module):
             assert module is FakeModule
-            raise FakeException
+            raise FakeError
 
-    with pytest.raises(FakeException):
+    with pytest.raises(FakeError):
         DealLoader(loader=SubLoaderNoGetSource()).exec_module(FakeModule)
 
 
@@ -132,14 +132,14 @@ def test_exec_module_no_contracts():
         """
     text = dedent(text)
     DealLoader(loader=SubLoader(ok=True, text=text)).exec_module(FakeModule)
-    with pytest.raises(FakeException):
+    with pytest.raises(FakeError):
         DealLoader(loader=SubLoader(ok=False, text=text)).exec_module(FakeModule)
 
 
 def test_exec_module_no_source():
     text = None
     DealLoader(loader=SubLoader(ok=True, text=text)).exec_module(FakeModule)
-    with pytest.raises(FakeException):
+    with pytest.raises(FakeError):
         DealLoader(loader=SubLoader(ok=False, text=text)).exec_module(FakeModule)
 
 
