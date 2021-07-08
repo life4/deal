@@ -3,7 +3,7 @@
 # to build docs
 m2r
 recommonmark
-sphinx
+sphinx<=3.5.4
 sphinx-rtd-theme
 
 # project deps to run `autodoc`
