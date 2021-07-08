@@ -11,3 +11,4 @@ astroid
 hypothesis
 typeguard
 vaa
+deal_solver
