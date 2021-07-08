@@ -69,7 +69,8 @@ class ProveCommand(Command):
     + `--skipped`: show skipped functions.
     + `--nocolor`: disable colored output.
 
-    Exit code is 0. See [Formal Verification][verification] documentation for more information.
+    Exit code is equal to the failed theorems count.
+    See [Formal Verification][verification] documentation for more information.
 
     [verification]: https://deal.readthedocs.io/details/verification.html
     """
