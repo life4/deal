@@ -13,7 +13,7 @@ get_pre = Extractor()
 
 @get_pre.register(astroid.Call)
 def handle_call(expr: astroid.Call, context: Dict[str, ast.stmt] = None) -> Iterator[Token]:
-        from .._contract import Category, Contract
+    from .._contract import Category, Contract
 
     args = []
     for subnode in expr.args:

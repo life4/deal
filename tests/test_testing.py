@@ -30,7 +30,7 @@ test_div2_short = deal.cases(div2)
 
 
 def test_short_version_is_discoverable():
-        from _pytest.python import PyCollector
+    from _pytest.python import PyCollector
 
     collector = PyCollector.__new__(PyCollector)
     collector._matches_prefix_or_glob_option = lambda *args: True

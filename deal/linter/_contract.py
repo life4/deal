@@ -109,7 +109,7 @@ class Contract:
 
     @cached_property
     def exceptions(self) -> list:
-                from ._extractors import get_name
+        from ._extractors import get_name
 
         excs = []
         for expr in self.args:

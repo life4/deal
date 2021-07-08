@@ -26,7 +26,7 @@ class Checker:
 
     @property
     def version(self):
-                import deal
+        import deal
 
         return deal.__version__
 
