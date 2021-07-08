@@ -1,11 +1,8 @@
-# built-in
 import ast
 from typing import Any, Dict, Iterator, Sequence
 
-# external
 import astroid
 
-# app
 from .common import Extractor, Token, infer
 from .contracts import get_contracts
 from .value import UNKNOWN, get_value
@@ -16,8 +13,7 @@ get_pre = Extractor()
 
 @get_pre.register(astroid.Call)
 def handle_call(expr: astroid.Call, context: Dict[str, ast.stmt] = None) -> Iterator[Token]:
-    # app
-    from .._contract import Category, Contract
+        from .._contract import Category, Contract
 
     args = []
     for subnode in expr.args:

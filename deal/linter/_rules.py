@@ -1,10 +1,8 @@
-# built-in
 import ast
 import enum
 from types import MappingProxyType
 from typing import Iterator
 
-# app
 from .._decorators import Has
 from ._contract import Category, Contract
 from ._error import Error

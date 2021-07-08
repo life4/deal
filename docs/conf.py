@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-# built-in
 import os
 import sys
 from datetime import date
 from pathlib import Path
 
-# external
 import sphinx_rtd_theme
 from m2r import MdInclude, convert
 from recommonmark.transform import AutoStructify

@@ -1,7 +1,5 @@
-# built-in
 from typing import Callable, Type, TypeVar, Union, overload
 
-# app
 from . import _decorators
 from ._types import ExceptionType
 

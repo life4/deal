@@ -1,10 +1,7 @@
-# built-in
 from pathlib import Path
 
-# external
 import pytest
 
-# project
 from deal._cli._common import get_paths
 
 

@@ -1,12 +1,9 @@
-# built-in
 import ast
 import typing
 from pathlib import Path
 
-# external
 from astroid import AstroidSyntaxError
 
-# app
 from ._error import Error
 from ._func import Func
 from ._rules import Required, rules
@@ -29,8 +26,7 @@ class Checker:
 
     @property
     def version(self):
-        # project
-        import deal
+                import deal
 
         return deal.__version__
 

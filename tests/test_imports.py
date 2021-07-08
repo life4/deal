@@ -1,12 +1,9 @@
-# built-in
 import ast
 from pathlib import Path
 from textwrap import dedent
 
-# external
 import pytest
 
-# project
 import deal
 from deal._imports import DealLoader, deactivate, get_name
 

@@ -1,12 +1,9 @@
-# built-in
 import ast
 from textwrap import dedent
 
-# external
 import astroid
 import pytest
 
-# project
 from deal.linter._contract import Category, Contract
 from deal.linter._func import Func
 

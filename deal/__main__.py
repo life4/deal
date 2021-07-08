@@ -1,7 +1,5 @@
-# built-in
 import sys
 
-# app
 from ._cli import main
 
 

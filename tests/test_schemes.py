@@ -1,9 +1,7 @@
-# external
 import marshmallow
 import pytest
 import vaa
 
-# project
 import deal
 
 

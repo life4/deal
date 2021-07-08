@@ -1,11 +1,8 @@
-# external
 import pytest
 
-# project
 import deal
 from deal._imports import deactivate
 
-# app
 from .test_decorators.helpers import run_sync
 
 

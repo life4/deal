@@ -1,10 +1,8 @@
-# built-in
 import socket
 import sys
 from io import StringIO
 from typing import Callable, FrozenSet, Type, TypeVar
 
-# app
 from .._exceptions import MarkerError, OfflineContractError, SilentContractError
 from .._types import ExceptionType
 from .base import Base

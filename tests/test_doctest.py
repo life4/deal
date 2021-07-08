@@ -1,14 +1,11 @@
-# built-in
 import doctest
 import re
 import sys
 from itertools import chain
 from unittest.mock import Mock
 
-# external
 import pytest
 
-# project
 import deal._aliases
 import deal._testing
 from deal._state import state

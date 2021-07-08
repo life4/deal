@@ -1,11 +1,9 @@
-# built-in
 from argparse import ArgumentParser
 from contextlib import suppress
 from importlib import import_module
 from pathlib import Path
 from typing import Dict, Iterable, TextIO
 
-# app
 from .._colors import COLORS
 from .._mem_test import MemoryTracker
 from .._state import state

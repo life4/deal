@@ -1,8 +1,6 @@
 # autopep8: off
-# built-in
 from tokenize import untokenize
 
-# project
 from deal._source import (
     _extract_assignment, _extract_decorator_args, _extract_def_name,
     _extract_lambda_body, _get_tokens, get_validator_source, processors,

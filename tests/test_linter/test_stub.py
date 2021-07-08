@@ -1,12 +1,9 @@
-# built-in
 import json
 from importlib import import_module
 from pathlib import Path
 
-# external
 import pytest
 
-# project
 from deal.linter._contract import Category
 from deal.linter._stub import StubFile, StubsManager, _get_funcs, generate_stub
 

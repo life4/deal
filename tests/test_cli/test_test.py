@@ -1,13 +1,10 @@
-# built-in
 import sys
 from io import StringIO
 from pathlib import Path
 from textwrap import dedent
 
-# external
 import pytest
 
-# project
 import deal
 from deal._cli import main
 from deal._cli._test import (

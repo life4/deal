@@ -1,7 +1,5 @@
-# built-in
 from typing import Callable, Tuple, Type, TypeVar
 
-# app
 from .._exceptions import ContractError, RaisesContractError
 from .._types import ExceptionType
 from .base import Base

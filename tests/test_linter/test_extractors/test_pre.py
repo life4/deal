@@ -1,10 +1,7 @@
-# built-in
 from textwrap import dedent
 
-# external
 import astroid
 
-# project
 from deal.linter._extractors import get_pre
 
 

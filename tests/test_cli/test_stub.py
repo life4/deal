@@ -1,8 +1,6 @@
-# built-in
 import json
 from pathlib import Path
 
-# project
 from deal._cli import main
 
 

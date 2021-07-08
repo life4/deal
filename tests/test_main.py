@@ -1,4 +1,3 @@
-# built-in
 import subprocess
 import sys
 
@@ -18,8 +17,7 @@ def test_do_not_import_linter():
         if name == 'astroid' or name.startswith('astroid.'):
             del sys.modules[name]
 
-    # project
-    import deal  # noqa: F401
+        import deal  # noqa: F401
 
     for name in list(sys.modules):
         if name.startswith('deal.lint'):

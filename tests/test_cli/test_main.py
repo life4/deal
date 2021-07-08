@@ -1,8 +1,6 @@
-# external
 from argparse import ArgumentParser
 import pytest
 
-# project
 from deal._cli import main
 from deal._cli._base import Command
 

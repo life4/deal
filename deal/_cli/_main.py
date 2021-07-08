@@ -1,11 +1,9 @@
-# built-in
 import sys
 from argparse import ArgumentParser
 from pathlib import Path
 from types import MappingProxyType
 from typing import TextIO, Type, Mapping, Sequence
 
-# app
 from ._lint import LintCommand
 from ._memtest import MemtestCommand
 from ._prove import ProveCommand

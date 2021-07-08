@@ -1,12 +1,9 @@
-# built-in
 import json
 from pathlib import Path
 from typing import Any, Dict, FrozenSet, Iterator, NamedTuple, Optional, Sequence, Tuple
 
-# external
 import astroid
 
-# app
 from ._contract import Category
 
 
@@ -151,8 +148,7 @@ def _get_funcs_from_expr(expr, prefix='') -> Iterator[PseudoFunc]:
 
 
 def generate_stub(*, path: Path, stubs: StubsManager = None) -> Path:
-    # app
-    from ._extractors import get_exceptions, get_markers
+        from ._extractors import get_exceptions, get_markers
 
     if path.suffix != '.py':
         raise ValueError('invalid Python file extension: *{}'.format(path.suffix))

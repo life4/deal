@@ -1,9 +1,7 @@
-# built-in
 from pathlib import Path
 from textwrap import dedent
 from io import StringIO
 
-# project
 from deal._cli import main
 
 

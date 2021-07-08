@@ -1,7 +1,5 @@
-# built-in
 from pathlib import Path
 
-# project
 from deal._cli._main import COMMANDS
 from deal.linter._rules import CheckMarkers, rules
 

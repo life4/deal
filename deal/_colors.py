@@ -1,5 +1,4 @@
 
-# external
 from typing import Dict
 import pygments
 from pygments.formatters import TerminalFormatter

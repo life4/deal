@@ -1,8 +1,6 @@
-# external
 import pytest
 import urllib3
 
-# project
 import deal
 
 

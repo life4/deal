@@ -1,15 +1,12 @@
-# built-in
 import typing
 from functools import update_wrapper
 from inspect import signature
 
-# external
 import hypothesis
 import hypothesis.strategies
 import typeguard
 from hypothesis.internal.reflection import proxies
 
-# app
 from ._cached_property import cached_property
 from ._decorators import Pre, Raises
 from ._types import ArgsKwargsType

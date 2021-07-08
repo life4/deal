@@ -1,9 +1,7 @@
 # This file is excluded from coverage.
 
-# built-in
 from importlib import import_module
 
-# project
 from deal import ContractError
 from deal._decorators.base import Base
 

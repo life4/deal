@@ -1,10 +1,7 @@
-# built-in
 from typing import Iterator, Tuple
 
-# external
 import astroid
 
-# app
 from .common import TOKENS, get_name
 
 

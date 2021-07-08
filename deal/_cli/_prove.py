@@ -1,4 +1,3 @@
-# built-in
 from argparse import ArgumentParser
 from pathlib import Path
 from typing import Dict, Iterator, TextIO
@@ -6,7 +5,6 @@ from typing import Dict, Iterator, TextIO
 import astroid
 from deal_solver import Conclusion, Contract, Theorem
 
-# app
 from .._colors import get_colors
 from ._common import get_paths
 from ..linter._extractors import get_contracts

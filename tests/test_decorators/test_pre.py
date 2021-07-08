@@ -1,10 +1,7 @@
-# external
 import pytest
 
-# project
 import deal
 
-# app
 from .helpers import run_sync
 
 

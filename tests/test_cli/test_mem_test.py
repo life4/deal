@@ -1,10 +1,8 @@
-# built-in
 import sys
 from io import StringIO
 from pathlib import Path
 from textwrap import dedent
 
-# project
 from deal._cli import main
 
 

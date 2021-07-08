@@ -1,4 +1,3 @@
-# built-in
 import re
 import sys
 import traceback
@@ -10,12 +9,10 @@ from pathlib import Path
 from textwrap import indent
 from typing import Dict, Iterable, Iterator, TextIO, TypeVar
 
-# external
 import pygments
 from pygments.formatters import TerminalFormatter
 from pygments.lexers import PythonTracebackLexer
 
-# app
 from .._colors import COLORS
 from .._testing import TestCase, cases
 from .._trace import TraceResult, format_lines, trace

@@ -1,8 +1,6 @@
-# built-in
 import random
 from typing import List
 
-# project
 import deal
 
 

@@ -1,10 +1,7 @@
-# built-in
 import ast
 
-# external
 import astroid
 
-# app
 from .common import Extractor, Token
 
 

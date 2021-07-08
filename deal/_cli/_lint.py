@@ -1,4 +1,3 @@
-# built-in
 import ast
 import json
 from argparse import ArgumentParser
@@ -6,7 +5,6 @@ from pathlib import Path
 from textwrap import dedent, indent
 from typing import Iterable, Iterator
 
-# app
 from .._colors import get_colors, highlight
 from ..linter import Checker
 from ._common import get_paths

@@ -1,7 +1,5 @@
-# external
 import pytest
 
-# project
 import deal
 
 

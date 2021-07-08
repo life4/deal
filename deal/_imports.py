@@ -1,13 +1,10 @@
-# built-in
 import ast
 import sys
 from types import ModuleType
 from typing import Any, Callable, List, Optional
 
-# external
 from _frozen_importlib_external import PathFinder  # pyright: reportMissingImports=false
 
-# app
 from . import _aliases
 from ._state import state
 

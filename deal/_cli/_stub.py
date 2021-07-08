@@ -1,9 +1,7 @@
-# built-in
 from argparse import ArgumentParser
 from pathlib import Path
 from typing import List
 
-# app
 from ..linter import StubsManager, generate_stub
 from ._common import get_paths
 from ._base import Command

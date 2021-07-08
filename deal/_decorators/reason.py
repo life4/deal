@@ -1,7 +1,5 @@
-# built-in
 from typing import Callable, Iterator, Type, TypeVar
 
-# app
 from .._cached_property import cached_property
 from .._exceptions import ReasonContractError
 from .._types import ExceptionType
