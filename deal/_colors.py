@@ -1,8 +1,10 @@
 
 from typing import Dict
+
 import pygments
 from pygments.formatters import TerminalFormatter
 from pygments.lexers import PythonLexer
+
 from ._state import state
 
 

@@ -2,28 +2,6 @@
 requires = ["flit_core >=2,<4"]
 build-backend = "flit_core.buildapi"
 
-[tool.dephell.main]
-from = {format = "flit", path = "pyproject.toml"}
-to = {format = "setuppy", path = "setup.py"}
-tag = "v."
-
-
-[tool.isort]
-line_length = 90
-combine_as_imports = true
-balanced_wrapping = true
-lines_after_imports = 2
-skip = "venvs/"
-not_skip = "__init__.py"
-multi_line_output = 5
-include_trailing_comma = true
-
-import_heading_stdlib = "built-in"
-import_heading_thirdparty = "external"
-import_heading_firstparty = "project"
-import_heading_localfolder = "app"
-
-
 [tool.flit.metadata]
 module = "deal"
 license = "MIT"
@@ -115,3 +93,13 @@ warn_unused_ignores = true
 [[tool.mypy.overrides]]
 module = 'deal._imports'
 ignore_errors = true
+
+[tool.isort]
+line_length = 90
+combine_as_imports = true
+balanced_wrapping = true
+lines_after_imports = 2
+skip = "venvs/"
+multi_line_output = 5
+include_trailing_comma = true
+

@@ -6,9 +6,9 @@ import astroid
 from deal_solver import Conclusion, Contract, Theorem
 
 from .._colors import get_colors
-from ._common import get_paths
 from ..linter._extractors import get_contracts
 from ._base import Command
+from ._common import get_paths
 
 
 TEMPLATE_MOD = '{blue}{name}{end}'

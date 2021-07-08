@@ -3,8 +3,8 @@ from pathlib import Path
 from typing import List
 
 from ..linter import StubsManager, generate_stub
-from ._common import get_paths
 from ._base import Command
+from ._common import get_paths
 
 
 class StubCommand(Command):

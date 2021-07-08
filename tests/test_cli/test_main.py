@@ -1,4 +1,5 @@
 from argparse import ArgumentParser
+
 import pytest
 
 from deal._cli import main

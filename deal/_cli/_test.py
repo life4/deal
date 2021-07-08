@@ -19,8 +19,8 @@ from .._trace import TraceResult, format_lines, trace
 from ..linter._contract import Category
 from ..linter._extractors.pre import format_call_args
 from ..linter._func import Func
-from ._common import get_paths
 from ._base import Command
+from ._common import get_paths
 
 
 T = TypeVar('T')

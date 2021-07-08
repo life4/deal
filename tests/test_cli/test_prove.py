@@ -1,6 +1,6 @@
+from io import StringIO
 from pathlib import Path
 from textwrap import dedent
-from io import StringIO
 
 from deal._cli import main
 

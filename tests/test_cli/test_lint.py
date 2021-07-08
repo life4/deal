@@ -1,5 +1,5 @@
-from pathlib import Path
 from io import StringIO
+from pathlib import Path
 
 from deal._cli import main
 from deal._cli._lint import LintCommand

@@ -7,8 +7,8 @@ from typing import Iterable, Iterator
 
 from .._colors import get_colors, highlight
 from ..linter import Checker
-from ._common import get_paths
 from ._base import Command
+from ._common import get_paths
 
 
 TEMPLATE = '  {blue}{row}{end}:{blue}{col}{end} {magenta}{code}{end} {yellow}{text}{end}'

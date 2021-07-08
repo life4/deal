@@ -2,14 +2,14 @@ import sys
 from argparse import ArgumentParser
 from pathlib import Path
 from types import MappingProxyType
-from typing import TextIO, Type, Mapping, Sequence
+from typing import Mapping, Sequence, TextIO, Type
 
+from ._base import Command
 from ._lint import LintCommand
 from ._memtest import MemtestCommand
 from ._prove import ProveCommand
 from ._stub import StubCommand
 from ._test import TestCommand
-from ._base import Command
 
 
 CommandsType = Mapping[str, Type[Command]]
