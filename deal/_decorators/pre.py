@@ -1,7 +1,5 @@
-# built-in
 from typing import Callable, TypeVar
 
-# app
 from .._exceptions import PreContractError
 from .._types import ExceptionType
 from .base import Base

@@ -1,4 +1,3 @@
-# built-in
 import gc
 import typing
 from collections import Counter
@@ -25,8 +24,8 @@ class MemoryTracker:
     def diff(self) -> typing.Counter[str]:
         return self.after - self.before - Counter({'weakref': 1})
 
-    @classmethod
-    def _dump(cls) -> typing.Counter[str]:
+    @staticmethod
+    def _dump() -> typing.Counter[str]:
         counter: typing.Counter[str] = Counter()
         gc.collect()
         for obj in gc.get_objects():

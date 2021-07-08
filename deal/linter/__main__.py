@@ -1,9 +1,7 @@
-# built-in
 import sys
 
-# app
-from .._cli._lint import lint_command
+from .._cli import main
 
 
 if __name__ == '__main__':
-    sys.exit(lint_command(sys.argv[1:]))
+    sys.exit(main(['lint'] + sys.argv[1:]))

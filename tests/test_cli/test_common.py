@@ -1,11 +1,8 @@
-# built-in
 from pathlib import Path
 
-# external
 import pytest
 
-# project
-from deal._cli._lint import get_paths
+from deal._cli._common import get_paths
 
 
 def test_get_paths(tmp_path: Path):

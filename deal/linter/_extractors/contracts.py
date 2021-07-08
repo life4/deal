@@ -1,10 +1,7 @@
-# built-in
-from typing import Iterator, List, Tuple
+from typing import Iterator, Tuple
 
-# external
 import astroid
 
-# app
 from .common import TOKENS, get_name
 
 
@@ -19,7 +16,7 @@ SUPPORTED_CONTRACTS = {
 SUPPORTED_MARKERS = {'deal.pure', 'deal.safe'}
 
 
-def get_contracts(decorators: List) -> Iterator[Tuple[str, list]]:
+def get_contracts(decorators: list) -> Iterator[Tuple[str, list]]:
     for contract in decorators:
         if isinstance(contract, TOKENS.ATTR):
             name = get_name(contract)

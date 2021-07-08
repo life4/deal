@@ -1,14 +1,11 @@
 # autopep8: off
-# built-in
 import sys
 from pathlib import Path
 
-# external
 import marshmallow
 import pytest
 import vaa
 
-# project
 import deal
 from deal._decorators.base import Base
 from deal._exceptions import _excepthook, exception_hook

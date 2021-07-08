@@ -1,8 +1,11 @@
 
-# external
+from typing import Dict
+
 import pygments
 from pygments.formatters import TerminalFormatter
 from pygments.lexers import PythonLexer
+
+from ._state import state
 
 
 COLORS = dict(
@@ -30,3 +33,12 @@ def highlight(source: str) -> str:
         formatter=TerminalFormatter(),
     )
     return source.rstrip()
+
+
+def get_colors(args) -> Dict[str, str]:
+    if not state.color:
+        return NOCOLORS
+    if args.nocolor:
+        state.color = False
+        return NOCOLORS
+    return COLORS

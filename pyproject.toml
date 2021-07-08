@@ -2,28 +2,6 @@
 requires = ["flit_core >=2,<4"]
 build-backend = "flit_core.buildapi"
 
-[tool.dephell.main]
-from = {format = "flit", path = "pyproject.toml"}
-to = {format = "setuppy", path = "setup.py"}
-tag = "v."
-
-
-[tool.isort]
-line_length = 90
-combine_as_imports = true
-balanced_wrapping = true
-lines_after_imports = 2
-skip = "venvs/"
-not_skip = "__init__.py"
-multi_line_output = 5
-include_trailing_comma = true
-
-import_heading_stdlib = "built-in"
-import_heading_thirdparty = "external"
-import_heading_firstparty = "project"
-import_heading_localfolder = "app"
-
-
 [tool.flit.metadata]
 module = "deal"
 license = "MIT"
@@ -31,7 +9,7 @@ author = "Gram"
 author-email = "gram@orsinium.dev"
 home-page = "https://github.com/orsinium/deal"
 description-file = "README.md"
-requires-python = ">=3.6"
+requires-python = ">=3.7"
 keywords = "deal,contracts,pre,post,invariant,decorators,validation,pythonic,functional"
 
 classifiers=[
@@ -47,6 +25,7 @@ classifiers=[
 
 requires = [
     "astroid",
+    "deal-solver",
     "hypothesis",
     "pygments",
     "typeguard",
@@ -59,7 +38,7 @@ tests = [
     "pytest-cov",
     "isort",
     "marshmallow",
-    "mypy",
+    "mypy>=0.900",
     "pytest",
     "urllib3",
 ]
@@ -95,3 +74,31 @@ exclude_lines = [
     "raise NotImplementedError",
     "pass",
 ]
+
+[tool.mypy]
+files = ["deal"]
+python_version = 3.7
+ignore_missing_imports = true
+show_error_codes = true
+
+allow_redefinition = true
+check_untyped_defs = true
+# no_implicit_optional = true
+strict_equality = true
+warn_redundant_casts = true
+# warn_unreachable = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = 'deal._imports'
+ignore_errors = true
+
+[tool.isort]
+line_length = 90
+combine_as_imports = true
+balanced_wrapping = true
+lines_after_imports = 2
+skip = "venvs/"
+multi_line_output = 5
+include_trailing_comma = true
+

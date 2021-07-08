@@ -1,10 +1,8 @@
-# built-in
 import socket
 import sys
 from io import StringIO
 from typing import Callable, FrozenSet, Type, TypeVar
 
-# app
 from .._exceptions import MarkerError, OfflineContractError, SilentContractError
 from .._types import ExceptionType
 from .base import Base
@@ -22,7 +20,7 @@ class PatchedStringIO(StringIO):
 
 
 class PatchedSocket:
-    def __init__(self, exception: ExceptionType = None):
+    def __init__(self, exception: ExceptionType):
         self.exception = exception
 
     def __call__(self, *args, **kwargs):
@@ -151,10 +149,10 @@ class Has(Base[_CallableType]):
 
     # patching
 
-    def patch(self):
+    def patch(self) -> None:
         if not self.has_network:
             self.true_socket = socket.socket
-            socket.socket = PatchedSocket(
+            socket.socket = PatchedSocket(  # type: ignore[assignment,misc]
                 exception=self._get_exception(OfflineContractError),
             )
         if not self.has_stdout:
@@ -168,9 +166,9 @@ class Has(Base[_CallableType]):
                 exception=self._get_exception(SilentContractError),
             )
 
-    def unpatch(self):
+    def unpatch(self) -> None:
         if not self.has_network:
-            socket.socket = self.true_socket
+            socket.socket = self.true_socket  # type: ignore[misc]
         if not self.has_stdout:
             sys.stdout = self.true_stdout
         if not self.has_stderr:

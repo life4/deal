@@ -17,7 +17,6 @@ def main(ctx):
                     "rm install.sh",
                 ],
             ),
-            step(env="pytest", python="3.6"),
             step(env="pytest", python="3.7"),
             step(env="pytest", python="3.8"),
             step(env="pytest", python="3.9"),
@@ -32,14 +31,14 @@ def main(ctx):
 def step(env, python):
     result = dict(
         name="{} (py{})".format(env, python),
-        image="python:{}-alpine".format(python),
+        image="python:{}-buster".format(python),
         depends_on=["install task"],
         environment=dict(
             # set coverage database file name to avoid conflicts between steps
             COVERAGE_FILE=".coverage.{}.{}".format(env, python),
         ),
         commands=[
-            "apk add curl git gcc libc-dev",
+            "apt install curl git gcc libc-dev",
             "./bin/task PYTHON_BIN=python3 VENVS=/opt/py{python}/ -f {env}:run".format(
                 python=python,
                 env=env,

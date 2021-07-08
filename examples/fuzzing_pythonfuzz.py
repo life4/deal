@@ -1,10 +1,7 @@
-# built-in
 import codecs
 
-# external
 from pythonfuzz.main import PythonFuzz
 
-# project
 import deal
 
 

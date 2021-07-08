@@ -1,12 +1,9 @@
-# built-in
 import json
 from pathlib import Path
 from typing import Any, Dict, FrozenSet, Iterator, NamedTuple, Optional, Sequence, Tuple
 
-# external
 import astroid
 
-# app
 from ._contract import Category
 
 
@@ -142,7 +139,7 @@ def _get_funcs_from_expr(expr, prefix='') -> Iterator[PseudoFunc]:
 
     # functions
     if type(expr) is astroid.FunctionDef:
-        yield PseudoFunc(name=name, body=expr.body)  # type: ignore
+        yield PseudoFunc(name=name, body=expr.body)
 
     # methods
     if type(expr) is astroid.ClassDef:
@@ -151,7 +148,6 @@ def _get_funcs_from_expr(expr, prefix='') -> Iterator[PseudoFunc]:
 
 
 def generate_stub(*, path: Path, stubs: StubsManager = None) -> Path:
-    # app
     from ._extractors import get_exceptions, get_markers
 
     if path.suffix != '.py':

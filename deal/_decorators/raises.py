@@ -1,7 +1,5 @@
-# built-in
 from typing import Callable, Tuple, Type, TypeVar
 
-# app
 from .._exceptions import ContractError, RaisesContractError
 from .._types import ExceptionType
 from .base import Base
@@ -24,7 +22,7 @@ class Raises(Base[_CallableType]):
         """
         self.exceptions: Tuple[Type[Exception], ...] = exceptions
         super().__init__(
-            validator=None,  # type: ignore
+            validator=None,
             message=message,
             exception=exception,
         )

@@ -1,10 +1,7 @@
-# built-in
 import ast
 
-# external
 import astroid
 
-# project
 from deal.linter._func import Func
 
 

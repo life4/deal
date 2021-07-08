@@ -1,11 +1,8 @@
-# built-in
 import ast
 from textwrap import dedent
 
-# external
 import astroid
 
-# project
 from deal.linter._func import Func
 from deal.linter._rules import (
     CheckAsserts, CheckImports, CheckMarkers, CheckPre, CheckRaises, CheckReturns, rules,

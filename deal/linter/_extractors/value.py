@@ -1,11 +1,8 @@
-# built-in
 import ast
 from contextlib import suppress
 
-# external
 import astroid
 
-# app
 from .common import Extractor, infer
 
 

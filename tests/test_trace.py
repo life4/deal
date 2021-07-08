@@ -1,7 +1,5 @@
-# external
 import pytest
 
-# project
 import deal
 from deal._trace import Only, _get_func_body_statements, format_lines, trace
 

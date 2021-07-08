@@ -1,8 +1,6 @@
-# built-in
 import ast
 from typing import Dict, Union
 
-# external
 import astroid
 
 

@@ -1,12 +1,9 @@
-# built-in
 import ast
 from textwrap import dedent
 
-# external
 import astroid
 import pytest
 
-# project
 from deal.linter._extractors import get_contracts
 
 

@@ -1,11 +1,8 @@
-# built-in
 import ast
 
-# external
 import astroid
 import pytest
 
-# project
 from deal.linter._extractors.common import _get_module, get_full_name, get_name, infer
 
 

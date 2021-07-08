@@ -1,9 +1,7 @@
-# built-in
 import ast
 from pathlib import Path
 from textwrap import dedent
 
-# project
 from deal.linter import Checker
 
 

@@ -48,6 +48,7 @@ tasks:
         --python={{.ENV}}/bin/python3
         --deps=production
         --extras={{.EXTRA}}
+        --symlink
 
   flake8:install:
     status:
@@ -65,15 +66,13 @@ tasks:
       - "{{.FLAKE8_ENV}}/bin/flake8 ."
 
   mypy:run:
-    sources:
-      - deal/**/*.py
     deps:
       - task: flit:install
         vars:
           ENV: "{{.MYPY_ENV}}"
           EXTRA: tests
     cmds:
-      - "{{.MYPY_ENV}}/bin/mypy --ignore-missing-imports --allow-redefinition deal/"
+      - "{{.MYPY_ENV}}/bin/mypy {{.CLI_ARGS}}"
 
   pytest:run:
     deps:
@@ -82,7 +81,7 @@ tasks:
           ENV: "{{.PYTEST_ENV}}"
           EXTRA: tests
     cmds:
-      - "{{.PYTEST_ENV}}/bin/pytest {{.ARGS}} {{.TESTS_PATH}}"
+      - "{{.PYTEST_ENV}}/bin/pytest {{.CLI_ARGS}} {{.TESTS_PATH}}"
 
   isort:run:
     sources:
@@ -106,3 +105,23 @@ tasks:
           EXTRA: docs
     cmds:
       - "{{.SPHINX_ENV}}/bin/sphinx-build -W docs docs/build"
+
+  solver:inject:
+    status:
+      - "test -d {{.DEAL_ENV}}/lib/python3.7/site-packages/deal_solver"
+    deps:
+      - task: flit:install
+        vars:
+          ENV: "{{.DEAL_ENV}}"
+    cmds:
+      - >
+        export FLIT=$(pwd)/{{.FLIT_ENV}}/bin/flit
+        && export PYTHON=$(pwd)/{{.DEAL_ENV}}/bin/python
+        && cd ../deal-solver/
+        && "$FLIT" install --symlink --python $PYTHON
+
+  solver:run:
+    deps:
+      - task: solver:inject
+    cmds:
+      - "{{.DEAL_ENV}}/bin/python -m deal prove {{.CLI_ARGS}}"

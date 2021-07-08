@@ -1,10 +1,8 @@
-# built-in
 import inspect
 import tokenize
 from textwrap import dedent
 from typing import Callable, List
 
-# external
 from vaa._internal import Simple
 
 

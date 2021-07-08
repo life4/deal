@@ -1,13 +1,10 @@
-# built-in
 import json
 import sys
 from pathlib import Path
 from textwrap import dedent
 
-# external
 import astroid
 
-# project
 from deal.linter._extractors import get_exceptions
 from deal.linter._stub import StubsManager
 

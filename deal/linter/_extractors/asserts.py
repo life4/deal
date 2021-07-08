@@ -1,7 +1,5 @@
-# built-in
 from typing import Optional
 
-# app
 from .common import TOKENS, Extractor, Token
 from .value import UNKNOWN, get_value
 

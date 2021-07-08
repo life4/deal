@@ -1,14 +1,11 @@
-# built-in
 import inspect
 from asyncio import iscoroutinefunction
 from contextlib import suppress
 from functools import update_wrapper
 from typing import Any, Callable, Dict, Generic, NoReturn, TypeVar
 
-# external
 import vaa
 
-# app
 from .._exceptions import ContractError
 from .._state import state
 from .._types import ExceptionType

@@ -1,11 +1,8 @@
-# built-in
 import ast
 from typing import Iterator, Optional
 
-# external
 import astroid
 
-# app
 from .._contract import Category
 from .._stub import StubsManager
 from .common import TOKENS, Extractor, Token, get_full_name, get_name, get_stub, infer

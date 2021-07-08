@@ -1,4 +1,3 @@
-# app
 from .asserts import get_asserts
 from .common import get_name
 from .contracts import get_contracts

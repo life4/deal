@@ -1,4 +1,3 @@
-# built-in
 import ast
 from contextlib import suppress
 from functools import partial
@@ -6,10 +5,8 @@ from pathlib import Path
 from types import SimpleNamespace
 from typing import Callable, Iterator, List, NamedTuple, Optional, Tuple
 
-# external
 import astroid
 
-# app
 from .._stub import EXTENSION, StubFile, StubsManager
 
 
@@ -125,7 +122,7 @@ def infer(expr) -> Tuple[astroid.node_classes.NodeNG, ...]:
         guesses = expr.infer()
         if guesses is astroid.Uninferable:  # pragma: no cover
             return tuple()
-        return tuple(g for g in guesses if type(g) is not astroid.Uninferable)
+        return tuple(g for g in guesses if repr(g) != 'Uninferable')
     return tuple()
 
 

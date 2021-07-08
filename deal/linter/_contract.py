@@ -1,4 +1,3 @@
-# built-in
 import ast
 import builtins
 import enum
@@ -6,10 +5,8 @@ from copy import copy
 from pathlib import Path
 from typing import Dict, FrozenSet, Iterable, List
 
-# external
 import astroid
 
-# app
 from .._cached_property import cached_property
 
 
@@ -112,7 +109,6 @@ class Contract:
 
     @cached_property
     def exceptions(self) -> list:
-        # app
         from ._extractors import get_name
 
         excs = []

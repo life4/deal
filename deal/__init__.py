@@ -13,7 +13,6 @@ __author__ = 'Gram Orsinium'
 __license__ = 'MIT'
 
 
-# app
 from ._aliases import (
     chain, ensure, has, implies, inv, post, pre, pure, raises, reason, safe,
 )

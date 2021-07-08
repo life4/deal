@@ -1,11 +1,9 @@
-# built-in
 import sys
 from io import StringIO
 from pathlib import Path
 from textwrap import dedent
 
-# project
-from deal._cli._memtest import memtest_command
+from deal._cli import main
 
 
 def test_has_side_effect(tmp_path: Path, capsys):
@@ -24,7 +22,7 @@ def test_has_side_effect(tmp_path: Path, capsys):
     path = (tmp_path / 'example.py')
     path.write_text(dedent(text))
     stream = StringIO()
-    result = memtest_command(['--count', '1', str(path)], root=tmp_path, stream=stream)
+    result = main(['memtest', '--count', '1', str(path)], root=tmp_path, stream=stream)
     assert result == 1
 
     stream.seek(0)
@@ -49,7 +47,7 @@ def test_no_side_effects(tmp_path: Path, capsys):
     path = (tmp_path / 'example.py')
     path.write_text(dedent(text))
     stream = StringIO()
-    result = memtest_command(['--count', '1', str(path)], root=tmp_path, stream=stream)
+    result = main(['memtest', '--count', '1', str(path)], root=tmp_path, stream=stream)
     assert result == 0
 
     stream.seek(0)
@@ -75,7 +73,7 @@ def test_no_matching_funcs(tmp_path: Path):
     path = (tmp_path / 'example.py')
     path.write_text(dedent(text))
     stream = StringIO()
-    result = memtest_command([str(path)], root=tmp_path, stream=stream)
+    result = main(['memtest', str(path)], root=tmp_path, stream=stream)
     assert result == 0
 
     stream.seek(0)

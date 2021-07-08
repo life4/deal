@@ -1,10 +1,8 @@
-# built-in
 from inspect import getdoc
 from typing import get_type_hints
 
 import pytest
 
-# project
 import deal
 
 
