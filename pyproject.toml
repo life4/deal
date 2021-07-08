@@ -30,7 +30,6 @@ requires = [
     "pygments",
     "typeguard",
     "vaa>=0.2.1",
-    "z3-solver",
 ]
 
 [tool.flit.metadata.requires-extra]
