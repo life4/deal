@@ -1,8 +1,7 @@
 # built-in
-import sys
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Dict, Iterator, Sequence, TextIO
+from typing import Dict, Iterator, TextIO
 
 import astroid
 from deal_solver import Conclusion, Contract, Theorem
@@ -11,6 +10,7 @@ from deal_solver import Conclusion, Contract, Theorem
 from .._colors import get_colors
 from ._common import get_paths
 from ..linter._extractors import get_contracts
+from ._base import Command
 
 
 TEMPLATE_MOD = '{blue}{name}{end}'
@@ -59,28 +59,27 @@ def run_solver(
     return failed_count
 
 
-def prove_command(
-    argv: Sequence[str], root: Path = None, stream: TextIO = sys.stdout,
-) -> int:
+class ProveCommand(Command):
     """
     ...
     """
-    if root is None:  # pragma: no cover
-        root = Path()
-    parser = ArgumentParser(prog='python3 -m deal prove')
-    parser.add_argument('--skipped', action='store_true', help='show skipped')
-    parser.add_argument('--nocolor', action='store_true', help='colorless output')
-    parser.add_argument('paths', nargs='+')
-    args = parser.parse_args(argv)
-    colors = get_colors(args)
 
-    failed = 0
-    for arg in args.paths:
-        for path in get_paths(Path(arg)):
-            failed += run_solver(
-                path=path,
-                stream=stream,
-                show_skipped=args.skipped,
-                colors=colors,
-            )
-    return failed
+    @staticmethod
+    def init_parser(parser: ArgumentParser) -> None:
+        parser.add_argument('--skipped', action='store_true', help='show skipped')
+        parser.add_argument('--nocolor', action='store_true', help='colorless output')
+        parser.add_argument('paths', nargs='+')
+
+    def __call__(self, args) -> int:
+        colors = get_colors(args)
+
+        failed = 0
+        for arg in args.paths:
+            for path in get_paths(Path(arg)):
+                failed += run_solver(
+                    path=path,
+                    stream=self.stream,
+                    show_skipped=args.skipped,
+                    colors=colors,
+                )
+        return failed

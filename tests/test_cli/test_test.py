@@ -9,9 +9,10 @@ import pytest
 
 # project
 import deal
+from deal._cli import main
 from deal._cli._test import (
     fast_iterator, format_coverage, format_exception,
-    has_pure_contract, run_cases, sys_path, test_command as command,
+    has_pure_contract, run_cases, sys_path,
 )
 from deal._testing import TestCase
 from deal._trace import TraceResult
@@ -31,7 +32,7 @@ def test_safe_violation(tmp_path: Path, capsys):
     path = (tmp_path / 'example.py')
     path.write_text(dedent(text))
     stream = StringIO()
-    result = command(['--count', '1', str(path)], root=tmp_path, stream=stream)
+    result = main(['test', '--count', '1', str(path)], root=tmp_path, stream=stream)
     assert result == 1
 
     stream.seek(0)
@@ -63,7 +64,7 @@ def test_no_violations(tmp_path: Path):
     path = (tmp_path / 'example.py')
     path.write_text(dedent(text))
     stream = StringIO()
-    result = command(['--count', '5', str(path)], root=tmp_path, stream=stream)
+    result = main(['test', '--count', '5', str(path)], root=tmp_path, stream=stream)
     assert result == 0
 
     stream.seek(0)
@@ -90,7 +91,7 @@ def test_no_matching_funcs(tmp_path: Path):
     path = (tmp_path / 'example.py')
     path.write_text(dedent(text))
     stream = StringIO()
-    result = command(['--count', '5', str(path)], root=tmp_path, stream=stream)
+    result = main(['test', '--count', '5', str(path)], root=tmp_path, stream=stream)
     assert result == 0
 
     stream.seek(0)
@@ -154,7 +155,7 @@ def test_format_coverage_100(cov_l, all_l, exp):
         green='<G>',
         end='<E>',
     )
-    tr = TraceResult(0, 0, covered_lines=cov_l, all_lines=all_l)
+    tr = TraceResult("", 0, covered_lines=cov_l, all_lines=all_l)
     text = format_coverage(tr, colors=fake_colors)
     assert text == exp
 
@@ -170,14 +171,18 @@ def test_run_cases_ok():
         exceptions=(),
         check_types=False,
     )
-    cases = [case]
     colors = dict(
         blue='<B>',
         yellow='<Y>',
         end='<E>',
     )
     stream = StringIO()
-    ok = run_cases(cases=cases, func_name='fname', stream=stream, colors=colors)
+    ok = run_cases(
+        cases=iter([case]),
+        func_name='fname',
+        stream=stream,
+        colors=colors,
+    )
     assert ok
     stream.seek(0)
     captured = stream.read()
@@ -196,14 +201,18 @@ def test_run_cases_bad():
         exceptions=(),
         check_types=False,
     )
-    cases = [case]
     colors = dict(
         blue='<B>',
         yellow='<Y>',
         end='<E>',
     )
     stream = StringIO()
-    ok = run_cases(cases=cases, func_name='fname', stream=stream, colors=colors)
+    ok = run_cases(
+        cases=iter([case]),
+        func_name='fname',
+        stream=stream,
+        colors=colors,
+    )
     assert not ok
     stream.seek(0)
     captured = stream.read()

@@ -1,30 +1,44 @@
 # built-in
+import sys
 from argparse import ArgumentParser
+from pathlib import Path
 from types import MappingProxyType
-from typing import Callable, Mapping, Sequence
+from typing import TextIO, Type, Mapping, Sequence
 
 # app
-from ._lint import lint_command
-from ._memtest import memtest_command
-from ._prove import prove_command
-from ._stub import stub_command
-from ._test import test_command
+from ._lint import LintCommand
+from ._memtest import MemtestCommand
+from ._prove import ProveCommand
+from ._stub import StubCommand
+from ._test import TestCommand
+from ._base import Command
 
 
-CommandsType = Mapping[str, Callable[[Sequence[str]], int]]
+CommandsType = Mapping[str, Type[Command]]
 COMMANDS: CommandsType = MappingProxyType(dict(
-    lint=lint_command,
-    memtest=memtest_command,
-    prove=prove_command,
-    stub=stub_command,
-    test=test_command,
+    lint=LintCommand,
+    memtest=MemtestCommand,
+    prove=ProveCommand,
+    stub=StubCommand,
+    test=TestCommand,
 ))
 
 
-def main(argv: Sequence[str], *, commands: CommandsType = COMMANDS) -> int:
+def main(
+    argv: Sequence[str], *,
+    commands: CommandsType = COMMANDS,
+    root: Path = None,
+    stream: TextIO = sys.stdout,
+) -> int:
+    if root is None:  # pragma: no cover
+        root = Path()
     parser = ArgumentParser(prog='python3 -m deal')
-    parser.add_argument('command', choices=sorted(commands))
+    subparsers = parser.add_subparsers()
+    for cmd_name, cmd_class in commands.items():
+        subparser = subparsers.add_parser(cmd_name)
+        cmd = cmd_class(stream=stream, root=root)
+        cmd.init_parser(subparser)
+        subparser.set_defaults(cmd=cmd)
 
-    args, unknown_argv = parser.parse_known_args(argv)
-    command = commands[args.command]
-    return command(unknown_argv)
+    args = parser.parse_args(argv)
+    return args.cmd(args)

@@ -4,7 +4,7 @@ from textwrap import dedent
 from io import StringIO
 
 # project
-from deal._cli._prove import prove_command
+from deal._cli import main
 
 
 def test_incorrect(tmp_path: Path):
@@ -18,7 +18,7 @@ def test_incorrect(tmp_path: Path):
     path = (tmp_path / 'example.py')
     path.write_text(dedent(text))
     stream = StringIO()
-    result = prove_command([str(path), '--nocolor'], stream=stream)
+    result = main(['prove', str(path), '--nocolor'], stream=stream)
 
     stream.seek(0)
     captured = stream.read()
@@ -39,7 +39,7 @@ def test_correct(tmp_path: Path):
     path = (tmp_path / 'example.py')
     path.write_text(dedent(text))
     stream = StringIO()
-    result = prove_command([str(path), '--nocolor'], stream=stream)
+    result = main(['prove', str(path), '--nocolor'], stream=stream)
 
     stream.seek(0)
     captured = stream.read()
@@ -58,7 +58,7 @@ def test_skip(tmp_path: Path):
     """
     path = (tmp_path / 'example.py')
     path.write_text(dedent(text))
-    result = prove_command([str(path), '--nocolor'])
+    result = main(['prove', str(path), '--nocolor'])
     assert result == 0
 
 
@@ -72,7 +72,7 @@ def test_skip_show_skipped(tmp_path: Path):
     path = (tmp_path / 'example.py')
     path.write_text(dedent(text))
     stream = StringIO()
-    result = prove_command([str(path), '--nocolor', '--skipped'], stream=stream)
+    result = main(['prove', str(path), '--nocolor', '--skipped'], stream=stream)
 
     stream.seek(0)
     captured = stream.read()
@@ -92,7 +92,7 @@ def test_skip_tests(tmp_path: Path):
     """
     path = (tmp_path / 'example.py')
     path.write_text(dedent(text))
-    result = prove_command([str(path), '--nocolor'])
+    result = main(['prove', str(path), '--nocolor'])
     assert result == 0
 
 
@@ -105,7 +105,7 @@ def test_prove_no_decorators_fail(tmp_path: Path):
     """
     path = (tmp_path / 'example.py')
     path.write_text(dedent(text))
-    result = prove_command([str(path), '--nocolor'])
+    result = main(['prove', str(path), '--nocolor'])
     assert result == 1
 
 
@@ -118,7 +118,7 @@ def test_prove_no_decorators_ok(tmp_path: Path):
     """
     path = (tmp_path / 'example.py')
     path.write_text(dedent(text))
-    result = prove_command([str(path), '--nocolor'])
+    result = main(['prove', str(path), '--nocolor'])
     assert result == 0
 
 
@@ -134,7 +134,7 @@ def test_show_filename_once(tmp_path: Path):
     path = (tmp_path / 'example.py')
     path.write_text(dedent(text))
     stream = StringIO()
-    result = prove_command([str(path), '--nocolor'], stream=stream)
+    result = main(['prove', str(path), '--nocolor'], stream=stream)
     stream.seek(0)
     captured = stream.read()
     assert result == 0, captured

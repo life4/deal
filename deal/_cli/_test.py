@@ -8,7 +8,7 @@ from functools import update_wrapper
 from importlib import import_module
 from pathlib import Path
 from textwrap import indent
-from typing import Dict, Iterable, Iterator, Sequence, TextIO, TypeVar
+from typing import Dict, Iterable, Iterator, TextIO, TypeVar
 
 # external
 import pygments
@@ -23,6 +23,7 @@ from ..linter._contract import Category
 from ..linter._extractors.pre import format_call_args
 from ..linter._func import Func
 from ._common import get_paths
+from ._base import Command
 
 
 T = TypeVar('T')
@@ -70,34 +71,6 @@ def format_exception() -> str:
     text = color_exception(''.join(lines))
     text = indent(text=text, prefix='    ')
     return text.rstrip()
-
-
-def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -> int:
-    names = list(get_func_names(path=path))
-    if not names:
-        return 0
-    print('{magenta}running {path}{end}'.format(path=path, **COLORS), file=stream)
-    module_name = '.'.join(path.relative_to(root).with_suffix('').parts)
-    with sys_path(path=root):
-        module = import_module(module_name)
-    failed = 0
-    for func_name in names:  # pragma: no cover
-        func = getattr(module, func_name)
-        # set `__wrapped__` attr so `trace` can find the original function.
-        runner = update_wrapper(wrapper=run_cases, wrapped=func)
-        tresult = trace(
-            func=runner,
-            cases=fast_iterator(cases(func=func, count=count)),
-            func_name=func_name,
-            stream=stream,
-            colors=COLORS,
-        )
-        if tresult.func_result and tresult.all_lines:
-            text = format_coverage(tresult=tresult, colors=COLORS)
-            print(text, file=stream)
-        else:
-            failed += 1
-    return failed   # pragma: no cover
 
 
 def fast_iterator(items: Iterable[T]) -> Iterator[T]:
@@ -165,9 +138,7 @@ def format_coverage(tresult: TraceResult, colors: Dict[str, str]) -> str:
     return line
 
 
-def test_command(
-    argv: Sequence[str], root: Path = None, stream: TextIO = sys.stdout,
-) -> int:
+class TestCommand(Command):
     """Generate and run tests against pure functions.
 
     ```bash
@@ -188,20 +159,45 @@ def test_command(
 
     [tests]: https://deal.readthedocs.io/basic/tests.html
     """
-    if root is None:  # pragma: no cover
-        root = Path()
-    parser = ArgumentParser(prog='python3 -m deal test')
-    parser.add_argument('--count', type=int, default=50)
-    parser.add_argument('paths', nargs='+')
-    args = parser.parse_args(argv)
 
-    failed = 0
-    for arg in args.paths:
-        for path in get_paths(Path(arg)):
-            failed += run_tests(
-                path=Path(path),
-                root=root,
-                count=args.count,
-                stream=stream,
+    @staticmethod
+    def init_parser(parser: ArgumentParser) -> None:
+        parser.add_argument('--count', type=int, default=50)
+        parser.add_argument('paths', nargs='+')
+
+    def __call__(self, args) -> int:
+        failed = 0
+        for arg in args.paths:
+            for path in get_paths(Path(arg)):
+                failed += self.run_tests(
+                    path=Path(path),
+                    count=args.count,
+                )
+        return failed
+
+    def run_tests(self, path: Path, count: int) -> int:
+        names = list(get_func_names(path=path))
+        if not names:
+            return 0
+        self.print('{magenta}running {path}{end}'.format(path=path, **COLORS))
+        module_name = '.'.join(path.relative_to(self.root).with_suffix('').parts)
+        with sys_path(path=self.root):
+            module = import_module(module_name)
+        failed = 0
+        for func_name in names:  # pragma: no cover
+            func = getattr(module, func_name)
+            # set `__wrapped__` attr so `trace` can find the original function.
+            runner = update_wrapper(wrapper=run_cases, wrapped=func)
+            tresult = trace(
+                func=runner,
+                cases=fast_iterator(cases(func=func, count=count)),
+                func_name=func_name,
+                stream=self.stream,
+                colors=COLORS,
             )
-    return failed
+            if tresult.func_result and tresult.all_lines:
+                text = format_coverage(tresult=tresult, colors=COLORS)
+                self.print(text)
+            else:
+                failed += 1
+        return failed   # pragma: no cover

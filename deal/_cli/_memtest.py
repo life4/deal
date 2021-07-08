@@ -1,10 +1,9 @@
 # built-in
-import sys
 from argparse import ArgumentParser
 from contextlib import suppress
 from importlib import import_module
 from pathlib import Path
-from typing import Dict, Iterable, Sequence, TextIO
+from typing import Dict, Iterable, TextIO
 
 # app
 from .._colors import COLORS
@@ -12,30 +11,9 @@ from .._mem_test import MemoryTracker
 from .._state import state
 from .._testing import TestCase, cases
 from ..linter._extractors.pre import format_call_args
+from ._base import Command
 from ._common import get_paths
 from ._test import get_func_names, sys_path
-
-
-def run_tests(path: Path, root: Path, count: int, stream: TextIO = sys.stdout) -> int:
-    names = list(get_func_names(path=path))
-    if not names:
-        return 0
-    print('{magenta}running {path}{end}'.format(path=path, **COLORS), file=stream)
-    module_name = '.'.join(path.relative_to(root).with_suffix('').parts)
-    with sys_path(path=root):
-        module = import_module(module_name)
-    failed = 0
-    for func_name in names:
-        func = getattr(module, func_name)
-        ok = run_cases(
-            cases=cases(func=func, count=count, check_types=False),
-            func_name=func_name,
-            stream=stream,
-            colors=COLORS,
-        )
-        if not ok:
-            failed += 1
-    return failed
 
 
 def run_cases(
@@ -76,9 +54,7 @@ def run_cases(
     return True
 
 
-def memtest_command(
-    argv: Sequence[str], root: Path = None, stream: TextIO = sys.stdout,
-) -> int:
+class MemtestCommand(Command):
     """Generate and run tests against pure functions and report memory leaks.
 
     ```bash
@@ -99,20 +75,39 @@ def memtest_command(
 
     [leaks]: https://deal.readthedocs.io/details/tests.html#memory-leaks
     """
-    if root is None:  # pragma: no cover
-        root = Path()
-    parser = ArgumentParser(prog='python3 -m deal test')
-    parser.add_argument('--count', type=int, default=50)
-    parser.add_argument('paths', nargs='+')
-    args = parser.parse_args(argv)
 
-    failed = 0
-    for arg in args.paths:
-        for path in get_paths(Path(arg)):
-            failed += run_tests(
-                path=Path(path),
-                root=root,
-                count=args.count,
-                stream=stream,
+    @staticmethod
+    def init_parser(parser: ArgumentParser) -> None:
+        parser.add_argument('--count', type=int, default=50)
+        parser.add_argument('paths', nargs='+')
+
+    def __call__(self, args) -> int:
+        failed = 0
+        for arg in args.paths:
+            for path in get_paths(Path(arg)):
+                failed += self.run_tests(
+                    path=Path(path),
+                    count=args.count,
+                )
+        return failed
+
+    def run_tests(self, path: Path, count: int) -> int:
+        names = list(get_func_names(path=path))
+        if not names:
+            return 0
+        self.print('{magenta}running {path}{end}'.format(path=path, **COLORS))
+        module_name = '.'.join(path.relative_to(self.root).with_suffix('').parts)
+        with sys_path(path=self.root):
+            module = import_module(module_name)
+        failed = 0
+        for func_name in names:
+            func = getattr(module, func_name)
+            ok = run_cases(
+                cases=cases(func=func, count=count, check_types=False),
+                func_name=func_name,
+                stream=self.stream,
+                colors=COLORS,
             )
-    return failed
+            if not ok:
+                failed += 1
+        return failed
