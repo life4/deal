@@ -31,12 +31,24 @@ def main(
     if root is None:  # pragma: no cover
         root = Path()
     parser = ArgumentParser(prog='python3 -m deal')
+    parser.set_defaults(cmd=None)
     subparsers = parser.add_subparsers()
     for cmd_name, cmd_class in commands.items():
-        subparser = subparsers.add_parser(cmd_name)
+        descr = cmd_class.__doc__ or ''
+        descr = (descr.splitlines() or [''])[0]
+        subparser = subparsers.add_parser(
+            name=cmd_name,
+            description=descr,
+        )
         cmd = cmd_class(stream=stream, root=root)
         cmd.init_parser(subparser)
         subparser.set_defaults(cmd=cmd)
 
-    args = parser.parse_args(argv)
+    try:
+        args = parser.parse_args(argv)
+    except SystemExit as exc:
+        return exc.code
+    if args.cmd is None:
+        main(['--help'], commands=commands, root=root, stream=stream)
+        return 2
     return args.cmd(args)
