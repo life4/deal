@@ -40,6 +40,7 @@ There are 3 ways to check contracts:
 It's not "advanced usage", there is nothing advanced or difficult. It's about writing better contracts or saving a bit of time. Not important but very useful. So, don't be afraid to dive in this section!
 
 1. [module_load](../details/module_load) allows you to control what happens at the module load (import) time.
+1. [Formal verification](../details/verification) as the most powerful but limited idea in the whole project. Deal can turn your code into mathematical expressions and verify its correctness.
 1. [Stubs](../details/stubs) is a way to store some contracts in a JSON file instead of the source code. It can be helpful for third-party libraries. Some stubs already inside Deal.
 1. [More about testing](../details/tests) provides information on finding memory leaks and tweaking tests generation.
 1. [Validators](../details/validators) is a way to describe complex contracts using [Marshmallow](https://github.com/marshmallow-code/marshmallow) or another validation library.

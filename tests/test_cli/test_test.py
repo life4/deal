@@ -152,7 +152,7 @@ def test_format_coverage_100(cov_l, all_l, exp):
         green='<G>',
         end='<E>',
     )
-    tr = TraceResult("", 0, covered_lines=cov_l, all_lines=all_l)
+    tr = TraceResult('', 0, covered_lines=cov_l, all_lines=all_l)
     text = format_coverage(tr, colors=fake_colors)
     assert text == exp
 

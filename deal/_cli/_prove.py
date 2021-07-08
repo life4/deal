@@ -58,8 +58,20 @@ def run_solver(
 
 
 class ProveCommand(Command):
-    """
-    ...
+    """Verify correctness of code.
+
+    ```bash
+    python3 -m deal prove project/
+    ```
+
+    Options:
+
+    + `--skipped`: show skipped functions.
+    + `--nocolor`: disable colored output.
+
+    Exit code is 0. See [Formal Verification][verification] documentation for more information.
+
+    [verification]: https://deal.readthedocs.io/details/verification.html
     """
 
     @staticmethod
