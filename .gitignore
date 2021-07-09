@@ -24,3 +24,4 @@ docs/build/
 .hypothesis/
 .task/
 poetry.lock
+/profile.svg

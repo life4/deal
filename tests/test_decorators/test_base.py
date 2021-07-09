@@ -1,6 +1,6 @@
 import pytest
 
-from deal._decorators.base import Base
+from deal._decorators.base import _args_to_vars
 
 
 @pytest.mark.parametrize('args, kwargs, f, expected', [
@@ -36,5 +36,5 @@ from deal._decorators.base import Base
     ),
 ])
 def test_args_to_vars(args, kwargs, f, expected):
-    actual = Base._args_to_vars(None, args=args, kwargs=kwargs, function=f)
+    actual = _args_to_vars(args=args, kwargs=kwargs, function=f)
     assert actual == expected

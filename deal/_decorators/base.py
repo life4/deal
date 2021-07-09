@@ -1,7 +1,7 @@
 import inspect
 from asyncio import iscoroutinefunction
 from contextlib import suppress
-from functools import update_wrapper
+from functools import update_wrapper, lru_cache
 from typing import Any, Callable, Dict, Generic, NoReturn, TypeVar
 
 import vaa
@@ -13,6 +13,35 @@ from .._types import ExceptionType
 
 #: We use this type in many other subclasses of `Base` decorator.
 _CallableType = TypeVar('_CallableType', bound=Callable)
+
+
+@lru_cache(maxsize=512)
+def _get_signature(function: Callable) -> inspect.Signature:
+    function = inspect.unwrap(function)
+    return inspect.Signature.from_callable(function)
+
+
+def _args_to_vars(*, args, kwargs: Dict[str, Any], function, keep_result: bool = True) -> Dict[str, Any]:
+    """Convert args and kwargs into dict of params based on the given function.
+
+    For simple validators the validator is passed as function.
+    """
+    if function is None:
+        return kwargs
+
+    params = kwargs.copy()
+    # Do not pass argument named `result` into the function.
+    # It is a hack for `deal.ensure` with `vaa` validator.
+    if not keep_result and 'result' in kwargs:
+        kwargs = kwargs.copy()
+        del kwargs['result']
+
+    # assign *args to real names
+    sig = _get_signature(function)
+    for name, param in sig.parameters.items():
+        params[name] = param.default
+    params.update(sig.bind(*args, **kwargs).arguments)
+    return params
 
 
 class Base(Generic[_CallableType]):
@@ -86,39 +115,17 @@ class Base(Generic[_CallableType]):
             args.append(errors)
         raise exception(*args)
 
-    def _args_to_vars(self, *, args, kwargs: Dict[str, Any], function=None) -> Dict[str, Any]:
-        """Convert args and kwargs into dict of params based on the given function.
-
-        Function is not passed for `vaa` validators.
-        For simple validators the validator is passed as function.
-        If no function passed, wrapped function will be used.
-        """
-        keep_result = True
-        if function is None:
-            function = getattr(self, 'function', None)
-            keep_result = False
-        if function is None:
-            return kwargs
-
-        params = kwargs.copy()
-        # Do not pass argument named `result` into the function.
-        # It is a hack for `deal.ensure` with `vaa` validator.
-        if not keep_result and 'result' in kwargs:
-            kwargs = kwargs.copy()
-            del kwargs['result']
-
-        # detect original function
-        function = inspect.unwrap(function)
-        # assign *args to real names
-        params.update(inspect.getcallargs(function, *args, **kwargs))
-        return params
-
     def _vaa_validation(self, *args, **kwargs) -> None:
         """Validate contract using vaa wrapped validator
         """
 
         # if it is a decorator for a function, convert positional args into named ones.
-        params = self._args_to_vars(args=args, kwargs=kwargs)
+        params = _args_to_vars(
+            args=args,
+            kwargs=kwargs,
+            function=getattr(self, 'function', None),
+            keep_result=False,
+        )
 
         # validate
         validator = self.validator(data=params)
@@ -148,13 +155,13 @@ class Base(Generic[_CallableType]):
         validation_result = self.validator(*args, **kwargs)
         # is invalid (validator returns error message)
         if type(validation_result) is str:
-            params = self._args_to_vars(args=args, kwargs=kwargs, function=self.validator)
+            params = _args_to_vars(args=args, kwargs=kwargs, function=self.validator)
             self._raise(message=validation_result, params=params)
         # is valid (truely result)
         if validation_result:
             return
         # is invalid (falsy result)
-        params = self._args_to_vars(args=args, kwargs=kwargs, function=self.validator)
+        params = _args_to_vars(args=args, kwargs=kwargs, function=self.validator)
         self._raise(params=params)
 
     @property

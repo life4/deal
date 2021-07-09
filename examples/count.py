@@ -20,4 +20,5 @@ def count(items: List[str], item: str) -> int:
     return items.count(item)
 
 
-test_count = deal.cases(count)
+for i in range(100_000):
+    count(['a', 'b', 'c', 'd'], 'b')
