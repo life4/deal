@@ -25,6 +25,11 @@ class Base(Generic[_CallableType]):
         Step 1. Set contract (validator).
         """
         self.validator = self._make_validator(validator, message=message)
+        if not hasattr(self, 'validate'):
+            if hasattr(self.validator, 'is_valid'):
+                self.validate = self._vaa_validation
+            else:
+                self.validate = self._simple_validation
         if exception:
             self.exception = exception
         if message:
@@ -45,16 +50,6 @@ class Base(Generic[_CallableType]):
                 return vaa.simple(validator, error=message)
 
         return validator
-
-    def validate(self, *args, **kwargs) -> None:
-        """
-        Step 4. Process contract (validator)
-        """
-
-        if hasattr(self.validator, 'is_valid'):
-            self._vaa_validation(*args, **kwargs)
-        else:
-            self._simple_validation(*args, **kwargs)
 
     def _raise(self, *, message: str = None, errors=None, params=None) -> NoReturn:
         exception = self.exception
@@ -146,7 +141,7 @@ class Base(Generic[_CallableType]):
         """
         validation_result = self.validator(*args, **kwargs)
         # is invalid (validator returns error message)
-        if isinstance(validation_result, str):
+        if type(validation_result) is str:
             params = self._args_to_vars(args=args, kwargs=kwargs, function=self.validator)
             self._raise(message=validation_result, params=params)
         # is valid (truely result)
