@@ -5,7 +5,7 @@ from datetime import date
 from pathlib import Path
 
 import sphinx_rtd_theme
-from m2r import MdInclude, convert
+from m2r2 import MdInclude, convert
 from recommonmark.transform import AutoStructify
 
 
@@ -100,7 +100,7 @@ def setup(app):
     app.add_config_value('recommonmark_config', config, True)
     app.add_transform(AutoStructify)
 
-    # from m2r to make `mdinclude` work
+    # from m2r2 source code to make `mdinclude` work
     app.add_config_value('no_underscore_emphasis', False, 'env')
     app.add_config_value('m2r_parse_relative_links', False, 'env')
     app.add_config_value('m2r_anonymous_references', False, 'env')

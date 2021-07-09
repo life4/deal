@@ -80,8 +80,8 @@ tasks:
       - install:docs
     cmds:
       - >
-        {{.VENVS}}/base/bin/flitenv lint run
-        sphinx-build -W docs docs/build {{.CLI_ARGS}} .
+        {{.VENVS}}/base/bin/flitenv docs run
+        sphinx-build -W docs docs/build {{.CLI_ARGS}}
   ci:run:
     desc: "run all the same checks as deal runs on CI"
     cmds:

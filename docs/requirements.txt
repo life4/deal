@@ -1,7 +1,7 @@
 # that's for readthedocs
 
 # to build docs
-m2r
+m2r2
 recommonmark
 sphinx<=3.5.4
 sphinx-rtd-theme
