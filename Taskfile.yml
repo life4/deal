@@ -2,126 +2,109 @@
 version: "3"
 
 vars:
-  PYTHON_BIN: python3.7
-  VENVS: ./venvs/
-  FLAKE8_ENV: "{{.VENVS}}flake8"
-  MYPY_ENV:   "{{.VENVS}}mypy"
-  FLIT_ENV:   "{{.VENVS}}flit"
-  PYTEST_ENV: "{{.VENVS}}pytest"
-  SPHINX_ENV: "{{.VENVS}}sphinx"
-  ISORT_ENV:  "{{.VENVS}}isort"
-  DEAL_ENV:   "{{.VENVS}}deal"
-
-  TESTS_PATH: tests/
+  PYTHON: python3.7
+  VENVS: .venvs
 
 env:
   FLIT_ROOT_INSTALL: "1"
 
 tasks:
-  venv:create:
+  install:base:
     status:
-      - "test -f {{.ENV}}/bin/activate"
+      - test -f {{.VENVS}}/base/bin/flitenv
     cmds:
-      - "{{.PYTHON_BIN}} -m venv {{.ENV}}"
-      - "{{.ENV}}/bin/python3 -m pip install -U pip setuptools wheel"
-  flit:init:
-    status:
-      - "test -f {{.FLIT_ENV}}/bin/flit"
-    deps:
-      - task: venv:create
-        vars:
-          ENV: "{{.FLIT_ENV}}"
-    cmds:
-      - "{{.FLIT_ENV}}/bin/python3 -m pip install flit"
-  flit:install:
+      - "{{.PYTHON}} -m venv {{.VENVS}}/base"
+      - >
+        {{.VENVS}}/base/bin/python3 -m pip install flitenv
+  install:test:
     sources:
       - pyproject.toml
-      - "{{.ENV}}/bin/activate"
     deps:
-      - flit:init
-      - task: venv:create
-        vars:
-          ENV: "{{.ENV}}"
+      - install:base
     cmds:
       - >
-        {{.FLIT_ENV}}/bin/flit install
-        --python={{.ENV}}/bin/python3
-        --deps=production
-        --extras={{.EXTRA}}
-        --symlink
-
-  flake8:install:
-    status:
-      - "test -f {{.FLAKE8_ENV}}/bin/flake8"
+        {{.VENVS}}/base/bin/flitenv test install
+  install:lint:
+    sources:
+      - pyproject.toml
     deps:
-      - task: venv:create
-        vars:
-          ENV: "{{.FLAKE8_ENV}}"
+      - install:base
     cmds:
-      - "{{.FLAKE8_ENV}}/bin/python3 -m pip install -r requirements-flake.txt"
-  flake8:run:
+      - >
+        {{.VENVS}}/base/bin/flitenv lint install
+  install:docs:
+    sources:
+      - pyproject.toml
     deps:
-      - flake8:install
+      - install:base
     cmds:
-      - "{{.FLAKE8_ENV}}/bin/flake8 ."
-
-  mypy:run:
-    deps:
-      - task: flit:install
-        vars:
-          ENV: "{{.MYPY_ENV}}"
-          EXTRA: tests
-    cmds:
-      - "{{.MYPY_ENV}}/bin/mypy {{.CLI_ARGS}}"
+      - >
+        {{.VENVS}}/base/bin/flitenv docs install
 
   pytest:run:
+    desc: "run Python tests"
     deps:
-      - task: flit:install
-        vars:
-          ENV: "{{.PYTEST_ENV}}"
-          EXTRA: tests
-    cmds:
-      - "{{.PYTEST_ENV}}/bin/pytest {{.CLI_ARGS}} {{.TESTS_PATH}}"
-
-  isort:run:
-    sources:
-      - "**/*.py"
-    deps:
-      - task: flit:install
-        vars:
-          ENV: "{{.ISORT_ENV}}"
-          EXTRA: tests
-    cmds:
-      - "{{.ISORT_ENV}}/bin/isort ."
-
-  sphinx:run:
-    sources:
-      - deal/**/*.py
-      - docs/**/*.md
-    deps:
-      - task: flit:install
-        vars:
-          ENV: "{{.SPHINX_ENV}}"
-          EXTRA: docs
-    cmds:
-      - "{{.SPHINX_ENV}}/bin/sphinx-build -W docs docs/build"
-
-  solver:inject:
-    status:
-      - "test -d {{.DEAL_ENV}}/lib/python3.7/site-packages/deal_solver"
-    deps:
-      - task: flit:install
-        vars:
-          ENV: "{{.DEAL_ENV}}"
+      - install:test
     cmds:
       - >
-        export FLIT=$(pwd)/{{.FLIT_ENV}}/bin/flit
-        && export PYTHON=$(pwd)/{{.DEAL_ENV}}/bin/python
-        && cd ../deal-solver/
-        && "$FLIT" install --symlink --python $PYTHON
-
-  solver:run:
+        {{.VENVS}}/base/bin/flitenv test run
+        pytest {{.CLI_ARGS}}
+  flake8:run:
+    desc: "lint Python code"
     deps:
-      - task: solver:inject
+      - install:lint
     cmds:
-      - "{{.DEAL_ENV}}/bin/python -m deal prove {{.CLI_ARGS}}"
+      - >
+        {{.VENVS}}/base/bin/flitenv lint run
+        flake8 --ignore=DEAL {{.CLI_ARGS}} .
+  mypy:run:
+    desc: "check type annotations"
+    deps:
+      - install:lint
+    cmds:
+      - >
+        {{.VENVS}}/base/bin/flitenv lint run
+        mypy {{.CLI_ARGS}}
+  isort:run:
+    desc: "sort imports"
+    deps:
+      - install:lint
+    cmds:
+      - >
+        {{.VENVS}}/base/bin/flitenv lint run
+        isort {{.CLI_ARGS}} .
+
+  sphinx:run:
+    desc: "generate documentation"
+    deps:
+      - install:docs
+    cmds:
+      - >
+        {{.VENVS}}/base/bin/flitenv lint run
+        sphinx-build -W docs docs/build {{.CLI_ARGS}} .
+  ci:run:
+    desc: "run all the same checks as deal runs on CI"
+    cmds:
+      - task: flake8:run
+      - task: mypy:run
+      - task: pytest:run
+
+  # solver:inject:
+  #   status:
+  #     - "test -d {{.DEAL_ENV}}/lib/python3.7/site-packages/deal_solver"
+  #   deps:
+  #     - task: flit:install
+  #       vars:
+  #         ENV: "{{.DEAL_ENV}}"
+  #   cmds:
+  #     - >
+  #       export FLIT=$(pwd)/{{.FLIT_ENV}}/bin/flit
+  #       && export PYTHON=$(pwd)/{{.DEAL_ENV}}/bin/python
+  #       && cd ../deal-solver/
+  #       && "$FLIT" install --symlink --python $PYTHON
+
+  # solver:run:
+  #   deps:
+  #     - task: solver:inject
+  #   cmds:
+  #     - "{{.DEAL_ENV}}/bin/python -m deal prove {{.CLI_ARGS}}"

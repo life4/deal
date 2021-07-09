@@ -33,17 +33,22 @@ requires = [
 ]
 
 [tool.flit.metadata.requires-extra]
-tests = [
+test = [
     "coverage",
     "pytest-cov",
     "isort",
     "marshmallow",
-    "mypy>=0.900",
     "pytest",
     "urllib3",
 ]
+lint = [
+    "flake8",
+    "flake8-commas",
+    "flake8-quotes",
+    "mypy>=0.900",
+]
 docs = [
-    "m2r",
+    "m2r2",
     "recommonmark",
     "sphinx",
     "sphinx-rtd-theme",
