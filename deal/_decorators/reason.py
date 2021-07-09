@@ -10,7 +10,11 @@ _CallableType = TypeVar('_CallableType', bound=Callable)
 
 
 class Reason(Base[_CallableType]):
-    exception: ExceptionType = ReasonContractError
+    __slots__ = ['validator', 'validate', 'exception', 'function', 'event']
+
+    @classmethod
+    def _default_exception(cls) -> ExceptionType:
+        return ReasonContractError
 
     def __init__(self, event: Type[Exception], validator: Callable, *,
                  message: str = None, exception: ExceptionType = None):

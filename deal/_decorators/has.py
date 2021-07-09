@@ -28,8 +28,8 @@ class PatchedSocket:
 
 
 class Has(Base[_CallableType]):
-    exception: ExceptionType = MarkerError
     markers: FrozenSet[str]
+    __slots__ = ['validator', 'validate', 'exception', 'function', 'markers']
 
     def __init__(self, *markers, message: str = None, exception: ExceptionType = None):
         """
@@ -37,8 +37,7 @@ class Has(Base[_CallableType]):
         """
         self.markers = frozenset(markers)
         self.message = message
-        if exception:
-            self.exception = exception
+        self.exception = exception or MarkerError
 
     def patched_function(self, *args, **kwargs):
         """

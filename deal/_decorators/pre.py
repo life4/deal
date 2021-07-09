@@ -13,7 +13,11 @@ class Pre(Base[_CallableType]):
     Check contract (validator) before function processing.
     Validate input arguments.
     """
-    exception: ExceptionType = PreContractError
+    __slots__ = ['validator', 'validate', 'exception', 'function']
+
+    @classmethod
+    def _default_exception(cls) -> ExceptionType:
+        return PreContractError
 
     def patched_function(self, *args, **kwargs):
         """

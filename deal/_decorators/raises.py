@@ -9,7 +9,11 @@ _CallableType = TypeVar('_CallableType', bound=Callable)
 
 
 class Raises(Base[_CallableType]):
-    exception: ExceptionType = RaisesContractError
+    __slots__ = ['validator', 'validate', 'exception', 'function', 'exceptions']
+
+    @classmethod
+    def _default_exception(cls) -> ExceptionType:
+        return RaisesContractError
 
     def __init__(
         self,

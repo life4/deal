@@ -13,7 +13,11 @@ class Ensure(Base[_CallableType]):
     Check both arguments and result (validator) after function processing.
     Validate arguments and output result.
     """
-    exception: ExceptionType = PostContractError
+    __slots__ = ['validator', 'validate', 'exception', 'function']
+
+    @classmethod
+    def _default_exception(cls) -> ExceptionType:
+        return PostContractError
 
     def patched_function(self, *args, **kwargs):
         """

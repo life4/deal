@@ -32,8 +32,14 @@ class Base(Generic[_CallableType]):
                 self.validate = self._simple_validation
         if exception:
             self.exception = exception
+        else:
+            self.exception = self._default_exception()
         if message:
             self.exception = self.exception(message)    # type: ignore
+
+    @classmethod
+    def _default_exception(cls) -> ExceptionType:
+        return cls.exception
 
     @staticmethod
     def _make_validator(validator, message: str = None):
