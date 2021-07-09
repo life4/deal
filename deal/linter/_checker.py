@@ -8,11 +8,13 @@ from ._error import Error
 from ._func import Func
 from ._rules import Required, rules
 from ._stub import StubsManager
+from .. import __version__
 
 
 class Checker:
     __slots__ = ('_tree', '_filename', '_stubs')
     name = 'deal'
+    version = __version__
     _rules = rules
 
     def __init__(self, tree: ast.Module, file_tokens=None, filename: str = 'stdin'):
@@ -23,12 +25,6 @@ class Checker:
         if filename != 'stdin':
             paths.append(Path(filename).absolute().parent)
         self._stubs = StubsManager(paths=paths)
-
-    @property
-    def version(self):
-        import deal
-
-        return deal.__version__
 
     def run(self) -> typing.Iterator[tuple]:
         for error in self.get_errors():
