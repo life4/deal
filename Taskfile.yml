@@ -23,7 +23,7 @@ tasks:
       - install:base
     cmds:
       - >
-        {{.VENVS}}/base/bin/flitenv test install --venvs={{.VENVS}}
+        {{.VENVS}}/base/bin/flitenv --venvs={{.VENVS}} test install
   install:lint:
     sources:
       - pyproject.toml
@@ -31,7 +31,7 @@ tasks:
       - install:base
     cmds:
       - >
-        {{.VENVS}}/base/bin/flitenv lint install --venvs={{.VENVS}}
+        {{.VENVS}}/base/bin/flitenv --venvs={{.VENVS}} lint install
   install:docs:
     sources:
       - pyproject.toml
