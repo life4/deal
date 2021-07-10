@@ -25,9 +25,8 @@ SLOTS = [
 ]
 
 
-@lru_cache(maxsize=512)
+@lru_cache(maxsize=16)
 def _get_signature(function: Callable) -> inspect.Signature:
-    function = inspect.unwrap(function)
     return inspect.signature(function)
 
 
