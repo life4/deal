@@ -3,10 +3,10 @@ from typing import List
 
 
 SCALES = (
-    (1.0, "s"),
-    (1e-3, "ms"),
-    (1e-6, "us"),
-    (1e-9, "ns"),
+    (1.0, 's'),
+    (1e-3, 'ms'),
+    (1e-6, 'us'),
+    (1e-9, 'ns'),
 )
 TICKS = '▁▂▃▄▅▆▇█'
 CHUNKS = 6

@@ -9,6 +9,7 @@ from .base import Base, CallableType
 
 class InvariantedClass:
     _disable_patching: bool = False
+    _validate_base: Callable[..., None]
 
     def _validate(self) -> None:
         """
@@ -106,7 +107,7 @@ class Invariant(Base[CallableType]):
                 (InvariantedClass, _class),
                 {'_validate_base': self.validate},
             )
-        # Magic: _validate_base method use Invariant as self, not _class
+        # Magic: _validate_base method uses Invariant as self, not _class
 
         # return update_wrapper(patched_class, _class)
         return patched_class
