@@ -2,7 +2,7 @@ import inspect
 from asyncio import iscoroutinefunction
 from contextlib import suppress
 from functools import update_wrapper, lru_cache
-from typing import Any, Callable, Dict, Generic, NoReturn, TypeVar
+from typing import Any, Callable, Dict, Generic, NoReturn, Optional, TypeVar
 
 import vaa
 
@@ -19,21 +19,30 @@ SLOTS = [
     'validate',
     'exception',
     'function',
+    'signature',
+    'raw_validator',
+    'message',
 ]
 
 
 @lru_cache(maxsize=512)
 def _get_signature(function: Callable) -> inspect.Signature:
     function = inspect.unwrap(function)
-    return inspect.Signature.from_callable(function)
+    return inspect.signature(function)
 
 
-def _args_to_vars(*, args, kwargs: Dict[str, Any], function, keep_result: bool = True) -> Dict[str, Any]:
+def _args_to_vars(
+    *,
+    args,
+    kwargs: Dict[str, Any],
+    signature: Optional[inspect.Signature],
+    keep_result: bool = True,
+) -> Dict[str, Any]:
     """Convert args and kwargs into dict of params based on the given function.
 
     For simple validators the validator is passed as function.
     """
-    if function is None:
+    if signature is None:
         return kwargs
 
     params = kwargs.copy()
@@ -44,28 +53,29 @@ def _args_to_vars(*, args, kwargs: Dict[str, Any], function, keep_result: bool =
         del kwargs['result']
 
     # assign *args to real names
-    sig = _get_signature(function)
-    for name, param in sig.parameters.items():
+    for name, param in signature.parameters.items():
         params[name] = param.default
-    params.update(sig.bind(*args, **kwargs).arguments)
+    params.update(signature.bind(*args, **kwargs).arguments)
     return params
 
 
 class Base(Generic[CallableType]):
     exception: ExceptionType = ContractError
-    function: CallableType  # pytype: disable=not-supported-yet
+    function: CallableType
+    signature: Optional[inspect.Signature]
+    validate: Any
+    validator: Any
+    raw_validator: Any
+    message: Optional[str]
 
     def __init__(self, validator, *, message: str = None,
                  exception: ExceptionType = None):
         """
         Step 1. Set contract (validator).
         """
-        self.validator = self._make_validator(validator, message=message)
-        if not hasattr(self, 'validate'):
-            if hasattr(self.validator, 'is_valid'):
-                self.validate = self._vaa_validation
-            else:
-                self.validate = self._simple_validation
+        self.validate = self._init
+        self.raw_validator = validator
+        self.message = message
         if exception:
             self.exception = exception
         else:
@@ -77,10 +87,8 @@ class Base(Generic[CallableType]):
     def _default_exception(cls) -> ExceptionType:
         return cls.exception
 
-    @staticmethod
-    def _make_validator(validator, message: str = None):
-        if validator is None:
-            return None
+    def _make_validator(self):
+        validator = self.raw_validator
         # implicitly wrap in vaa all external validators
         with suppress(TypeError):
             return vaa.wrap(validator, simple=False)
@@ -89,7 +97,7 @@ class Base(Generic[CallableType]):
         if inspect.isfunction(validator):
             params = inspect.signature(validator).parameters
             if set(params) == {'_'}:
-                return vaa.simple(validator, error=message)
+                return vaa.simple(validator, error=self.message)
 
         return validator
 
@@ -122,17 +130,30 @@ class Base(Generic[CallableType]):
             args.append(errors)
         raise exception(*args)
 
+    def _init(self, *args, **kwargs):
+        self.validator = self._make_validator()
+        if hasattr(self.validator, 'is_valid'):
+            self.signature = _get_signature(self.function)
+            self.validate = self._vaa_validation
+        else:
+            self.signature = _get_signature(self.validator)
+            self.validate = self._simple_validation
+        return self.validate(*args, **kwargs)
+
     def _vaa_validation(self, *args, **kwargs) -> None:
         """Validate contract using vaa wrapped validator
         """
 
         # if it is a decorator for a function, convert positional args into named ones.
-        params = _args_to_vars(
-            args=args,
-            kwargs=kwargs,
-            function=getattr(self, 'function', None),
-            keep_result=False,
-        )
+        if hasattr(self, 'function'):
+            params = _args_to_vars(
+                args=args,
+                kwargs=kwargs,
+                signature=self.signature,
+                keep_result=False,
+            )
+        else:
+            params = kwargs
 
         # validate
         validator = self.validator(data=params)
@@ -162,13 +183,13 @@ class Base(Generic[CallableType]):
         validation_result = self.validator(*args, **kwargs)
         # is invalid (validator returns error message)
         if type(validation_result) is str:
-            params = _args_to_vars(args=args, kwargs=kwargs, function=self.validator)
+            params = _args_to_vars(args=args, kwargs=kwargs, signature=self.signature)
             self._raise(message=validation_result, params=params)
         # is valid (truely result)
         if validation_result:
             return
         # is invalid (falsy result)
-        params = _args_to_vars(args=args, kwargs=kwargs, function=self.validator)
+        params = _args_to_vars(args=args, kwargs=kwargs, signature=self.signature)
         self._raise(params=params)
 
     @property

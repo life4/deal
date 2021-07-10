@@ -63,7 +63,13 @@ class InvariantedClass:
 class Invariant(Base[CallableType]):
     exception: ExceptionType = InvContractError
 
-    def validate(self, obj) -> None:  # type: ignore
+    def _init(self, *args, **kwargs):
+        self.signature = None
+        self.validator = self._make_validator()
+        self.validate = self._validate
+        return self.validate(*args, **kwargs)
+
+    def _validate(self, obj) -> None:
         """
         Step 6. Process contract (validator)
         """
