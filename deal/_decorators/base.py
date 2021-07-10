@@ -84,9 +84,16 @@ class Base(Generic[CallableType]):
 
     @classmethod
     def _default_exception(cls) -> ExceptionType:
+        """
+        Returns default exception for this contract.
+        We can't use class-level defaults for it becuase subclasses use __slots__.
+        """
         return cls.exception
 
-    def _make_validator(self):
+    def _make_validator(self) -> Callable:
+        """
+        If needed, wrap the original raw validator by vaa.
+        """
         validator = self.raw_validator
         # implicitly wrap in vaa all external validators
         with suppress(TypeError):
@@ -130,6 +137,11 @@ class Base(Generic[CallableType]):
         raise exception(*args)
 
     def _init(self, *args, **kwargs):
+        """
+        Called as `validator` when the function is called in the first time.
+        Does some costly deferred initializations (involving `inspect`).
+        Then sets more appropriate validator as `validator` and calls it.
+        """
         self.validator = self._make_validator()
         if hasattr(self.validator, 'is_valid'):
             self.signature = _get_signature(self.function)
@@ -140,7 +152,7 @@ class Base(Generic[CallableType]):
         return self.validate(*args, **kwargs)
 
     def _vaa_validation(self, *args, **kwargs) -> None:
-        """Validate contract using vaa wrapped validator
+        """Validate contract using vaa wrapped validator.
         """
 
         # if it is a decorator for a function, convert positional args into named ones.
@@ -201,29 +213,26 @@ class Base(Generic[CallableType]):
         """
         self.function = function
 
-        def wrapped(*args, **kwargs):
+        if iscoroutinefunction(function):
+            async def wrapped_async(*args, **kwargs):
+                if self.enabled:
+                    return await self.async_patched_function(*args, **kwargs)
+                return await function(*args, **kwargs)
+            return update_wrapper(wrapped_async, function)  # type: ignore[return-value]
+
+        if inspect.isgeneratorfunction(function):
+            def wrapped_gen(*args, **kwargs):
+                if self.enabled:
+                    yield from self.patched_generator(*args, **kwargs)
+                else:
+                    yield from function(*args, **kwargs)
+            return update_wrapper(wrapped_gen, function)  # type: ignore[return-value]
+
+        def wrapped_func(*args, **kwargs):
             if self.enabled:
                 return self.patched_function(*args, **kwargs)
             return function(*args, **kwargs)
-
-        async def async_wrapped(*args, **kwargs):
-            if self.enabled:
-                return await self.async_patched_function(*args, **kwargs)
-            return await function(*args, **kwargs)
-
-        def wrapped_generator(*args, **kwargs):
-            if self.enabled:
-                yield from self.patched_generator(*args, **kwargs)
-            else:
-                yield from function(*args, **kwargs)
-
-        if iscoroutinefunction(function):
-            new_callable = update_wrapper(async_wrapped, function)
-        elif inspect.isgeneratorfunction(function):
-            new_callable = update_wrapper(wrapped_generator, function)
-        else:
-            new_callable = update_wrapper(wrapped, function)
-        return new_callable  # type: ignore
+        return update_wrapper(wrapped_func, function)  # type: ignore[return-value]
 
     def patched_function(self, *args, **kwargs):
         """
