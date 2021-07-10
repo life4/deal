@@ -1,14 +1,11 @@
 import socket
 import sys
 from io import StringIO
-from typing import Callable, FrozenSet, Type, TypeVar
+from typing import FrozenSet, Type
 
 from .._exceptions import MarkerError, OfflineContractError, SilentContractError
 from .._types import ExceptionType
-from .base import Base
-
-
-_CallableType = TypeVar('_CallableType', bound=Callable)
+from .base import Base, CallableType
 
 
 class PatchedStringIO(StringIO):
@@ -27,9 +24,9 @@ class PatchedSocket:
         raise self.exception
 
 
-class Has(Base[_CallableType]):
+class Has(Base[CallableType]):
     markers: FrozenSet[str]
-    __slots__ = ['validator', 'validate', 'exception', 'function', 'markers']
+    __slots__ = ['exception', 'function', 'markers']
 
     def __init__(self, *markers, message: str = None, exception: ExceptionType = None):
         """

@@ -1,19 +1,14 @@
-from typing import Callable, TypeVar
-
 from .._exceptions import PostContractError
 from .._types import ExceptionType
-from .base import Base
+from .base import Base, SLOTS, CallableType
 
 
-_CallableType = TypeVar('_CallableType', bound=Callable)
-
-
-class Post(Base[_CallableType]):
+class Post(Base[CallableType]):
     """
     Check contract (validator) after function processing.
     Validate output result.
     """
-    __slots__ = ['validator', 'validate', 'exception', 'function']
+    __slots__ = SLOTS
 
     @classmethod
     def _default_exception(cls) -> ExceptionType:

@@ -12,7 +12,14 @@ from .._types import ExceptionType
 
 
 #: We use this type in many other subclasses of `Base` decorator.
-_CallableType = TypeVar('_CallableType', bound=Callable)
+CallableType = TypeVar('CallableType', bound=Callable)
+
+SLOTS = [
+    'validator',
+    'validate',
+    'exception',
+    'function',
+]
 
 
 @lru_cache(maxsize=512)
@@ -44,9 +51,9 @@ def _args_to_vars(*, args, kwargs: Dict[str, Any], function, keep_result: bool =
     return params
 
 
-class Base(Generic[_CallableType]):
+class Base(Generic[CallableType]):
     exception: ExceptionType = ContractError
-    function: _CallableType  # pytype: disable=not-supported-yet
+    function: CallableType  # pytype: disable=not-supported-yet
 
     def __init__(self, validator, *, message: str = None,
                  exception: ExceptionType = None):
@@ -168,7 +175,7 @@ class Base(Generic[_CallableType]):
     def enabled(self) -> bool:
         return state.debug
 
-    def __call__(self, function: _CallableType) -> _CallableType:
+    def __call__(self, function: CallableType) -> CallableType:
         """
         Step 2. Return wrapped function.
         """
