@@ -151,6 +151,7 @@ class Base(Generic[CallableType]):
             self.validate = self._simple_validation
         return self.validate(*args, **kwargs)
 
+    @state.disabled
     def _vaa_validation(self, *args, **kwargs) -> None:
         """Validate contract using vaa wrapped validator.
         """
@@ -186,6 +187,7 @@ class Base(Generic[CallableType]):
 
         self._raise(errors=errors, params=params)
 
+    @state.disabled
     def _simple_validation(self, *args, **kwargs) -> None:
         """Validate contract using simple validator.
 
@@ -203,10 +205,6 @@ class Base(Generic[CallableType]):
         params = _args_to_vars(args=args, kwargs=kwargs, signature=self.signature)
         self._raise(params=params)
 
-    @property
-    def enabled(self) -> bool:
-        return state.debug
-
     def __call__(self, function: CallableType) -> CallableType:
         """
         Step 2. Return wrapped function.
@@ -215,21 +213,21 @@ class Base(Generic[CallableType]):
 
         if iscoroutinefunction(function):
             async def wrapped_async(*args, **kwargs):
-                if self.enabled:
+                if state.debug:
                     return await self.async_patched_function(*args, **kwargs)
                 return await function(*args, **kwargs)
             return update_wrapper(wrapped_async, function)  # type: ignore[return-value]
 
         if inspect.isgeneratorfunction(function):
             def wrapped_gen(*args, **kwargs):
-                if self.enabled:
+                if state.debug:
                     yield from self.patched_generator(*args, **kwargs)
                 else:
                     yield from function(*args, **kwargs)
             return update_wrapper(wrapped_gen, function)  # type: ignore[return-value]
 
         def wrapped_func(*args, **kwargs):
-            if self.enabled:
+            if state.debug:
                 return self.patched_function(*args, **kwargs)
             return function(*args, **kwargs)
         return update_wrapper(wrapped_func, function)  # type: ignore[return-value]

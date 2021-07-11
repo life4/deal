@@ -1,4 +1,8 @@
 import os
+from typing import Callable, TypeVar
+
+
+T = TypeVar('T', bound=Callable)
 
 
 class _State:
@@ -29,6 +33,19 @@ class _State:
         """Disable all contracts.
         """
         self.debug = False
+
+    def disabled(self, func: T) -> T:
+        """Decorator to disable contracts.
+        """
+        def wrapper(*args, **kwargs):
+            old_value = self.debug
+            self.debug = False
+            try:
+                return func(*args, **kwargs)
+            finally:
+                self.debug = old_value
+
+        return wrapper  # type: ignore[return-value]
 
 
 state = _State()
