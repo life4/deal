@@ -62,3 +62,16 @@ def test_decorating_generator():
     assert list(multiply(2, 1)) == [2, 4, 8]
     with pytest.raises(deal.PostContractError):
         list(multiply(2, 2))
+
+
+def test_recursive_contracts_ok():
+    @deal.ensure(lambda a, b, result: add(result, b) == a)
+    def sub(a, b):
+        return a - b
+
+    @deal.ensure(lambda a, b, result: sub(result, b) == a)
+    def add(a, b):
+        return a + b
+
+    assert sub(5, 3) == 2
+    assert add(2, 3) == 5

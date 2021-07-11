@@ -58,6 +58,7 @@ docs = [
 DEAL = "deal.linter:Checker"
 
 [tool.pytest.ini_options]
+python_classes = ""
 addopts = [
     "--cov=deal",
     "--cov-report=html",
