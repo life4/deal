@@ -1,28 +1,24 @@
-from typing import Callable, Iterator, Type, TypeVar
+from typing import Iterator, Type
 
 from .._cached_property import cached_property
 from .._exceptions import ReasonContractError
 from .._types import ExceptionType
-from .base import Base
+from .base import Base, CallableType, SLOTS
 
 
-_CallableType = TypeVar('_CallableType', bound=Callable)
+class Reason(Base[CallableType]):
+    __slots__ = SLOTS + ['event']
 
+    @classmethod
+    def _default_exception(cls) -> ExceptionType:
+        return ReasonContractError
 
-class Reason(Base[_CallableType]):
-    exception: ExceptionType = ReasonContractError
-
-    def __init__(self, event: Type[Exception], validator: Callable, *,
-                 message: str = None, exception: ExceptionType = None):
+    def __init__(self, event: Type[Exception], *args, **kwargs):
         """
         Step 1. Set allowed exceptions list.
         """
         self.event = event
-        super().__init__(
-            validator=validator,
-            message=message,
-            exception=exception,
-        )
+        super().__init__(*args, **kwargs)
 
     @cached_property
     def exception_type(self) -> Type[Exception]:

@@ -1,15 +1,16 @@
-from typing import Callable, Tuple, Type, TypeVar
+from typing import Tuple, Type
 
 from .._exceptions import ContractError, RaisesContractError
 from .._types import ExceptionType
-from .base import Base
+from .base import Base, CallableType
 
 
-_CallableType = TypeVar('_CallableType', bound=Callable)
+class Raises(Base[CallableType]):
+    __slots__ = ['exception', 'function', 'exceptions']
 
-
-class Raises(Base[_CallableType]):
-    exception: ExceptionType = RaisesContractError
+    @classmethod
+    def _default_exception(cls) -> ExceptionType:
+        return RaisesContractError
 
     def __init__(
         self,

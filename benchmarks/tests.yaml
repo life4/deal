@@ -1,0 +1,97 @@
+- name: base
+  items:
+    - name: import
+      setup: |
+        import sys
+        sys.modules.pop('deal', None)
+      test: import deal
+
+- name: classic contracts
+  items:
+    - name: decorate
+      setup: import deal
+      test: |
+        @deal.pre(lambda: True)
+        def f():
+            pass
+    - name: call once
+      setup: |
+        import deal
+        @deal.pre(lambda: True)
+        def f():
+            pass
+      test: f()
+    - name: call many times
+      setup: |
+        import deal
+        @deal.pre(lambda: True)
+        def f():
+            pass
+      test: |
+        for _ in range(100):
+          f()
+    - name: call with args
+      setup: |
+        import deal
+        @deal.pre(lambda a, b: True)
+        def f(a, b):
+            pass
+      test: f(1, b=2)
+    - name: contract error
+      setup: |
+        import deal
+        @deal.pre(lambda: False)
+        def f():
+            pass
+      test: |
+        try:
+            f()
+        except deal.ContractError:
+            pass
+        else:
+            raise Exception
+
+- name: vaa simple contracts
+  items:
+    - name: decorate
+      setup: import deal
+      test: |
+        @deal.pre(lambda _: True)
+        def f():
+            pass
+    - name: call once
+      setup: |
+        import deal
+        @deal.pre(lambda _: True)
+        def f():
+            pass
+      test: f()
+    - name: call many times
+      setup: |
+        import deal
+        @deal.pre(lambda _: True)
+        def f():
+            pass
+      test: |
+        for _ in range(100):
+          f()
+    - name: call with args
+      setup: |
+        import deal
+        @deal.pre(lambda _: True)
+        def f(a, b):
+            pass
+      test: f(1, b=2)
+    - name: contract error
+      setup: |
+        import deal
+        @deal.pre(lambda _: False)
+        def f():
+            pass
+      test: |
+        try:
+            f()
+        except deal.ContractError:
+            pass
+        else:
+            raise Exception

@@ -38,8 +38,8 @@ def step(env, python):
             COVERAGE_FILE=".coverage.{}.{}".format(env, python),
         ),
         commands=[
-            "apt install curl git gcc libc-dev",
-            "./bin/task PYTHON_BIN=python3 VENVS=/opt/py{python} -f {env}:run".format(
+            "apt-get install curl git gcc libc-dev",
+            "./bin/task PYTHON=python3 VENVS=/opt/py{python} -f {env}:run".format(
                 python=python,
                 env=env,
             ),

@@ -1,19 +1,18 @@
-from typing import Callable, TypeVar
-
 from .._exceptions import PreContractError
 from .._types import ExceptionType
-from .base import Base
+from .base import Base, CallableType, SLOTS
 
 
-_CallableType = TypeVar('_CallableType', bound=Callable)
-
-
-class Pre(Base[_CallableType]):
+class Pre(Base[CallableType]):
     """
     Check contract (validator) before function processing.
     Validate input arguments.
     """
-    exception: ExceptionType = PreContractError
+    __slots__ = SLOTS
+
+    @classmethod
+    def _default_exception(cls) -> ExceptionType:
+        return PreContractError
 
     def patched_function(self, *args, **kwargs):
         """
