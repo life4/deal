@@ -10,6 +10,7 @@ from hypothesis.internal.reflection import proxies
 from ._cached_property import cached_property
 from ._decorators import Pre, Raises
 from ._types import ArgsKwargsType
+from ._introspection import get_contracts
 
 
 F = typing.Callable[..., None]
@@ -205,16 +206,9 @@ class cases:  # noqa: N
 
     @staticmethod
     def _get_excs(func: typing.Any) -> typing.Iterator[typing.Type[Exception]]:
-        while True:
-            if getattr(func, '__closure__', None):
-                for cell in func.__closure__:
-                    obj = cell.cell_contents
-                    if isinstance(obj, Raises):
-                        yield from obj.exceptions
-
-            if not hasattr(func, '__wrapped__'):
-                return
-            func = func.__wrapped__
+        for obj in get_contracts(func):
+            if isinstance(obj, Raises):
+                yield from obj.exceptions
 
     @cached_property
     def strategy(self) -> hypothesis.strategies.SearchStrategy:
