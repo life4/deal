@@ -1,7 +1,8 @@
 import enum
-from typing import List, TYPE_CHECKING
-from ._decorators import Raises
+from typing import Dict, List, TYPE_CHECKING
+from ._decorators import Raises, Reason
 from ._introspection import get_contracts
+from ._source import get_validator_source
 
 if TYPE_CHECKING:
     from sphinx.application import Sphinx as SphinxApp
@@ -22,14 +23,9 @@ class AutoDoc(enum.Enum):
     def register(self, app: 'SphinxApp') -> None:
         if self == AutoDoc.Sphinx:
             app.setup_extension('sphinx.ext.autodoc')
-            app.connect('autodoc-process-docstring', _process_sphinx)
-            return
-
-        if self == AutoDoc.Google:
+        else:
             app.setup_extension('sphinx.ext.napoleon')
-            # app.add_config_value('napoleon_google_docstring', True, 'env')
-            # app.add_config_value('napoleon_numpy_docstring', False, 'env')
-            app.connect('autodoc-process-docstring', _process_sphinx)
+        app.connect('autodoc-process-docstring', _process_sphinx)
 
 
 def _process_sphinx(
@@ -40,7 +36,17 @@ def _process_sphinx(
     options: 'Options',
     lines: List[str],
 ) -> None:
+    raises: Dict[str, str] = dict()
     for contract in get_contracts(obj):
         if isinstance(contract, Raises):
             for exc in contract.exceptions:
-                lines.append(f':raises {exc.__qualname__}:')
+                raises.setdefault(exc.__qualname__, '')
+        if isinstance(contract, Reason):
+            if contract.message:
+                message = contract.message
+            else:
+                source = get_validator_source(contract._make_validator())
+                message = f'``{source}``'
+            raises[contract.event.__qualname__] = message
+    for exc_name, descr in sorted(raises.items()):
+        lines.append(f':raises {exc_name}: {descr}')
