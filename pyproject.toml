@@ -41,7 +41,6 @@ test = [
     "pytest",
     "urllib3",
     "sphinx",
-    "sphinxcontrib-napoleon",
 ]
 lint = [
     "flake8",

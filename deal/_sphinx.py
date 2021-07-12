@@ -26,7 +26,7 @@ class AutoDoc(enum.Enum):
             return
 
         if self == AutoDoc.Google:
-            app.setup_extension('sphinxcontrib.napoleon')
+            app.setup_extension('sphinx.ext.napoleon')
             # app.add_config_value('napoleon_google_docstring', True, 'env')
             # app.add_config_value('napoleon_numpy_docstring', False, 'env')
             app.connect('autodoc-process-docstring', _process_google)
@@ -43,7 +43,7 @@ def _process_sphinx(
     for contract in get_contracts(obj):
         if isinstance(contract, Raises):
             for exc in contract.exceptions:
-                lines.append(f':raises {exc}')
+                lines.append(f':raises {exc.__qualname__}:')
 
 
 def _process_google(
@@ -58,7 +58,7 @@ def _process_google(
     for contract in get_contracts(obj):
         if isinstance(contract, Raises):
             for exc in contract.exceptions:
-                raises.append(f'    {exc}:')
+                raises.append(f'  {exc.__qualname__}')
     if raises:
         lines.append("Raises:")
         lines.extend(raises)
