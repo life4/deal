@@ -1,27 +1,44 @@
 from pathlib import Path
 from textwrap import dedent
 
+import pytest
 import deal
 from sphinx.cmd.build import build_main
 
 
 @deal.raises(ValueError, ZeroDivisionError)
-def example():
-    pass
+def example_sphinx():
+    """Example function.
+
+    :return: The return value. True for success, False otherwise.
+    :rtype: bool
+    """
+    return True
 
 
-def test_sphinx(tmp_path: Path):
+@deal.raises(ValueError, ZeroDivisionError)
+def example_google():
+    """Example function.
+
+    Returns:
+        bool: The return value. True for success, False otherwise.
+    """
+    return True
+
+
+@pytest.mark.parametrize('style', ['Sphinx', 'Google'])
+def test_sphinx(style: str, tmp_path: Path):
     path_in = tmp_path / 'in'
     path_in.mkdir()
     path_out = tmp_path / 'out'
-    (path_in / 'conf.py').write_text(dedent("""
+    (path_in / 'conf.py').write_text(dedent(f"""
         import deal
 
         def setup(app):
-            deal.AutoDoc.Sphinx.register(app)
+            deal.AutoDoc.{style}.register(app)
     """))
-    (path_in / 'index.rst').write_text(dedent("""
-        .. autofunction:: tests.test_sphinx.example
+    (path_in / 'index.rst').write_text(dedent(f"""
+        .. autofunction:: tests.test_sphinx.example_{style.lower()}
     """))
     exit_code = build_main([str(path_in), str(path_out), '-ET'])
     assert exit_code == 0
