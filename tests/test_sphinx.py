@@ -15,12 +15,10 @@ def test_sphinx(tmp_path: Path):
     path_in.mkdir()
     path_out = tmp_path / 'out'
     (path_in / 'conf.py').write_text(dedent("""
-        from deal._sphinx import register_sphinx
-
-        extensions = ['sphinx.ext.autodoc']
+        import deal
 
         def setup(app):
-            register_sphinx(app)
+            deal.AutoDoc.Sphinx.register(app)
     """))
     (path_in / 'index.rst').write_text(dedent("""
         .. autofunction:: tests.test_sphinx.example

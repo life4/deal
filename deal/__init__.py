@@ -22,11 +22,13 @@ from ._exceptions import (
 )
 from ._imports import activate, module_load
 from ._schemes import Scheme
+from ._sphinx import AutoDoc
 from ._state import disable, enable, reset
 from ._testing import TestCase, cases
 
 
 __all__ = [
+    'AutoDoc',
     'cases',
     'Scheme',
     'TestCase',
