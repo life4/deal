@@ -1,6 +1,6 @@
 import enum
 from typing import Dict, List, TYPE_CHECKING
-from ._decorators import Raises, Reason
+from ._decorators import Raises, Reason, Pre, Post, Ensure
 from ._introspection import get_contracts
 from ._source import get_validator_source
 
@@ -37,6 +37,7 @@ def _process_sphinx(
     lines: List[str],
 ) -> None:
     raises: Dict[str, str] = dict()
+    contracts = []
     for contract in get_contracts(obj):
         if isinstance(contract, Raises):
             for exc in contract.exceptions:
@@ -48,5 +49,15 @@ def _process_sphinx(
                 source = get_validator_source(contract._make_validator())
                 message = f'``{source}``'
             raises[contract.event.__qualname__] = message
+        if isinstance(contract, (Pre, Post, Ensure)):
+            if contract.message:
+                message = contract.message
+            else:
+                source = get_validator_source(contract._make_validator())
+                message = f'``{source}``'
+            contracts.append(f'  * {message}')
     for exc_name, descr in sorted(raises.items()):
         lines.append(f':raises {exc_name}: {descr}')
+    if contracts:
+        lines.append(':contracts:')
+        lines.extend(contracts)

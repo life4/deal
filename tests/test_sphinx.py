@@ -9,6 +9,10 @@ from sphinx.cmd.build import build_main
 @deal.reason(ZeroDivisionError, lambda a, b: b == 0)
 @deal.reason(ValueError, lambda a, b: a == b, message='a is equal to b')
 @deal.raises(ValueError, IndexError, ZeroDivisionError)
+@deal.pre(lambda a, b: b != 0)
+@deal.pre(lambda a, b: b != 0, message="b is not zero")
+@deal.ensure(lambda a, b, result: b != result)
+@deal.post(lambda res: res != .13)
 def example_sphinx(a: int, b: int) -> float:
     """Example function.
 
@@ -20,6 +24,10 @@ def example_sphinx(a: int, b: int) -> float:
 @deal.reason(ZeroDivisionError, lambda a, b: b == 0)
 @deal.reason(ValueError, lambda a, b: a == b, message='a is equal to b')
 @deal.raises(ValueError, IndexError, ZeroDivisionError)
+@deal.pre(lambda a, b: b != 0)
+@deal.pre(lambda a, b: b != 0, message="b is not zero")
+@deal.ensure(lambda a, b, result: b != result)
+@deal.post(lambda res: res != .13)
 def example_google(a: int, b: int) -> float:
     """Example function.
 
@@ -59,6 +67,11 @@ def test_autodoc_smoke(style: str, tmp_path: Path):
                 * **IndexError** --
                 * **ValueError** -- a is equal to b
                 * **ZeroDivisionError** -- "b == 0"
+            Contracts:
+                * "b != 0"
+                * b is not zero
+                * "b != result"
+                * "res != .13"
     """)
     content = '\n'.join([line.strip() for line in content.splitlines() if line.strip()])
     expected = '\n'.join([line.strip() for line in expected.splitlines() if line.strip()])
