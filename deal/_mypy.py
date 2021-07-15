@@ -1,6 +1,7 @@
+from typing import List, Optional
 from mypy.plugin import FunctionSigContext, Plugin
 from mypy.types import CallableType, AnyType, TypeOfAny
-from mypy.nodes import ARG_POS, Decorator, LambdaExpr, MypyFile, Context
+from mypy import nodes
 from mypy.checker import TypeChecker
 
 
@@ -11,16 +12,18 @@ class DealMypyPlugin(Plugin):
         return None
 
     def _handle_post(self, ctx: FunctionSigContext) -> CallableType:
-        if not isinstance(ctx.args[0][0], LambdaExpr):
+        if not isinstance(ctx.args[0][0], nodes.LambdaExpr):
             return ctx.default_signature
         checker = ctx.api
         assert isinstance(checker, TypeChecker)
-        dfn = self._get_def(checker.tree, ctx.context)
+        dfn = self._get_parent(ctx)
+        if dfn is None:
+            raise ValueError('not found')
         ftype = dfn.func.type
         assert isinstance(ftype, CallableType)
         validator_type = CallableType(
             arg_types=[ftype.ret_type],
-            arg_kinds=[ARG_POS],
+            arg_kinds=[nodes.ARG_POS],
             arg_names=ctx.args[0][0].arg_names,
             ret_type=AnyType(TypeOfAny.explicit),
             fallback=ftype.fallback,
@@ -29,15 +32,23 @@ class DealMypyPlugin(Plugin):
         dec_sig.arg_types[0] = validator_type
         return dec_sig
 
-    @staticmethod
-    def _get_def(tree: MypyFile, target: Context) -> Decorator:
-        for dfn in tree.defs:
-            if not isinstance(dfn, Decorator):
-                continue
-            for dec in dfn.decorators:
-                if dec is target:
-                    return dfn
-        raise ValueError('{} not found'.format(target))
+    def _get_parent(self, ctx: FunctionSigContext) -> Optional[nodes.Decorator]:
+        checker = ctx.api
+        assert isinstance(checker, TypeChecker)
+        return self._find_func(defs=checker.tree.defs, target=ctx.context)
+
+    def _find_func(self, defs: List[nodes.Statement], target: nodes.Context) -> Optional[nodes.Decorator]:
+        for dfn in defs:
+            if isinstance(dfn, nodes.Decorator):
+                for dec in dfn.decorators:
+                    if dec is target:
+                        return dfn
+                dfn = dfn.func
+
+            if isinstance(dfn, nodes.FuncDef):
+                result = self._find_func(defs=dfn.body.body, target=target)
+                if result is not None:
+                    return result
 
 
 def plugin(version: str):

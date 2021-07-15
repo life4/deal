@@ -73,6 +73,14 @@ tasks:
       - >
         {{.VENVS}}/base/bin/flitenv --venvs={{.VENVS}} lint run
         isort {{.CLI_ARGS}} .
+  mypy_test:run:
+    desc: "validate type annotations"
+    deps:
+      - install:lint
+    cmds:
+      - >
+        {{.VENVS}}/base/bin/flitenv --venvs={{.VENVS}} lint run
+        mypy_test {{.CLI_ARGS}} ./types/
 
   sphinx:run:
     desc: "generate documentation"
