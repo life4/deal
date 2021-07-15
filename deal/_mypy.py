@@ -14,17 +14,18 @@ class DealMypyPlugin(Plugin):
     def _handle_post(self, ctx: FunctionSigContext) -> CallableType:
         if not isinstance(ctx.args[0][0], nodes.LambdaExpr):
             return ctx.default_signature
-        checker = ctx.api
-        assert isinstance(checker, TypeChecker)
         dfn = self._get_parent(ctx)
         if dfn is None:
             raise ValueError('not found')
         ftype = dfn.func.type
         assert isinstance(ftype, CallableType)
+        names = ctx.args[0][0].arg_names
+        if len(names) != 1:
+            names = ['result']
         validator_type = CallableType(
             arg_types=[ftype.ret_type],
             arg_kinds=[nodes.ARG_POS],
-            arg_names=ctx.args[0][0].arg_names,
+            arg_names=names,
             ret_type=AnyType(TypeOfAny.explicit),
             fallback=ftype.fallback,
         )
@@ -44,11 +45,11 @@ class DealMypyPlugin(Plugin):
                     if dec is target:
                         return dfn
                 dfn = dfn.func
-
             if isinstance(dfn, nodes.FuncDef):
                 result = self._find_func(defs=dfn.body.body, target=target)
                 if result is not None:
                     return result
+        return None
 
 
 def plugin(version: str):
