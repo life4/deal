@@ -11,6 +11,8 @@ class DealMypyPlugin(Plugin):
             return self._handle_pre
         if fullname == 'deal._aliases.post':
             return self._handle_post
+        if fullname == 'deal._aliases.ensure':
+            return self._handle_ensure
         return None
 
     def _handle_pre(self, ctx: FunctionSigContext) -> CallableType:
@@ -23,7 +25,9 @@ class DealMypyPlugin(Plugin):
             return ctx.default_signature
         ftype = dfn.func.type
         assert isinstance(ftype, CallableType)
-        return self._set_validator_type(ctx, ftype)
+        return self._set_validator_type(ctx, ftype.copy_modified(
+            ret_type=AnyType(TypeOfAny.explicit),
+        ))
 
     def _handle_post(self, ctx: FunctionSigContext) -> CallableType:
         if not isinstance(ctx.args[0][0], nodes.LambdaExpr):
@@ -39,6 +43,24 @@ class DealMypyPlugin(Plugin):
             arg_types=[ftype.ret_type],
             arg_kinds=[nodes.ARG_POS],
             arg_names=[None],
+            ret_type=AnyType(TypeOfAny.explicit),
+            fallback=ftype.fallback,
+        ))
+
+    def _handle_ensure(self, ctx: FunctionSigContext) -> CallableType:
+        if not isinstance(ctx.args[0][0], nodes.LambdaExpr):
+            return ctx.default_signature
+        if ctx.args[0][0].arg_names == ['_']:
+            return ctx.default_signature
+        dfn = self._get_parent(ctx)
+        if dfn is None:
+            return ctx.default_signature
+        ftype = dfn.func.type
+        assert isinstance(ftype, CallableType)
+        return self._set_validator_type(ctx, CallableType(
+            arg_types=ftype.arg_types + [ftype.ret_type],
+            arg_kinds=ftype.arg_kinds + [nodes.ARG_POS],
+            arg_names=ftype.arg_names + ['result'],
             ret_type=AnyType(TypeOfAny.explicit),
             fallback=ftype.fallback,
         ))
