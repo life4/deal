@@ -30,3 +30,9 @@ def detect_methods() -> None:
         @deal.post(lambda r: r.hi)
         def f(self) -> int:
             return 4
+
+
+def do_not_fail_on_vaa_simple() -> None:
+    @deal.post(lambda _: _.result == 4)
+    def f(self) -> int:
+        return 4

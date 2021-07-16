@@ -14,6 +14,8 @@ class DealMypyPlugin(Plugin):
     def _handle_post(self, ctx: FunctionSigContext) -> CallableType:
         if not isinstance(ctx.args[0][0], nodes.LambdaExpr):
             return ctx.default_signature
+        if ctx.args[0][0].arg_names == ['_']:
+            return ctx.default_signature
         dfn = self._get_parent(ctx)
         if dfn is None:
             return ctx.default_signature
