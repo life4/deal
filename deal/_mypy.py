@@ -16,16 +16,13 @@ class DealMypyPlugin(Plugin):
             return ctx.default_signature
         dfn = self._get_parent(ctx)
         if dfn is None:
-            raise ValueError('not found')
+            return ctx.default_signature
         ftype = dfn.func.type
         assert isinstance(ftype, CallableType)
-        names = ctx.args[0][0].arg_names
-        if len(names) != 1:
-            names = ['result']
         validator_type = CallableType(
             arg_types=[ftype.ret_type],
             arg_kinds=[nodes.ARG_POS],
-            arg_names=names,
+            arg_names=[None],
             ret_type=AnyType(TypeOfAny.explicit),
             fallback=ftype.fallback,
         )
@@ -47,6 +44,10 @@ class DealMypyPlugin(Plugin):
                 dfn = dfn.func
             if isinstance(dfn, nodes.FuncDef):
                 result = self._find_func(defs=dfn.body.body, target=target)
+                if result is not None:
+                    return result
+            if isinstance(dfn, nodes.ClassDef):
+                result = self._find_func(defs=dfn.defs.body, target=target)
                 if result is not None:
                     return result
         return None

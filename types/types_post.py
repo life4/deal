@@ -22,3 +22,11 @@ def report_bad_arity() -> None:
     @deal.post(lambda: True)  # E: Cannot infer type of lambda
     def f() -> int:
         return 4
+
+
+def detect_methods() -> None:
+    class A:
+        # E: "int" has no attribute "hi"
+        @deal.post(lambda r: r.hi)
+        def f(self) -> int:
+            return 4
