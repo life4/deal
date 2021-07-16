@@ -7,9 +7,23 @@ from mypy.checker import TypeChecker
 
 class DealMypyPlugin(Plugin):
     def get_function_signature_hook(self, fullname: str):
+        if fullname == 'deal._aliases.pre':
+            return self._handle_pre
         if fullname == 'deal._aliases.post':
             return self._handle_post
         return None
+
+    def _handle_pre(self, ctx: FunctionSigContext) -> CallableType:
+        if not isinstance(ctx.args[0][0], nodes.LambdaExpr):
+            return ctx.default_signature
+        if ctx.args[0][0].arg_names == ['_']:
+            return ctx.default_signature
+        dfn = self._get_parent(ctx)
+        if dfn is None:
+            return ctx.default_signature
+        ftype = dfn.func.type
+        assert isinstance(ftype, CallableType)
+        return self._set_validator_type(ctx, ftype)
 
     def _handle_post(self, ctx: FunctionSigContext) -> CallableType:
         if not isinstance(ctx.args[0][0], nodes.LambdaExpr):
@@ -21,16 +35,19 @@ class DealMypyPlugin(Plugin):
             return ctx.default_signature
         ftype = dfn.func.type
         assert isinstance(ftype, CallableType)
-        validator_type = CallableType(
+        return self._set_validator_type(ctx, CallableType(
             arg_types=[ftype.ret_type],
             arg_kinds=[nodes.ARG_POS],
             arg_names=[None],
             ret_type=AnyType(TypeOfAny.explicit),
             fallback=ftype.fallback,
-        )
-        dec_sig = ctx.default_signature.copy_modified()
-        dec_sig.arg_types[0] = validator_type
-        return dec_sig
+        ))
+
+    @staticmethod
+    def _set_validator_type(ctx: FunctionSigContext, ftype: CallableType) -> CallableType:
+        arg_types = ctx.default_signature.arg_types.copy()
+        arg_types[0] = ftype
+        return ctx.default_signature.copy_modified(arg_types=arg_types)
 
     def _get_parent(self, ctx: FunctionSigContext) -> Optional[nodes.Decorator]:
         checker = ctx.api

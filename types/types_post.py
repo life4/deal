@@ -5,7 +5,7 @@ def preserve_function_annotation() -> None:
     @deal.post(lambda r: r > 0)
     def f() -> int:
         return 4
-    reveal_type(f())  # R: builtins.int
+    reveal_type(f)  # R: def () -> builtins.int
 
 
 def infer_validator_type() -> None:
