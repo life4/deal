@@ -14,9 +14,11 @@ __license__ = 'MIT'
 
 
 from ._aliases import (
+    dispatch,
     chain, ensure, has, implies, inv, post, pre, pure, raises, reason, safe,
 )
 from ._exceptions import (
+    NoMatchError,
     ContractError, InvContractError, MarkerError, OfflineContractError, PostContractError,
     PreContractError, RaisesContractError, ReasonContractError, SilentContractError,
 )
@@ -38,6 +40,7 @@ __all__ = [
 
     # decorators
     'chain',
+    'dispatch',
     'ensure',
     'has',
     'inv',
@@ -59,6 +62,7 @@ __all__ = [
     'ContractError',
     'InvContractError',
     'MarkerError',
+    'NoMatchError',
     'OfflineContractError',
     'PostContractError',
     'PreContractError',

@@ -458,3 +458,7 @@ def implies(test, then: _T) -> Union[bool, _T]:
     [wiki]: https://en.wikipedia.org/wiki/Material_conditional
     """
     return not test or then
+
+
+def dispatch(*functions: _CallableType) -> _CallableType:
+    return _decorators.Dispatch(functions)  # type: ignore

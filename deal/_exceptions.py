@@ -1,7 +1,7 @@
 import sys
 from contextlib import suppress
 from pathlib import Path
-from typing import Any, Dict, Optional, Type
+from typing import Any, Dict, Optional, Tuple, Type
 
 import pygments
 from pygments.formatters.terminal import TerminalFormatter
@@ -148,6 +148,17 @@ class OfflineContractError(MarkerError):
 
 class SilentContractError(MarkerError):
     pass
+
+
+class NoMatchError(Exception):
+    def __init__(self, exceptions: Tuple[PreContractError, ...]) -> None:
+        self.exceptions = exceptions
+
+    def __str__(self) -> str:
+        exceptions = []
+        for exc in self.exceptions:
+            exceptions.append(str(exc))
+        return '; '.join(exceptions)
 
 
 # Patch module name to show in repr `deal` instead of `deal._exceptions`
