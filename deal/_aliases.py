@@ -460,5 +460,5 @@ def implies(test, then: _T) -> Union[bool, _T]:
     return not test or then
 
 
-def dispatch(*functions: _CallableType) -> _CallableType:
-    return _decorators.Dispatch(functions)  # type: ignore
+def dispatch(func: _CallableType) -> _decorators.Dispatch[_CallableType]:
+    return _decorators.Dispatch.wrap(func)

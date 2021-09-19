@@ -1,17 +1,30 @@
-from typing import Callable, Tuple
+from functools import update_wrapper
+from typing import Generic, List
 
+from .base import CallableType
 from .._exceptions import NoMatchError, PreContractError
 
 
-class Dispatch:
-    __slots__ = ['functions']
+class Dispatch(Generic[CallableType]):
+    _functions: List[CallableType]
+    __call__: CallableType
 
-    def __init__(self, functions: Tuple[Callable, ...]):
-        self.functions = functions
+    def __init__(self):
+        self._functions = []
 
-    def __call__(self, *args, **kwargs):
+    @classmethod
+    def wrap(cls, func: CallableType) -> 'Dispatch[CallableType]':
+        self = cls()
+        update_wrapper(wrapper=self, wrapped=func)
+        return self
+
+    def register(self, function: CallableType) -> CallableType:
+        self._functions.append(function)
+        return function
+
+    def __call__(self, *args, **kwargs):  # type: ignore[no-redef]
         exceptions = []
-        for func in self.functions:
+        for func in self._functions:
             try:
                 return func(*args, **kwargs)
             except PreContractError as exc:
