@@ -1,5 +1,8 @@
 from pathlib import Path
 
+import pytest
+
+import deal
 from deal._cli._main import COMMANDS
 from deal.linter._rules import CheckMarkers, rules
 
@@ -13,12 +16,12 @@ def test_all_codes_listed():
     for checker in rules:
         if type(checker) is CheckMarkers:
             continue
-        code = '| DEAL{:03d} |'.format(checker.code)
-        assert code in content
+        line = '| DEAL{:03d} |'.format(checker.code)
+        assert line in content
 
     for marker, code in CheckMarkers.codes.items():
-        code = '| DEAL{:03d} | missed marker ({})'.format(code, marker)
-        assert code in content
+        line = '| DEAL{:03d} | missed marker ({})'.format(code, marker)
+        assert line in content
 
 
 def test_cli_included():
@@ -56,3 +59,10 @@ def test_examples_included():
         tmpl = '```eval_rst\n.. literalinclude:: ../../examples/{}\n```'
         line = tmpl.format(path.name)
         assert line in content
+
+
+@pytest.mark.parametrize('name', deal.__all__)
+def test_all_public_has_docstring(name: str):
+    obj = getattr(deal, name)
+    doc = obj.__doc__
+    assert doc is not None, f'{name} has no docstring'

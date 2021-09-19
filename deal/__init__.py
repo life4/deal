@@ -8,7 +8,7 @@ See [documentation][docs] for more details.
 
 # main package info
 __title__ = 'deal'
-__version__ = '4.7.2'
+__version__ = '4.7.3'
 __author__ = 'Gram Orsinium'
 __license__ = 'MIT'
 
