@@ -4,10 +4,10 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from sphinx.application import Sphinx
 import sphinx_rtd_theme
 from m2r2 import MdInclude, convert
 from recommonmark.transform import AutoStructify
+from sphinx.application import Sphinx
 
 
 sys.path.append(os.path.abspath('../'))

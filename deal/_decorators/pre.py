@@ -1,6 +1,6 @@
 from .._exceptions import PreContractError
 from .._types import ExceptionType
-from .base import Base, CallableType, SLOTS
+from .base import SLOTS, Base, CallableType
 
 
 class Pre(Base[CallableType]):

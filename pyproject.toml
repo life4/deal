@@ -46,6 +46,7 @@ lint = [
     "flake8-commas",
     "flake8-quotes",
     "mypy>=0.900",
+    "isort",
 ]
 docs = [
     "m2r2",
@@ -104,7 +105,7 @@ line_length = 90
 combine_as_imports = true
 balanced_wrapping = true
 lines_after_imports = 2
-skip = "venvs/"
+skip = ".venvs/"
 multi_line_output = 5
 include_trailing_comma = true
 

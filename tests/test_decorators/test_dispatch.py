@@ -1,5 +1,6 @@
-import deal
 import pytest
+
+import deal
 from deal._state import state
 
 

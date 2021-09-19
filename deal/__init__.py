@@ -14,13 +14,12 @@ __license__ = 'MIT'
 
 
 from ._aliases import (
-    dispatch,
-    chain, ensure, has, implies, inv, post, pre, pure, raises, reason, safe,
+    chain, dispatch, ensure, has, implies, inv, post, pre, pure, raises, reason, safe,
 )
 from ._exceptions import (
-    NoMatchError,
-    ContractError, InvContractError, MarkerError, OfflineContractError, PostContractError,
-    PreContractError, RaisesContractError, ReasonContractError, SilentContractError,
+    ContractError, InvContractError, MarkerError, NoMatchError,
+    OfflineContractError, PostContractError, PreContractError,
+    RaisesContractError, ReasonContractError, SilentContractError,
 )
 from ._imports import activate, module_load
 from ._schemes import Scheme

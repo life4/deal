@@ -1,8 +1,8 @@
 from functools import update_wrapper
 from typing import Generic, List
 
-from .base import CallableType
 from .._exceptions import NoMatchError, PreContractError
+from .base import CallableType
 
 
 class Dispatch(Generic[CallableType]):

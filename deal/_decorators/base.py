@@ -1,7 +1,7 @@
 import inspect
 from asyncio import iscoroutinefunction
 from contextlib import suppress
-from functools import update_wrapper, lru_cache
+from functools import lru_cache, update_wrapper
 from typing import Any, Callable, Dict, Generic, NoReturn, Optional, TypeVar
 
 import vaa
