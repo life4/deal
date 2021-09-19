@@ -95,12 +95,15 @@ def autodoc_signature(
     app, what, name, obj, options,
     signature: str, return_annotation: str,
 ):
-    if signature:
-        signature = signature.replace('deal._aliases.', '')
-        signature = signature.replace('Union[Exception, Type[Exception]]', 'Exception')
-    if return_annotation:
-        return_annotation = return_annotation.replace('deal._aliases.', '')
-    return (signature, return_annotation)
+    sig = signature
+    ret = return_annotation
+    if sig:
+        sig = sig.replace('deal._aliases.', '')
+        sig = sig.replace('Union[Exception, Type[Exception]]', 'Exception')
+    if ret:
+        ret = ret.replace('deal._aliases.', '')
+        ret = ret.replace('deal._decorators.dispatch.', '')
+    return (sig, ret)
 
 
 # https://github.com/rtfd/recommonmark/blob/master/docs/conf.py
