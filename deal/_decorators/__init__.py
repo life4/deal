@@ -1,3 +1,4 @@
+from .dispatch import Dispatch
 from .ensure import Ensure
 from .has import Has
 from .inv import Invariant
@@ -8,6 +9,7 @@ from .reason import Reason
 
 
 __all__ = [
+    'Dispatch',
     'Ensure',
     'Has',
     'Invariant',

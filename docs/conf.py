@@ -7,6 +7,7 @@ from pathlib import Path
 import sphinx_rtd_theme
 from m2r2 import MdInclude, convert
 from recommonmark.transform import AutoStructify
+from sphinx.application import Sphinx
 
 
 sys.path.append(os.path.abspath('../'))
@@ -32,7 +33,7 @@ version = ''
 release = ''
 
 language = None
-exclude_patterns = []
+exclude_patterns: list = []
 todo_include_todos = True
 
 pygments_style = 'sphinx'
@@ -90,8 +91,23 @@ def autodoc_process(app, what, name, obj, options, lines):
     lines[:] = text.split('\n')
 
 
+def autodoc_signature(
+    app, what, name, obj, options,
+    signature: str, return_annotation: str,
+):
+    sig = signature
+    ret = return_annotation
+    if sig:
+        sig = sig.replace('deal._aliases.', '')
+        sig = sig.replace('Union[Exception, Type[Exception]]', 'Exception')
+    if ret:
+        ret = ret.replace('deal._aliases.', '')
+        ret = ret.replace('deal._decorators.dispatch.', '')
+    return (sig, ret)
+
+
 # https://github.com/rtfd/recommonmark/blob/master/docs/conf.py
-def setup(app):
+def setup(app: Sphinx):
     config = {
         # 'url_resolver': lambda url: github_doc_root + url,
         'auto_toc_tree_section': 'Contents',
@@ -108,3 +124,4 @@ def setup(app):
     app.add_directive('mdinclude', MdInclude)
 
     app.connect('autodoc-process-docstring', autodoc_process)
+    app.connect('autodoc-process-signature', autodoc_signature)

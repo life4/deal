@@ -1,7 +1,7 @@
 import sys
 from contextlib import suppress
 from pathlib import Path
-from typing import Any, Dict, Optional, Type
+from typing import Any, Dict, Optional, Tuple, Type
 
 import pygments
 from pygments.formatters.terminal import TerminalFormatter
@@ -168,6 +168,21 @@ class SilentContractError(MarkerError):
 
     The printing is forbidden by markers `io`, `print`, `stdout`, and `stderr`.
     """
+
+
+class NoMatchError(Exception):
+    """The error raised by `deal.dispatch` when there is no matching implementation.
+
+    "No matching implementation" means that all registered functions
+    raised `PreContractError`.
+    """
+    __module__ = 'deal'
+
+    def __init__(self, exceptions: Tuple[PreContractError, ...]) -> None:
+        self.exceptions = exceptions
+
+    def __str__(self) -> str:
+        return '; '.join(str(e) for e in self.exceptions)
 
 
 # Patch module name to show in repr `deal` instead of `deal._exceptions`

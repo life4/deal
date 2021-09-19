@@ -7,6 +7,7 @@
 .. autofunction:: deal.post
 .. autofunction:: deal.ensure
 .. autofunction:: deal.inv
+.. autofunction:: deal.dispatch
 ```
 
 ## Side-effects and exceptions
