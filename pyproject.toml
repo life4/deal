@@ -51,8 +51,8 @@ lint = [
 docs = [
     "m2r2",
     "recommonmark",
-    "sphinx<=3.5.4",
-    "sphinx-rtd-theme<=0.5.2",
+    "sphinx==3.5.*",
+    "sphinx-rtd-theme==0.5.*",
 ]
 
 [tool.flit.entrypoints."flake8.extension"]
