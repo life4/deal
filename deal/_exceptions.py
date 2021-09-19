@@ -44,6 +44,8 @@ sys.excepthook = exception_hook
 
 
 class ContractError(AssertionError):
+    """The base class for all errors raised by deal contracts.
+    """
     message: str
     errors: Optional[Any]
     validator: Any
@@ -70,6 +72,8 @@ class ContractError(AssertionError):
 
     @cached_property
     def source(self) -> str:
+        """The raw unformatted source code of the validator.
+        """
         if self.validator is None:
             return ''
         source = get_validator_source(self.validator)
@@ -81,6 +85,8 @@ class ContractError(AssertionError):
 
     @cached_property
     def colored_source(self) -> str:
+        """The colored source code of the validator.
+        """
         source = pygments.highlight(
             code=self.source,
             lexer=PythonLexer(),
@@ -90,6 +96,8 @@ class ContractError(AssertionError):
 
     @cached_property
     def variables(self) -> str:
+        """Formatted variables passed into the validator.
+        """
         sep = ', '
         colors = COLORS
         if not state.color:
@@ -119,35 +127,47 @@ class ContractError(AssertionError):
 
 
 class PreContractError(ContractError):
-    pass
+    """The error raised by `deal.pre` for contract violation.
+    """
 
 
 class PostContractError(ContractError):
-    pass
+    """The error raised by `deal.post` for contract violation.
+    """
 
 
 class InvContractError(ContractError):
-    pass
+    """The error raised by `deal.inv` for contract violation.
+    """
 
 
 class RaisesContractError(ContractError):
-    pass
+    """The error raised by `deal.raises` for contract violation.
+    """
 
 
 class ReasonContractError(ContractError):
-    pass
+    """The error raised by `deal.reason` for contract violation.
+    """
 
 
 class MarkerError(ContractError):
-    pass
+    """The base class for errors raised by `deal.has` for contract violation.
+    """
 
 
 class OfflineContractError(MarkerError):
-    pass
+    """The error raised by `deal.has` for networking markers violation.
+
+    The networking is forbidden by markers `io`, `network`, and `socket`.
+    """
 
 
 class SilentContractError(MarkerError):
-    pass
+    """The error raised by `deal.has` for printing markers violation.
+
+    The printing is forbidden by markers `io`, `print`, `stdout`, and `stderr`.
+    """
 
 
 # Patch module name to show in repr `deal` instead of `deal._exceptions`
