@@ -171,14 +171,18 @@ class SilentContractError(MarkerError):
 
 
 class NoMatchError(Exception):
+    """The error raised by `deal.dispatch` when there is no matching implementation.
+
+    "No matching implementation" means that all registered functions
+    raised `PreContractError`.
+    """
+    __module__ = 'deal'
+
     def __init__(self, exceptions: Tuple[PreContractError, ...]) -> None:
         self.exceptions = exceptions
 
     def __str__(self) -> str:
-        exceptions = []
-        for exc in self.exceptions:
-            exceptions.append(str(exc))
-        return '; '.join(exceptions)
+        return '; '.join(str(e) for e in self.exceptions)
 
 
 # Patch module name to show in repr `deal` instead of `deal._exceptions`

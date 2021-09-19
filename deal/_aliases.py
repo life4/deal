@@ -187,6 +187,26 @@ def has(
     this is controlled by the [linter].
     Some side-effects are also checked at runtime.
 
+
+    ```pycon
+    >>> import deal
+    >>> @deal.has()
+    ... def greet():
+    ...   print('hello')
+    ...
+    >>> greet()
+    Traceback (most recent call last):
+        ...
+    SilentContractError
+    >>> @deal.has('stdout')
+    ... def greet():
+    ...   print('hello')
+    ...
+    >>> greet()
+    hello
+
+    ```
+
     [side-effects]: https://deal.readthedocs.io/basic/side-effects.html
     [linter]: https://deal.readthedocs.io/basic/linter.html
     """
@@ -451,4 +471,38 @@ def implies(test, then: T) -> Union[bool, T]:
 
 
 def dispatch(func: C) -> _decorators.Dispatch[C]:
+    """Combine multiple functions into one.
+
+    When the decorated function is called, it will try to call all registered
+    functions and return the result from the first one that doesn't raise
+    `PreContractError`.
+
+    ```pycon
+    >>> import deal
+    >>> @deal.dispatch
+    ... def double(x: int) -> int:
+    ...   raise NotImplementedError
+    ...
+    >>> @double.register
+    ... @deal.pre(lambda x: x == 3)
+    ... def _(x: int) -> int:
+    ...   return 6
+    ...
+    >>> @double.register
+    ... @deal.pre(lambda x: x == 4)
+    ... def _(x: int) -> int:
+    ...   return 8
+    ...
+    >>> double(3)
+    6
+    >>> double(4)
+    8
+    >>> double(5)
+    Traceback (most recent call last):
+        ...
+    NoMatchError: expected x == 3 (where x=5); expected x == 4 (where x=5)
+
+    ```
+
+    """
     return _decorators.Dispatch.wrap(func)
