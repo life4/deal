@@ -4,8 +4,8 @@ from . import _decorators
 from ._types import ExceptionType
 
 
-_CallableType = TypeVar('_CallableType', bound=Callable)
-_T = TypeVar('_T')
+C = TypeVar('C', bound=Callable)
+T = TypeVar('T')
 
 
 def pre(
@@ -13,7 +13,7 @@ def pre(
     *,
     message: str = None,
     exception: ExceptionType = None,
-) -> Callable[[_CallableType], _CallableType]:
+) -> Callable[[C], C]:
     """Decorator implementing precondition [value] contract.
 
     [Precondition][wiki] is
@@ -23,12 +23,9 @@ def pre(
     :param validator: a function or validator that implements the contract.
     :param message: error message for the exception raised on contract violation.
         No error message by default.
-    :type message: str, optional
     :param exception: exception type to raise on the contract violation.
         ``PreContractError`` by default.
-    :type exception: ExceptionType, optional
     :return: a function wrapper.
-    :rtype: Callable[[_CallableType], _CallableType]
 
     ```pycon
     >>> import deal
@@ -47,7 +44,7 @@ def pre(
     [wiki]: https://en.wikipedia.org/wiki/Precondition
     [value]: https://deal.readthedocs.io/basic/values.html
     """
-    cls = _decorators.Pre[_CallableType]
+    cls = _decorators.Pre[C]
     return cls(validator=validator, message=message, exception=exception)
 
 
@@ -56,7 +53,7 @@ def post(
     *,
     message: str = None,
     exception: ExceptionType = None,
-) -> Callable[[_CallableType], _CallableType]:
+) -> Callable[[C], C]:
     """Decorator implementing postcondition [value] contract.
 
     [Postcondition][wiki] is
@@ -66,12 +63,9 @@ def post(
     :param validator: a function or validator that implements the contract.
     :param message: error message for the exception raised on contract violation.
         No error message by default.
-    :type message: str, optional
     :param exception: exception type to raise on the contract violation.
         ``PostContractError`` by default.
-    :type exception: ExceptionType, optional
     :return: a function wrapper.
-    :rtype: Callable[[_CallableType], _CallableType]
 
     ```pycon
     >>> import deal
@@ -90,7 +84,7 @@ def post(
     [wiki]: https://en.wikipedia.org/wiki/Postcondition
     [value]: https://deal.readthedocs.io/basic/values.html
     """
-    cls = _decorators.Post[_CallableType]
+    cls = _decorators.Post[C]
     return cls(validator=validator, message=message, exception=exception)
 
 
@@ -99,7 +93,7 @@ def ensure(
     *,
     message: str = None,
     exception: ExceptionType = None,
-) -> Callable[[_CallableType], _CallableType]:
+) -> Callable[[C], C]:
     """Decorator implementing postcondition [value] contract.
 
     [Postcondition][wiki] is
@@ -112,12 +106,9 @@ def ensure(
     :param validator: a function or validator that implements the contract.
     :param message: error message for the exception raised on contract violation.
         No error message by default.
-    :type message: str, optional
     :param exception: exception type to raise on the contract violation.
         `PostContractError` by default.
-    :type exception: ExceptionType, optional
     :return: a function wrapper.
-    :rtype: Callable[[_CallableType], _CallableType]
 
     ```pycon
     >>> import deal
@@ -136,7 +127,7 @@ def ensure(
     [wiki]: https://en.wikipedia.org/wiki/Postcondition
     [value]: https://deal.readthedocs.io/basic/values.html
     """
-    cls = _decorators.Ensure[_CallableType]
+    cls = _decorators.Ensure[C]
     return cls(validator=validator, message=message, exception=exception)
 
 
@@ -144,23 +135,19 @@ def raises(
     *exceptions: Type[Exception],
     message: str = None,
     exception: ExceptionType = None,
-) -> Callable[[_CallableType], _CallableType]:
+) -> Callable[[C], C]:
     """Decorator listing the exceptions which the function can raise.
 
-    Implements the most important [exception] contract.
+    Implements [exception] contract.
     If the function raises an exception not listed in the decorator,
     `RaisesContractError` will be raised.
 
     :param exceptions: exceptions which the function can raise.
-    :type exceptions: Type[Exception].
     :param message: error message for the exception raised on contract violation.
         No error message by default.
-    :type message: str, optional
     :param exception: exception type to raise on the contract violation.
         `RaisesContractError` by default.
-    :type exception: ExceptionType, optional
     :return: a function wrapper.
-    :rtype: Callable[[_T], _T]
 
     ```pycon
     >>> import deal
@@ -182,9 +169,9 @@ def raises(
 
     ```
 
-    [exception] https://deal.readthedocs.io/basic/exceptions.html
+    [exception]: https://deal.readthedocs.io/basic/exceptions.html
     """
-    cls = _decorators.Raises[_CallableType]
+    cls = _decorators.Raises[C]
     return cls(*exceptions, message=message, exception=exception)
 
 
@@ -192,7 +179,7 @@ def has(
     *markers: str,
     message: str = None,
     exception: ExceptionType = None,
-) -> Callable[[_CallableType], _CallableType]:
+) -> Callable[[C], C]:
     """Decorator controlling [side-effects] of the function.
 
     Allows to specify markers identifying which side-effect the functon may have.
@@ -203,7 +190,7 @@ def has(
     [side-effects]: https://deal.readthedocs.io/basic/side-effects.html
     [linter]: https://deal.readthedocs.io/basic/linter.html
     """
-    cls = _decorators.Has[_CallableType]
+    cls = _decorators.Has[C]
     return cls(*markers, message=message, exception=exception)
 
 
@@ -213,7 +200,7 @@ def reason(
     *,
     message: str = None,
     exception: ExceptionType = None,
-) -> Callable[[_CallableType], _CallableType]:
+) -> Callable[[C], C]:
     """
     Decorator implementing [exception] contract.
 
@@ -222,16 +209,12 @@ def reason(
     the function raises an exception.
 
     :param event: exception raising which will trigger contract validation.
-    :type event: Type[Exception].
     :param validator: a function or validator that implements the contract.
     :param message: error message for the exception raised on contract violation.
         No error message by default.
-    :type message: str, optional
     :param exception: exception type to raise on the contract violation.
         `ReasonContractError` by default.
-    :type exception: ExceptionType, optional
     :return: a function wrapper.
-    :rtype: Callable[[_T], _T]
 
     ```pycon
     >>> import deal
@@ -256,7 +239,7 @@ def reason(
 
     [exception]: https://deal.readthedocs.io/basic/exceptions.html
     """
-    cls = _decorators.Reason[_CallableType]
+    cls = _decorators.Reason[C]
     return cls(event=event, validator=validator, message=message, exception=exception)
 
 
@@ -265,7 +248,7 @@ def inv(
     *,
     message: str = None,
     exception: ExceptionType = None,
-) -> Callable[[_T], _T]:
+) -> Callable[[T], T]:
     """
     Decorator implementing invariant [value] contract.
 
@@ -281,12 +264,9 @@ def inv(
     :param validator: a function or validator that implements the contract.
     :param message: error message for the exception raised on contract violation.
         No error message by default.
-    :type message: str, optional
     :param exception: exception type to raise on the contract violation.
         `InvContractError` by default.
-    :type exception: ExceptionType, optional
     :return: a class wrapper.
-    :rtype: Callable[[_T], _T]
 
     ```pycon
     >>> import deal
@@ -319,7 +299,7 @@ def inv(
     [wiki]: https://en.wikipedia.org/wiki/Class_invariant
     [value]: https://deal.readthedocs.io/basic/values.html
     """
-    cls = _decorators.Invariant[_CallableType]
+    cls = _decorators.Invariant[C]
     return cls(  # type: ignore
         validator=validator,
         message=message,
@@ -332,12 +312,12 @@ def safe(
     *,
     message: str = None,
     exception: ExceptionType = None,
-) -> Callable[[_CallableType], _CallableType]:
+) -> Callable[[C], C]:
     pass  # pragma: no cover
 
 
 @overload
-def safe(_func: _CallableType) -> _CallableType:
+def safe(_func: C) -> C:
     pass  # pragma: no cover
 
 
@@ -369,7 +349,7 @@ def safe(_func=None, **kwargs):
     return raises()(_func)
 
 
-def chain(*contracts) -> Callable[[_CallableType], _CallableType]:
+def chain(*contracts: Callable[[C], C]) -> Callable[[C], C]:
     """Decorator to chain 2 or more contracts together.
 
     It can be helpful to store contracts separately from the function.
@@ -402,7 +382,6 @@ def chain(*contracts) -> Callable[[_CallableType], _CallableType]:
 
     :param contracts: contracts to chain.
     :return: a function wrapper
-    :rtype: Callable[[_CallableType], _CallableType]
     """
     def wrapped(func):
         for contract in contracts:
@@ -411,7 +390,7 @@ def chain(*contracts) -> Callable[[_CallableType], _CallableType]:
     return wrapped
 
 
-def pure(_func: _CallableType) -> _CallableType:
+def pure(_func: C) -> C:
     """Decorator for [pure functions][wiki].
 
     Alias for `@deal.chain(deal.has(), deal.safe)`.
@@ -447,7 +426,7 @@ def pure(_func: _CallableType) -> _CallableType:
     return chain(has(), safe)(_func)
 
 
-def implies(test, then: _T) -> Union[bool, _T]:
+def implies(test, then: T) -> Union[bool, T]:
     """Check `then` only if `test` is true.
 
     A convenient helper for contracts that must be checked only for some cases.
@@ -471,5 +450,5 @@ def implies(test, then: _T) -> Union[bool, _T]:
     return not test or then
 
 
-def dispatch(func: _CallableType) -> _decorators.Dispatch[_CallableType]:
+def dispatch(func: C) -> _decorators.Dispatch[C]:
     return _decorators.Dispatch.wrap(func)
