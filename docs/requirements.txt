@@ -1,14 +1,1 @@
-# that's for readthedocs
-
-# to build docs
-m2r2
-recommonmark
-sphinx==3.5.4
-sphinx-rtd-theme
-
-# project deps to run `autodoc`
-astroid
-hypothesis
-typeguard
-vaa
-deal_solver
+.

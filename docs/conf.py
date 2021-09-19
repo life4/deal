@@ -121,6 +121,7 @@ def setup(app: Sphinx):
     app.add_config_value('m2r_parse_relative_links', False, 'env')
     app.add_config_value('m2r_anonymous_references', False, 'env')
     app.add_config_value('m2r_disable_inline_math', False, 'env')
+    app.add_config_value('m2r_use_mermaid', False, 'env')
     app.add_directive('mdinclude', MdInclude)
 
     app.connect('autodoc-process-docstring', autodoc_process)
