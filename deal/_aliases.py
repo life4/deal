@@ -14,8 +14,8 @@ def pre(
     message: str = None,
     exception: ExceptionType = None,
 ) -> Callable[[_CallableType], _CallableType]:
-    """
-    Decorator implementing precondition [value][value] contract.
+    """Decorator implementing precondition [value] contract.
+
     [Precondition][wiki] is
     a condition that must be true before the function is executed.
     Raises `PreContractError` otherwise.
@@ -57,8 +57,8 @@ def post(
     message: str = None,
     exception: ExceptionType = None,
 ) -> Callable[[_CallableType], _CallableType]:
-    """
-    Decorator implementing postcondition [value][value] contract.
+    """Decorator implementing postcondition [value] contract.
+
     [Postcondition][wiki] is
     a condition that must be true for the function result.
     Raises `PostContractError` otherwise.
@@ -100,8 +100,8 @@ def ensure(
     message: str = None,
     exception: ExceptionType = None,
 ) -> Callable[[_CallableType], _CallableType]:
-    """
-    Decorator implementing postcondition [value] contract.
+    """Decorator implementing postcondition [value] contract.
+
     [Postcondition][wiki] is
     a condition that must be true for the function result.
     Raises `PostContractError` otherwise.
@@ -145,8 +145,8 @@ def raises(
     message: str = None,
     exception: ExceptionType = None,
 ) -> Callable[[_CallableType], _CallableType]:
-    """
-    Decorators listing exceptions which the function can raise.
+    """Decorator listing the exceptions which the function can raise.
+
     Implements the most important [exception] contract.
     If the function raises an exception not listed in the decorator,
     `RaisesContractError` will be raised.
@@ -193,6 +193,16 @@ def has(
     message: str = None,
     exception: ExceptionType = None,
 ) -> Callable[[_CallableType], _CallableType]:
+    """Decorator controlling [side-effects] of the function.
+
+    Allows to specify markers identifying which side-effect the functon may have.
+    Side-effects must be propagated into all callers using `deal.has`,
+    this is controlled by the [linter].
+    Some side-effects are also checked at runtime.
+
+    [side-effects]: https://deal.readthedocs.io/basic/side-effects.html
+    [linter]: https://deal.readthedocs.io/basic/linter.html
+    """
     cls = _decorators.Has[_CallableType]
     return cls(*markers, message=message, exception=exception)
 
@@ -206,6 +216,7 @@ def reason(
 ) -> Callable[[_CallableType], _CallableType]:
     """
     Decorator implementing [exception] contract.
+
     Allows to assert precondition for raised exception.
     It's like [@deal.ensure](#deal.ensure) but when instead of returning result
     the function raises an exception.
@@ -256,7 +267,7 @@ def inv(
     exception: ExceptionType = None,
 ) -> Callable[[_T], _T]:
     """
-    Decorator implementing invariant [value][value] contract.
+    Decorator implementing invariant [value] contract.
 
     [Invariant][wiki] is a condition that can be relied upon to be true during execution
     of a program. `@deal.inv` is triggered in 3 cases:
@@ -359,8 +370,8 @@ def safe(_func=None, **kwargs):
 
 
 def chain(*contracts) -> Callable[[_CallableType], _CallableType]:
-    """
-    Decorator to chain 2 or more contracts together.
+    """Decorator to chain 2 or more contracts together.
+
     It can be helpful to store contracts separately from the function.
     Consider using it when you have too many contracts.
     Otherwise, the function will be lost under a bunch of decorators.
@@ -401,8 +412,8 @@ def chain(*contracts) -> Callable[[_CallableType], _CallableType]:
 
 
 def pure(_func: _CallableType) -> _CallableType:
-    """
-    Decorator for [pure functions][wiki].
+    """Decorator for [pure functions][wiki].
+
     Alias for `@deal.chain(deal.has(), deal.safe)`.
 
     Pure function has no side-effects and doesn't raise any exceptions.
