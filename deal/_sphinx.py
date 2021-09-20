@@ -1,4 +1,3 @@
-import enum
 from typing import Dict, List, TYPE_CHECKING
 from ._decorators import Raises, Reason, Pre, Post, Ensure
 from ._introspection import get_contracts
@@ -9,26 +8,18 @@ if TYPE_CHECKING:
     from sphinx.ext.autodoc import Options
 
 
-class AutoDoc(enum.Enum):
+def autodoc(app: 'SphinxApp') -> None:
     """
-    Process docstrings to add information about contracts.
+    Process docstrings to add information about deal contracts.
 
     https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html
     https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html
     """
-    Sphinx = "sphinx"
-    Google = "google"
-    Numpy = "numpy"
-
-    def register(self, app: 'SphinxApp') -> None:
-        if self == AutoDoc.Sphinx:
-            app.setup_extension('sphinx.ext.autodoc')
-        else:
-            app.setup_extension('sphinx.ext.napoleon')
-        app.connect('autodoc-process-docstring', _process_sphinx)
+    assert 'sphinx.ext.autodoc' in app.extensions
+    app.connect('autodoc-process-docstring', _process_docstring)
 
 
-def _process_sphinx(
+def _process_docstring(
     app: 'SphinxApp',
     what: str,
     name: str,

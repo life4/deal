@@ -37,19 +37,36 @@ def example_google(a: int, b: int) -> float:
     return a / b
 
 
-@pytest.mark.parametrize('style', ['Sphinx', 'Google'])
+def example_plain(a: int, b: int) -> float:
+    """Example function.
+
+    Returns:
+        The description for return value.
+    """
+    return a / b
+
+
+CONFIG = """
+    import deal
+
+    extensions = [
+        'sphinx.ext.autodoc',
+        'sphinx.ext.napoleon',
+    ]
+
+    def setup(app):
+        deal.autodoc(app)
+"""
+
+
+@pytest.mark.parametrize('style', ['sphinx', 'google'])
 def test_autodoc_smoke(style: str, tmp_path: Path):
     path_in = tmp_path / 'in'
     path_in.mkdir()
     path_out = tmp_path / 'out'
-    (path_in / 'conf.py').write_text(dedent(f"""
-        import deal
-
-        def setup(app):
-            deal.AutoDoc.{style}.register(app)
-    """))
+    (path_in / 'conf.py').write_text(dedent(CONFIG))
     (path_in / 'index.rst').write_text(dedent(f"""
-        .. autofunction:: tests.test_sphinx.example_{style.lower()}
+        .. autofunction:: tests.test_sphinx.example_{style}
     """))
     exit_code = build_main([str(path_in), str(path_out), '-b', 'text', '-ET'])
     assert exit_code == 0
@@ -59,7 +76,7 @@ def test_autodoc_smoke(style: str, tmp_path: Path):
     assert 'b == 0' in content
 
     expected = dedent(f"""
-        tests.test_sphinx.example_{style.lower()}(a: int, b: int) -> float
+        tests.test_sphinx.example_{style}(a: int, b: int) -> float
             Example function.
             Returns:
                 The description for return value.
@@ -73,6 +90,26 @@ def test_autodoc_smoke(style: str, tmp_path: Path):
                 * "b != result"
                 * "res != .13"
     """)
-    content = '\n'.join([line.strip() for line in content.splitlines() if line.strip()])
-    expected = '\n'.join([line.strip() for line in expected.splitlines() if line.strip()])
+
+    lines = [line.strip() for line in content.splitlines()]
+    content = '\n'.join(line for line in lines if line)
+
+    lines = [line.strip() for line in expected.splitlines()]
+    expected = '\n'.join(line for line in lines if line)
+
     assert content.strip() == expected.strip()
+
+
+def test_autodoc_no_contracts(tmp_path: Path):
+    path_in = tmp_path / 'in'
+    path_in.mkdir()
+    path_out = tmp_path / 'out'
+    (path_in / 'conf.py').write_text(dedent(CONFIG))
+    (path_in / 'index.rst').write_text(
+        '.. autofunction:: tests.test_sphinx.example_plain',
+    )
+    exit_code = build_main([str(path_in), str(path_out), '-b', 'text', '-ET'])
+    assert exit_code == 0
+    content = (path_out / 'index.txt').read_text()
+    assert 'tests.test_sphinx.example_plain' in content
+    assert 'Contracts' not in content
