@@ -4,6 +4,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
+import deal
 import sphinx_rtd_theme
 from m2r2 import MdInclude, convert
 from recommonmark.transform import AutoStructify
@@ -126,3 +127,5 @@ def setup(app: Sphinx):
 
     app.connect('autodoc-process-docstring', autodoc_process)
     app.connect('autodoc-process-signature', autodoc_signature)
+
+    deal.autodoc(app)

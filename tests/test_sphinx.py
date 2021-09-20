@@ -10,7 +10,7 @@ from sphinx.cmd.build import build_main
 @deal.reason(ValueError, lambda a, b: a == b, message='a is equal to b')
 @deal.raises(ValueError, IndexError, ZeroDivisionError)
 @deal.pre(lambda a, b: b != 0)
-@deal.pre(lambda a, b: b != 0, message="b is not zero")
+@deal.pre(lambda a, b: b != 0, message='b is not zero')
 @deal.ensure(lambda a, b, result: b != result)
 @deal.post(lambda res: res != .13)
 def example_sphinx(a: int, b: int) -> float:
@@ -25,7 +25,7 @@ def example_sphinx(a: int, b: int) -> float:
 @deal.reason(ValueError, lambda a, b: a == b, message='a is equal to b')
 @deal.raises(ValueError, IndexError, ZeroDivisionError)
 @deal.pre(lambda a, b: b != 0)
-@deal.pre(lambda a, b: b != 0, message="b is not zero")
+@deal.pre(lambda a, b: b != 0, message='b is not zero')
 @deal.ensure(lambda a, b, result: b != result)
 @deal.post(lambda res: res != .13)
 def example_google(a: int, b: int) -> float:

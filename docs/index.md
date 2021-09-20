@@ -32,6 +32,7 @@
 
     details/module_load
     details/dispatch
+    details/sphinx
     details/verification
     details/stubs
     details/validators
