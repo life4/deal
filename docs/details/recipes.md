@@ -75,9 +75,13 @@ Never catch contract errors. Never rely on them in runtime. They are for tests a
 
 In short signature, `_` is a `dict` with access by attributes. Hence it has all dict attributes. So, if argument we need conflicts with a dict attribute, use getitem instead of getattr. For example, we should use `_['items']` instead of `_.items`.
 
-## What can be contract
+## Keep contracts pure
 
 You can use any logic inside the validator. However, thumb up rule is to keep contracts [pure](https://en.wikipedia.org/wiki/Pure_function) (without any side-effects, even logging). The main motivation for it is that some contracts can be partially executed by [linter](../basic/linter.md).
+
+## The `message` is description, not error
+
+The `message` argument should tell what is expected behavior without assuming that the user violated it. This is because the users can encounter it not only when a `ContractError` is raised but also when they just read the source code or [generated documentation](./sphinx). For example, if your contract checks that `b >= 0`, don't say "b is negative" (what is violated), say "b must be non-negative" (what is expected).
 
 ## Permissive license
 
