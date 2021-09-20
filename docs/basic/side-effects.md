@@ -58,33 +58,15 @@ Deal already know about some markers and will report if they are violated:
 +---------+--------------+----------------------------------+
 ```
 
-## Exceptions
+## Runtime
 
-What you should know:
+Some of the markers are checked at runtime:
 
-+ For every marker deal raises its own exception.
-+ Every such exception is inherited from `MarkerError`.
-+ `MarkerError` inherited from `ContractError`.
-+ `ContractError` inherited from built-in `AssertionError`.
++ If any of `io`, `network`, or `socket` is specified, `deal.has` will patch [socket](https://docs.python.org/3/library/socket.html) blocking all network requests. If the function tries to use the network, `OfflineContractError` is raised.
++ If any of `io`, `print`, or `stdout` is specified, `deal.has` will patch [sys.stdout](https://docs.python.org/3/library/sys.html#sys.stdout). If the function tries to use it, `SilentContractError` is raised.
++ If any of `io` or `stdout` is specified, `deal.has` will do the same as for `stdout` marker but for [sys.stderr](https://docs.python.org/3/library/sys.html#sys.stderr)
 
-```eval_rst
-+----------+----------------------+
-| marker   | exception            |
-+==========+======================+
-| network  | OfflineContractError |
-+----------+----------------------+
-| stdout   | SilentContractError  |
-+----------+----------------------+
-| stderr   | SilentContractError  |
-+----------+----------------------+
-```
-
-Quick Q&A session:
-
-+ **Question:** When should I worry about exception type raised by a contract?
-  + **Answer:** Never.
-+ **Question:** Where are other markers? What are their exceptions?
-  + **Answer:** Other markers aren't checked in runtime yet. Don't worry, you still have [linter](./linter.md).
+Other markers aren't checked in runtime yet but only checked by the [linter](./linter.md).
 
 ## Markers are properties
 

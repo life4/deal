@@ -1,8 +1,8 @@
 from pathlib import Path
 
-from ._core import run_test
-
 import yaml
+
+from ._core import run_test
 
 
 def main():

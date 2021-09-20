@@ -4,11 +4,11 @@ from pathlib import Path
 
 from astroid import AstroidSyntaxError
 
+from .. import __version__
 from ._error import Error
 from ._func import Func
 from ._rules import Required, rules
 from ._stub import StubsManager
-from .. import __version__
 
 
 class Checker:
