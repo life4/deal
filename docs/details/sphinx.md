@@ -2,6 +2,9 @@
 
 Deal has an integration with [sphinx] documentation generator, namely with [autodoc] extension. The integration includes all contracts for documented functions into the generated documentation.
 
+[sphinx]: https://www.sphinx-doc.org/en/master/
+[autodoc]: https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html
+
 The minimal config:
 
 ```python
@@ -23,5 +26,25 @@ This is how deal converts every contract into text:
 
 See also [sphinx](./examples.html#sphinx) example.
 
-[sphinx]: https://www.sphinx-doc.org/en/master/
-[autodoc]: https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html
+## Writing docstrings
+
+The [Writing docstrings](https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html) page of Sphinx documentation provides a good description on how to write docstrings in [RST format](https://devguide.python.org/documenting/). Also, there is [PEP-257](https://www.python.org/dev/peps/pep-0257/) which describes stylistic conventions related to docstrings (and tells what docstrings are).
+
+## Using Markdown
+
+If you prefer more human-friendly [Markdown](https://en.wikipedia.org/wiki/Markdown), it needs a bit of hacking. The [recommonmark](https://github.com/readthedocs/recommonmark) extension allows to use Markdown for Sphinx documentation but not for docstrings. If you want Markdown support for docstrings, you can add [m2r2](https://github.com/CrossNox/m2r2) converter into `docs/conf.py` as a hook for autodoc:
+
+```python
+from m2r2 import convert
+
+def autodoc_process(app, what, name, obj, options, lines):
+    if not lines:
+        return lines
+    text = convert('\n'.join(lines))
+    lines[:] = text.split('\n')
+
+def setup(app):
+    app.connect('autodoc-process-docstring', autodoc_process)
+```
+
+It doesn't matter what format you choose, deal supports all of them.
