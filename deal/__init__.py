@@ -5,6 +5,7 @@ See [documentation] for more details.
 [wiki]: https://en.wikipedia.org/wiki/Design_by_contract
 [documentation]: https://deal.readthedocs.io/index.html
 """
+from . import introspection
 from ._aliases import (
     chain, dispatch, ensure, has, implies, inv, post, pre, pure, raises, reason, safe,
 )
@@ -17,7 +18,6 @@ from ._imports import activate, module_load
 from ._schemes import Scheme
 from ._state import disable, enable, reset
 from ._testing import TestCase, cases
-from . import introspection
 
 
 __title__ = 'deal'

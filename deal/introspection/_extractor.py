@@ -1,5 +1,6 @@
-from typing import Callable, Iterator
 from types import MappingProxyType
+from typing import Callable, Iterator
+
 from .. import _decorators
 from . import _wrappers
 from ._wrappers import Contract
