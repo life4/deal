@@ -1,11 +1,14 @@
-from typing import Dict, List, TYPE_CHECKING
-from ._decorators import Raises, Reason, Pre, Post, Ensure
-from ._introspection import get_contracts
-from ._source import get_validator_source
+from typing import TYPE_CHECKING, Dict, List
+
+from . import introspection
+
 
 if TYPE_CHECKING:
     from sphinx.application import Sphinx as SphinxApp
     from sphinx.ext.autodoc import Options
+
+
+CLASSIC_CONTRACTS = (introspection.Pre, introspection.Post, introspection.Ensure)
 
 
 def autodoc(app: 'SphinxApp') -> None:
@@ -29,25 +32,30 @@ def _process_docstring(
     lines: List[str],
 ) -> None:
     raises: Dict[str, str] = dict()
-    contracts = []
-    for contract in get_contracts(obj):
-        if isinstance(contract, Raises):
+    contracts: List[str] = []
+    for contract in introspection.get_contracts(obj):
+        if isinstance(contract, introspection.Raises):
             for exc in contract.exceptions:
                 raises.setdefault(exc.__qualname__, '')
-        if isinstance(contract, Reason):
-            if contract.message:
-                message = contract.message
-            else:
-                source = get_validator_source(contract._make_validator())
-                message = f'``{source}``'
+            continue
+
+        if isinstance(contract, introspection.Reason):
+            message = contract.message or f'``{contract.source}``'
             raises[contract.event.__qualname__] = message
-        if isinstance(contract, (Pre, Post, Ensure)):
-            if contract.message:
-                message = contract.message
-            else:
-                source = get_validator_source(contract._make_validator())
-                message = f'``{source}``'
+            continue
+
+        if isinstance(contract, CLASSIC_CONTRACTS):
+            message = contract.message or f'``{contract.source}``'
             contracts.append(f'  * {message}')
+            continue
+
+        if isinstance(contract, introspection.Has):
+            lines.append(':side-effects:')
+            lines.extend(f'  * {m}' for m in contract.markers)
+            continue
+
+        raise RuntimeError('unreachable')  # pragma: no cover
+
     for exc_name, descr in sorted(raises.items()):
         lines.append(f':raises {exc_name}: {descr}')
     if contracts:

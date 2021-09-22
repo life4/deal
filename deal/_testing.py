@@ -7,10 +7,10 @@ import hypothesis.strategies
 import typeguard
 from hypothesis.internal.reflection import proxies
 
+from . import introspection
 from ._cached_property import cached_property
-from ._decorators import Pre, Raises
+from ._decorators import Pre
 from ._types import ArgsKwargsType
-from ._introspection import get_contracts
 
 
 F = typing.Callable[..., None]
@@ -206,8 +206,8 @@ class cases:  # noqa: N
 
     @staticmethod
     def _get_excs(func: typing.Any) -> typing.Iterator[typing.Type[Exception]]:
-        for obj in get_contracts(func):
-            if isinstance(obj, Raises):
+        for obj in introspection.get_contracts(func):
+            if isinstance(obj, introspection.Raises):
                 yield from obj.exceptions
 
     @cached_property

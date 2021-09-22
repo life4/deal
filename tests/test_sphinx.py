@@ -2,17 +2,24 @@ from pathlib import Path
 from textwrap import dedent
 
 import pytest
-import deal
 from sphinx.cmd.build import build_main
 
+import deal
 
-@deal.reason(ZeroDivisionError, lambda a, b: b == 0)
-@deal.reason(ValueError, lambda a, b: a == b, message='a is equal to b')
-@deal.raises(ValueError, IndexError, ZeroDivisionError)
-@deal.pre(lambda a, b: b != 0)
-@deal.pre(lambda a, b: b != 0, message='b is not zero')
-@deal.ensure(lambda a, b, result: b != result)
-@deal.post(lambda res: res != .13)
+
+contracts = deal.chain(
+    deal.reason(ZeroDivisionError, lambda a, b: b == 0),
+    deal.reason(ValueError, lambda a, b: a == b, message='a is equal to b'),
+    deal.raises(ValueError, IndexError, ZeroDivisionError),
+    deal.post(lambda res: res != .13),
+    deal.ensure(lambda a, b, result: b != result),
+    deal.pre(lambda a, b: b != 0, message='b is not zero'),
+    deal.pre(lambda a, b: b != 0),
+    deal.has('database'),
+)
+
+
+@contracts
 def example_sphinx(a: int, b: int) -> float:
     """Example function.
 
@@ -21,13 +28,7 @@ def example_sphinx(a: int, b: int) -> float:
     return a / b
 
 
-@deal.reason(ZeroDivisionError, lambda a, b: b == 0)
-@deal.reason(ValueError, lambda a, b: a == b, message='a is equal to b')
-@deal.raises(ValueError, IndexError, ZeroDivisionError)
-@deal.pre(lambda a, b: b != 0)
-@deal.pre(lambda a, b: b != 0, message='b is not zero')
-@deal.ensure(lambda a, b, result: b != result)
-@deal.post(lambda res: res != .13)
+@contracts
 def example_google(a: int, b: int) -> float:
     """Example function.
 
@@ -80,6 +81,8 @@ def test_autodoc_smoke(style: str, tmp_path: Path):
             Example function.
             Returns:
                 The description for return value.
+            Side-effects:
+                * database
             Raises:
                 * **IndexError** --
                 * **ValueError** -- a is equal to b
