@@ -1,6 +1,5 @@
-from typing import Iterator
-from types import FunctionType, MappingProxyType
-from .._decorators.base import Base
+from typing import Callable, Iterator
+from types import MappingProxyType
 from .. import _decorators
 from . import _wrappers
 from ._wrappers import Contract
@@ -16,14 +15,12 @@ WRAPPERS = MappingProxyType({
 })
 
 
-def get_contracts(func: FunctionType) -> Iterator[Contract]:
+def get_contracts(func: Callable) -> Iterator[Contract]:
     while True:
         cells = getattr(func, '__closure__', None)
         if cells:
             for cell in cells:
                 obj = cell.cell_contents
-                if not isinstance(obj, Base):
-                    continue
                 wrapper = WRAPPERS.get(type(obj))
                 if wrapper is None:
                     continue
