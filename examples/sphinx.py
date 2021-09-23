@@ -8,6 +8,7 @@ import deal
 @deal.pre(lambda a, b: b != 0, message='b is not zero')
 @deal.ensure(lambda a, b, result: b != result)
 @deal.post(lambda res: res != .13)
+@deal.has('database', 'network')
 def example(a: int, b: int) -> float:
     """Example function.
 

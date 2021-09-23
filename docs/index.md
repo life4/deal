@@ -32,7 +32,7 @@
 
     details/module_load
     details/dispatch
-    details/sphinx
+    details/docs
     details/verification
     details/stubs
     details/validators

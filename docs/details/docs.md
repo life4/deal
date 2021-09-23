@@ -1,4 +1,6 @@
-# Sphinx
+# Documentation
+
+## Sphinx autodoc
 
 Deal has an integration with [sphinx] documentation generator, namely with [autodoc] extension. The integration includes all contracts for documented functions into the generated documentation.
 

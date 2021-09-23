@@ -81,7 +81,7 @@ You can use any logic inside the validator. However, thumb up rule is to keep co
 
 ## The `message` is description, not error
 
-The `message` argument should tell what is expected behavior without assuming that the user violated it. This is because the users can encounter it not only when a `ContractError` is raised but also when they just read the source code or [generated documentation](./sphinx). For example, if your contract checks that `b >= 0`, don't say "b is negative" (what is violated), say "b must be non-negative" (what is expected).
+The `message` argument should tell what is expected behavior without assuming that the user violated it. This is because the users can encounter it not only when a `ContractError` is raised but also when they just read the source code or [generated documentation](./docs). For example, if your contract checks that `b >= 0`, don't say "b is negative" (what is violated), say "b must be non-negative" (what is expected).
 
 ## Permissive license
 

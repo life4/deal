@@ -40,6 +40,12 @@ Keep in mind that sphinx [skipped some of the docstrings](https://github.com/sph
     :members:
 ```
 
+## Introspection
+
+```eval_rst
+.. automodule:: deal.introspection
+```
+
 ## Other
 
 ```eval_rst

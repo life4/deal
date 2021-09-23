@@ -42,7 +42,7 @@ It's not "advanced usage", there is nothing advanced or difficult. It's about wr
 
 1. [module_load](../details/module_load) allows you to control what happens at the module load (import) time.
 1. [Dispatch](../details/dispatch) is a way to combine multiple implementations for a function into one based on pre-conditions.
-1. [Sphinx](../details/sphinx) integration is a way to generate documentation for contracts.
+1. [Documentation](../details/docs) provides information on generating documentation for functions with contracts (using Sphinx).
 1. [Stubs](../details/stubs) is a way to store some contracts in a JSON file instead of the source code. It can be helpful for third-party libraries. Some stubs already inside Deal.
 1. [More about testing](../details/tests) provides information on finding memory leaks and tweaking tests generation.
 1. [Validators](../details/validators) is a way to describe complex contracts using [Marshmallow](https://github.com/marshmallow-code/marshmallow) or another validation library.
@@ -55,4 +55,4 @@ Some external tools that can come in handy when using Deal:
 + [flake8](https://flake8.pycqa.org/en/latest/) and [flakehell](https://github.com/life4/flakehell/) can run [deal linter](linter). See [awesome-flake8-extensions](https://github.com/DmytroLitvinov/awesome-flake8-extensions) for more checks to catch bugs that are outside of the deal responsibility.
 + [mypy](https://mypy.readthedocs.io/en/stable/) is good for checking type annotations. So, we don't do that. See [awesome-python-typing](https://github.com/typeddjango/awesome-python-typing) for alternatives and runtime type checking solutions.
 + [pytest](https://docs.pytest.org/en/latest/) is a powerful framework to write and run [deal tests](tests).
-+ [sphinx](https://www.sphinx-doc.org/en/master/) and [autodoc](https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html) extension to [generate documentation for contracts](../details/sphinx).
++ [sphinx](https://www.sphinx-doc.org/en/master/) and [autodoc](https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html) extension to [generate documentation for contracts](../details/docs).
