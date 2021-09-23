@@ -1,6 +1,40 @@
 import pytest
 
 import deal
+from deal._decorators import Invariant
+from deal._decorators.base import Base
+from deal.introspection import _wrappers
+from deal.introspection._extractor import WRAPPERS
+
+
+def test_all_wrappers_registered():
+    wrappers = set()
+    for name in dir(_wrappers):
+        if name.startswith('_'):
+            continue
+        wrapper = getattr(_wrappers, name)
+        if wrapper is deal.introspection.Contract:
+            continue
+        if not isinstance(wrapper, type):
+            continue
+        if not issubclass(wrapper, deal.introspection.Contract):
+            continue
+        wrappers.add(wrapper)
+    assert wrappers == set(WRAPPERS.values())
+    assert deal.introspection.Contract not in WRAPPERS.values()
+
+
+def test_all_contracts_have_wrappers():
+    contracts = set(Base.__subclasses__())
+    excluded = {Invariant}
+    assert contracts == set(WRAPPERS) | excluded
+
+
+def test_example():
+    source = deal.introspection.__doc__.split('```python')[1].split('```')[0]
+    # deal cannot extract the source code for validator if there is no source file
+    source = source.replace("'x > 0'", "''")
+    exec(source)
 
 
 def test_get_contracts__pre():

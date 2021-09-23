@@ -1,10 +1,13 @@
 from functools import partial, update_wrapper
 from types import MethodType
-from typing import Callable
+from typing import Callable, TypeVar
 
 from .._exceptions import InvContractError
 from .._types import ExceptionType
-from .base import Base, CallableType
+from .base import Base
+
+
+T = TypeVar('T', bound=type)
 
 
 class InvariantedClass:
@@ -61,14 +64,18 @@ class InvariantedClass:
         self._validate()
 
 
-class Invariant(Base[CallableType]):
-    exception: ExceptionType = InvContractError
+class Invariant(Base[T]):
+    exception: ExceptionType
 
     def _init(self, *args, **kwargs):
         self.signature = None
         self.validator = self._make_validator()
         self.validate = self._validate
         return self.validate(*args, **kwargs)
+
+    @classmethod
+    def _default_exception(cls) -> ExceptionType:
+        return InvContractError
 
     def _validate(self, obj) -> None:
         """
@@ -86,7 +93,7 @@ class Invariant(Base[CallableType]):
         self.validate(*args, **kwargs)
         self.child_validator(*args, **kwargs)
 
-    def __call__(self, _class: type):  # type: ignore
+    def __call__(self, _class: T) -> T:
         """
         Step 2. Return wrapped class.
         """
@@ -110,4 +117,4 @@ class Invariant(Base[CallableType]):
         # Magic: _validate_base method uses Invariant as self, not _class
 
         # return update_wrapper(patched_class, _class)
-        return patched_class
+        return patched_class  # type: ignore[return-value]
