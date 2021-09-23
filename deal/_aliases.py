@@ -320,7 +320,7 @@ def inv(
     [value]: https://deal.readthedocs.io/basic/values.html
     """
     cls = _decorators.Invariant[C]
-    return cls(  # type: ignore
+    return cls(
         validator=validator,
         message=message,
         exception=exception,
