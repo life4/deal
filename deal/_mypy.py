@@ -4,7 +4,7 @@ import atexit
 import os
 from collections import defaultdict
 from time import perf_counter
-from typing import DefaultDict, List, Optional
+from typing import DefaultDict, List, Optional, Type
 
 from mypy import nodes
 from mypy.checker import TypeChecker
@@ -193,5 +193,7 @@ class DealMypyPlugin(Plugin):
         return None
 
 
-def plugin(version: str):
+def mypy(version: str) -> Type[Plugin]:
+    """Entrypoint for mypy plugin.
+    """
     return DealMypyPlugin

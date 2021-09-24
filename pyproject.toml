@@ -87,7 +87,7 @@ exclude_lines = [
 [tool.mypy]
 files = ["deal"]
 python_version = 3.7
-plugins = ["deal/_mypy.py"]
+plugins = ["deal:mypy"]
 ignore_missing_imports = true
 show_error_codes = true
 

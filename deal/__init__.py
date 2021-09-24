@@ -15,6 +15,7 @@ from ._exceptions import (
     RaisesContractError, ReasonContractError, SilentContractError,
 )
 from ._imports import activate, module_load
+from ._mypy import mypy
 from ._schemes import Scheme
 from ._sphinx import autodoc
 from ._state import disable, enable, reset
@@ -28,9 +29,10 @@ __license__ = 'MIT'
 __all__ = [
     'autodoc',
     'cases',
+    'introspection',
+    'mypy',
     'Scheme',
     'TestCase',
-    'introspection',
 
     # state
     'disable',
