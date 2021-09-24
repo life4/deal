@@ -1,8 +1,11 @@
+# This file is excluded from coverage.
+
 from typing import List, Optional
-from mypy.plugin import FunctionSigContext, Plugin
-from mypy.types import CallableType, AnyType, TypeOfAny
+
 from mypy import nodes
 from mypy.checker import TypeChecker
+from mypy.plugin import FunctionSigContext, Plugin
+from mypy.types import AnyType, CallableType, TypeOfAny
 
 
 class DealMypyPlugin(Plugin):
