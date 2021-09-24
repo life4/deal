@@ -12,7 +12,7 @@
 * [Tracking exceptions and side-effects.][exceptions]
 * [Property-based testing.][tests]
 * [Static checker.][linter]
-* Integration with pytest, flake8, and hypothesis.
+* Integration with pytest, flake8, sphinx, and hypothesis.
 * Type annotations support.
 * [External validators support.][validators]
 * [Contracts for importing modules.][module_load]

@@ -11,7 +11,7 @@ import deal._testing
 from deal._state import state
 
 
-rex = re.compile(r'deal\.(\w*ContractError)')
+rex = re.compile(r'deal\.(\w*Error)')
 
 
 class Checker(doctest.OutputChecker):

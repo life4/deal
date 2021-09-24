@@ -1,6 +1,6 @@
 from .._exceptions import PostContractError
 from .._types import ExceptionType
-from .base import Base, CallableType, SLOTS
+from .base import SLOTS, Base, CallableType
 
 
 class Ensure(Base[CallableType]):

@@ -7,6 +7,7 @@
 .. autofunction:: deal.post
 .. autofunction:: deal.ensure
 .. autofunction:: deal.inv
+.. autofunction:: deal.dispatch
 ```
 
 ## Side-effects and exceptions
@@ -37,6 +38,12 @@ Keep in mind that sphinx [skipped some of the docstrings](https://github.com/sph
 
 .. autoclass:: deal.TestCase
     :members:
+```
+
+## Introspection
+
+```eval_rst
+.. automodule:: deal.introspection
 ```
 
 ## Other

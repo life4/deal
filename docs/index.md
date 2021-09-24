@@ -31,6 +31,8 @@
     :caption: Dive deeper
 
     details/module_load
+    details/dispatch
+    details/docs
     details/verification
     details/stubs
     details/validators

@@ -3,7 +3,7 @@ from typing import Iterator, Type
 from .._cached_property import cached_property
 from .._exceptions import ReasonContractError
 from .._types import ExceptionType
-from .base import Base, CallableType, SLOTS
+from .base import SLOTS, Base, CallableType
 
 
 class Reason(Base[CallableType]):

@@ -1,35 +1,36 @@
 """
 **Deal** is a Python library for [design by contract][wiki] (DbC) programming.
-See [documentation][docs] for more details.
+See [documentation] for more details.
 
 [wiki]: https://en.wikipedia.org/wiki/Design_by_contract
-[docs]: https://deal.readthedocs.io/index.html
+[documentation]: https://deal.readthedocs.io/index.html
 """
-
-# main package info
-__title__ = 'deal'
-__version__ = '4.7.2'
-__author__ = 'Gram Orsinium'
-__license__ = 'MIT'
-
-
+from . import introspection
 from ._aliases import (
-    chain, ensure, has, implies, inv, post, pre, pure, raises, reason, safe,
+    chain, dispatch, ensure, has, implies, inv, post, pre, pure, raises, reason, safe,
 )
 from ._exceptions import (
-    ContractError, InvContractError, MarkerError, OfflineContractError, PostContractError,
-    PreContractError, RaisesContractError, ReasonContractError, SilentContractError,
+    ContractError, InvContractError, MarkerError, NoMatchError,
+    OfflineContractError, PostContractError, PreContractError,
+    RaisesContractError, ReasonContractError, SilentContractError,
 )
 from ._imports import activate, module_load
 from ._schemes import Scheme
+from ._sphinx import autodoc
 from ._state import disable, enable, reset
 from ._testing import TestCase, cases
 
 
+__title__ = 'deal'
+__version__ = '4.10.0'
+__author__ = 'Gram (@orsinium)'
+__license__ = 'MIT'
 __all__ = [
+    'autodoc',
     'cases',
     'Scheme',
     'TestCase',
+    'introspection',
 
     # state
     'disable',
@@ -38,6 +39,7 @@ __all__ = [
 
     # decorators
     'chain',
+    'dispatch',
     'ensure',
     'has',
     'inv',
@@ -59,6 +61,7 @@ __all__ = [
     'ContractError',
     'InvContractError',
     'MarkerError',
+    'NoMatchError',
     'OfflineContractError',
     'PostContractError',
     'PreContractError',

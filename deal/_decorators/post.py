@@ -1,6 +1,6 @@
 from .._exceptions import PostContractError
 from .._types import ExceptionType
-from .base import Base, SLOTS, CallableType
+from .base import SLOTS, Base, CallableType
 
 
 class Post(Base[CallableType]):
