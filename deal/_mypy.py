@@ -9,7 +9,7 @@ from typing import DefaultDict, List, Optional
 from mypy import nodes
 from mypy.checker import TypeChecker
 from mypy.plugin import FunctionSigContext, Plugin
-from mypy.types import AnyType, CallableType, TypeOfAny
+from mypy.types import AnyType, CallableType, TypeOfAny, Instance
 
 
 perf: DefaultDict[str, List[float]] = defaultdict(list)
@@ -52,6 +52,8 @@ class DealMypyPlugin(Plugin):
             return self._handle_ensure
         if fullname == 'deal._aliases.reason':
             return self._handle_reason
+        if fullname == 'deal._aliases.inv':
+            return self._handle_inv
         return None
 
     def _handle_reason(self, ctx: FunctionSigContext) -> CallableType:
@@ -63,11 +65,12 @@ class DealMypyPlugin(Plugin):
             return ctx.default_signature
         if validator.arg_names == ['_']:
             return ctx.default_signature
-        dfn = self._get_parent(ctx)
+        dfn = self._get_parent_func(ctx)
         if dfn is None:
             return ctx.default_signature
         ftype = dfn.func.type
-        assert isinstance(ftype, CallableType)
+        if not isinstance(ftype, CallableType):
+            return ctx.default_signature
         return self._set_validator_type(
             ctx=ctx,
             ftype=ftype.copy_modified(ret_type=AnyType(TypeOfAny.explicit)),
@@ -80,11 +83,12 @@ class DealMypyPlugin(Plugin):
             return ctx.default_signature
         if validator.arg_names == ['_']:
             return ctx.default_signature
-        dfn = self._get_parent(ctx)
+        dfn = self._get_parent_func(ctx)
         if dfn is None:
             return ctx.default_signature
         ftype = dfn.func.type
-        assert isinstance(ftype, CallableType)
+        if not isinstance(ftype, CallableType):
+            return ctx.default_signature
         return self._set_validator_type(ctx, CallableType(
             arg_types=[ftype.ret_type],
             arg_kinds=[nodes.ARG_POS],
@@ -94,15 +98,17 @@ class DealMypyPlugin(Plugin):
         ))
 
     def _handle_ensure(self, ctx: FunctionSigContext) -> CallableType:
-        if not isinstance(ctx.args[0][0], nodes.LambdaExpr):
+        validator = ctx.args[0][0]
+        if not isinstance(validator, nodes.LambdaExpr):
             return ctx.default_signature
-        if ctx.args[0][0].arg_names == ['_']:
+        if validator.arg_names == ['_']:
             return ctx.default_signature
-        dfn = self._get_parent(ctx)
+        dfn = self._get_parent_func(ctx)
         if dfn is None:
             return ctx.default_signature
         ftype = dfn.func.type
-        assert isinstance(ftype, CallableType)
+        if not isinstance(ftype, CallableType):
+            return ctx.default_signature
         return self._set_validator_type(ctx, CallableType(
             arg_types=ftype.arg_types + [ftype.ret_type],
             arg_kinds=ftype.arg_kinds + [nodes.ARG_POS],
@@ -110,6 +116,24 @@ class DealMypyPlugin(Plugin):
             ret_type=AnyType(TypeOfAny.explicit),
             fallback=ftype.fallback,
         ))
+
+    def _handle_inv(self, ctx: FunctionSigContext) -> CallableType:
+        validator = ctx.args[0][0]
+        if not isinstance(validator, nodes.LambdaExpr):
+            return ctx.default_signature
+        if validator.arg_names == ['_']:
+            return ctx.default_signature
+        dfn = self._get_parent_class(ctx)
+        if dfn is None:
+            return ctx.default_signature
+        ftype = CallableType(
+            arg_types=[Instance(dfn.info, [])],
+            arg_kinds=[nodes.ARG_POS],
+            arg_names=validator.arg_names,
+            ret_type=AnyType(TypeOfAny.explicit),
+            fallback=Instance(dfn.info, []),
+        )
+        return self._set_validator_type(ctx=ctx, ftype=ftype)
 
     @staticmethod
     def _set_validator_type(
@@ -121,12 +145,16 @@ class DealMypyPlugin(Plugin):
         arg_types[position] = ftype
         return ctx.default_signature.copy_modified(arg_types=arg_types)
 
-    def _get_parent(self, ctx: FunctionSigContext) -> Optional[nodes.Decorator]:
+    def _get_parent_func(self, ctx: FunctionSigContext) -> Optional[nodes.Decorator]:
         checker = ctx.api
         assert isinstance(checker, TypeChecker)
         return self._find_func(defs=checker.tree.defs, target=ctx.context)
 
-    def _find_func(self, defs: List[nodes.Statement], target: nodes.Context) -> Optional[nodes.Decorator]:
+    def _find_func(
+        self,
+        defs: List[nodes.Statement],
+        target: nodes.Context,
+    ) -> Optional[nodes.Decorator]:
         for dfn in defs:
             if isinstance(dfn, nodes.Decorator):
                 for dec in dfn.decorators:
@@ -139,6 +167,27 @@ class DealMypyPlugin(Plugin):
                     return result
             if isinstance(dfn, nodes.ClassDef):
                 result = self._find_func(defs=dfn.defs.body, target=target)
+                if result is not None:
+                    return result
+        return None
+
+    def _get_parent_class(self, ctx: FunctionSigContext) -> Optional[nodes.ClassDef]:
+        checker = ctx.api
+        assert isinstance(checker, TypeChecker)
+        return self._find_class(defs=checker.tree.defs, target=ctx.context)
+
+    def _find_class(
+        self,
+        defs: List[nodes.Statement],
+        target: nodes.Context,
+    ) -> Optional[nodes.ClassDef]:
+        for dfn in defs:
+            if isinstance(dfn, nodes.ClassDef):
+                for dec in dfn.decorators:
+                    if dec is target:
+                        return dfn
+            if isinstance(dfn, nodes.FuncDef):
+                result = self._find_class(defs=dfn.body.body, target=target)
                 if result is not None:
                     return result
         return None
