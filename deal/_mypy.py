@@ -50,26 +50,35 @@ class DealMypyPlugin(Plugin):
             return self._handle_post
         if fullname == 'deal._aliases.ensure':
             return self._handle_ensure
+        if fullname == 'deal._aliases.reason':
+            return self._handle_reason
         return None
 
-    def _handle_pre(self, ctx: FunctionSigContext) -> CallableType:
-        if not isinstance(ctx.args[0][0], nodes.LambdaExpr):
+    def _handle_reason(self, ctx: FunctionSigContext) -> CallableType:
+        return self._handle_pre(ctx, position=1)
+
+    def _handle_pre(self, ctx: FunctionSigContext, position: int = 0) -> CallableType:
+        validator = ctx.args[position][0]
+        if not isinstance(validator, nodes.LambdaExpr):
             return ctx.default_signature
-        if ctx.args[0][0].arg_names == ['_']:
+        if validator.arg_names == ['_']:
             return ctx.default_signature
         dfn = self._get_parent(ctx)
         if dfn is None:
             return ctx.default_signature
         ftype = dfn.func.type
         assert isinstance(ftype, CallableType)
-        return self._set_validator_type(ctx, ftype.copy_modified(
-            ret_type=AnyType(TypeOfAny.explicit),
-        ))
+        return self._set_validator_type(
+            ctx=ctx,
+            ftype=ftype.copy_modified(ret_type=AnyType(TypeOfAny.explicit)),
+            position=position,
+        )
 
     def _handle_post(self, ctx: FunctionSigContext) -> CallableType:
-        if not isinstance(ctx.args[0][0], nodes.LambdaExpr):
+        validator = ctx.args[0][0]
+        if not isinstance(validator, nodes.LambdaExpr):
             return ctx.default_signature
-        if ctx.args[0][0].arg_names == ['_']:
+        if validator.arg_names == ['_']:
             return ctx.default_signature
         dfn = self._get_parent(ctx)
         if dfn is None:
@@ -103,9 +112,13 @@ class DealMypyPlugin(Plugin):
         ))
 
     @staticmethod
-    def _set_validator_type(ctx: FunctionSigContext, ftype: CallableType) -> CallableType:
+    def _set_validator_type(
+        ctx: FunctionSigContext,
+        ftype: CallableType,
+        position: int = 0,
+    ) -> CallableType:
         arg_types = ctx.default_signature.arg_types.copy()
-        arg_types[0] = ftype
+        arg_types[position] = ftype
         return ctx.default_signature.copy_modified(arg_types=arg_types)
 
     def _get_parent(self, ctx: FunctionSigContext) -> Optional[nodes.Decorator]:
