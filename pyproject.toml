@@ -73,7 +73,7 @@ addopts = [
 branch = true
 omit = [
     "deal/linter/_template.py",
-    "deal/_mypy.py",
+    "deal/mypy.py",
 ]
 
 [tool.coverage.report]
@@ -87,7 +87,7 @@ exclude_lines = [
 [tool.mypy]
 files = ["deal"]
 python_version = 3.7
-plugins = ["deal:mypy"]
+plugins = ["deal.mypy"]
 ignore_missing_imports = true
 show_error_codes = true
 

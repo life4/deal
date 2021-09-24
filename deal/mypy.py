@@ -1,3 +1,5 @@
+"""Entrypoint for mypy plugin.
+"""
 # This file is excluded from coverage.
 
 import atexit
@@ -193,7 +195,5 @@ class DealMypyPlugin(Plugin):
         return None
 
 
-def mypy(version: str) -> Type[Plugin]:
-    """Entrypoint for mypy plugin.
-    """
+def plugin(version: str) -> Type[Plugin]:
     return DealMypyPlugin
