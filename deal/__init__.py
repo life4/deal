@@ -16,6 +16,7 @@ from ._exceptions import (
 )
 from ._imports import activate, module_load
 from ._schemes import Scheme
+from ._sphinx import autodoc
 from ._state import disable, enable, reset
 from ._testing import TestCase, cases
 
@@ -25,6 +26,7 @@ __version__ = '4.9.0'
 __author__ = 'Gram (@orsinium)'
 __license__ = 'MIT'
 __all__ = [
+    'autodoc',
     'cases',
     'Scheme',
     'TestCase',

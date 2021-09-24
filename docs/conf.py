@@ -9,6 +9,8 @@ from m2r2 import MdInclude, convert
 from recommonmark.transform import AutoStructify
 from sphinx.application import Sphinx
 
+import deal
+
 
 sys.path.append(os.path.abspath('../'))
 extensions = [
@@ -126,3 +128,5 @@ def setup(app: Sphinx):
 
     app.connect('autodoc-process-docstring', autodoc_process)
     app.connect('autodoc-process-signature', autodoc_signature)
+
+    deal.autodoc(app)

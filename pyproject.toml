@@ -40,6 +40,7 @@ test = [
     "marshmallow",
     "pytest",
     "urllib3",
+    "sphinx",
 ]
 lint = [
     "flake8",
@@ -79,7 +80,8 @@ omit = [
 exclude_lines = [
     "pragma: no cover",
     "raise NotImplementedError",
-    "pass",
+    "  pass",
+    "if TYPE_CHECKING:",
 ]
 
 [tool.mypy]

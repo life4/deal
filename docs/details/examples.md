@@ -85,3 +85,34 @@ examples/format.py
     print(format('{:d}', 'a'))          # bad type
           ^
 ```
+
+## sphinx
+
+Source code:
+
+```eval_rst
+.. literalinclude:: ../../examples/sphinx.py
+```
+
+Sphinx config (`docs/conf.py`):
+
+```python
+import deal
+
+extensions = ['sphinx.ext.autodoc']
+
+def setup(app):
+    deal.autodoc(app)
+```
+
+Including into a documentation page (`docs/index.rst`):
+
+```rst
+.. autofunction:: examples.sphinx.example
+```
+
+Generated output:
+
+```eval_rst
+.. autofunction:: examples.sphinx.example
+```

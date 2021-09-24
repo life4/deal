@@ -79,6 +79,7 @@ tasks:
     deps:
       - install:docs
     cmds:
+      - rm -rf docs/build
       - >
         {{.VENVS}}/base/bin/flitenv --venvs={{.VENVS}} docs run
         sphinx-build -W docs docs/build {{.CLI_ARGS}}
