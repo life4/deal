@@ -52,7 +52,7 @@ It's not "advanced usage", there is nothing advanced or difficult. It's about wr
 
 Some external tools that can come in handy when using Deal:
 
-+ [flake8](https://flake8.pycqa.org/en/latest/) and [flakehell](https://github.com/life4/flakehell/) can run [deal linter](linter). See [awesome-flake8-extensions](https://github.com/DmytroLitvinov/awesome-flake8-extensions) for more checks to catch bugs that are outside of the deal responsibility.
++ [flake8](https://flake8.pycqa.org/en/latest/) can run [deal linter](linter). See [awesome-flake8-extensions](https://github.com/DmytroLitvinov/awesome-flake8-extensions) for more checks to catch bugs that are outside of the deal responsibility.
 + [mypy](https://mypy.readthedocs.io/en/stable/) is good for checking type annotations. So, we don't do that. See [awesome-python-typing](https://github.com/typeddjango/awesome-python-typing) for alternatives and runtime type checking solutions.
 + [pytest](https://docs.pytest.org/en/latest/) is a powerful framework to write and run [deal tests](tests).
 + [sphinx](https://www.sphinx-doc.org/en/master/) and [autodoc](https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html) extension to [generate documentation for contracts](../details/docs).
