@@ -1,6 +1,10 @@
 # This file is excluded from coverage.
 
-from typing import List, Optional
+import atexit
+import os
+from collections import defaultdict
+from time import perf_counter
+from typing import DefaultDict, List, Optional
 
 from mypy import nodes
 from mypy.checker import TypeChecker
@@ -8,7 +12,37 @@ from mypy.plugin import FunctionSigContext, Plugin
 from mypy.types import AnyType, CallableType, TypeOfAny
 
 
+perf: DefaultDict[str, List[float]] = defaultdict(list)
+TRACK_PERF = os.getenv('DEAL_TRACK_PERF')
+
+
+def show_perf():
+    overall = .0
+    for name, times in sorted(perf.items()):
+        total = sum(times)
+        count = len(times)
+        mean = total / count
+        print(f'{name:30} | {count:5} * {mean:.7f} = {total:.4f}')
+        overall += total
+    print(f'TOTAL: {overall}')
+
+
+if TRACK_PERF:
+    atexit.register(show_perf)
+
+
 class DealMypyPlugin(Plugin):
+    def __getattribute__(self, name: str):
+        if not TRACK_PERF:
+            return super().__getattribute__(name)
+
+        start = perf_counter()
+        try:
+            return super().__getattribute__(name)
+        finally:
+            now = perf_counter()
+            perf[name].append(now - start)
+
     def get_function_signature_hook(self, fullname: str):
         if fullname == 'deal._aliases.pre':
             return self._handle_pre
