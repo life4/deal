@@ -4,7 +4,7 @@
 [![PyPI version](https://img.shields.io/pypi/v/deal.svg)](https://pypi.python.org/pypi/deal)
 [![Development Status](https://img.shields.io/pypi/status/deal.svg)](https://pypi.python.org/pypi/deal)
 
-**Deal** -- python library for [design by contract](https://en.wikipedia.org/wiki/Design_by_contract) (DbC) and checking values, exceptions, and side-effects. Read [intro](https://deal.readthedocs.io/basic/intro.html) to get started.
+A Python library for [design by contract](https://en.wikipedia.org/wiki/Design_by_contract) (DbC) and checking values, exceptions, and side-effects. In a nutshell, deal empowers you to write bug-free code. Read [intro](https://deal.readthedocs.io/basic/intro.html) to get started.
 
 ## Features
 
@@ -17,7 +17,7 @@
 * [External validators support.][validators]
 * [Contracts for importing modules.][module_load]
 * [Can be enabled or disabled on production.][runtime]
-* [Colorless](colorless): annotate only what you want. Hence, easy integration into an existing project.
+* [Colorless][colorless]: annotate only what you want. Hence, easy integration into an existing project.
 * Colorful: syntax highlighting for every piece of code in every command.
 * [Memory leaks detection][leaks]: deal makes sure that pure functions don't leave unexpected objects in the memory.
 * DRY: test discovery, error messages generation.

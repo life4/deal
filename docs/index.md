@@ -30,6 +30,7 @@
     :maxdepth: 1
     :caption: Dive deeper
 
+    details/contracts
     details/module_load
     details/dispatch
     details/docs
