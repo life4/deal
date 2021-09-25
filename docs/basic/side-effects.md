@@ -36,7 +36,7 @@ def main(stream=sys.stdout):
 
 Deal already know about some markers and will report if they are violated:
 
-```eval_rst
+```{eval-rst}
 +---------+--------------+----------------------------------+
 | code    | marker       | allows                           |
 +=========+==============+==================================+

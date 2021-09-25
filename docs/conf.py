@@ -6,7 +6,6 @@ from pathlib import Path
 
 import sphinx_rtd_theme
 from m2r2 import MdInclude, convert
-from recommonmark.transform import AutoStructify
 from sphinx.application import Sphinx
 
 import deal
@@ -20,7 +19,7 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
-    'recommonmark',
+    'myst_parser',
 ]
 
 templates_path = ['_templates']
@@ -108,16 +107,7 @@ def autodoc_signature(
     return (sig, ret)
 
 
-# https://github.com/rtfd/recommonmark/blob/master/docs/conf.py
 def setup(app: Sphinx):
-    config = {
-        # 'url_resolver': lambda url: github_doc_root + url,
-        'auto_toc_tree_section': 'Contents',
-        'enable_eval_rst': True,
-    }
-    app.add_config_value('recommonmark_config', config, True)
-    app.add_transform(AutoStructify)
-
     # from m2r2 source code to make `mdinclude` work
     app.add_config_value('no_underscore_emphasis', False, 'env')
     app.add_config_value('m2r_parse_relative_links', False, 'env')

@@ -32,7 +32,7 @@ Since this is ad-hoc solution, it has a bit more beautiful colored output.
 
 General:
 
-```eval_rst
+```{eval-rst}
 +---------+--------------------------------------------------------------+
 | Code    | Message                                                      |
 +=========+==============================================================+
@@ -42,7 +42,7 @@ General:
 
 Contracts:
 
-```eval_rst
+```{eval-rst}
 +---------+-----------------------+
 | Code    | Message               |
 +=========+=======================+
@@ -58,7 +58,7 @@ Contracts:
 
 Markers:
 
-```eval_rst
+```{eval-rst}
 +---------+-------------------------+
 | Code    | Message                 |
 +=========+=========================+

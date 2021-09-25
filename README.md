@@ -17,7 +17,7 @@
 * [External validators support.][validators]
 * [Contracts for importing modules.][module_load]
 * [Can be enabled or disabled on production.][runtime]
-* [Colorless](colorless): annotate only what you want. Hence, easy integration into an existing project.
+* [Colorless][colorless]: annotate only what you want. Hence, easy integration into an existing project.
 * Colorful: syntax highlighting for every piece of code in every command.
 * [Memory leaks detection][leaks]: deal makes sure that pure functions don't leave unexpected objects in the memory.
 * DRY: test discovery, error messages generation.

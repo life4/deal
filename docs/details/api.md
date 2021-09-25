@@ -2,7 +2,7 @@
 
 ## Values
 
-```eval_rst
+```{eval-rst}
 .. autofunction:: deal.pre
 .. autofunction:: deal.post
 .. autofunction:: deal.ensure
@@ -12,7 +12,7 @@
 
 ## Side-effects and exceptions
 
-```eval_rst
+```{eval-rst}
 .. autofunction:: deal.has
 .. autofunction:: deal.raises
 .. autofunction:: deal.reason
@@ -20,7 +20,7 @@
 
 ## Helpers
 
-```eval_rst
+```{eval-rst}
 .. autofunction:: deal.chain
 .. autofunction:: deal.pure
 .. autofunction:: deal.safe
@@ -31,7 +31,7 @@
 
 Keep in mind that sphinx [skipped some of the docstrings](https://github.com/sphinx-doc/sphinx/issues/7787) for `deal.cases`.
 
-```eval_rst
+```{eval-rst}
 .. autoclass:: deal.cases
     :members:
     :special-members:
@@ -42,13 +42,13 @@ Keep in mind that sphinx [skipped some of the docstrings](https://github.com/sph
 
 ## Introspection
 
-```eval_rst
+```{eval-rst}
 .. automodule:: deal.introspection
 ```
 
 ## Other
 
-```eval_rst
+```{eval-rst}
 .. autofunction:: deal.module_load
 .. autofunction:: deal.disable
 .. autofunction:: deal.enable

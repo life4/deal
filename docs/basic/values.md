@@ -109,7 +109,7 @@ def do_something(a):
 
 Every contract type raises it's own exception type, inherited from `ContractError` (which is inherited from built-in `AssertionError`):
 
-```eval_rst
+```{eval-rst}
 +----------+-------------------+
 | contract | exception         |
 +==========+===================+
@@ -177,7 +177,7 @@ It can be helpful if a function has too many contracts.
 
 Contracts mostly support generators (`yield`) ans async functions:
 
-```eval_rst
+```{eval-rst}
 +----------+----------------------------------+------------------------------+
 | contract | yield                            | async                        |
 +==========+==================================+==============================+
