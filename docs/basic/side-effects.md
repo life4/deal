@@ -55,6 +55,15 @@ Some of the markers are checked at runtime:
 + If any of `io`, `print`, or `stdout` is specified, `deal.has` will allow using stdout. Otherwise, it will patch [sys.stdout](https://docs.python.org/3/library/sys.html#sys.stdout). If the function tries to use it, `SilentContractError` is raised.
 + If any of `io` or `stdout` is specified, `deal.has` will do the same as for `stdout` marker but for [sys.stderr](https://docs.python.org/3/library/sys.html#sys.stderr)
 
+```python
+@deal.has()
+def f():
+    print('hello')
+
+f()
+# SilentContractError:
+```
+
 Other markers aren't checked in runtime yet but only checked by the [linter](./linter.md).
 
 ## Markers are properties

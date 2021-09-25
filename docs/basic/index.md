@@ -4,31 +4,47 @@ This page provides a quick navigation by the documentation in case if you're loo
 
 ## Decorators
 
-| decorator        | reference                     | documentation |
-| ---------------- | ----------------------------- | ------------- |
-| `@deal.chain`    | [deal.chain](deal.chain) | {doc}`/details/contracts` / {ref}`details/contracts:deal.chain` |
-| `@deal.dispatch` | [deal.dispatch](deal.dispatch) | {doc}`/details/dispatch` |
-| `@deal.ensure`   | [deal.ensure](deal.ensure) | {doc}`/basic/values` / {ref}`basic/values:deal.ensure` |
-| `@deal.has`      | [deal.has](deal.has) | {doc}`/basic/side-effects` |
-| `@deal.inv`      | [deal.inv](deal.inv) | {doc}`/basic/values` / {ref}`basic/values:deal.inv` |
-| `@deal.post`     | [deal.post](deal.post) | {doc}`/basic/values` / {ref}`basic/values:deal.post` |
-| `@deal.pre`      | [deal.pre](deal.pre) | {doc}`/basic/values` / {ref}`basic/values:deal.pre` |
-| `@deal.pure`     | [deal.pure](deal.pure) | -- |
-| `@deal.raises`   | [deal.raises](deal.raises) | {doc}`/basic/exceptions` / {ref}`basic/exceptions:deal.raises` |
-| `@deal.reason`   | [deal.reason](deal.reason) | {doc}`/basic/exceptions` / {ref}`basic/exceptions:deal.reason` |
-| `@deal.safe`     | [deal.safe](deal.safe) | -- |
+| decorator        | reference                | documentation |
+| ---------------- | ------------------------ | ------------- |
+| `@deal.chain`    | {py:func}`deal.chain`    | {doc}`/details/contracts` / {ref}`details/contracts:deal.chain` |
+| `@deal.dispatch` | {py:func}`deal.dispatch` | {doc}`/details/dispatch` |
+| `@deal.ensure`   | {py:func}`deal.ensure`   | {doc}`/basic/values` / {ref}`basic/values:deal.ensure` |
+| `@deal.has`      | {py:func}`deal.has`      | {doc}`/basic/side-effects` |
+| `@deal.inv`      | {py:func}`deal.inv`      | {doc}`/basic/values` / {ref}`basic/values:deal.inv` |
+| `@deal.post`     | {py:func}`deal.post`     | {doc}`/basic/values` / {ref}`basic/values:deal.post` |
+| `@deal.pre`      | {py:func}`deal.pre`      | {doc}`/basic/values` / {ref}`basic/values:deal.pre` |
+| `@deal.pure`     | {py:func}`deal.pure`     | -- |
+| `@deal.raises`   | {py:func}`deal.raises`   | {doc}`/basic/exceptions` / {ref}`basic/exceptions:deal.raises` |
+| `@deal.reason`   | {py:func}`deal.reason`   | {doc}`/basic/exceptions` / {ref}`basic/exceptions:deal.reason` |
+| `@deal.safe`     | {py:func}`deal.safe`     | -- |
 
 ## Functions
 
-| decorator          | reference                     | documentation |
-| ------------------ | ----------------------------- | ------------- |
-| `deal.activate`    | [deal.activate](deal.activate) | {doc}`/details/module_load` |
-| `deal.autodoc`     | [deal.autodoc](deal.autodoc) | {doc}`/details/docs` / {ref}`details/docs:sphinx autodoc` |
-| `deal.disable`     | [deal.disable](deal.disable) | {doc}`/basic/runtime` / {ref}`basic/runtime:contracts on production` |
-| `deal.enable`      | [deal.enable](deal.enable) | {doc}`/basic/runtime` / {ref}`basic/runtime:contracts on production` |
-| `deal.implies`     | [deal.implies](deal.implies) | -- |
-| `deal.module_load` | [deal.module_load](deal.module_load) | {doc}`/details/module_load` |
-| `deal.reset`       | [deal.reset](deal.reset) | {doc}`/basic/runtime` / {ref}`basic/runtime:contracts on production` |
+| decorator          | reference                | documentation |
+| ------------------ | ------------------------ | ------------- |
+| `deal.activate`    | {py:func}`deal.activate` | {doc}`/details/module_load` |
+| `deal.autodoc`     | {py:func}`deal.autodoc`  | {doc}`/details/docs` / {ref}`details/docs:sphinx autodoc` |
+| `deal.cases`       | {py:class}`deal.cases`   | {doc}`/basic/tests` |
+| `deal.disable`     | {py:func}`deal.disable`  | {doc}`/basic/runtime` / {ref}`basic/runtime:contracts on production` |
+| `deal.enable`      | {py:func}`deal.enable`   | {doc}`/basic/runtime` / {ref}`basic/runtime:contracts on production` |
+| `deal.implies`     | {py:func}`deal.implies`  | -- |
+| `deal.module_load` | {py:func}`deal.module_load` | {doc}`/details/module_load` |
+| `deal.reset`       | {py:func}`deal.reset`    | {doc}`/basic/runtime` / {ref}`basic/runtime:contracts on production` |
+
+## Exceptions
+
+| decorator                   | reference                           | documentation |
+| --------------------------- | ----------------------------------- | ------------- |
+| `deal.ContractError`        | {py:exc}`deal.ContractError`        | {doc}`/basic/values` / {ref}`basic/values:exceptions` |
+| `deal.InvContractError`     | {py:exc}`deal.InvContractError`     | {doc}`/basic/values` / {ref}`basic/values:exceptions` |
+| `deal.MarkerError`          | {py:exc}`deal.MarkerError`          | -- |
+| `deal.NoMatchError`         | {py:exc}`deal.NoMatchError`         | -- |
+| `deal.OfflineContractError` | {py:exc}`deal.OfflineContractError` | -- |
+| `deal.PostContractError`    | {py:exc}`deal.PostContractError`    | {doc}`/basic/values` / {ref}`basic/values:exceptions` |
+| `deal.PreContractError`     | {py:exc}`deal.PreContractError`     | {doc}`/basic/values` / {ref}`basic/values:exceptions` |
+| `deal.RaisesContractError`  | {py:exc}`deal.RaisesContractError`  | -- |
+| `deal.ReasonContractError`  | {py:exc}`deal.ReasonContractError`  | -- |
+| `deal.SilentContractError`  | {py:exc}`deal.SilentContractError`  | -- |
 
 ## CLI commands
 

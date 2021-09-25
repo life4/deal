@@ -54,10 +54,25 @@ Keep in mind that sphinx [skipped some of the docstrings](https://github.com/sph
 .. autofunction:: deal.reset
 ```
 
-## Other
+## Other functions
 
 ```{eval-rst}
 .. autofunction:: deal.autodoc
 .. autofunction:: deal.activate
 .. autofunction:: deal.module_load
+```
+
+## Exceptions
+
+```{eval-rst}
+.. autoexception:: deal.ContractError
+.. autoexception:: deal.InvContractError
+.. autoexception:: deal.MarkerError
+.. autoexception:: deal.NoMatchError
+.. autoexception:: deal.OfflineContractError
+.. autoexception:: deal.PostContractError
+.. autoexception:: deal.PreContractError
+.. autoexception:: deal.RaisesContractError
+.. autoexception:: deal.ReasonContractError
+.. autoexception:: deal.SilentContractError
 ```

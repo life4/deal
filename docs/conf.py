@@ -86,6 +86,7 @@ texinfo_documents = [
 ]
 
 autosectionlabel_prefix_document = True
+add_function_parentheses = False
 
 
 def autodoc_process(app, what, name, obj, options, lines):

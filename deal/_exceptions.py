@@ -159,14 +159,14 @@ class MarkerError(ContractError):
 class OfflineContractError(MarkerError):
     """The error raised by `deal.has` for networking markers violation.
 
-    The networking is forbidden by markers `io`, `network`, and `socket`.
+    The networking can be allowed by markers `io`, `network`, and `socket`.
     """
 
 
 class SilentContractError(MarkerError):
     """The error raised by `deal.has` for printing markers violation.
 
-    The printing is forbidden by markers `io`, `print`, `stdout`, and `stderr`.
+    The printing can be allowed by markers `io`, `print`, `stdout`, and `stderr`.
     """
 
 
