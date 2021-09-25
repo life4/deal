@@ -34,12 +34,12 @@ def test_cli_included():
         assert line in content
 
         # has autodoc
-        tmpl = '```eval_rst\n.. autofunction:: deal._cli._{n}.{c}\n```'
+        tmpl = '```{{eval-rst}}\n.. autofunction:: deal._cli._{n}.{c}\n```'
         line = tmpl.format(n=name, c=cmd.__name__)
         assert line in content
 
         # header and autodoc go next to each other
-        tmpl = '## {n}\n\n```eval_rst\n.. autofunction:: deal._cli._{n}.{c}\n```'
+        tmpl = '## {n}\n\n```{{eval-rst}}\n.. autofunction:: deal._cli._{n}.{c}\n```'
         line = tmpl.format(n=name, c=cmd.__name__)
         assert line in content
 
@@ -56,7 +56,7 @@ def test_examples_included():
         assert line in content
 
         # has include
-        tmpl = '```eval_rst\n.. literalinclude:: ../../examples/{}\n```'
+        tmpl = '```{{eval-rst}}\n.. literalinclude:: ../../examples/{}\n```'
         line = tmpl.format(path.name)
         assert line in content
 
