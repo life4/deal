@@ -24,6 +24,21 @@ def test_all_codes_listed():
         assert line in content
 
 
+def test_all_marker_codes_listed():
+    path = root / 'basic' / 'side-effects.md'
+    content = path.read_text()
+    lines = content.splitlines()
+    for marker, code in CheckMarkers.codes.items():
+        code_cell = '| DEAL{:03d} | '.format(code)
+        assert code_cell in content
+        for line in lines:
+            if code_cell in line:
+                assert marker in line
+                break
+        else:
+            assert False, 'missing marker {}'.format(marker)
+
+
 def test_cli_included():
     path = root / 'details' / 'cli.md'
     content = path.read_text()

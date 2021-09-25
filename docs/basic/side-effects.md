@@ -38,14 +38,14 @@ Deal already know about some markers and will report if they are violated:
 
 | code    | marker       | allows                           |
 | ------- | ------------ | -------------------------------- |
-| DEAL042 | `io`         | everything below                 |
-| DEAL043 | -- `read`    | read a file                      |
-| DEAL044 | -- `write`   | write into a file                |
-| DEAL045 | -- `stdout`  | `sys.stdout` and `print`         |
-| DEAL046 | -- `stderr`  | `sys.stderr`                     |
-| DEAL047 | -- `network` | network communications, `socket` |
-| DEAL051 | `global`     | `global` and `nonlocal`          |
-| DEAL052 | `import`     | `import`                         |
+| DEAL041 | `global`     | `global` and `nonlocal`          |
+| DEAL042 | `import`     | `import`                         |
+| DEAL043 | `io`         | everything below                 |
+| DEAL044 | -- `read`    | read a file                      |
+| DEAL045 | -- `write`   | write into a file                |
+| DEAL046 | -- `stdout`  | `sys.stdout` and `print`         |
+| DEAL047 | -- `stderr`  | `sys.stderr`                     |
+| DEAL048 | -- `network` | network communications, `socket` |
 
 ## Runtime
 
