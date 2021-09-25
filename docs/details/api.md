@@ -46,11 +46,18 @@ Keep in mind that sphinx [skipped some of the docstrings](https://github.com/sph
 .. automodule:: deal.introspection
 ```
 
-## Other
+## State management
 
 ```{eval-rst}
-.. autofunction:: deal.module_load
 .. autofunction:: deal.disable
 .. autofunction:: deal.enable
 .. autofunction:: deal.reset
+```
+
+## Other
+
+```{eval-rst}
+.. autofunction:: deal.autodoc
+.. autofunction:: deal.activate
+.. autofunction:: deal.module_load
 ```
