@@ -8,10 +8,9 @@ from collections import defaultdict
 from time import perf_counter
 from typing import DefaultDict, List, Optional, Type
 
-from mypy import nodes
+from mypy import nodes, types
 from mypy.checker import TypeChecker
 from mypy.plugin import FunctionSigContext, Plugin
-from mypy.types import AnyType, CallableType, TypeOfAny, Instance
 
 
 perf: DefaultDict[str, List[float]] = defaultdict(list)
@@ -58,10 +57,10 @@ class DealMypyPlugin(Plugin):
             return self._handle_inv
         return None
 
-    def _handle_reason(self, ctx: FunctionSigContext) -> CallableType:
+    def _handle_reason(self, ctx: FunctionSigContext) -> types.CallableType:
         return self._handle_pre(ctx, position=1)
 
-    def _handle_pre(self, ctx: FunctionSigContext, position: int = 0) -> CallableType:
+    def _handle_pre(self, ctx: FunctionSigContext, position: int = 0) -> types.CallableType:
         validator = ctx.args[position][0]
         if not isinstance(validator, nodes.LambdaExpr):
             return ctx.default_signature
@@ -71,15 +70,15 @@ class DealMypyPlugin(Plugin):
         if dfn is None:
             return ctx.default_signature
         ftype = dfn.func.type
-        if not isinstance(ftype, CallableType):
+        if not isinstance(ftype, types.CallableType):
             return ctx.default_signature
         return self._set_validator_type(
             ctx=ctx,
-            ftype=ftype.copy_modified(ret_type=AnyType(TypeOfAny.explicit)),
+            ftype=ftype.copy_modified(ret_type=self._val_ret_type(ctx)),
             position=position,
         )
 
-    def _handle_post(self, ctx: FunctionSigContext) -> CallableType:
+    def _handle_post(self, ctx: FunctionSigContext) -> types.CallableType:
         validator = ctx.args[0][0]
         if not isinstance(validator, nodes.LambdaExpr):
             return ctx.default_signature
@@ -89,17 +88,17 @@ class DealMypyPlugin(Plugin):
         if dfn is None:
             return ctx.default_signature
         ftype = dfn.func.type
-        if not isinstance(ftype, CallableType):
+        if not isinstance(ftype, types.CallableType):
             return ctx.default_signature
-        return self._set_validator_type(ctx, CallableType(
+        return self._set_validator_type(ctx, types.CallableType(
             arg_types=[ftype.ret_type],
             arg_kinds=[nodes.ARG_POS],
             arg_names=[None],
-            ret_type=AnyType(TypeOfAny.explicit),
+            ret_type=self._val_ret_type(ctx),
             fallback=ftype.fallback,
         ))
 
-    def _handle_ensure(self, ctx: FunctionSigContext) -> CallableType:
+    def _handle_ensure(self, ctx: FunctionSigContext) -> types.CallableType:
         validator = ctx.args[0][0]
         if not isinstance(validator, nodes.LambdaExpr):
             return ctx.default_signature
@@ -109,17 +108,17 @@ class DealMypyPlugin(Plugin):
         if dfn is None:
             return ctx.default_signature
         ftype = dfn.func.type
-        if not isinstance(ftype, CallableType):
+        if not isinstance(ftype, types.CallableType):
             return ctx.default_signature
-        return self._set_validator_type(ctx, CallableType(
+        return self._set_validator_type(ctx, types.CallableType(
             arg_types=ftype.arg_types + [ftype.ret_type],
             arg_kinds=ftype.arg_kinds + [nodes.ARG_POS],
             arg_names=ftype.arg_names + ['result'],
-            ret_type=AnyType(TypeOfAny.explicit),
+            ret_type=self._val_ret_type(ctx),
             fallback=ftype.fallback,
         ))
 
-    def _handle_inv(self, ctx: FunctionSigContext) -> CallableType:
+    def _handle_inv(self, ctx: FunctionSigContext) -> types.CallableType:
         validator = ctx.args[0][0]
         if not isinstance(validator, nodes.LambdaExpr):
             return ctx.default_signature
@@ -128,21 +127,21 @@ class DealMypyPlugin(Plugin):
         dfn = self._get_parent_class(ctx)
         if dfn is None:
             return ctx.default_signature
-        ftype = CallableType(
-            arg_types=[Instance(dfn.info, [])],
+        ftype = types.CallableType(
+            arg_types=[types.Instance(dfn.info, [])],
             arg_kinds=[nodes.ARG_POS],
             arg_names=validator.arg_names,
-            ret_type=AnyType(TypeOfAny.explicit),
-            fallback=Instance(dfn.info, []),
+            ret_type=self._val_ret_type(ctx),
+            fallback=types.Instance(dfn.info, []),
         )
         return self._set_validator_type(ctx=ctx, ftype=ftype)
 
     @staticmethod
     def _set_validator_type(
         ctx: FunctionSigContext,
-        ftype: CallableType,
+        ftype: types.CallableType,
         position: int = 0,
-    ) -> CallableType:
+    ) -> types.CallableType:
         arg_types = ctx.default_signature.arg_types.copy()
         arg_types[position] = ftype
         return ctx.default_signature.copy_modified(arg_types=arg_types)
@@ -193,6 +192,12 @@ class DealMypyPlugin(Plugin):
                 if result is not None:
                     return result
         return None
+
+    def _val_ret_type(self, ctx: FunctionSigContext) -> types.Type:
+        return types.UnionType.make_union([
+            ctx.api.named_generic_type('builtins.bool', []),
+            ctx.api.named_generic_type('builtins.str', []),
+        ])
 
 
 def plugin(version: str) -> Type[Plugin]:
