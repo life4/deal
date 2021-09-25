@@ -1,4 +1,4 @@
-# More about writing contracts
+# More on writing contracts
 
 ## Simplified signature
 
@@ -45,3 +45,61 @@ plugins = ["deal.mypy"]
 ```
 
 Keep in mind that `pyproject.toml` is supported by mypy only starting from version 0.910. Check your installed version by running `mypy --version`. If it is below 0.910, upgrade it by running `python3 -m pip install -U mypy`.
+
+## Providing an error
+
+You can provide `message` argument for a contract, and this message will be used as the error message (and in [documentation](./docs)):
+
+```python
+@deal.pre(lambda x: x > 0, message='x must be positive')
+def f(x):
+    return list(range(x))
+
+f(-2)
+# PreContractError: x must be positive (where x=-2)
+```
+
+If a single contract includes multiple checks, it can return an error message instead of `False`, so different failures can be distinguished:
+
+```python
+def contract(x):
+    if not isinstance(x, int):
+        return 'x must be int'
+    if x <= 0:
+        return 'x must be positive'
+    return True
+
+@deal.pre(contract)
+def f(x):
+    return list(range(x))
+
+f('Aragorn')
+# PreContractError: x must be int (where x='Aragorn')
+
+f(-2)
+# PreContractError: x must be positive (where x=-2)
+```
+
+## External validators
+
+Deal supports a lot of external validation libraries, like Marshmallow, WTForms, PyScheme etc. For example:
+
+```python
+import deal
+import marshmallow
+
+class Schema(marshmallow.Schema):
+    name = marshmallow.fields.Str()
+
+@deal.pre(Schema)
+def func(name):
+    return name * 2
+
+func('Chris')
+'ChrisChris'
+
+func(123)
+# PreContractError: [Error(message='Not a valid string.', field='name')] (where name=123)
+```
+
+See [vaa](https://github.com/life4/vaa) documentation for details.

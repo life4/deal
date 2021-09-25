@@ -28,7 +28,7 @@ A Python library for [design by contract](https://en.wikipedia.org/wiki/Design_b
 [exceptions]: https://deal.readthedocs.io/basic/exceptions.html
 [tests]: https://deal.readthedocs.io/basic/tests.html
 [linter]: https://deal.readthedocs.io/basic/linter.html
-[validators]: https://deal.readthedocs.io/details/validators.html
+[validators]: https://deal.readthedocs.io/details/contracts.html#external-validators
 [module_load]: https://deal.readthedocs.io/details/module_load.html
 [runtime]: https://deal.readthedocs.io/basic/runtime.html
 [colorless]: http://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/

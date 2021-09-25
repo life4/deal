@@ -36,7 +36,6 @@
     details/docs
     details/verification
     details/stubs
-    details/validators
     details/tests
     details/recipes
     details/examples

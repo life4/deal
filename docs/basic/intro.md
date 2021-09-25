@@ -40,12 +40,12 @@ There are multiple ways to check contracts:
 
 It's not "advanced usage", there is nothing advanced or difficult. It's about writing better contracts or saving a bit of time. Not important but very useful. So, don't be afraid to dive in this section!
 
+1. [More on writing contracts](../details/contracts) gives you additional tools to reuse and simplify contracts.
 1. [module_load](../details/module_load) allows you to control what happens at the module load (import) time.
 1. [Dispatch](../details/dispatch) is a way to combine multiple implementations for a function into one based on pre-conditions.
 1. [Documentation](../details/docs) provides information on generating documentation for functions with contracts (using Sphinx).
 1. [Stubs](../details/stubs) is a way to store some contracts in a JSON file instead of the source code. It can be helpful for third-party libraries. Some stubs already inside Deal.
-1. [More about testing](../details/tests) provides information on finding memory leaks and tweaking tests generation.
-1. [Validators](../details/validators) is a way to describe complex contracts using [Marshmallow](https://github.com/marshmallow-code/marshmallow) or another validation library.
+1. [More on testing](../details/tests) provides information on finding memory leaks and tweaking tests generation.
 1. [Recipes](../details/recipes) is the place to learn more about best practices of using contracts.
 
 ## Additional tools
