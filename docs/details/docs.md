@@ -34,7 +34,7 @@ The [Writing docstrings](https://sphinx-rtd-tutorial.readthedocs.io/en/latest/do
 
 ## Using Markdown
 
-If you prefer more human-friendly [Markdown](https://en.wikipedia.org/wiki/Markdown), it needs a bit of hacking. The [recommonmark](https://github.com/readthedocs/recommonmark) extension allows to use Markdown for Sphinx documentation but not for docstrings. If you want Markdown support for docstrings, you can add [m2r2](https://github.com/CrossNox/m2r2) converter into `docs/conf.py` as a hook for autodoc:
+If you prefer more human-friendly [Markdown](https://en.wikipedia.org/wiki/Markdown), it needs a bit of hacking. The [MyST-Parser](https://github.com/executablebooks/MyST-Parser) extension allows to use Markdown for Sphinx documentation but not for docstrings (see [#228](https://github.com/executablebooks/MyST-Parser/issues/228)). If you want Markdown support for docstrings, you can add [m2r2](https://github.com/CrossNox/m2r2) converter into `docs/conf.py` as a hook for autodoc:
 
 ```python
 from m2r2 import convert
