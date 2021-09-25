@@ -11,19 +11,14 @@ T = TypeVar('T', bound=type)
 
 
 class InvariantedClass:
-    _disable_patching: bool = False
     _validate_base: Callable[..., None]
 
     def _validate(self) -> None:
         """
         Step 5 (1st flow) or Step 4 (2nd flow). Process contract for object.
         """
-        # disable methods matching before validation
-        self._disable_patching = True
         # validation by Invariant.validate
         self._validate_base(self)
-        # enable methods matching after validation
-        self._disable_patching = False
 
     def _patched_method(self, method: Callable, *args, **kwargs):
         """
@@ -40,10 +35,7 @@ class InvariantedClass:
         """
         attr = super().__getattribute__(name)
         # disable patching for InvariantedClass methods
-        if name in ('_patched_method', '_validate', '_validate_base', '_disable_patching'):
-            return attr
-        # disable patching by flag (if validation in progress)
-        if self._disable_patching:
+        if name in ('_patched_method', '_validate', '_validate_base'):
             return attr
         # disable patching for attributes (not methods)
         if not isinstance(attr, MethodType):
@@ -58,8 +50,6 @@ class InvariantedClass:
         """
         # set
         super().__setattr__(name, value)
-        if name == '_disable_patching':
-            return
         # validation only after set
         self._validate()
 
@@ -83,9 +73,7 @@ class Invariant(Base[T]):
         """
 
         if hasattr(self.validator, 'is_valid') and hasattr(obj, '__dict__'):
-            kwargs = obj.__dict__.copy()
-            kwargs.pop('_disable_patching', '')
-            self._vaa_validation(**kwargs)
+            self._vaa_validation(**vars(obj))
         else:
             self._simple_validation(obj)
 
