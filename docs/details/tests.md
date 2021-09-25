@@ -124,7 +124,7 @@ test = deal.cases(div)
 PythonFuzz(test)()
 ```
 
-See [Examples](./examples.html#fuzzing-atheris) page for full working examples.
+See {ref}`details/examples:fuzzing_atheris` and {ref}`details/examples:fuzzing_pythonfuzz` examples for the full code.
 
 ## Iteration over cases
 
@@ -141,4 +141,4 @@ However, in this case deal doesn't know which cases have failed and can't provid
 
 Under the hood, deal uses hypothesis to generate test cases. So, we can mix `deal.cases` with hypothesis decorators. The only exception is `hypothesis.settings` which should be passed into `deal.cases` as `settings` argument because hypothesis doesn't support application of settings twice but deal applies its own default settings.
 
-See [using_hypothesis](./examples.html#using-hypothesis) example.
+See {ref}`details/examples:using_hypothesis` example.

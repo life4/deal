@@ -2,30 +2,30 @@
 
 ## lint
 
-```eval_rst
+```{eval-rst}
 .. autofunction:: deal._cli._lint.LintCommand
 ```
 
 ## stub
 
-```eval_rst
+```{eval-rst}
 .. autofunction:: deal._cli._stub.StubCommand
 ```
 
 ## test
 
-```eval_rst
+```{eval-rst}
 .. autofunction:: deal._cli._test.TestCommand
 ```
 
 ## memtest
 
-```eval_rst
+```{eval-rst}
 .. autofunction:: deal._cli._memtest.MemtestCommand
 ```
 
 ## prove
 
-```eval_rst
+```{eval-rst}
 .. autofunction:: deal._cli._prove.ProveCommand
 ```

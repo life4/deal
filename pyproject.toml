@@ -52,7 +52,7 @@ lint = [
 ]
 docs = [
     "m2r2",
-    "recommonmark",
+    "myst-parser",
     "sphinx==3.5.*",
     "sphinx-rtd-theme==0.5.*",
 ]

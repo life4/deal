@@ -2,55 +2,55 @@
 
 ## choice
 
-```eval_rst
+```{eval-rst}
 .. literalinclude:: ../../examples/choice.py
 ```
 
 ## concat
 
-```eval_rst
+```{eval-rst}
 .. literalinclude:: ../../examples/concat.py
 ```
 
 ## count
 
-```eval_rst
+```{eval-rst}
 .. literalinclude:: ../../examples/count.py
 ```
 
 ## div
 
-```eval_rst
+```{eval-rst}
 .. literalinclude:: ../../examples/div.py
 ```
 
 ## fuzzing_atheris
 
-```eval_rst
+```{eval-rst}
 .. literalinclude:: ../../examples/fuzzing_atheris.py
 ```
 
 ## fuzzing_pythonfuzz
 
-```eval_rst
+```{eval-rst}
 .. literalinclude:: ../../examples/fuzzing_pythonfuzz.py
 ```
 
 ## using_hypothesis
 
-```eval_rst
+```{eval-rst}
 .. literalinclude:: ../../examples/using_hypothesis.py
 ```
 
 ## index_of
 
-```eval_rst
+```{eval-rst}
 .. literalinclude:: ../../examples/index_of.py
 ```
 
 ## min
 
-```eval_rst
+```{eval-rst}
 .. literalinclude:: ../../examples/min.py
 ```
 
@@ -66,7 +66,7 @@ examples/min.py
 
 ## format
 
-```eval_rst
+```{eval-rst}
 .. literalinclude:: ../../examples/format.py
 ```
 
@@ -90,7 +90,7 @@ examples/format.py
 
 Source code:
 
-```eval_rst
+```{eval-rst}
 .. literalinclude:: ../../examples/sphinx.py
 ```
 
@@ -113,6 +113,6 @@ Including into a documentation page (`docs/index.rst`):
 
 Generated output:
 
-```eval_rst
+```{eval-rst}
 .. autofunction:: examples.sphinx.example
 ```
