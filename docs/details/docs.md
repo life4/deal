@@ -26,7 +26,7 @@ This is how deal converts every contract into text:
 1. If the contract is a named function, the function name is used.
 1. If the contract is a lambda, the source code is used.
 
-See also [sphinx](./examples.html#sphinx) example.
+See also {ref}`details/examples:sphinx` example.
 
 ## Writing docstrings
 

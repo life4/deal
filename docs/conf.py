@@ -19,6 +19,7 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
+    'sphinx.ext.autosectionlabel',
     'myst_parser',
 ]
 
@@ -83,6 +84,8 @@ texinfo_documents = [
     (master_doc, 'deal', 'Deal Documentation',
      author, 'Deal', 'One line description of project.', 'Miscellaneous'),
 ]
+
+autosectionlabel_prefix_document = True
 
 
 def autodoc_process(app, what, name, obj, options, lines):
