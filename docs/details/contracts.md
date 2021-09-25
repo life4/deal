@@ -18,7 +18,7 @@ f(-2)
 
 ## deal.chain
 
-The `deal.chain` decorator allows to merge a few contracts together into one decorator. It can be used to store contracts separately from the function:
+The {py:func}`deal.chain` decorator allows to merge a few contracts together into one decorator. It can be used to store contracts separately from the function:
 
 ```python
 contract_for_min = deal.chain(

@@ -3,8 +3,8 @@
 Deal can automatically test your functions. First of all, your function has to be prepared:
 
 1. All function arguments are type-annotated.
-1. All exceptions that function can raise are specified in [@deal.raises](side-effects).
-1. All pre-conditions are specified with [@deal.pre](values).
+1. All exceptions that function can raise are specified in {py:func}`deal.raises`.
+1. All pre-conditions are specified with {py:func}`deal.pre`.
 
 ```python
 @deal.raises(ZeroDivisionError)
@@ -13,7 +13,7 @@ def div(a: int, b: int) -> float:
     return a / b
 ```
 
-Then you can use `deal.cases` to generate test cases for the function. This is a polimorphic object that can be used in many ways.
+Then you can use {py:func}`deal.cases` to generate test cases for the function. This is a polimorphic object that can be used in many ways.
 
 Here is the shortest way to create a test:
 
@@ -32,7 +32,7 @@ def test_div(case: deal.TestCase) -> None:
     case()
 ```
 
-In this example, when we (or pytest) call `test_div()`, deal will generate test cases (using [hypothesis](https://hypothesis.readthedocs.io/en/latest/)) and run the function body for every case. The test function itself decides when to execute the test case. Here `case` is an instance of [deal.TestCase](deal.TestCase) class. This form works as expected with pytest fixtures if the test case is the first argument and has the name `case`.
+In this example, when we (or pytest) call `test_div()`, deal will generate test cases (using [hypothesis](https://hypothesis.readthedocs.io/en/latest/)) and run the function body for every case. The test function itself decides when to execute the test case. Here `case` is an instance of {py:class}`deal.TestCase` class. This form works as expected with pytest fixtures if the test case is the first argument and has the name `case`.
 
 ## CLI
 
@@ -62,7 +62,7 @@ Explicitly specify arguments to pass into the function:
 deal.cases(div, kwargs=dict(b=3))
 ```
 
-See [deal.cases](deal.cases) API documentation and [More about testing](../details/tests) for details.
+See {py:class}`deal.cases` API documentation and {doc}`/details/tests` for details.
 
 ## Practical example
 

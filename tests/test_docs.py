@@ -81,3 +81,22 @@ def test_all_public_has_docstring(name: str):
     obj = getattr(deal, name)
     doc = obj.__doc__
     assert doc is not None, f'{name} has no docstring'
+
+
+def test_all_public_listed_in_ref():
+    path = root / 'basic' / 'refs.md'
+    content = path.read_text()
+    for name in deal.__all__:
+        if name[0] == '_':
+            continue
+        if name in {'introspection', 'Scheme', 'TestCase'}:
+            continue
+        assert f'deal.{name}`' in content
+
+
+def test_all_cli_commands_listed_in_refs():
+    path = root / 'basic' / 'refs.md'
+    content = path.read_text()
+    for name, cmd in COMMANDS.items():
+        assert f'`{name}`' in content
+        assert f'`details/cli:{name}`' in content

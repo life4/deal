@@ -64,7 +64,7 @@ f()
 # SilentContractError:
 ```
 
-Other markers aren't checked in runtime yet but only checked by the [linter](./linter.md).
+Other markers aren't checked in runtime yet but only checked by the [linter](linter).
 
 ## Markers are properties
 
@@ -85,4 +85,4 @@ def main():
     return 0
 ```
 
-If we run [linter](./linter.md) on the code above, it will fail with "DEAL046 missed marker (stdout)" message. `main` function calls `run_job` with `silent=True` so `print` will not be called when calling `main`. However, `run_job` function has an implicit `stdout` marker, and `main` calls this function so it must have this marker as well.
+If we run [linter](linter) on the code above, it will fail with "DEAL046 missed marker (stdout)" message. `main` function calls `run_job` with `silent=True` so `print` will not be called when calling `main`. However, `run_job` function has an implicit `stdout` marker, and `main` calls this function so it must have this marker as well.

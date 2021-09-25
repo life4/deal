@@ -2,7 +2,7 @@
 
 ## deal.raises
 
-`@deal.raises` specifies which exceptions function can raise.
+`@deal.raises` specifies which exceptions the function can raise.
 
 ```python
 @deal.raises(ZeroDivisionError)
@@ -37,4 +37,4 @@ def divide(a, b):
 
 Exceptions are the most implicit part of Python. Any code can raise any exception. None of the tools can say you which exceptions can be raised in some function. However, sometimes you can infer it yourself and say it to other people. And `@deal.raises` will remain you if function has raised something that you forgot to specify.
 
-Also, it's an important decorator for autotesting. Deal won't fail tests for exceptions that was marked as allowed with `@deal.raises`.
+Also, it's an important decorator for autotesting. Deal won't fail tests for exceptions that were marked as allowed with `@deal.raises`.
