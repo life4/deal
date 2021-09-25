@@ -36,34 +36,23 @@ def main(stream=sys.stdout):
 
 Deal already know about some markers and will report if they are violated:
 
-```{eval-rst}
-+---------+--------------+----------------------------------+
 | code    | marker       | allows                           |
-+=========+==============+==================================+
+| ------- | ------------ | -------------------------------- |
 | DEAL042 | `io`         | everything below                 |
-+---------+--------------+----------------------------------+
 | DEAL043 | -- `read`    | read a file                      |
-+---------+--------------+----------------------------------+
 | DEAL044 | -- `write`   | write into a file                |
-+---------+--------------+----------------------------------+
 | DEAL045 | -- `stdout`  | `sys.stdout` and `print`         |
-+---------+--------------+----------------------------------+
 | DEAL046 | -- `stderr`  | `sys.stderr`                     |
-+---------+--------------+----------------------------------+
 | DEAL047 | -- `network` | network communications, `socket` |
-+---------+--------------+----------------------------------+
 | DEAL051 | `global`     | `global` and `nonlocal`          |
-+---------+--------------+----------------------------------+
 | DEAL052 | `import`     | `import`                         |
-+---------+--------------+----------------------------------+
-```
 
 ## Runtime
 
 Some of the markers are checked at runtime:
 
-+ If any of `io`, `network`, or `socket` is specified, `deal.has` will patch [socket](https://docs.python.org/3/library/socket.html) blocking all network requests. If the function tries to use the network, `OfflineContractError` is raised.
-+ If any of `io`, `print`, or `stdout` is specified, `deal.has` will patch [sys.stdout](https://docs.python.org/3/library/sys.html#sys.stdout). If the function tries to use it, `SilentContractError` is raised.
++ If any of `io`, `network`, or `socket` is specified, `deal.has` will allow network operations. Otherwise, it will patch [socket](https://docs.python.org/3/library/socket.html) blocking all network requests. If the function tries to use the network, `OfflineContractError` is raised.
++ If any of `io`, `print`, or `stdout` is specified, `deal.has` will allow using stdout. Otherwise, it will patch [sys.stdout](https://docs.python.org/3/library/sys.html#sys.stdout). If the function tries to use it, `SilentContractError` is raised.
 + If any of `io` or `stdout` is specified, `deal.has` will do the same as for `stdout` marker but for [sys.stderr](https://docs.python.org/3/library/sys.html#sys.stderr)
 
 Other markers aren't checked in runtime yet but only checked by the [linter](./linter.md).

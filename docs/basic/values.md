@@ -109,19 +109,12 @@ def do_something(a):
 
 Every contract type raises it's own exception type, inherited from `ContractError` (which is inherited from built-in `AssertionError`):
 
-```{eval-rst}
-+----------+-------------------+
 | contract | exception         |
-+==========+===================+
+| -------- | ----------------- |
 | pre      | PreContractError  |
-+----------+-------------------+
 | post     | PostContractError |
-+----------+-------------------+
 | ensure   | PostContractError |
-+----------+-------------------+
 | inv      | InvContractError  |
-+----------+-------------------+
-```
 
 Custom exception for any contract can be specified by `exception` argument:
 
