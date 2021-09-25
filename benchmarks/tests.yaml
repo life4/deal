@@ -95,3 +95,37 @@
             pass
         else:
             raise Exception
+
+- name: invariant
+  items:
+    - name: decorate
+      setup: import deal
+      test: |
+        @deal.inv(lambda a: True)
+        class A:
+            b: int
+    - name: create instance
+      setup: |
+        import deal
+        @deal.inv(lambda a: a.b >= 0)
+        class A:
+            b: int = 0
+      test: A()
+    - name: set attribute
+      setup: |
+        import deal
+        @deal.inv(lambda a: a.b >= 0)
+        class A:
+            b: int = 0
+        a = A()
+      test: a.b = 4
+    - name: set attribute many times
+      setup: |
+        import deal
+        @deal.inv(lambda a: a.b >= 0)
+        class A:
+            b: int = 0
+        a = A()
+      test: |
+        for i in range(100):
+            a.b = i
