@@ -9,6 +9,7 @@
 
     basic/intro
     basic/motivation
+    basic/index
 
 .. toctree::
     :maxdepth: 1
