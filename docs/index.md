@@ -11,7 +11,7 @@
 
     basic/intro
     basic/motivation
-    basic/index
+    basic/refs
 
 .. toctree::
     :maxdepth: 1

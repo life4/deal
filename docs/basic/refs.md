@@ -1,4 +1,4 @@
-# Index
+# References
 
 This page provides a quick navigation by the documentation in case if you're looking for something specific.
 
