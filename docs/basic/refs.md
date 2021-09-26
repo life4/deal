@@ -38,7 +38,7 @@ This page provides a quick navigation by the documentation in case if you're loo
 | `deal.ContractError`        | {py:exc}`deal.ContractError`        | {doc}`/basic/values` / {ref}`basic/values:exceptions` |
 | `deal.InvContractError`     | {py:exc}`deal.InvContractError`     | {doc}`/basic/values` / {ref}`basic/values:exceptions` |
 | `deal.MarkerError`          | {py:exc}`deal.MarkerError`          | -- |
-| `deal.NoMatchError`         | {py:exc}`deal.NoMatchError`         | -- |
+| `deal.NoMatchError`         | {py:exc}`deal.NoMatchError`         | {doc}`/details/dispatch` |
 | `deal.OfflineContractError` | {py:exc}`deal.OfflineContractError` | -- |
 | `deal.PostContractError`    | {py:exc}`deal.PostContractError`    | {doc}`/basic/values` / {ref}`basic/values:exceptions` |
 | `deal.PreContractError`     | {py:exc}`deal.PreContractError`     | {doc}`/basic/values` / {ref}`basic/values:exceptions` |

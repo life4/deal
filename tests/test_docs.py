@@ -77,13 +77,13 @@ def test_examples_included():
 
 
 @pytest.mark.parametrize('name', deal.__all__)
-def test_all_public_has_docstring(name: str):
+def test_all_public_have_docstring(name: str):
     obj = getattr(deal, name)
     doc = obj.__doc__
     assert doc is not None, f'{name} has no docstring'
 
 
-def test_all_public_listed_in_ref():
+def test_all_public_listed_in_refs():
     path = root / 'basic' / 'refs.md'
     content = path.read_text()
     for name in deal.__all__:
@@ -100,3 +100,14 @@ def test_all_cli_commands_listed_in_refs():
     for name, cmd in COMMANDS.items():
         assert f'`{name}`' in content
         assert f'`details/cli:{name}`' in content
+
+
+def test_all_public_listed_in_api():
+    path = root / 'details' / 'api.md'
+    content = path.read_text()
+    for name in deal.__all__:
+        if name[0] == '_':
+            continue
+        if name in {'Scheme'}:
+            continue
+        assert f':: deal.{name}' in content
