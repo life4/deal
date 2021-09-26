@@ -129,3 +129,30 @@
       test: |
         for i in range(100):
             a.b = i
+
+- name: class without invariant
+  items:
+    - name: declare
+      test: |
+        lambda a: True
+        class A:
+            b: int
+    - name: create instance
+      setup: |
+        class A:
+            b: int = 0
+      test: A()
+    - name: set attribute
+      setup: |
+        class A:
+            b: int = 0
+        a = A()
+      test: a.b = 4
+    - name: set attribute many times
+      setup: |
+        class A:
+            b: int = 0
+        a = A()
+      test: |
+        for i in range(100):
+            a.b = i
