@@ -48,18 +48,18 @@ class Invariant(Base[T]):
     def _init(self, *args, **kwargs):
         self.signature = None
         self.validator = self._make_validator()
-        self.validate = self._validate
+        if hasattr(self.validator, 'is_valid'):
+            self.validate = self._vaa_validation
+        else:
+            self.validate = self._simple_validation
         return self.validate(*args, **kwargs)
+
+    def _vaa_validation(self, obj) -> None:  # type: ignore[override]
+        return super()._vaa_validation(**vars(obj))
 
     @classmethod
     def _default_exception(cls) -> ExceptionType:
         return InvContractError
-
-    def _validate(self, obj) -> None:
-        if hasattr(self.validator, 'is_valid') and hasattr(obj, '__dict__'):
-            self._vaa_validation(**vars(obj))
-        else:
-            self._simple_validation(obj)
 
     def __call__(self, _class: T) -> T:
         invs = getattr(_class, '_deal_invariants', None)
