@@ -1,6 +1,6 @@
+from typing import Type
 from .._exceptions import PostContractError
-from .._types import ExceptionType
-from .base import SLOTS, Base, CallableType
+from .base import Base, CallableType
 
 
 class Post(Base[CallableType]):
@@ -8,10 +8,9 @@ class Post(Base[CallableType]):
     Check contract (validator) after function processing.
     Validate output result.
     """
-    __slots__ = SLOTS
 
     @classmethod
-    def _default_exception(cls) -> ExceptionType:
+    def _default_exception(cls) -> Type[Exception]:
         return PostContractError
 
     def patched_function(self, *args, **kwargs):

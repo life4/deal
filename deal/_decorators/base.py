@@ -2,7 +2,7 @@ import inspect
 from asyncio import iscoroutinefunction
 from contextlib import suppress
 from functools import lru_cache, update_wrapper
-from typing import Any, Callable, Dict, Generic, NoReturn, Optional, TypeVar
+from typing import Any, Callable, Dict, Generic, NoReturn, Optional, Type, TypeVar
 
 import vaa
 
@@ -13,16 +13,6 @@ from .._types import ExceptionType
 
 #: We use this type in many other subclasses of `Base` decorator.
 CallableType = TypeVar('CallableType', bound=Callable)
-
-SLOTS = [
-    'validator',
-    'validate',
-    'exception',
-    'function',
-    'signature',
-    'raw_validator',
-    'message',
-]
 
 
 @lru_cache(maxsize=16)
@@ -59,7 +49,17 @@ def _args_to_vars(
 
 
 class Base(Generic[CallableType]):
-    exception: ExceptionType = ContractError
+    __slots__ = (
+        'exception',
+        'function',
+        'signature',
+        'validate',
+        'validator',
+        'raw_validator',
+        'message',
+    )
+
+    exception: ExceptionType
     function: CallableType
     signature: Optional[inspect.Signature]
     validate: Any
@@ -83,12 +83,12 @@ class Base(Generic[CallableType]):
             self.exception = self.exception(message)    # type: ignore
 
     @classmethod
-    def _default_exception(cls) -> ExceptionType:
+    def _default_exception(cls) -> Type[Exception]:
         """
         Returns default exception for this contract.
         We can't use class-level defaults for it becuase subclasses use __slots__.
         """
-        return cls.exception
+        return ContractError
 
     def _make_validator(self) -> Callable:
         """

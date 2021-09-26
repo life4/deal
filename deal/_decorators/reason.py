@@ -2,15 +2,13 @@ from typing import Iterator, Type
 
 from .._cached_property import cached_property
 from .._exceptions import ReasonContractError
-from .._types import ExceptionType
-from .base import SLOTS, Base, CallableType
+from .base import Base, CallableType
 
 
 class Reason(Base[CallableType]):
-    __slots__ = SLOTS + ['event']
 
     @classmethod
-    def _default_exception(cls) -> ExceptionType:
+    def _default_exception(cls) -> Type[Exception]:
         return ReasonContractError
 
     def __init__(self, event: Type[Exception], *args, **kwargs):
