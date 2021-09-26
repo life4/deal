@@ -1,6 +1,6 @@
 from functools import partial, update_wrapper
 from types import MethodType
-from typing import Callable, TypeVar
+from typing import Callable, List, TypeVar
 
 from .._exceptions import InvContractError
 from .._types import ExceptionType
@@ -11,14 +11,15 @@ T = TypeVar('T', bound=type)
 
 
 class InvariantedClass:
-    _validate_base: Callable[..., None]
+    _deal_invariants: List['Invariant']
 
     def _validate(self) -> None:
         """
         Step 5 (1st flow) or Step 4 (2nd flow). Process contract for object.
         """
         # validation by Invariant.validate
-        self._validate_base(self)
+        for inv in self._deal_invariants:
+            inv.validate(self)
 
     def _patched_method(self, method: Callable, *args, **kwargs):
         """
@@ -35,7 +36,7 @@ class InvariantedClass:
         """
         attr = super().__getattribute__(name)
         # disable patching for InvariantedClass methods
-        if name in ('_patched_method', '_validate', '_validate_base'):
+        if name in ('_patched_method', '_validate', '_deal_invariants'):
             return attr
         # disable patching for attributes (not methods)
         if not isinstance(attr, MethodType):
@@ -77,32 +78,21 @@ class Invariant(Base[T]):
         else:
             self._simple_validation(obj)
 
-    def validate_chain(self, *args, **kwargs) -> None:
-        self.validate(*args, **kwargs)
-        self.child_validator(*args, **kwargs)
-
     def __call__(self, _class: T) -> T:
         """
         Step 2. Return wrapped class.
         """
-        # patch class parents and add method for validation
-
-        # if already invarianted
-        if hasattr(_class, '_validate_base'):
-            self.child_validator = _class._validate_base  # type: ignore
-            patched_class = type(
-                _class.__name__,
-                (_class, ),
-                {'_validate_base': self.validate_chain},
-            )
-        # if it's first invariant
-        else:
+        invs = getattr(_class, '_deal_invariants', None)
+        if invs is None:
             patched_class = type(
                 _class.__name__ + 'Invarianted',
                 (InvariantedClass, _class),
-                {'_validate_base': self.validate},
+                {'_deal_invariants': [self]},
             )
-        # Magic: _validate_base method uses Invariant as self, not _class
-
-        # return update_wrapper(patched_class, _class)
+        else:
+            patched_class = type(
+                _class.__name__,
+                (_class, ),
+                {'_deal_invariants': invs + [self]},
+            )
         return patched_class  # type: ignore[return-value]
