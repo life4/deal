@@ -34,7 +34,7 @@ There are a few ways to validate contracts:
 1. {doc}`/basic/runtime`. Call the functions, do usual tests, just play around with the application, deploy it to staging, and Deal will check contracts in runtime. Of course, you can disable contracts on production.
 1. {doc}`/basic/tests`. Deal is easily integrates with PyTest or any other testing framework. It does property-based testing for functions with contracts. Also, deal has `test` CLI command to find and run all pure functions in the project.
 1. {doc}`/basic/linter`. This is the most amazing part of Deal. It statically checks constant values in the code, does values inference, contracts partial execution, propagates exceptions and side-effects. Deal has `lint` CLI command for it and flake8 integration.
-1. **Experimental:** {doc}`/details/verification`. This is the most powerful but limited idea in the whole project. Deal can turn your code into mathematical expressions and verify its correctness.
+1. **Experimental:** {doc}`/basic/verification`. This is the most powerful but limited idea in the whole project. Deal can turn your code into mathematical expressions and verify its correctness.
 
 ## Dive deeper
 

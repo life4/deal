@@ -33,7 +33,7 @@ A Python library for [design by contract](https://en.wikipedia.org/wiki/Design_b
 [runtime]: https://deal.readthedocs.io/basic/runtime.html
 [colorless]: http://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/
 [leaks]: https://deal.readthedocs.io/basic/tests.html#memory-leaks
-[verification]: https://deal.readthedocs.io/details/verification.html
+[verification]: https://deal.readthedocs.io/basic/verification.html
 
 ## Deal in 30 seconds
 

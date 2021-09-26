@@ -28,6 +28,7 @@
     basic/runtime
     basic/tests
     basic/linter
+    basic/verification
 
 .. toctree::
     :maxdepth: 1
@@ -37,7 +38,6 @@
     details/module_load
     details/dispatch
     details/docs
-    details/verification
     details/stubs
     details/tests
     details/recipes
