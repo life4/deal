@@ -59,3 +59,18 @@ def test_patched_invariants_instance():
     assert isinstance(a, A)
 
     assert a.__class__.__name__.count('Invarianted') == 1
+
+
+def test_patch_class_with_slots():
+    @deal.inv(lambda obj: obj.x > 0)
+    class A:
+        __slots__ = ['x']
+
+        def __init__(self) -> None:
+            self.x = 2
+
+    a = A()
+    a.x = 4
+    assert a.x == 4
+    with pytest.raises(deal.InvContractError):
+        a.x = -2

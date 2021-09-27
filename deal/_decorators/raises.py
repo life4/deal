@@ -9,7 +9,7 @@ class Raises(Base[CallableType]):
     __slots__ = ['exception', 'function', 'exceptions']
 
     @classmethod
-    def _default_exception(cls) -> ExceptionType:
+    def _default_exception(cls) -> Type[Exception]:
         return RaisesContractError
 
     def __init__(
