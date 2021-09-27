@@ -77,6 +77,12 @@ class Ensure(_ValidatedContract):
     _wrapped: _decorators.Ensure
 
 
+class Example(_ValidatedContract):
+    """Wrapper for `deal.example`.
+    """
+    _wrapped: _decorators.Example
+
+
 class Raises(Contract):
     """Wrapper for `deal.raises`.
     """

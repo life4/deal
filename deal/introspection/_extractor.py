@@ -8,6 +8,7 @@ from ._wrappers import Contract
 
 WRAPPERS = MappingProxyType({
     _decorators.Ensure: _wrappers.Ensure,
+    _decorators.Example: _wrappers.Example,
     _decorators.Has: _wrappers.Has,
     _decorators.Post: _wrappers.Post,
     _decorators.Pre: _wrappers.Pre,
