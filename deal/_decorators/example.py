@@ -8,10 +8,6 @@ from .base import Base
 
 
 class Example(Base[CallableType]):
-    """
-    Check both arguments and result (validator) after function processing.
-    Validate arguments and output result.
-    """
 
     def __init__(self, validator: Callable[[], bool]) -> None:
         super().__init__(validator=validator, message=None, exception=None)
@@ -28,17 +24,14 @@ class Example(Base[CallableType]):
         self.function = function
         if iscoroutinefunction(function):
             async def wrapped_async(*args, **kwargs):
-                self  # add self into clousure
-                return await function(*args, **kwargs)
+                return await self.function(*args, **kwargs)
             return update_wrapper(wrapped_async, function)  # type: ignore[return-value]
 
         if isgeneratorfunction(function):
             def wrapped_gen(*args, **kwargs):
-                self
-                yield from function(*args, **kwargs)
+                yield from self.function(*args, **kwargs)
             return update_wrapper(wrapped_gen, function)  # type: ignore[return-value]
 
         def wrapped_func(*args, **kwargs):
-            self
-            return function(*args, **kwargs)
+            return self.function(*args, **kwargs)
         return update_wrapper(wrapped_func, function)  # type: ignore[return-value]

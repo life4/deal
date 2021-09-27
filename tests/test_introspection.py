@@ -30,7 +30,7 @@ def test_all_contracts_have_wrappers():
     assert contracts == set(WRAPPERS) | excluded
 
 
-def test_example():
+def test_usage_example():
     source = deal.introspection.__doc__.split('```python')[1].split('```')[0]
     # deal cannot extract the source code for validator if there is no source file
     source = source.replace("'x > 0'", "''")
@@ -119,3 +119,19 @@ def test_get_contracts__multiple():
     assert len(contracts) == 2
     assert type(contracts[0]) is deal.introspection.Pre
     assert type(contracts[1]) is deal.introspection.Post
+
+
+def test_get_contracts__example():
+    @deal.example(lambda: func(3) == 6)
+    def func(x):
+        return x * 2
+
+    contracts = list(deal.introspection.get_contracts(func))
+    assert len(contracts) == 1
+    contract = contracts[0]
+    assert type(contract) is deal.introspection.Example
+    assert isinstance(contract, deal.introspection.Example)
+    contract.validate()
+    assert contract.exception is deal.ExampleContractError
+    assert contract.message is None
+    assert contract.source == 'func(3) == 6'
