@@ -11,6 +11,7 @@
 
     basic/intro
     basic/motivation
+    basic/refs
 
 .. toctree::
     :maxdepth: 1
@@ -27,17 +28,17 @@
     basic/runtime
     basic/tests
     basic/linter
+    basic/verification
 
 .. toctree::
     :maxdepth: 1
     :caption: Dive deeper
 
+    details/contracts
     details/module_load
     details/dispatch
     details/docs
-    details/verification
     details/stubs
-    details/validators
     details/tests
     details/recipes
     details/examples

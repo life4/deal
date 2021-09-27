@@ -28,9 +28,9 @@ __license__ = 'MIT'
 __all__ = [
     'autodoc',
     'cases',
+    'introspection',
     'Scheme',
     'TestCase',
-    'introspection',
 
     # state
     'disable',

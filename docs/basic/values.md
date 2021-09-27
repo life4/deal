@@ -78,22 +78,6 @@ type(post)
 # deal.core.PostInvarianted
 ```
 
-## Simplified signature
-
-The main problem with contracts is that they have to duplicate the original function's signature, including default arguments. While it's not a problem for small examples, things become more complicated when the signature grows. In this case, you can specify a function that accepts only one `_` argument, and deal will pass there a container with arguments of the function call, including default ones:
-
-```python
-@deal.pre(lambda _: _.a + _.b > 0)
-def f(a, b=1):
-    return a + b
-
-f(1)
-# 2
-
-f(-2)
-# PreContractError: expected a + b > 0 (where a=-2, b=1)
-```
-
 ## assert
 
 Good old [assert statement](https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement) is also kind of a contract. It is good for checking intermediate state inside a function. Also, it is similar to other contracts since deal mimics `assert` behavior: all contracts are [disabled on production](./runtime.md) and raise [AssertionError](https://docs.python.org/3/library/exceptions.html#AssertionError) in case of the contract violation. Also, [deal linter](linter.md) checks `assert` statements to be True.
@@ -150,21 +134,6 @@ f(12)
 ```
 
 `@deal.post` and `@deal.ensure` contracts are resolved from bottom to top. All other contracts are resolved from top to bottom. This is because of how wrapping works: before calling function we go down by contracts list, after calling the function we go back, up by call stack.
-
-Also, there is `deal.chain` function to chain a few contracts together. It can be helpful to store contracts separately from the function:
-
-```python
-contract_for_min = deal.chain(
-    deal.pre(lambda items: len(items) > 0),
-    deal.ensure(lambda items, result: result in items),
-)
-
-@contract_for_min
-def min(items):
-    ...
-```
-
-It can be helpful if a function has too many contracts.
 
 ## Generators and async functions
 

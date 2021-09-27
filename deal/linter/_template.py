@@ -2,7 +2,7 @@
 
 from importlib import import_module
 
-from deal import ContractError
+import deal
 from deal._decorators.base import Base
 
 
@@ -52,7 +52,7 @@ def validate(*args, **kwargs) -> None:
 
 try:
     validate(*args, **kwargs)  # type: ignore  # noqa: F821
-except ContractError as exc:
+except deal.ContractError as exc:
     result = False
     if exc.args:
         result = exc.args[0]

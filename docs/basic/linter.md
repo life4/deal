@@ -11,15 +11,6 @@ python3 -m pip install --user flake8 deal
 python3 -m flake8
 ```
 
-## FlakeHell
-
-[FlakeHell](https://github.com/life4/flakehell) is a wrapper around Flake8 to get rid of legacy and improve some things like configuration. Deal usage with FlakeHell is almost the same as with Flake8 except that all plugins must be explicitly specified in the `pyproject.toml` config:
-
-```toml
-[tool.flakehell.plugins]
-deal = ["+*"]
-```
-
 ## Built-in CLI command
 
 Another option is to use built-in CLI from deal: `python3 -m deal lint`. I has beautiful colored output by default. Use `--json` option to get a compact JSON output. Pipe output into [jq](https://stedolan.github.io/jq/) to beautify JSON.

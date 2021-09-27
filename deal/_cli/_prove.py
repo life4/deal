@@ -72,7 +72,7 @@ class ProveCommand(Command):
     Exit code is equal to the failed theorems count.
     See [Formal Verification][verification] documentation for more information.
 
-    [verification]: https://deal.readthedocs.io/details/verification.html
+    [verification]: https://deal.readthedocs.io/basic/verification.html
     """
 
     @staticmethod

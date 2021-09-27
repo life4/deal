@@ -1,4 +1,4 @@
-# More about testing
+# More on testing
 
 This section assumes that you're familiar with [basic testing](../basic/tests.md) and describes how you can get more from deal testing mechanisms.
 

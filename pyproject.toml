@@ -47,6 +47,7 @@ lint = [
     "flake8-commas",
     "flake8-quotes",
     "mypy>=0.900",
+    "mypy_test>=0.1.1",
     "isort",
 ]
 docs = [
@@ -72,8 +73,7 @@ addopts = [
 branch = true
 omit = [
     "deal/linter/_template.py",
-    "deal/__main__.py",
-    "deal/linter/__main__.py",
+    "deal/mypy.py",
 ]
 
 [tool.coverage.report]
@@ -87,6 +87,7 @@ exclude_lines = [
 [tool.mypy]
 files = ["deal"]
 python_version = 3.7
+plugins = ["deal.mypy"]
 ignore_missing_imports = true
 show_error_codes = true
 

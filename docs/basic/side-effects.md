@@ -38,14 +38,14 @@ Deal already know about some markers and will report if they are violated:
 
 | code    | marker       | allows                           |
 | ------- | ------------ | -------------------------------- |
-| DEAL042 | `io`         | everything below                 |
-| DEAL043 | -- `read`    | read a file                      |
-| DEAL044 | -- `write`   | write into a file                |
-| DEAL045 | -- `stdout`  | `sys.stdout` and `print`         |
-| DEAL046 | -- `stderr`  | `sys.stderr`                     |
-| DEAL047 | -- `network` | network communications, `socket` |
-| DEAL051 | `global`     | `global` and `nonlocal`          |
-| DEAL052 | `import`     | `import`                         |
+| DEAL041 | `global`     | `global` and `nonlocal`          |
+| DEAL042 | `import`     | `import`                         |
+| DEAL043 | `io`         | everything below                 |
+| DEAL044 | -- `read`    | read a file                      |
+| DEAL045 | -- `write`   | write into a file                |
+| DEAL046 | -- `stdout`  | `sys.stdout` and `print`         |
+| DEAL047 | -- `stderr`  | `sys.stderr`                     |
+| DEAL048 | -- `network` | network communications, `socket` |
 
 ## Runtime
 
@@ -55,7 +55,16 @@ Some of the markers are checked at runtime:
 + If any of `io`, `print`, or `stdout` is specified, `deal.has` will allow using stdout. Otherwise, it will patch [sys.stdout](https://docs.python.org/3/library/sys.html#sys.stdout). If the function tries to use it, `SilentContractError` is raised.
 + If any of `io` or `stdout` is specified, `deal.has` will do the same as for `stdout` marker but for [sys.stderr](https://docs.python.org/3/library/sys.html#sys.stderr)
 
-Other markers aren't checked in runtime yet but only checked by the [linter](./linter.md).
+```python
+@deal.has()
+def f():
+    print('hello')
+
+f()
+# SilentContractError:
+```
+
+Other markers aren't checked in runtime yet but only checked by the [linter](linter).
 
 ## Markers are properties
 
@@ -76,4 +85,4 @@ def main():
     return 0
 ```
 
-If we run [linter](./linter.md) on the code above, it will fail with "DEAL046 missed marker (stdout)" message. `main` function calls `run_job` with `silent=True` so `print` will not be called when calling `main`. However, `run_job` function has an implicit `stdout` marker, and `main` calls this function so it must have this marker as well.
+If we run [linter](linter) on the code above, it will fail with "DEAL046 missed marker (stdout)" message. `main` function calls `run_job` with `silent=True` so `print` will not be called when calling `main`. However, `run_job` function has an implicit `stdout` marker, and `main` calls this function so it must have this marker as well.

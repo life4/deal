@@ -24,6 +24,21 @@ def test_all_codes_listed():
         assert line in content
 
 
+def test_all_marker_codes_listed():
+    path = root / 'basic' / 'side-effects.md'
+    content = path.read_text()
+    lines = content.splitlines()
+    for marker, code in CheckMarkers.codes.items():
+        code_cell = '| DEAL{:03d} | '.format(code)
+        assert code_cell in content
+        for line in lines:
+            if code_cell in line:
+                assert marker in line
+                break
+        else:
+            assert False, 'missing marker {}'.format(marker)
+
+
 def test_cli_included():
     path = root / 'details' / 'cli.md'
     content = path.read_text()
@@ -62,7 +77,37 @@ def test_examples_included():
 
 
 @pytest.mark.parametrize('name', deal.__all__)
-def test_all_public_has_docstring(name: str):
+def test_all_public_have_docstring(name: str):
     obj = getattr(deal, name)
     doc = obj.__doc__
     assert doc is not None, f'{name} has no docstring'
+
+
+def test_all_public_listed_in_refs():
+    path = root / 'basic' / 'refs.md'
+    content = path.read_text()
+    for name in deal.__all__:
+        if name[0] == '_':
+            continue
+        if name in {'introspection', 'Scheme', 'TestCase'}:
+            continue
+        assert f'deal.{name}`' in content
+
+
+def test_all_cli_commands_listed_in_refs():
+    path = root / 'basic' / 'refs.md'
+    content = path.read_text()
+    for name, cmd in COMMANDS.items():
+        assert f'`{name}`' in content
+        assert f'`details/cli:{name}`' in content
+
+
+def test_all_public_listed_in_api():
+    path = root / 'details' / 'api.md'
+    content = path.read_text()
+    for name in deal.__all__:
+        if name[0] == '_':
+            continue
+        if name in {'Scheme'}:
+            continue
+        assert f':: deal.{name}' in content
