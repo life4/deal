@@ -327,18 +327,26 @@ def inv(
     )
 
 
+def example(validator: Callable[[], bool]) -> Callable[[C], C]:
+    """
+    Decorator for providing a usage example for the wrapped function.
+    """
+    cls = _decorators.Example[C]
+    return cls(validator)
+
+
 @overload
 def safe(
     *,
     message: str = None,
     exception: ExceptionType = None,
 ) -> Callable[[C], C]:
-    pass  # pragma: no cover
+    pass
 
 
 @overload
 def safe(_func: C) -> C:
-    pass  # pragma: no cover
+    pass
 
 
 def safe(_func=None, **kwargs):

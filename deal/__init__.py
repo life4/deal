@@ -7,9 +7,10 @@ See [documentation] for more details.
 """
 from . import introspection
 from ._aliases import (
-    chain, dispatch, ensure, has, implies, inv, post, pre, pure, raises, reason, safe,
+    chain, dispatch, ensure, example, has, implies, inv, post, pre, pure, raises, reason, safe,
 )
 from ._exceptions import (
+    ExampleContractError,
     ContractError, InvContractError, MarkerError, NoMatchError,
     OfflineContractError, PostContractError, PreContractError,
     RaisesContractError, ReasonContractError, SilentContractError,
@@ -41,6 +42,7 @@ __all__ = [
     'chain',
     'dispatch',
     'ensure',
+    'example',
     'has',
     'inv',
     'post',
@@ -59,6 +61,7 @@ __all__ = [
 
     # exceptions
     'ContractError',
+    'ExampleContractError',
     'InvContractError',
     'MarkerError',
     'NoMatchError',

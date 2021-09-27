@@ -141,6 +141,14 @@ class InvContractError(ContractError):
     """
 
 
+class ExampleContractError(ContractError):
+    """The error raised by `deal.example` for contract violation.
+
+    `deal.example` contracts are checked only during testing and linting,
+    not at runtime.
+    """
+
+
 class RaisesContractError(ContractError):
     """The error raised by `deal.raises` for contract violation.
     """
