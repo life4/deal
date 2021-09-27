@@ -87,8 +87,8 @@ def test_return_type_checks():
     for case in deal.cases(div, count=20):
         case()
 
-    def div(a: int, b: int) -> str:
-        return 1
+    def div(a: int, b: int) -> str:  # type: ignore[no-redef]
+        return 1  # type: ignore[return-value]
 
     with pytest.raises(TypeError):
         case = next(iter(deal.cases(div, count=20)))
@@ -118,7 +118,7 @@ def test_explicit_strategy():
 
 def test_disable_type_checks():
     def bad(a: int) -> str:
-        return a
+        return a  # type: ignore[return-value]
 
     # type is wrong and checked
     cases = deal.cases(bad, count=1)
@@ -147,7 +147,7 @@ def test_type_var():
     def identity(a: T, b) -> T:
         return b
 
-    kwargs = dict(kwargs={}, func=identity, exceptions=(), check_types=True)
+    kwargs: dict = dict(kwargs={}, func=identity, exceptions=(), check_types=True)
     case = deal.TestCase(args=('ab', 'cd'), **kwargs)
     case()
 
@@ -271,3 +271,21 @@ def test_reproduce_failure():
 
     with pytest.raises(deal.RaisesContractError):
         test_div()
+
+
+def test_example():
+    @deal.example(lambda: double1(2) == 4)
+    def double1(x: int) -> int:
+        return x * 2
+
+    for case in deal.cases(double1):
+        case()
+
+    @deal.example(lambda: double2(2) == 5)
+    def double2(x: int) -> int:
+        return x * 2
+
+    cases = deal.cases(double2)
+    case = next(iter(cases))
+    with pytest.raises(deal.ExampleContractError):
+        case()

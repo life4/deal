@@ -15,6 +15,7 @@ from ._types import ArgsKwargsType
 F = typing.Callable[..., None]
 FuzzInputType = typing.Union[bytes, bytearray, memoryview, typing.BinaryIO]
 FuzzType = typing.Callable[[FuzzInputType], typing.Optional[bytes]]
+EXAMPLE = object()
 
 
 class TestCase(typing.NamedTuple):
@@ -199,6 +200,18 @@ class cases:  # noqa: N
         return tuple(exceptions)
 
     @cached_property
+    def examples(self) -> typing.Tuple[introspection.Example, ...]:
+        """
+        Returns exceptions that will be suppressed by individual test cases.
+        The exceptions are extracted from `@deal.raises` of the tested function.
+        """
+        examples = []
+        for obj in introspection.get_contracts(self.func):
+            if isinstance(obj, introspection.Example):
+                examples.append(obj)
+        return tuple(examples)
+
+    @cached_property
     def strategy(self) -> hypothesis.strategies.SearchStrategy:
         """Hypothesis strategy that is used to generate test cases.
         """
@@ -316,9 +329,18 @@ class cases:  # noqa: N
         return self._wrap(lambda case: case())
 
     def _wrap(self, test_func: F) -> F:
+        def run_examples(args, kwargs) -> None:
+            case = self.make_case()
+            for example in self.examples:
+                case = case._replace(func=example.validate)
+                test_func(case, *args, **kwargs)
+
         def wrapper(case: ArgsKwargsType, *args, **kwargs) -> None:
-            ex = case
             __tracebackhide__ = True
+            ex = case
+            if ex is EXAMPLE:
+                run_examples(args, kwargs)
+                return
             for validator in self.validators:
                 try:
                     validator.validate(*ex[0], **ex[1])
@@ -328,6 +350,7 @@ class cases:  # noqa: N
             test_func(case, *args, **kwargs)
 
         wrapper = self._impersonate(wrapper=wrapper, wrapped=test_func)
+        wrapper = hypothesis.example(case=EXAMPLE)(wrapper)
         wrapper = hypothesis.given(case=self.strategy)(wrapper)
         wrapper = self.settings(wrapper)
         if self.seed is not None:
