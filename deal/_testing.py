@@ -9,7 +9,6 @@ from hypothesis.internal.reflection import proxies
 
 from . import introspection
 from ._cached_property import cached_property
-from ._decorators import Pre
 from ._types import ArgsKwargsType
 
 
@@ -175,26 +174,17 @@ class cases:  # noqa: N
         )
 
     @cached_property
-    def validators(self) -> typing.Tuple[typing.Callable, ...]:
+    def validators(self) -> typing.Tuple[introspection.Pre, ...]:
         """Returns pre-condition validators.
 
         It is used in the process of generating hypothesis strategies
         To let hypothesis more effectively avoid wrong input values.
         """
-        return tuple(self._get_validators(self.func))
-
-    @staticmethod
-    def _get_validators(func: typing.Any) -> typing.Iterator[typing.Callable]:
-        while True:
-            if getattr(func, '__closure__', None):
-                for cell in func.__closure__:
-                    obj = cell.cell_contents
-                    if isinstance(obj, Pre):
-                        yield obj.validate
-
-            if not hasattr(func, '__wrapped__'):
-                return
-            func = func.__wrapped__
+        validators = []
+        for obj in introspection.get_contracts(self.func):
+            if isinstance(obj, introspection.Pre):
+                validators.append(obj)
+        return tuple(validators)
 
     @cached_property
     def exceptions(self) -> typing.Tuple[typing.Type[Exception], ...]:
@@ -202,13 +192,11 @@ class cases:  # noqa: N
         Returns exceptions that will be suppressed by individual test cases.
         The exceptions are extracted from `@deal.raises` of the tested function.
         """
-        return tuple(self._get_excs(self.func))
-
-    @staticmethod
-    def _get_excs(func: typing.Any) -> typing.Iterator[typing.Type[Exception]]:
-        for obj in introspection.get_contracts(func):
+        exceptions: list = []
+        for obj in introspection.get_contracts(self.func):
             if isinstance(obj, introspection.Raises):
-                yield from obj.exceptions
+                exceptions.extend(obj.exceptions)
+        return tuple(exceptions)
 
     @cached_property
     def strategy(self) -> hypothesis.strategies.SearchStrategy:
@@ -333,8 +321,8 @@ class cases:  # noqa: N
             __tracebackhide__ = True
             for validator in self.validators:
                 try:
-                    validator(*ex[0], **ex[1])
-                except Exception:
+                    validator.validate(*ex[0], **ex[1])
+                except validator.exception_type:
                     hypothesis.reject()
             case = self.make_case(*ex[0], **ex[1])
             test_func(case, *args, **kwargs)

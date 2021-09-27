@@ -22,10 +22,16 @@ class Contract:
         return self._wrapped.function
 
     @property
-    def exception(self) -> Optional[ExceptionType]:
+    def exception(self) -> ExceptionType:
         """The exception raised if the contract is not satisfied.
         """
         return self._wrapped.exception
+
+    @property
+    def exception_type(self) -> Type[Exception]:
+        if isinstance(self.exception, type):
+            return self.exception
+        return type(self.exception)
 
     @property
     def message(self) -> Optional[str]:
