@@ -135,3 +135,10 @@ def test_get_contracts__example():
     assert contract.exception is deal.ExampleContractError
     assert contract.message is None
     assert contract.source == 'func(3) == 6'
+
+
+def test_get_contracts__example_func():
+    from examples.sphinx import example
+
+    contracts = list(deal.introspection.get_contracts(example))
+    assert len(contracts) == 9

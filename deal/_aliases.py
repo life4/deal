@@ -5,6 +5,7 @@ from ._types import ExceptionType
 
 
 C = TypeVar('C', bound=Callable)
+F = TypeVar('F', bound=Callable)
 T = TypeVar('T')
 
 
@@ -377,7 +378,7 @@ def safe(_func=None, **kwargs):
     return raises()(_func)
 
 
-def chain(*contracts: Callable[[C], C]) -> Callable[[C], C]:
+def chain(*contracts: Callable[[C], C]) -> Callable[[F], F]:
     """Decorator to chain 2 or more contracts together.
 
     It can be helpful to store contracts separately from the function.
