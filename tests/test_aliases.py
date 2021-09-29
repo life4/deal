@@ -37,7 +37,9 @@ def test_preserve_type_annotations():
 
 def test_preserve_docstring():
     func = get_func()
-    assert getdoc(func).strip() == 'docs were before docker'
+    docs = getdoc(func)
+    assert docs is not None
+    assert docs.strip() == 'docs were before docker'
 
 
 def test_implies():
@@ -50,3 +52,13 @@ def test_implies():
     f(False, False)
     with pytest.raises(deal.PreContractError):
         f(True, False)
+
+
+def test_catch():
+    def div(x, y):
+        return x / y
+
+    assert deal.catch(div, 1, 2) is None
+    assert deal.catch(div, 1, y=2) is None
+    assert deal.catch(div, x=1, y=2) is None
+    assert deal.catch(div, 1, 0) is ZeroDivisionError

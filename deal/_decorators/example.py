@@ -1,10 +1,10 @@
 from asyncio import iscoroutinefunction
 from functools import update_wrapper
-from typing import Callable, Type
-from .base import CallableType
 from inspect import isgeneratorfunction
+from typing import Callable, Type
+
 from .._exceptions import ExampleContractError
-from .base import Base
+from .base import Base, CallableType
 
 
 class Example(Base[CallableType]):

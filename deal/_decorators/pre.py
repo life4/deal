@@ -1,4 +1,5 @@
 from typing import Type
+
 from .._exceptions import PreContractError
 from .base import Base, CallableType
 
