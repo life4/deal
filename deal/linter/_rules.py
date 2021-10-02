@@ -1,7 +1,6 @@
 import ast
-import enum
 from types import MappingProxyType
-from typing import Iterator
+from typing import Iterator, List, Type, TypeVar
 
 from .._decorators import Has
 from ._contract import Category, Contract
@@ -14,25 +13,40 @@ from ._func import Func
 from ._stub import StubsManager
 
 
-rules = []
+T = TypeVar('T', bound=Type['Rule'])
+rules: List['Rule'] = []
 
 
-class Required(enum.Enum):
-    FUNC = 'func'
-    MODULE = 'module'
-
-
-def register(rule):
+def register(rule: T) -> T:
     rules.append(rule())
     return rule
 
 
+class Rule:
+    __slots__ = ()
+    code: int
+    message: str
+
+
+class ModuleRule(Rule):
+    __slots__ = ()
+
+    def __call__(self, tree: ast.Module) -> Iterator[Error]:
+        raise NotImplementedError
+
+
+class FuncRule(Rule):
+    __slots__ = ()
+
+    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+        raise NotImplementedError
+
+
 @register
-class CheckImports:
+class CheckImports(ModuleRule):
     __slots__ = ()
     code = 1
     message = 'do not use `from deal import ...`, use `import deal` instead'
-    required = Required.MODULE
 
     def __call__(self, tree: ast.Module) -> Iterator[Error]:
         for token in get_imports(tree.body):
@@ -47,11 +61,10 @@ class CheckImports:
 
 
 @register
-class CheckPre:
+class CheckPre(FuncRule):
     __slots__ = ()
     code = 11
     message = 'pre contract error'
-    required = Required.FUNC
 
     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         # We test only contracted functions because of poor performance.
@@ -71,11 +84,10 @@ class CheckPre:
 
 
 @register
-class CheckReturns:
+class CheckReturns(FuncRule):
     __slots__ = ()
     code = 12
     message = 'post contract error'
-    required = Required.FUNC
 
     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         for contract in func.contracts:
@@ -105,11 +117,10 @@ class CheckReturns:
 
 
 @register
-class CheckRaises:
+class CheckRaises(FuncRule):
     __slots__ = ()
     code = 21
     message = 'raises contract error'
-    required = Required.FUNC
 
     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         cats = {Category.RAISES, Category.SAFE, Category.PURE}
@@ -139,11 +150,10 @@ class CheckRaises:
 
 
 @register
-class CheckAsserts:
+class CheckAsserts(FuncRule):
     __slots__ = ()
     code = 31
     message = 'assert error'
-    required = Required.FUNC
 
     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         # do not validate asserts in tests
@@ -160,11 +170,10 @@ class CheckAsserts:
 
 
 @register
-class CheckMarkers:
+class CheckMarkers(FuncRule):
     __slots__ = ()
     code = 40
     message = 'missed marker'
-    required = Required.FUNC
 
     codes = MappingProxyType({
         'global': 41,

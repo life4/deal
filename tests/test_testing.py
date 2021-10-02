@@ -289,3 +289,10 @@ def test_example():
     case = next(iter(cases))
     with pytest.raises(deal.ExampleContractError):
         case()
+
+
+def test_concat():
+    from examples.concat import concat
+
+    cases = deal.cases(concat)
+    cases()
