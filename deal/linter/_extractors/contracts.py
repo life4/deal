@@ -6,12 +6,13 @@ from .common import TOKENS, get_name
 
 
 SUPPORTED_CONTRACTS = {
+    'deal.ensure',
+    'deal.example',
     'deal.has',
     'deal.post',
     'deal.pre',
-    'deal.example',
-    'deal.raises',
     'deal.pure',
+    'deal.raises',
     'deal.safe',
 }
 SUPPORTED_MARKERS = {'deal.pure', 'deal.safe'}

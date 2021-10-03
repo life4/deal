@@ -154,6 +154,7 @@ class CheckExamples(FuncRule):
                 )
                 if error is not None:
                     yield error
+
             if other.category == Category.POST:
                 if example.result == UNKNOWN:
                     continue
@@ -164,6 +165,20 @@ class CheckExamples(FuncRule):
                     row=token.lineno,
                     col=token.col_offset,
                     value='deal.post',
+                )
+                if error is not None:
+                    yield error
+
+            if other.category == Category.ENSURE:
+                if example.result == UNKNOWN:
+                    continue
+                error = self._validate(
+                    contract=other,
+                    args=example.args,
+                    kwargs=dict(example.kwargs, result=example.result),
+                    row=token.lineno,
+                    col=token.col_offset,
+                    value='deal.ensure',
                 )
                 if error is not None:
                     yield error

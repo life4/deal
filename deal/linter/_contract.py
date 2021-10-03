@@ -16,12 +16,13 @@ FUNC_INDEX = 4
 
 
 class Category(enum.Enum):
-    HAS = 'has'
-    PRE = 'pre'
-    POST = 'post'
-    RAISES = 'raises'
+    ENSURE = 'ensure'
     EXAMPLE = 'example'
+    HAS = 'has'
+    POST = 'post'
+    PRE = 'pre'
     PURE = 'pure'
+    RAISES = 'raises'
     SAFE = 'safe'
 
 
