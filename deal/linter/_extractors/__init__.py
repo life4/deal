@@ -8,7 +8,7 @@ from .imports import get_imports
 from .markers import get_markers
 from .pre import get_pre
 from .returns import get_returns, has_returns
-from .value import get_value, UNKNOWN
+from .value import UNKNOWN, get_value
 
 
 __all__ = [

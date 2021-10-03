@@ -1,6 +1,6 @@
+import ast
 from typing import Dict, List, NamedTuple, Optional, Union
 
-import ast
 import astroid
 
 from .common import TOKENS, get_name

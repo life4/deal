@@ -1,7 +1,7 @@
 from typing import Callable, Type
 
 from .._exceptions import ExampleContractError
-from .base import StaticBase, CallableType
+from .base import CallableType, StaticBase
 
 
 class Example(StaticBase[CallableType]):

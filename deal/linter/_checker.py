@@ -7,7 +7,7 @@ from astroid import AstroidSyntaxError
 from .. import __version__
 from ._error import Error
 from ._func import Func
-from ._rules import rules, ModuleRule, FuncRule
+from ._rules import FuncRule, ModuleRule, rules
 from ._stub import StubsManager
 
 
