@@ -8,7 +8,7 @@ from .base import Base, CallableType
 class Reason(Base[CallableType]):
 
     @classmethod
-    def _default_exception(cls) -> Type[Exception]:
+    def _default_exception(cls) -> Type[ReasonContractError]:
         return ReasonContractError
 
     def __init__(self, event: Type[Exception], *args, **kwargs):

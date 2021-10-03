@@ -11,7 +11,7 @@ class Pre(Base[CallableType]):
     """
 
     @classmethod
-    def _default_exception(cls) -> Type[Exception]:
+    def _default_exception(cls) -> Type[PreContractError]:
         return PreContractError
 
     def patched_function(self, *args, **kwargs):
