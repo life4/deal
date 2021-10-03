@@ -59,7 +59,7 @@ def _process_docstring(
             examples.append(f'  * ``{contract.source}``')
             continue
 
-        raise RuntimeError('unreachable')  # pragma: no cover
+        raise RuntimeError('unreachable')
 
     for exc_name, descr in sorted(raises.items()):
         lines.append(f':raises {exc_name}: {descr}')

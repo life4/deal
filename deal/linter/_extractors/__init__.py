@@ -2,6 +2,7 @@ from .asserts import get_asserts
 from .common import get_name
 from .contracts import get_contracts
 from .definitions import get_definitions
+from .examples import get_example
 from .exceptions import get_exceptions
 from .imports import get_imports
 from .markers import get_markers
@@ -14,6 +15,7 @@ __all__ = [
     'get_asserts',
     'get_contracts',
     'get_definitions',
+    'get_example',
     'get_exceptions',
     'get_imports',
     'get_markers',
