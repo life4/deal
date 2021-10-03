@@ -9,6 +9,7 @@ This page provides a quick navigation by the documentation in case if you're loo
 | `@deal.chain`    | {py:func}`deal.chain`    | {doc}`/details/contracts` / {ref}`details/contracts:deal.chain` |
 | `@deal.dispatch` | {py:func}`deal.dispatch` | {doc}`/details/dispatch` |
 | `@deal.ensure`   | {py:func}`deal.ensure`   | {doc}`/basic/values` / {ref}`basic/values:deal.ensure` |
+| `@deal.example`   | {py:func}`deal.example` | {doc}`/details/docs` / {ref}`details/docs:deal.example` |
 | `@deal.has`      | {py:func}`deal.has`      | {doc}`/basic/side-effects` |
 | `@deal.inv`      | {py:func}`deal.inv`      | {doc}`/basic/values` / {ref}`basic/values:deal.inv` |
 | `@deal.post`     | {py:func}`deal.post`     | {doc}`/basic/values` / {ref}`basic/values:deal.post` |
@@ -25,6 +26,7 @@ This page provides a quick navigation by the documentation in case if you're loo
 | `deal.activate`    | {py:func}`deal.activate` | {doc}`/details/module_load` |
 | `deal.autodoc`     | {py:func}`deal.autodoc`  | {doc}`/details/docs` / {ref}`details/docs:sphinx autodoc` |
 | `deal.cases`       | {py:class}`deal.cases`   | {doc}`/basic/tests` |
+| `deal.catch`       | {py:func}`deal.catch`    | {doc}`/details/docs` / {ref}`details/docs:deal.example` |
 | `deal.disable`     | {py:func}`deal.disable`  | {doc}`/basic/runtime` / {ref}`basic/runtime:contracts on production` |
 | `deal.enable`      | {py:func}`deal.enable`   | {doc}`/basic/runtime` / {ref}`basic/runtime:contracts on production` |
 | `deal.implies`     | {py:func}`deal.implies`  | -- |
@@ -36,6 +38,7 @@ This page provides a quick navigation by the documentation in case if you're loo
 | decorator                   | reference                           | documentation |
 | --------------------------- | ----------------------------------- | ------------- |
 | `deal.ContractError`        | {py:exc}`deal.ContractError`        | {doc}`/basic/values` / {ref}`basic/values:exceptions` |
+| `deal.ExampleContractError` | {py:exc}`deal.ExampleContractError` | -- |
 | `deal.InvContractError`     | {py:exc}`deal.InvContractError`     | {doc}`/basic/values` / {ref}`basic/values:exceptions` |
 | `deal.MarkerError`          | {py:exc}`deal.MarkerError`          | -- |
 | `deal.NoMatchError`         | {py:exc}`deal.NoMatchError`         | {doc}`/details/dispatch` |
