@@ -1,13 +1,13 @@
 import ast
 from types import MappingProxyType
-from typing import Iterator, List, Type, TypeVar
+from typing import Iterator, List, Optional, Type, TypeVar
 
 from .._decorators import Has
 from ._contract import Category, Contract
 from ._error import Error
 from ._extractors import (
     get_asserts, get_exceptions, get_imports, get_markers,
-    get_pre, get_returns, get_value, has_returns,
+    get_pre, get_returns, get_value, has_returns, get_example,
 )
 from ._func import Func
 from ._stub import StubsManager
@@ -26,6 +26,18 @@ class Rule:
     __slots__ = ()
     code: int
     message: str
+
+    def _validate(self, contract: Contract, args, kwargs, **error_info) -> Optional[Error]:
+        try:
+            result = contract.run(*args, **kwargs)
+        except NameError:
+            # cannot resolve contract dependencies
+            return None
+        if isinstance(result, str):
+            return Error(text=result, code=self.code, **error_info)
+        if not result:
+            return Error(text=self.message, code=self.code, **error_info)
+        return None
 
 
 class ModuleRule(Rule):
@@ -97,23 +109,51 @@ class CheckReturns(FuncRule):
 
     def _check(self, func: Func, contract: Contract) -> Iterator[Error]:
         for token in get_returns(body=func.body):
-            try:
-                result = contract.run(token.value)
-            except NameError:
-                # cannot resolve contract dependencies
-                return
-
-            error_info = dict(
+            error = self._validate(
+                contract=contract,
+                args=(token.value,),
+                kwargs={},
                 row=token.line,
                 col=token.col,
-                code=self.code,
                 value=str(token.value),
             )
-            if isinstance(result, str):
-                yield Error(text=result, **error_info)  # type: ignore
+            if error is not None:
+                yield error
+
+
+@register
+class CheckExamples(FuncRule):
+    __slots__ = ()
+    code = 13
+    message = 'example violates contract'
+
+    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+        for contract in func.contracts:
+            if contract.category != Category.EXAMPLE:
                 continue
-            if not result:
-                yield Error(text=self.message, **error_info)  # type: ignore
+            yield from self._check(func=func, contract=contract)
+
+    def _check(self, func: Func, contract: Contract) -> Iterator[Error]:
+        validator = contract.body
+        if isinstance(validator, ast.Expr):
+            validator = validator.value
+        if not isinstance(validator, ast.Lambda):
+            return
+        example = get_example(validator.body, func_name=func.name)
+        if example is None:
+            return
+        for other in func.contracts:
+            if other.category == Category.PRE:
+                error = self._validate(
+                    contract=other,
+                    args=example.args,
+                    kwargs=example.kwargs,
+                    row=contract.args[0].lineno,
+                    col=contract.args[0].col_offset,
+                    value='deal.pre',
+                )
+                if error is not None:
+                    yield error
 
 
 @register

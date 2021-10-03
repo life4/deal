@@ -20,6 +20,7 @@ class Category(enum.Enum):
     PRE = 'pre'
     POST = 'post'
     RAISES = 'raises'
+    EXAMPLE = 'example'
     PURE = 'pure'
     SAFE = 'safe'
 

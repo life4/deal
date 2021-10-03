@@ -5,6 +5,7 @@ import astroid
 
 from deal.linter._func import Func
 from deal.linter._rules import (
+    CheckExamples,
     CheckAsserts, CheckImports, CheckMarkers, CheckPre, CheckRaises, CheckReturns, rules,
 )
 
@@ -37,7 +38,7 @@ def test_check_pre():
     text = dedent(text).strip()
     funcs = Func.from_astroid(astroid.parse(text))
     assert len(funcs) == 3
-    actual = []
+    actual: list = []
     for func in funcs:
         actual.extend(tuple(err) for err in checker(func))
     expected = [(7, 11, 'DEAL011 pre contract error (-3)')]
@@ -348,4 +349,25 @@ def test_check_imports():
     for tree in (ast.parse(text), astroid.parse(text)):
         actual = [tuple(err) for err in checker(tree)]
         expected = [(2, 0, 'DEAL001 ' + CheckImports.message)]
+        assert actual == expected
+
+
+def test_check_example_pre():
+    checker = CheckExamples()
+    text = """
+    @deal.example(unknown)
+    @deal.example(lambda: double(-3) == -6)
+    @deal.example(lambda: unknown)
+    @deal.example(unknown)
+    @deal.pre(lambda a: a > 0)
+    @deal.pre(lambda a: unknown)
+    def double(a):
+        return a * 2
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    for func in (funcs1[0], funcs2[0]):
+        actual = [tuple(err) for err in checker(func)]
+        expected = [(2, 14, 'DEAL013 example violates contract (deal.pre)')]
         assert actual == expected

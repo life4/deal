@@ -9,8 +9,9 @@ SUPPORTED_CONTRACTS = {
     'deal.has',
     'deal.post',
     'deal.pre',
-    'deal.pure',
+    'deal.example',
     'deal.raises',
+    'deal.pure',
     'deal.safe',
 }
 SUPPORTED_MARKERS = {'deal.pure', 'deal.safe'}
