@@ -2,7 +2,7 @@
 
 Let's take for example an incredibly simple code and imagine that it's incredibly complicated logic.
 
-```python
+```python run
 def cat(left, right):
     """Concatenate two given strings.
     """
@@ -13,7 +13,7 @@ def cat(left, right):
 
 How can we be sure this code works? No, it's not obvious. Remember the rules of the game, we have an incredibly complicated realization. So, we can't say it works or not while we haven't tested it.
 
-```python
+```python run
 def test_cat():
     result = cat(left='abc', right='def')
     assert result == 'abcdef'
@@ -31,7 +31,7 @@ It passes. So, our code works. Right?
 
 Wait, but what about corner cases? What if one string is empty? What if both strings are empty? What if we have only one character in both strings? We need check more values and this is where [table driven tests](https://dave.cheney.net/2019/05/07/prefer-table-driven-tests) will save our time. In pytest, we can use [@pytest.mark.parametrize](https://docs.pytest.org/en/latest/parametrize.html#pytest-mark-parametrize) to make such tables.
 
-```python
+```python run
 import pytest
 
 @pytest.mark.parametrize('left, right, expected', [
@@ -58,7 +58,7 @@ So, what are the properties of our function?
 
 Now, we can check these properties for the result instead of checking particular values.
 
-```python
+```python run
 @pytest.mark.parametrize('left, right', [
     ('a', 'b'),
     ('', ''),
@@ -93,7 +93,7 @@ def test_cat(left, right):
 
 Another one cool thing in Python we have to talk about before moving further is [type annotations](https://dev.to/dstarner/using-pythons-type-annotations-4cfe):
 
-```python
+```python run
 def cat(left: str, right: str) -> str:
     return left + right
 ```
@@ -124,7 +124,7 @@ Can we make it even simpler? Not really. The implementation can produce some val
 
 And Deal can make the same for function properties:
 
-```python
+```python run
 import deal
 
 @deal.ensure(lambda left, right, result: result.startswith(left))
@@ -136,7 +136,7 @@ def cat(left: str, right: str) -> str:
 
 Or using short signatures:
 
-```python
+```python run
 import deal
 
 @deal.ensure(lambda _: _.result.startswith(_.left))
@@ -156,7 +156,7 @@ test_cat = deal.cases(cat)
 
 The most exciting thing is deal can check contracts statically, like mypy checks annotations. However, contracts can be any code while types are [standardized and limited](https://docs.python.org/3/library/typing.html). Although the machine can't check everything (yet), it can catch some trivial cases. For example:
 
-```python
+```python run
 @deal.post(lambda result: 0 <= result <= 1)
 def sin(x):
     return 2

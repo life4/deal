@@ -6,7 +6,7 @@ This section assumes that you're familiar with [basic testing](../basic/tests.md
 
 Sometimes, when a function is completed, it leaves in memory other objects except result. For example:
 
-```python
+```python run
 cache = {}
 User = dict
 
@@ -37,7 +37,7 @@ If the function fails, the command will ignore it and still test the function fo
 
 The `deal.cases` constructor accepts `kwargs` argument where you can specify constant values for the function arguments. For example:
 
-```python
+```python run
 @deal.raises(ZeroDivisionError)
 def div(a: int, b: int) -> float:
     assert a == 1
@@ -83,7 +83,7 @@ Argument `seed` of `deal.cases` is a random seed. That means, for the same seed 
 There is an example for GitLab CI:
 
 ```python
-import sys
+import os
 import deal
 
 seed = None

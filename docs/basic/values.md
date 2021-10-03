@@ -82,7 +82,7 @@ type(post)
 
 Good old [assert statement](https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement) is also kind of a contract. It is good for checking intermediate state inside a function. Also, it is similar to other contracts since deal mimics `assert` behavior: all contracts are [disabled on production](./runtime.md) and raise [AssertionError](https://docs.python.org/3/library/exceptions.html#AssertionError) in case of the contract violation. Also, [deal linter](linter.md) checks `assert` statements to be True.
 
-```python
+```python run
 def do_something(a):
     result = something_else(a)
     assert result > 0

@@ -53,7 +53,7 @@ Markers:
 
 To check `pre` and `post` contracts, linter can partially execute them. For example:
 
-```python
+```python run
 import deal
 
 @deal.post(lambda r: r != 0)

@@ -1,4 +1,6 @@
+import re
 from pathlib import Path
+from textwrap import dedent
 
 import pytest
 
@@ -8,6 +10,13 @@ from deal.linter._rules import CheckMarkers, rules
 
 
 root = Path(__file__).parent.parent / 'docs'
+rex_code = re.compile(r'```python\s+run\n(.+?)\n\s*```', re.DOTALL)
+
+
+def get_code_blocks(path: Path):
+    content = path.read_text()
+    for match in rex_code.finditer(content):
+        yield dedent(match.group(1))
 
 
 def test_all_codes_listed():
@@ -111,3 +120,15 @@ def test_all_public_listed_in_api():
         if name in {'Scheme'}:
             continue
         assert f':: deal.{name}' in content
+
+
+@pytest.mark.parametrize(
+    'path',
+    [pytest.param(p, id=p.name) for p in root.glob('**/*.md')],
+)
+def test_code_snippets(path: Path):
+    for code in get_code_blocks(path):
+        exec(code, dict(
+            deal=deal,
+            pytest=pytest,
+        ))

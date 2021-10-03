@@ -20,7 +20,7 @@ f(-2)
 
 The {py:func}`deal.chain` decorator allows to merge a few contracts together into one decorator. It can be used to store contracts separately from the function:
 
-```python
+```python run
 contract_for_min = deal.chain(
     deal.pre(lambda items: len(items) > 0),
     deal.ensure(lambda items, result: result in items),

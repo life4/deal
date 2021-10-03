@@ -9,7 +9,7 @@ Deal has an integration with [sphinx] documentation generator, namely with [auto
 
 The minimal config:
 
-```python
+```python run
 import deal
 
 extensions = ['sphinx.ext.autodoc']
@@ -32,7 +32,7 @@ See also {ref}`details/examples:sphinx` example.
 
 The decorator {py:func}`deal.example` allows to provide a usage example for the decorated function. This example is executed only when running [tests](../basic/tests) and partially checked by the linter. It's not, however, executed at runtime. The example must return `True` if it is valid.
 
-```python
+```python run
 @deal.example(lambda: double(3) == 6)
 def double(x):
     return x * 2
@@ -51,7 +51,7 @@ Depending on the context and on the mypy version you use, you may encounter `Can
 
 If you want to provide an example of when the function raises an exception, you can catch and compare this exception using {py:func}`deal.catch`:
 
-```python
+```python run
 @deal.example(lambda: deal.catch(div, 4, 0) is ZeroDivisionError)
 @deal.raises(ZeroDivisionError)
 @deal.reason(ZeroDivisionError, lambda x: x == 0)
