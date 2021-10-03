@@ -2,6 +2,8 @@ import ast
 from types import MappingProxyType
 from typing import Iterator, List, Optional, Type, TypeVar
 
+import astroid
+
 from .._decorators import Has
 from ._contract import Category, Contract
 from ._error import Error
@@ -134,12 +136,10 @@ class CheckExamples(FuncRule):
             yield from self._check(func=func, contract=contract)
 
     def _check(self, func: Func, contract: Contract) -> Iterator[Error]:
-        validator = contract.body
-        if isinstance(validator, ast.Expr):
-            validator = validator.value
-        if not isinstance(validator, ast.Lambda):
+        token = contract.args[0]
+        if not isinstance(token, (ast.Lambda, astroid.Lambda)):
             return
-        example = get_example(validator.body, func_name=func.name)
+        example = get_example(token.body, func_name=func.name)
         if example is None:
             return
         for other in func.contracts:
@@ -148,8 +148,8 @@ class CheckExamples(FuncRule):
                     contract=other,
                     args=example.args,
                     kwargs=example.kwargs,
-                    row=contract.args[0].lineno,
-                    col=contract.args[0].col_offset,
+                    row=token.lineno,
+                    col=token.col_offset,
                     value='deal.pre',
                 )
                 if error is not None:
