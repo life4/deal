@@ -9,7 +9,7 @@ from ._contract import Category, Contract
 from ._error import Error
 from ._extractors import (
     get_asserts, get_exceptions, get_imports, get_markers,
-    get_pre, get_returns, get_value, has_returns, get_example,
+    get_pre, get_returns, get_value, has_returns, get_example, UNKNOWN
 )
 from ._func import Func
 from ._stub import StubsManager
@@ -151,6 +151,19 @@ class CheckExamples(FuncRule):
                     row=token.lineno,
                     col=token.col_offset,
                     value='deal.pre',
+                )
+                if error is not None:
+                    yield error
+            if other.category == Category.POST:
+                if example.result == UNKNOWN:
+                    continue
+                error = self._validate(
+                    contract=other,
+                    args=(example.result, ),
+                    kwargs={},
+                    row=token.lineno,
+                    col=token.col_offset,
+                    value='deal.post',
                 )
                 if error is not None:
                     yield error

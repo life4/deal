@@ -371,3 +371,22 @@ def test_check_example_pre():
         actual = [tuple(err) for err in checker(func)]
         expected = [(2, 14, 'DEAL013 example violates contract (deal.pre)')]
         assert actual == expected
+
+
+def test_check_example_post():
+    checker = CheckExamples()
+    text = """
+    @deal.example(lambda: double(-3) == -6)
+    @deal.example(lambda: double(3) == unknown)
+    @deal.post(lambda a: a > 0)
+    @deal.post(lambda a: unknown)
+    def double(a):
+        return a * 2
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    for func in (funcs1[0], funcs2[0]):
+        actual = [tuple(err) for err in checker(func)]
+        expected = [(1, 14, 'DEAL013 example violates contract (deal.post)')]
+        assert actual == expected
