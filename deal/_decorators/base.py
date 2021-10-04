@@ -251,36 +251,3 @@ class Base(Generic[CallableType]):
         Step 3. Wrapped function calling.
         """
         raise NotImplementedError
-
-
-class StaticBase(Base[CallableType]):
-    """The base class for contracts checked only during tests and by linter.
-    """
-    __slots__ = ()
-
-    def __init__(self, validator) -> None:
-        self.validate = self._validator
-        self.raw_validator = validator
-        self.message = None
-        self.exception = self._default_exception()
-
-    def _validator(self) -> None:
-        if not self.raw_validator():
-            exc_type = self._default_exception()
-            raise exc_type(validator=self.raw_validator)
-
-    def __call__(self, function: CallableType) -> CallableType:
-        self.function = function
-        if iscoroutinefunction(function):
-            async def wrapped_async(*args, **kwargs):
-                return await self.function(*args, **kwargs)
-            return update_wrapper(wrapped_async, function)  # type: ignore[return-value]
-
-        if inspect.isgeneratorfunction(function):
-            def wrapped_gen(*args, **kwargs):
-                yield from self.function(*args, **kwargs)
-            return update_wrapper(wrapped_gen, function)  # type: ignore[return-value]
-
-        def wrapped_func(*args, **kwargs):
-            return self.function(*args, **kwargs)
-        return update_wrapper(wrapped_func, function)  # type: ignore[return-value]

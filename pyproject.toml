@@ -34,7 +34,7 @@ requires = [
 
 [tool.flit.metadata.requires-extra]
 test = [
-    "coverage",
+    "coverage[toml]",
     "pytest-cov",
     "isort",
     "marshmallow",

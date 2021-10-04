@@ -2,7 +2,7 @@ import pytest
 
 import deal
 from deal._decorators import Invariant
-from deal._decorators.base import Base, StaticBase
+from deal._decorators.base import Base
 from deal.introspection import _wrappers
 from deal.introspection._extractor import WRAPPERS
 
@@ -25,8 +25,8 @@ def test_all_wrappers_registered():
 
 
 def test_all_contracts_have_wrappers():
-    contracts = set(Base.__subclasses__()) | set(StaticBase.__subclasses__())
-    excluded = {Invariant, StaticBase}
+    contracts = set(Base.__subclasses__())
+    excluded = {Invariant}
     assert contracts == set(WRAPPERS) | excluded
 
 
