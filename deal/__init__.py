@@ -7,11 +7,12 @@ See [documentation] for more details.
 """
 from . import introspection
 from ._aliases import (
-    chain, dispatch, ensure, has, implies, inv, post, pre, pure, raises, reason, safe,
+    catch, chain, dispatch, ensure, example, has,
+    implies, inv, post, pre, pure, raises, reason, safe,
 )
 from ._exceptions import (
-    ContractError, InvContractError, MarkerError, NoMatchError,
-    OfflineContractError, PostContractError, PreContractError,
+    ContractError, ExampleContractError, InvContractError, MarkerError,
+    NoMatchError, OfflineContractError, PostContractError, PreContractError,
     RaisesContractError, ReasonContractError, SilentContractError,
 )
 from ._imports import activate, module_load
@@ -41,6 +42,7 @@ __all__ = [
     'chain',
     'dispatch',
     'ensure',
+    'example',
     'has',
     'inv',
     'post',
@@ -49,9 +51,10 @@ __all__ = [
     'reason',
 
     # aliases
-    'safe',
-    'pure',
+    'catch',
     'implies',
+    'pure',
+    'safe',
 
     # module level
     'module_load',
@@ -59,6 +62,7 @@ __all__ = [
 
     # exceptions
     'ContractError',
+    'ExampleContractError',
     'InvContractError',
     'MarkerError',
     'NoMatchError',

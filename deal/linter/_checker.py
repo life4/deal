@@ -7,7 +7,7 @@ from astroid import AstroidSyntaxError
 from .. import __version__
 from ._error import Error
 from ._func import Func
-from ._rules import Required, rules
+from ._rules import FuncRule, ModuleRule, rules
 from ._stub import StubsManager
 
 
@@ -42,7 +42,7 @@ class Checker:
         reported = set()
         for func in self.get_funcs():
             for rule in self._rules:
-                if rule.required != Required.FUNC:
+                if not isinstance(rule, FuncRule):
                     continue
                 for error in rule(func=func, stubs=self._stubs):
                     hs = hash(error)
@@ -52,6 +52,6 @@ class Checker:
                     yield error
 
         for rule in self._rules:
-            if rule.required != Required.MODULE:
+            if not isinstance(rule, ModuleRule):
                 continue
             yield from rule(tree=self._tree)

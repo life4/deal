@@ -6,7 +6,7 @@ Deal can automatically test your functions. First of all, your function has to b
 1. All exceptions that function can raise are specified in {py:func}`deal.raises`.
 1. All pre-conditions are specified with {py:func}`deal.pre`.
 
-```python
+```python run
 @deal.raises(ZeroDivisionError)
 @deal.pre(lambda a, b: a >= 0 and b >= 0)
 def div(a: int, b: int) -> float:
@@ -78,7 +78,7 @@ In this example, we will implement `index_of` function that returns index of the
 
 And now, let's convert it from words into the code:
 
-```python
+```python run
 from typing import List, NoReturn
 import deal
 
@@ -101,7 +101,7 @@ contract_for_index_of = deal.chain(
     ),
     # LookupError will be raised if no elements found
     deal.raises(LookupError),
-    deal.reason(LookupError, lambda items, item: item not in items)
+    deal.reason(LookupError, lambda items, item: item not in items),
     # no side-effects
     deal.has(),
 )

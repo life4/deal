@@ -1,38 +1,66 @@
 import ast
-import enum
 from types import MappingProxyType
-from typing import Iterator
+from typing import Iterator, List, Optional, Type, TypeVar
+
+import astroid
 
 from .._decorators import Has
 from ._contract import Category, Contract
 from ._error import Error
 from ._extractors import (
-    get_asserts, get_exceptions, get_imports, get_markers,
-    get_pre, get_returns, get_value, has_returns,
+    UNKNOWN, get_asserts, get_example, get_exceptions, get_imports,
+    get_markers, get_pre, get_returns, get_value, has_returns,
 )
 from ._func import Func
 from ._stub import StubsManager
 
 
-rules = []
+T = TypeVar('T', bound=Type['Rule'])
+rules: List['Rule'] = []
 
 
-class Required(enum.Enum):
-    FUNC = 'func'
-    MODULE = 'module'
-
-
-def register(rule):
+def register(rule: T) -> T:
     rules.append(rule())
     return rule
 
 
+class Rule:
+    __slots__ = ()
+    code: int
+    message: str
+
+    def _validate(self, contract: Contract, args, kwargs, **error_info) -> Optional[Error]:
+        try:
+            result = contract.run(*args, **kwargs)
+        except NameError:
+            # cannot resolve contract dependencies
+            return None
+        if isinstance(result, str):
+            return Error(text=result, code=self.code, **error_info)
+        if not result:
+            return Error(text=self.message, code=self.code, **error_info)
+        return None
+
+
+class ModuleRule(Rule):
+    __slots__ = ()
+
+    def __call__(self, tree: ast.Module) -> Iterator[Error]:
+        raise NotImplementedError
+
+
+class FuncRule(Rule):
+    __slots__ = ()
+
+    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+        raise NotImplementedError
+
+
 @register
-class CheckImports:
+class CheckImports(ModuleRule):
     __slots__ = ()
     code = 1
     message = 'do not use `from deal import ...`, use `import deal` instead'
-    required = Required.MODULE
 
     def __call__(self, tree: ast.Module) -> Iterator[Error]:
         for token in get_imports(tree.body):
@@ -47,11 +75,10 @@ class CheckImports:
 
 
 @register
-class CheckPre:
+class CheckPre(FuncRule):
     __slots__ = ()
     code = 11
     message = 'pre contract error'
-    required = Required.FUNC
 
     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         # We test only contracted functions because of poor performance.
@@ -71,11 +98,10 @@ class CheckPre:
 
 
 @register
-class CheckReturns:
+class CheckReturns(FuncRule):
     __slots__ = ()
     code = 12
     message = 'post contract error'
-    required = Required.FUNC
 
     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         for contract in func.contracts:
@@ -85,31 +111,84 @@ class CheckReturns:
 
     def _check(self, func: Func, contract: Contract) -> Iterator[Error]:
         for token in get_returns(body=func.body):
-            try:
-                result = contract.run(token.value)
-            except NameError:
-                # cannot resolve contract dependencies
-                return
-
-            error_info = dict(
+            error = self._validate(
+                contract=contract,
+                args=(token.value,),
+                kwargs={},
                 row=token.line,
                 col=token.col,
-                code=self.code,
                 value=str(token.value),
             )
-            if isinstance(result, str):
-                yield Error(text=result, **error_info)  # type: ignore
-                continue
-            if not result:
-                yield Error(text=self.message, **error_info)  # type: ignore
+            if error is not None:
+                yield error
 
 
 @register
-class CheckRaises:
+class CheckExamples(FuncRule):
+    __slots__ = ()
+    code = 13
+    message = 'example violates contract'
+
+    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+        for contract in func.contracts:
+            if contract.category != Category.EXAMPLE:
+                continue
+            yield from self._check(func=func, contract=contract)
+
+    def _check(self, func: Func, contract: Contract) -> Iterator[Error]:
+        token = contract.args[0]
+        if not isinstance(token, (ast.Lambda, astroid.Lambda)):
+            return
+        example = get_example(token.body, func_name=func.name)
+        if example is None:
+            return
+        for other in func.contracts:
+            if other.category == Category.PRE:
+                error = self._validate(
+                    contract=other,
+                    args=example.args,
+                    kwargs=example.kwargs,
+                    row=token.lineno,
+                    col=token.col_offset,
+                    value='deal.pre',
+                )
+                if error is not None:
+                    yield error
+
+            if other.category == Category.POST:
+                if example.result == UNKNOWN:
+                    continue
+                error = self._validate(
+                    contract=other,
+                    args=(example.result, ),
+                    kwargs={},
+                    row=token.lineno,
+                    col=token.col_offset,
+                    value='deal.post',
+                )
+                if error is not None:
+                    yield error
+
+            if other.category == Category.ENSURE:
+                if example.result == UNKNOWN:
+                    continue
+                error = self._validate(
+                    contract=other,
+                    args=example.args,
+                    kwargs=dict(example.kwargs, result=example.result),
+                    row=token.lineno,
+                    col=token.col_offset,
+                    value='deal.ensure',
+                )
+                if error is not None:
+                    yield error
+
+
+@register
+class CheckRaises(FuncRule):
     __slots__ = ()
     code = 21
     message = 'raises contract error'
-    required = Required.FUNC
 
     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         cats = {Category.RAISES, Category.SAFE, Category.PURE}
@@ -139,11 +218,10 @@ class CheckRaises:
 
 
 @register
-class CheckAsserts:
+class CheckAsserts(FuncRule):
     __slots__ = ()
     code = 31
     message = 'assert error'
-    required = Required.FUNC
 
     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         # do not validate asserts in tests
@@ -160,11 +238,10 @@ class CheckAsserts:
 
 
 @register
-class CheckMarkers:
+class CheckMarkers(FuncRule):
     __slots__ = ()
     code = 40
     message = 'missed marker'
-    required = Required.FUNC
 
     codes = MappingProxyType({
         'global': 41,

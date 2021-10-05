@@ -4,7 +4,7 @@
 
 `@deal.has` is a way to specify markers for a function. Markers are tags about kinds of side-effects which the function has. For example:
 
-```python
+```python run
 @deal.has('stdout', 'database')
 def say_hello(id: int) -> None:
     user = get_user(id=id)
@@ -17,7 +17,9 @@ You can use any markers you want, and Deal will check that if you call a functio
 
 Every application has side-effects. It needs to store data, to communicate with users. However, every side-effect makes testing and debugging much harder: it should be mocked, intercepted, cleaned after every test. The best solution is to have [functional core and imperative shell](https://www.destroyallsoftware.com/screencasts/catalog/functional-core-imperative-shell). So, the function above can be refactored to be pure:
 
-```python
+```python run
+import sys
+
 # now this is pure
 @deal.has()
 def make_hello(user) -> str:
@@ -70,7 +72,7 @@ Other markers aren't checked in runtime yet but only checked by the [linter](lin
 
 Markers and exceptions are properties of a function and don't depend on conditions. That means, if a function only sometimes in some conditions does io operation, the function has `io` marker regardless of possibility of hitting this condition branch. For example:
 
-```python
+```python run
 import deal
 
 def run_job(job_name: str, silent: bool):

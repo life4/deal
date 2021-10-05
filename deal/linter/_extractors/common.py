@@ -16,6 +16,7 @@ TOKENS = SimpleNamespace(
     ATTR=(ast.Attribute, astroid.Attribute),
     BIN_OP=(ast.BinOp, astroid.BinOp),
     CALL=(ast.Call, astroid.Call),
+    COMPARE=(ast.Compare, astroid.Compare),
     EXPR=(ast.Expr, astroid.Expr),
     FOR=(ast.For, astroid.For),
     FUNC=(ast.FunctionDef, astroid.FunctionDef),

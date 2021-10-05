@@ -6,7 +6,7 @@ Some ideas that are useful in the real world applications.
 
 If a function accepts only a few short arguments, duplicate the original signature (without annotations) for contracts:
 
-```python
+```python run
 @deal.pre(lambda left, right: right != 0)
 def div(left: float, right: float) -> float:
     return left / right
@@ -14,7 +14,7 @@ def div(left: float, right: float) -> float:
 
 Otherwise, or if a function has default arguments, use simplified signature for contracts:
 
-```python
+```python run
 @deal.pre(lambda _: _.default is not None or _.right != 0)
 def div(left: float, right: float, default: float = None) -> float:
     try:
@@ -52,7 +52,7 @@ If a contract needs only function arguments, use `pre`. If a contract checks onl
 
 Always try your best to tell why exception can be raised. However, keep in mind that all exceptions from `reason` still have to be explicitly specified in `raises` since contracts are isolated and have no way to exchange information between each other:
 
-```python
+```python run
 @deal.reason(ZeroDivisionError, lambda a, b: b == 0)
 @deal.raises(ZeroDivisionError)
 def divide(a, b):

@@ -49,6 +49,8 @@ def _args_to_vars(
 
 
 class Base(Generic[CallableType]):
+    """The base class for all deal contracts.
+    """
     __slots__ = (
         'exception',
         'function',
@@ -83,7 +85,7 @@ class Base(Generic[CallableType]):
             self.exception = self.exception(message)    # type: ignore
 
     @classmethod
-    def _default_exception(cls) -> Type[Exception]:
+    def _default_exception(cls) -> Type[ContractError]:
         """
         Returns default exception for this contract.
         We can't use class-level defaults for it becuase subclasses use __slots__.

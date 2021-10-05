@@ -55,7 +55,7 @@ class Invariant(Base[T]):
         return super()._vaa_validation(**vars(obj))
 
     @classmethod
-    def _default_exception(cls) -> Type[Exception]:
+    def _default_exception(cls) -> Type[InvContractError]:
         return InvContractError
 
     def __call__(self, _class: T) -> T:

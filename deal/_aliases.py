@@ -1,10 +1,11 @@
-from typing import Callable, Type, TypeVar, Union, overload
+from typing import Callable, Optional, Type, TypeVar, Union, overload
 
 from . import _decorators
 from ._types import ExceptionType
 
 
 C = TypeVar('C', bound=Callable)
+F = TypeVar('F', bound=Callable)
 T = TypeVar('T')
 
 
@@ -327,18 +328,40 @@ def inv(
     )
 
 
+def example(validator: Callable[[], bool]) -> Callable[[C], C]:
+    """
+    Decorator for providing a usage example for the wrapped function.
+
+    The example isn't checked at runtime.
+    Instead, it is run in tests and checked by the linter.
+    The example should use the decorated function
+    and return True if the result is expected.
+
+    ```pycon
+    >>> import deal
+    >>> @deal.example(lambda: double(3) == 6)
+    ... def double(x):
+    ...   return x * 2
+    ...
+
+    ```
+    """
+    cls = _decorators.Example[C]
+    return cls(validator)
+
+
 @overload
 def safe(
     *,
     message: str = None,
     exception: ExceptionType = None,
 ) -> Callable[[C], C]:
-    pass  # pragma: no cover
+    pass
 
 
 @overload
 def safe(_func: C) -> C:
-    pass  # pragma: no cover
+    pass
 
 
 def safe(_func=None, **kwargs):
@@ -369,7 +392,7 @@ def safe(_func=None, **kwargs):
     return raises()(_func)
 
 
-def chain(*contracts: Callable[[C], C]) -> Callable[[C], C]:
+def chain(*contracts: Callable[[C], C]) -> Callable[[F], F]:
     """Decorator to chain 2 or more contracts together.
 
     It can be helpful to store contracts separately from the function.
@@ -468,6 +491,31 @@ def implies(test, then: T) -> Union[bool, T]:
     [wiki]: https://en.wikipedia.org/wiki/Material_conditional
     """
     return not test or then
+
+
+def catch(func: Callable, *args, **kwargs) -> Optional[Type[Exception]]:
+    """Call the function with the given arguments, catching any exception.
+
+    The catched exception is returned.
+    This function may be useful in combination with {py:func}`deal.example`.
+
+    ```pycon
+    >>> import deal
+    >>> @deal.example(lambda: deal.catch(div, 4, 0) is ZeroDivisionError)
+    ... @deal.raises(ZeroDivisionError)
+    ... @deal.reason(ZeroDivisionError, lambda x: x == 0)
+    ... def div(x, y):
+    ...   return x / y
+    ...
+    >>>
+
+    ```
+    """
+    try:
+        func(*args, **kwargs)
+    except Exception as exc:
+        return type(exc)
+    return None
 
 
 def dispatch(func: C) -> _decorators.Dispatch[C]:

@@ -44,7 +44,7 @@ def validate(*args, **kwargs) -> None:
                 raise
             # try to import missed module
             ok = inject(name)
-            # the missed name is not as module, give up
+            # the missed name is not a module, give up
             if not ok:
                 raise
             continue

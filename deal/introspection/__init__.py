@@ -23,12 +23,13 @@ for contract in contracts:
 """
 
 from ._extractor import get_contracts
-from ._wrappers import Contract, Ensure, Has, Post, Pre, Raises, Reason
+from ._wrappers import Contract, Ensure, Example, Has, Post, Pre, Raises, Reason
 
 
 __all__ = [
     'Contract',
     'Ensure',
+    'Example',
     'Has',
     'Post',
     'Pre',

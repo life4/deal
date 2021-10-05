@@ -6,6 +6,8 @@ from .common import TOKENS, get_name
 
 
 SUPPORTED_CONTRACTS = {
+    'deal.ensure',
+    'deal.example',
     'deal.has',
     'deal.post',
     'deal.pre',

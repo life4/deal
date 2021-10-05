@@ -20,6 +20,7 @@ contracts = deal.chain(
 
 
 @contracts
+@deal.example(lambda: example_sphinx(6, 2) == 3)
 def example_sphinx(a: int, b: int) -> float:
     """Example function.
 
@@ -29,6 +30,7 @@ def example_sphinx(a: int, b: int) -> float:
 
 
 @contracts
+@deal.example(lambda: example_google(6, 2) == 3)
 def example_google(a: int, b: int) -> float:
     """Example function.
 
@@ -92,6 +94,8 @@ def test_autodoc_smoke(style: str, tmp_path: Path):
                 * b is not zero
                 * "b != result"
                 * "res != .13"
+            Examples:
+                * "example_{style}(6, 2) == 3"
     """)
 
     lines = [line.strip() for line in content.splitlines()]

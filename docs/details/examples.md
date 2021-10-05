@@ -96,7 +96,7 @@ Source code:
 
 Sphinx config (`docs/conf.py`):
 
-```python
+```python run
 import deal
 
 extensions = ['sphinx.ext.autodoc']

@@ -9,7 +9,7 @@ Deal has an integration with [sphinx] documentation generator, namely with [auto
 
 The minimal config:
 
-```python
+```python run
 import deal
 
 extensions = ['sphinx.ext.autodoc']
@@ -27,6 +27,39 @@ This is how deal converts every contract into text:
 1. If the contract is a lambda, the source code is used.
 
 See also {ref}`details/examples:sphinx` example.
+
+## deal.example
+
+The decorator {py:func}`deal.example` allows to provide a usage example for the decorated function. This example is executed only when running [tests](../basic/tests) and partially checked by the linter. It's not, however, executed at runtime. The example must return `True` if it is valid.
+
+```python run
+@deal.example(lambda: double(3) == 6)
+def double(x):
+    return x * 2
+```
+
+Depending on the context and on the mypy version you use, you may encounter `Cannot determine type of "double"` error message from mypy (see [mypy#11212]). If you do, you can:
+
+1. Upgrade mypy version above 0.910.
+1. Add `# type: ignore[has-type]` to the reported line.
+1. Add [has-type] code into [disable_error_code] list in the [mypy configuration file][mypy-config].
+
+[mypy#11212]: https://github.com/python/mypy/issues/11212
+[has-type]: https://mypy.readthedocs.io/en/stable/error_code_list.html#check-that-type-of-target-is-known-has-type
+[disable_error_code]: https://mypy.readthedocs.io/en/stable/config_file.html#confval-disable_error_code
+[mypy-config]: https://mypy.readthedocs.io/en/stable/config_file.html
+
+If you want to provide an example of when the function raises an exception, you can catch and compare this exception using {py:func}`deal.catch`:
+
+```python run
+@deal.example(lambda: deal.catch(div, 4, 0) is ZeroDivisionError)
+@deal.raises(ZeroDivisionError)
+@deal.reason(ZeroDivisionError, lambda x: x == 0)
+def div(x, y):
+    return x / y
+```
+
+For more complex examples (requiring setup, teardown, or complicated arguments) use [doctest](https://docs.python.org/3/library/doctest.html).
 
 ## Writing docstrings
 

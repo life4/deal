@@ -27,7 +27,7 @@ divide()
 
 Checks condition if exception was raised.
 
-```python
+```python run
 @deal.reason(ZeroDivisionError, lambda a, b: b == 0)
 def divide(a, b):
     return a / b

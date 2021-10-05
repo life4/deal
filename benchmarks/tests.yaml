@@ -1,10 +1,19 @@
 - name: base
   items:
-    - name: import
+    - name: import deal
       setup: |
         import sys
-        sys.modules.pop('deal', None)
+        for name in list(sys.modules):
+          if name == 'deal' or name.startswith('deal.'):
+            del sys.modules[name]
       test: import deal
+    - name: import PyYAML
+      setup: |
+        import sys
+        for name in list(sys.modules):
+          if name == 'yaml' or name.startswith('yaml.'):
+            del sys.modules[name]
+      test: import yaml
 
 - name: classic contracts
   items:

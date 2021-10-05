@@ -9,6 +9,7 @@ import deal
 @deal.ensure(lambda a, b, result: b != result)
 @deal.post(lambda res: res != .13)
 @deal.has('database', 'network')
+@deal.example(lambda: example(6, 2) == 3)
 def example(a: int, b: int) -> float:
     """Example function.
 

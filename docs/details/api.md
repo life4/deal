@@ -7,6 +7,7 @@
 .. autofunction:: deal.post
 .. autofunction:: deal.ensure
 .. autofunction:: deal.inv
+.. autofunction:: deal.example
 .. autofunction:: deal.dispatch
 ```
 
@@ -25,6 +26,7 @@
 .. autofunction:: deal.pure
 .. autofunction:: deal.safe
 .. autofunction:: deal.implies
+.. autofunction:: deal.catch
 ```
 
 ## Testing
@@ -66,6 +68,7 @@ Keep in mind that sphinx [skipped some of the docstrings](https://github.com/sph
 
 ```{eval-rst}
 .. autoexception:: deal.ContractError
+.. autoexception:: deal.ExampleContractError
 .. autoexception:: deal.InvContractError
 .. autoexception:: deal.MarkerError
 .. autoexception:: deal.NoMatchError

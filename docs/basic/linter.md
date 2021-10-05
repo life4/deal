@@ -29,12 +29,13 @@ General:
 
 Contracts:
 
-| Code    | Message               |
-| ------- | --------------------- |
-| DEAL011 | pre contract error    |
-| DEAL012 | post contract error   |
-| DEAL021 | raises contract error |
-| DEAL031 | assert error          |
+| Code    | Message                   |
+| ------- | ------------------------- |
+| DEAL011 | pre contract error        |
+| DEAL012 | post contract error       |
+| DEAL013 | example violates contract |
+| DEAL021 | raises contract error     |
+| DEAL031 | assert error              |
 
 Markers:
 
@@ -53,7 +54,7 @@ Markers:
 
 To check `pre` and `post` contracts, linter can partially execute them. For example:
 
-```python
+```python run
 import deal
 
 @deal.post(lambda r: r != 0)

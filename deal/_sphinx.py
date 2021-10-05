@@ -33,6 +33,7 @@ def _process_docstring(
 ) -> None:
     raises: Dict[str, str] = dict()
     contracts: List[str] = []
+    examples: List[str] = []
     for contract in introspection.get_contracts(obj):
         if isinstance(contract, introspection.Raises):
             for exc in contract.exceptions:
@@ -54,10 +55,17 @@ def _process_docstring(
             lines.extend(f'  * {m}' for m in contract.markers)
             continue
 
-        raise RuntimeError('unreachable')  # pragma: no cover
+        if isinstance(contract, introspection.Example):
+            examples.append(f'  * ``{contract.source}``')
+            continue
+
+        raise RuntimeError('unreachable')
 
     for exc_name, descr in sorted(raises.items()):
         lines.append(f':raises {exc_name}: {descr}')
     if contracts:
         lines.append(':contracts:')
         lines.extend(contracts)
+    if examples:
+        lines.append(':examples:')
+        lines.extend(examples)

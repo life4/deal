@@ -1,4 +1,5 @@
 from typing import Type
+
 from .._exceptions import PostContractError
 from .base import Base, CallableType
 
@@ -10,7 +11,7 @@ class Ensure(Base[CallableType]):
     """
 
     @classmethod
-    def _default_exception(cls) -> Type[Exception]:
+    def _default_exception(cls) -> Type[PostContractError]:
         return PostContractError
 
     def patched_function(self, *args, **kwargs):

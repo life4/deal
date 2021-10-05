@@ -2,7 +2,7 @@
 
 When [linter](../basic/linter) analyses a function, it checks all called functions inside it, even if these functions have no explicit contracts. For example:
 
-```python
+```python run
 import deal
 
 def a():
@@ -24,7 +24,7 @@ tmp.py
 
 However, in the next case deal doesn't report anything:
 
-```python
+```python run
 import deal
 
 def a():
