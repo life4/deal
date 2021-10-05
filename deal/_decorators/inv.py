@@ -43,14 +43,13 @@ class InvariantedClass:
 
 
 class InvariantValidator(Validator):
-    def _init(self, *args, **kwargs):
+    def init(self) -> None:
         self.signature = None
         self.validator = self._make_validator()
         if hasattr(self.validator, 'is_valid'):
             self.validate = self._vaa_validation
         else:
             self.validate = self._simple_validation
-        return self.validate(*args, **kwargs)
 
     def _vaa_validation(self, obj) -> None:  # type: ignore[override]
         return super()._vaa_validation(**vars(obj))

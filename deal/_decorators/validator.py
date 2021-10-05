@@ -111,12 +111,7 @@ class Validator:
             args.append(errors)
         raise exception(*args)
 
-    def _init(self, *args, **kwargs) -> None:
-        """
-        Called as `validator` when the function is called in the first time.
-        Does some costly deferred initializations (involving `inspect`).
-        Then sets more appropriate validator as `validator` and calls it.
-        """
+    def init(self) -> None:
         self.validator = self._make_validator()
         if hasattr(self.validator, 'is_valid'):
             self.signature = _get_signature(self.function)
@@ -124,6 +119,14 @@ class Validator:
         else:
             self.signature = _get_signature(self.validator)
             self.validate = self._simple_validation
+
+    def _init(self, *args, **kwargs) -> None:
+        """
+        Called as `validator` when the function is called in the first time.
+        Does some costly deferred initializations (involving `inspect`).
+        Then sets more appropriate validator as `validator` and calls it.
+        """
+        self.init()
         self.validate(*args, **kwargs)
 
     @state.disabled

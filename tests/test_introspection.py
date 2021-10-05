@@ -142,3 +142,19 @@ def test_get_contracts__example_func():
 
     contracts = list(deal.introspection.get_contracts(example))
     assert len(contracts) == 9
+
+
+def test_init():
+    @deal.pre(lambda x: x > 0)
+    def func(x):
+        return x * 2
+
+    contracts = list(deal.introspection.get_contracts(func))
+    assert len(contracts) == 1
+    contract = contracts[0]
+    assert type(contract) is deal.introspection.Pre
+    val = contract._wrapped.validator
+    assert val.validate.__name__ == '_init'
+    contract.init()
+    assert val.validate.__name__ != '_init'
+    assert val.signature

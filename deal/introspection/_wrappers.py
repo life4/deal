@@ -29,9 +29,7 @@ class Contract:
 
     @property
     def exception_type(self) -> Type[Exception]:
-        if isinstance(self.exception, type):
-            return self.exception
-        return type(self.exception)
+        return self._wrapped.exception_type
 
     @property
     def message(self) -> Optional[str]:
@@ -41,6 +39,16 @@ class Contract:
 
 
 class _ValidatedContract(Contract):
+    def init(self) -> None:
+        """Initialize the contract.
+
+        This method is called when the contract is validated in the first time.
+        It includes some costly operations, like introspection of the wrapped function.
+        You can call it manually if you want to initialize the contract before validation.
+        For instance, if you need a consistent execution time for the function.
+        """
+        self._wrapped.validator.init()
+
     def validate(self, *args, **kwargs) -> None:
         """Run the validator.
 
