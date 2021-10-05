@@ -21,8 +21,7 @@ class Defaults(NamedTuple):
 class Base(Generic[CallableType]):
     """The base class for all deal contracts.
     """
-    __slots__ = ('function', 'validator')
-    function: CallableType
+    __slots__ = ('validator',)
     validator: Validator
 
     def __init__(self, validator, *, message: str = None,

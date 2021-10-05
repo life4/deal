@@ -51,6 +51,15 @@ class Validator:
     raw_validator: Any
     message: Optional[str]
     function: Callable
+    __slots__ = (
+        'exception',
+        'signature',
+        'validate',
+        'validator',
+        'raw_validator',
+        'message',
+        'function',
+    )
 
     def __init__(
         self,

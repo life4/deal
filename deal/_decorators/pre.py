@@ -9,6 +9,7 @@ class Pre(Base[CallableType]):
     Check contract (validator) before function processing.
     Validate input arguments.
     """
+    __slots__ = ()
 
     @staticmethod
     def _defaults() -> Defaults:

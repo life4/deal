@@ -6,6 +6,8 @@ from .validator import Validator
 
 
 class Reason(Base[CallableType]):
+    __slots__ = ('event',)
+
     def __init__(self, event: Type[Exception], *args, **kwargs):
         """
         Step 1. Set allowed exceptions list.

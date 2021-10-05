@@ -56,6 +56,8 @@ class InvariantValidator(Validator):
 
 
 class Invariant(Base[T]):
+    __slots__ = ()
+
     @staticmethod
     def _defaults() -> Defaults:
         return Defaults(

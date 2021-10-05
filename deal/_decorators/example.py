@@ -8,6 +8,15 @@ from .base import Base, CallableType, Defaults
 from .validator import Validator
 
 
+class ExampleValidator(Validator):
+    def init(self) -> None:
+        pass
+
+    def _init(self) -> None:  # type: ignore[override]
+        if not self.raw_validator():
+            raise ExampleContractError(validator=self.raw_validator)
+
+
 class Example(Base[CallableType]):
     __slots__ = ()
 
@@ -18,12 +27,8 @@ class Example(Base[CallableType]):
     def _defaults() -> Defaults:
         return Defaults(
             exception_type=ExampleContractError,
-            validator_type=Validator,
+            validator_type=ExampleValidator,
         )
-
-    def validate(self) -> None:  # type: ignore[override]
-        if not self.validator.raw_validator():
-            raise ExampleContractError(validator=self.validator.raw_validator)
 
     def __call__(self, function: CallableType) -> CallableType:
         self.function = function

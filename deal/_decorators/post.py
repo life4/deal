@@ -8,6 +8,7 @@ class Post(Base[CallableType]):
     Check contract (validator) after function processing.
     Validate output result.
     """
+    __slots__ = ()
 
     @staticmethod
     def _defaults() -> Defaults:

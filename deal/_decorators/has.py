@@ -26,6 +26,7 @@ class PatchedSocket:
 
 
 class Has(Base[CallableType]):
+    __slots__ = ('markers', 'true_socket', 'true_stdout', 'true_stderr')
     markers: FrozenSet[str]
 
     def __init__(self, *markers, message: str = None, exception: ExceptionType = None):

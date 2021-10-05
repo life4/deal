@@ -8,6 +8,7 @@ class Ensure(Base[CallableType]):
     Check both arguments and result (validator) after function processing.
     Validate arguments and output result.
     """
+    __slots__ = ()
 
     @staticmethod
     def _defaults() -> Defaults:
