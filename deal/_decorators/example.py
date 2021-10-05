@@ -31,7 +31,7 @@ class Example(Base[CallableType]):
         )
 
     def __call__(self, function: CallableType) -> CallableType:
-        self.function = function
+        self.validator.function = function
         if iscoroutinefunction(function):
             async def wrapped_async(*args, **kwargs):
                 return await self.function(*args, **kwargs)

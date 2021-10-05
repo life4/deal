@@ -50,7 +50,7 @@ class Validator:
     validator: Any
     raw_validator: Any
     message: Optional[str]
-    function: Callable
+    function: Any
     __slots__ = (
         'exception',
         'signature',

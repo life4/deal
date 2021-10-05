@@ -26,7 +26,7 @@ def validate(*args, **kwargs) -> None:
     """
     base = Base(validator=contract)  # type: ignore
     if func is not Ellipsis:
-        base.function = func
+        base.validator.function = func
 
     old_name = None
     for _ in range(10):  # maximum 10 tries, just in case

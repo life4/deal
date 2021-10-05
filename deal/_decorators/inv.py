@@ -65,9 +65,6 @@ class Invariant(Base[T]):
             validator_type=InvariantValidator,
         )
 
-    def validate(self, *args, **kwargs) -> None:
-        self.validator.validate(*args, **kwargs)
-
     def __call__(self, _class: T) -> T:
         invs = getattr(_class, '_deal_invariants', None)
         if invs is None:

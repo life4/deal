@@ -42,13 +42,16 @@ class Base(Generic[CallableType]):
         return self.validator.message
 
     @property
+    def function(self) -> CallableType:
+        return self.validator.function
+
+    @property
     def exception_type(self) -> Type[Exception]:
         if isinstance(self.exception, Exception):
             return type(self.exception)
         return self.exception
 
     def validate(self, *args, **kwargs) -> None:
-        self.validator.function = self.function  # type: ignore[assignment]
         self.validator.validate(*args, **kwargs)
 
     @staticmethod
@@ -62,7 +65,7 @@ class Base(Generic[CallableType]):
         """
         Step 2. Return wrapped function.
         """
-        self.function = function
+        self.validator.function = function
 
         if iscoroutinefunction(function):
             async def wrapped_async(*args, **kwargs):
