@@ -55,7 +55,7 @@ class _ValidatedContract(Contract):
         For named functions it is the name of the function.
         For lambdas it is the body of the lambda.
         """
-        validator = self._wrapped._make_validator()
+        validator = self._wrapped.validator._make_validator()
         return get_validator_source(validator)
 
 

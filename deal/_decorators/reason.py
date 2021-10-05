@@ -1,16 +1,11 @@
 from typing import Iterator, Type
 
-from .._cached_property import cached_property
 from .._exceptions import ReasonContractError
-from .base import Base, CallableType
+from .base import Base, CallableType, Defaults
+from .validator import Validator
 
 
 class Reason(Base[CallableType]):
-
-    @classmethod
-    def _default_exception(cls) -> Type[ReasonContractError]:
-        return ReasonContractError
-
     def __init__(self, event: Type[Exception], *args, **kwargs):
         """
         Step 1. Set allowed exceptions list.
@@ -18,11 +13,12 @@ class Reason(Base[CallableType]):
         self.event = event
         super().__init__(*args, **kwargs)
 
-    @cached_property
-    def exception_type(self) -> Type[Exception]:
-        if isinstance(self.exception, Exception):
-            return type(self.exception)
-        return self.exception
+    @staticmethod
+    def _defaults() -> Defaults:
+        return Defaults(
+            exception_type=ReasonContractError,
+            validator_type=Validator,
+        )
 
     def patched_function(self, *args, **kwargs):
         """

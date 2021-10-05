@@ -1,29 +1,29 @@
 from asyncio import iscoroutinefunction
 from functools import update_wrapper
 from inspect import isgeneratorfunction
-from typing import Callable, Type
+from typing import Callable
 
 from .._exceptions import ExampleContractError
-from .base import Base, CallableType
+from .base import Base, CallableType, Defaults
+from .validator import Validator
 
 
 class Example(Base[CallableType]):
     __slots__ = ()
 
     def __init__(self, validator: Callable[[], bool]) -> None:
-        self.validate = self._validator
-        self.raw_validator = validator
-        self.message = None
-        self.exception = self._default_exception()
+        super().__init__(validator, message=None, exception=None)
 
-    @classmethod
-    def _default_exception(cls) -> Type[ExampleContractError]:
-        return ExampleContractError
+    @staticmethod
+    def _defaults() -> Defaults:
+        return Defaults(
+            exception_type=ExampleContractError,
+            validator_type=Validator,
+        )
 
-    def _validator(self) -> None:
-        if not self.raw_validator():
-            exc_type = self._default_exception()
-            raise exc_type(validator=self.raw_validator)
+    def validate(self) -> None:  # type: ignore[override]
+        if not self.validator.raw_validator():
+            raise ExampleContractError(validator=self.validator.raw_validator)
 
     def __call__(self, function: CallableType) -> CallableType:
         self.function = function

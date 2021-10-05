@@ -5,7 +5,8 @@ from typing import FrozenSet, Type
 
 from .._exceptions import MarkerError, OfflineContractError, SilentContractError
 from .._types import ExceptionType
-from .base import Base, CallableType
+from .base import Base, CallableType, Defaults
+from .validator import Validator
 
 
 class PatchedStringIO(StringIO):
@@ -32,8 +33,14 @@ class Has(Base[CallableType]):
         Step 1. Set allowed markers.
         """
         self.markers = frozenset(markers)
-        self.message = message
-        self.exception = exception or MarkerError
+        super().__init__(validator=None, message=message, exception=exception)
+
+    @staticmethod
+    def _defaults() -> Defaults:
+        return Defaults(
+            exception_type=MarkerError,
+            validator_type=Validator,
+        )
 
     def patched_function(self, *args, **kwargs):
         """
@@ -170,13 +177,8 @@ class Has(Base[CallableType]):
             sys.stderr = self.true_stderr
 
     def _get_exception(self, default: Type[Exception]) -> ExceptionType:
-        if self.exception is MarkerError:
+        if self.exception_type is MarkerError:
             if self.message is None:
                 return default
             return default(self.message)
-
-        if self.message is None:
-            return self.exception
-        if isinstance(self.exception, Exception):
-            return self.exception
-        return self.exception(self.message)
+        return self.exception

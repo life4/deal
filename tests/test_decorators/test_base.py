@@ -1,6 +1,6 @@
 import pytest
 
-from deal._decorators.base import _args_to_vars, _get_signature
+from deal._decorators.validator import _args_to_vars, _get_signature
 
 
 @pytest.mark.parametrize('args, kwargs, f, expected', [

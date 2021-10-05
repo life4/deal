@@ -2,15 +2,13 @@ from typing import Tuple, Type
 
 from .._exceptions import ContractError, RaisesContractError
 from .._types import ExceptionType
-from .base import Base, CallableType
+from .base import Base, CallableType, Defaults
+from .validator import Validator
 
 
 class Raises(Base[CallableType]):
-    __slots__ = ['exception', 'function', 'exceptions']
-
-    @classmethod
-    def _default_exception(cls) -> Type[RaisesContractError]:
-        return RaisesContractError
+    __slots__ = ('exceptions',)
+    exceptions: Tuple[Type[Exception], ...]
 
     def __init__(
         self,
@@ -21,11 +19,18 @@ class Raises(Base[CallableType]):
         """
         Step 1. Set allowed exceptions list.
         """
-        self.exceptions: Tuple[Type[Exception], ...] = exceptions
+        self.exceptions = exceptions
         super().__init__(
             validator=None,
             message=message,
             exception=exception,
+        )
+
+    @staticmethod
+    def _defaults() -> Defaults:
+        return Defaults(
+            exception_type=RaisesContractError,
+            validator_type=Validator,
         )
 
     def patched_function(self, *args, **kwargs):

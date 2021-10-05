@@ -1,7 +1,7 @@
-from typing import Type
 
 from .._exceptions import PreContractError
-from .base import Base, CallableType
+from .base import Base, CallableType, Defaults
+from .validator import Validator
 
 
 class Pre(Base[CallableType]):
@@ -10,9 +10,12 @@ class Pre(Base[CallableType]):
     Validate input arguments.
     """
 
-    @classmethod
-    def _default_exception(cls) -> Type[PreContractError]:
-        return PreContractError
+    @staticmethod
+    def _defaults() -> Defaults:
+        return Defaults(
+            exception_type=PreContractError,
+            validator_type=Validator,
+        )
 
     def patched_function(self, *args, **kwargs):
         """

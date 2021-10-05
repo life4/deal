@@ -1,7 +1,6 @@
-from typing import Type
-
 from .._exceptions import PostContractError
-from .base import Base, CallableType
+from .base import Base, CallableType, Defaults
+from .validator import Validator
 
 
 class Post(Base[CallableType]):
@@ -10,9 +9,12 @@ class Post(Base[CallableType]):
     Validate output result.
     """
 
-    @classmethod
-    def _default_exception(cls) -> Type[PostContractError]:
-        return PostContractError
+    @staticmethod
+    def _defaults() -> Defaults:
+        return Defaults(
+            exception_type=PostContractError,
+            validator_type=Validator,
+        )
 
     def patched_function(self, *args, **kwargs):
         """

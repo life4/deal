@@ -1,9 +1,10 @@
 from functools import partial, update_wrapper
 from types import MethodType
-from typing import Callable, List, Type, TypeVar
+from typing import Callable, List, TypeVar
 
 from .._exceptions import InvContractError
-from .base import Base
+from .base import Base, Defaults
+from .validator import Validator
 
 
 T = TypeVar('T', bound=type)
@@ -41,7 +42,7 @@ class InvariantedClass:
         self._deal_validate()
 
 
-class Invariant(Base[T]):
+class InvariantValidator(Validator):
     def _init(self, *args, **kwargs):
         self.signature = None
         self.validator = self._make_validator()
@@ -54,9 +55,17 @@ class Invariant(Base[T]):
     def _vaa_validation(self, obj) -> None:  # type: ignore[override]
         return super()._vaa_validation(**vars(obj))
 
-    @classmethod
-    def _default_exception(cls) -> Type[InvContractError]:
-        return InvContractError
+
+class Invariant(Base[T]):
+    @staticmethod
+    def _defaults() -> Defaults:
+        return Defaults(
+            exception_type=InvContractError,
+            validator_type=InvariantValidator,
+        )
+
+    def validate(self, *args, **kwargs) -> None:
+        self.validator.validate(*args, **kwargs)
 
     def __call__(self, _class: T) -> T:
         invs = getattr(_class, '_deal_invariants', None)
