@@ -1,7 +1,9 @@
 from inspect import isgeneratorfunction
 from asyncio import iscoroutinefunction
 from functools import update_wrapper
-from typing import Callable, Dict, Generic, List, Tuple, TypeVar
+from typing import Callable, Dict, Generic, List, Optional, Tuple, TypeVar
+
+from .has import HasPatcher
 from .validator import RaisesValidator, Validator, ReasonValidator
 from .._state import state
 from .._exceptions import ContractError
@@ -20,6 +22,7 @@ class Contracts(Generic[F]):
     examples: List[Validator]
     raises: List[RaisesValidator]
     reasons: List[ReasonValidator]
+    patcher: Optional[HasPatcher]
 
     def __init__(self, func: F):
         self.func = func
@@ -29,12 +32,19 @@ class Contracts(Generic[F]):
         self.examples = []
         self.raises = []
         self.reasons = []
+        self.patcher = None
 
     @classmethod
     def attach(cls, contract_type: str, validator: Validator, func: F) -> F:
         contracts = cls.ensure_wrapped(func)
         validator.function = func
         getattr(contracts, contract_type).append(validator)
+        return contracts.wrapped
+
+    @classmethod
+    def attach_has(cls, patcher: HasPatcher, func: F) -> F:
+        contracts = cls.ensure_wrapped(func)
+        contracts.patcher = patcher
         return contracts.wrapped
 
     @classmethod
@@ -72,6 +82,8 @@ class Contracts(Generic[F]):
             state.debug = True
 
         # running the function
+        if self.patcher is not None:
+            self.patcher.patch()
         try:
             result = self.func(*args, **kwargs)
         except ContractError:
@@ -84,6 +96,9 @@ class Contracts(Generic[F]):
                 if exc_type is validator.event:
                     validator.validate(args, kwargs, exc=exc)
             raise
+        finally:
+            if self.patcher is not None:
+                self.patcher.unpatch()
 
         # post-validation
         state.debug = False
@@ -110,6 +125,8 @@ class Contracts(Generic[F]):
             state.debug = True
 
         # running the function
+        if self.patcher is not None:
+            self.patcher.patch()
         try:
             result = await self.func(*args, **kwargs)
         except ContractError:
@@ -122,6 +139,9 @@ class Contracts(Generic[F]):
                 if exc_type is validator.event:
                     validator.validate(args, kwargs, exc=exc)
             raise
+        finally:
+            if self.patcher is not None:
+                self.patcher.unpatch()
 
         # post-validation
         state.debug = False
@@ -150,6 +170,8 @@ class Contracts(Generic[F]):
         generator = self.func(*args, **kwargs)
         while True:
             # running the function
+            if self.patcher is not None:
+                self.patcher.patch()
             try:
                 result = next(generator)
             except StopIteration:
@@ -164,6 +186,9 @@ class Contracts(Generic[F]):
                     if exc_type is validator.event:
                         validator.validate(args, kwargs, exc=exc)
                 raise
+            finally:
+                if self.patcher is not None:
+                    self.patcher.unpatch()
 
             # post-validation
             state.debug = False

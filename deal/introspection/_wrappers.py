@@ -113,7 +113,7 @@ class Reason(_ValidatedContract):
 class Has(Contract):
     """Wrapper for `deal.has`.
     """
-    _wrapped: _decorators.Has
+    _wrapped: _decorators.HasPatcher
 
     @property
     def markers(self) -> FrozenSet[str]:

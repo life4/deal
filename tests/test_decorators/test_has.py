@@ -1,8 +1,13 @@
 import pytest
 
 import deal
+from deal._decorators import HasPatcher
 
 from .helpers import run_sync
+
+
+def make_has(markers) -> HasPatcher:
+    return HasPatcher(markers)
 
 
 @pytest.mark.parametrize('markers, expected', [
@@ -18,7 +23,7 @@ from .helpers import run_sync
     (['import'], False),
 ])
 def test_has_network(markers: list, expected: bool):
-    assert deal.has(*markers).has_network is expected
+    assert make_has(markers).has_network is expected
 
 
 @pytest.mark.parametrize('markers, expected', [
@@ -35,7 +40,7 @@ def test_has_network(markers: list, expected: bool):
     (['global'], False),
 ])
 def test_has_io(markers: list, expected: bool):
-    assert deal.has(*markers).has_io is expected
+    assert make_has(markers).has_io is expected
 
 
 @pytest.mark.parametrize('markers, expected', [
@@ -52,7 +57,7 @@ def test_has_io(markers: list, expected: bool):
     (['import'], False),
 ])
 def test_has_stdout(markers: list, expected: bool):
-    assert deal.has(*markers).has_stdout is expected
+    assert make_has(markers).has_stdout is expected
 
 
 @pytest.mark.parametrize('markers, expected', [
@@ -70,7 +75,7 @@ def test_has_stdout(markers: list, expected: bool):
     (['import'], False),
 ])
 def test_has_stderr(markers: list, expected: bool):
-    assert deal.has(*markers).has_stderr is expected
+    assert make_has(markers).has_stderr is expected
 
 
 @pytest.mark.parametrize('markers, expected', [
@@ -88,7 +93,7 @@ def test_has_stderr(markers: list, expected: bool):
     (['import'], True),
 ])
 def test_has_import(markers: list, expected: bool):
-    assert deal.has(*markers).has_import is expected
+    assert make_has(markers).has_import is expected
 
 
 @pytest.mark.parametrize('markers, expected', [
@@ -108,7 +113,7 @@ def test_has_import(markers: list, expected: bool):
     (['nonlocal'], True),
 ])
 def test_has_global(markers: list, expected: bool):
-    assert deal.has(*markers).has_global is expected
+    assert make_has(markers).has_global is expected
 
 
 @pytest.mark.parametrize('markers, expected', [
@@ -128,7 +133,7 @@ def test_has_global(markers: list, expected: bool):
     (['nonlocal'], False),
 ])
 def test_has_read(markers: list, expected: bool):
-    assert deal.has(*markers).has_read is expected
+    assert make_has(markers).has_read is expected
 
 
 @pytest.mark.parametrize('markers, expected', [
@@ -148,7 +153,7 @@ def test_has_read(markers: list, expected: bool):
     (['nonlocal'], False),
 ])
 def test_has_write(markers: list, expected: bool):
-    assert deal.has(*markers).has_write is expected
+    assert make_has(markers).has_write is expected
 
 
 def test_decorating_regular_function():

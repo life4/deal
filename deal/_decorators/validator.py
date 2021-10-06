@@ -210,11 +210,6 @@ class RaisesValidator(Validator):
         self.validate = self._validate
 
     def _init(self, args, kwargs, exc=None) -> None:
-        """
-        Called as `validator` when the function is called in the first time.
-        Does some costly deferred initializations (involving `inspect`).
-        Then sets more appropriate validator as `validator` and calls it.
-        """
         self.init()
         self.validate(args, kwargs, exc=exc)
 

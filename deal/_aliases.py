@@ -232,8 +232,13 @@ def has(
     [side-effects]: https://deal.readthedocs.io/basic/side-effects.html
     [linter]: https://deal.readthedocs.io/basic/linter.html
     """
-    cls = _decorators.Has[C]
-    return cls(*markers, message=message, exception=exception)
+    patcher = _decorators.HasPatcher(
+        markers=markers,
+        message=message,
+        exception=exception,
+    )
+    func = partial(_decorators.Contracts.attach_has, patcher)
+    return func  # type: ignore[return-value]
 
 
 def reason(

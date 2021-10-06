@@ -1,5 +1,5 @@
 from .dispatch import Dispatch
-from .has import Has
+from .has import HasPatcher
 from .inv import Invariant
 from ._contract import Contracts
 from .validator import Validator, RaisesValidator, ReasonValidator
@@ -11,6 +11,6 @@ __all__ = [
     'RaisesValidator',
     'ReasonValidator',
     'Dispatch',
-    'Has',
+    'HasPatcher',
     'Invariant',
 ]
