@@ -3,8 +3,8 @@ from asyncio import iscoroutinefunction
 from functools import update_wrapper
 from typing import Callable, Dict, Generic, List, Optional, Tuple, TypeVar
 
-from .has import HasPatcher
-from .validator import RaisesValidator, Validator, ReasonValidator
+from ._has_patcher import HasPatcher
+from ._validators import RaisesValidator, Validator, ReasonValidator
 from .._state import state
 from .._exceptions import ContractError
 

@@ -1,7 +1,7 @@
 import pytest
 
 import deal
-from deal._decorators import HasPatcher
+from deal._runtime import HasPatcher
 
 from .helpers import run_sync
 

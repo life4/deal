@@ -107,7 +107,7 @@ def autodoc_signature(
         sig = sig.replace('Union[Exception, Type[Exception]]', 'Exception')
     if ret:
         ret = ret.replace('deal._aliases.', '')
-        ret = ret.replace('deal._decorators.dispatch.', '')
+        ret = ret.replace('deal._runtime.dispatch.', '')
     return (sig, ret)
 
 

@@ -3,7 +3,7 @@
 from importlib import import_module
 
 import deal
-from deal._decorators.validator import Validator
+from deal._runtime import Validator
 
 
 # will be filled from the linter

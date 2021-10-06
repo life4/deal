@@ -1,8 +1,8 @@
-from .dispatch import Dispatch
-from .has import HasPatcher
-from .inv import invariant
+from ._dispatch import Dispatch
+from ._has_patcher import HasPatcher
+from ._invariant import invariant
 from ._contract import Contracts
-from .validator import Validator, RaisesValidator, ReasonValidator, InvariantValidator
+from ._validators import Validator, RaisesValidator, ReasonValidator, InvariantValidator
 
 
 __all__ = [

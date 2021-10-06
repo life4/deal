@@ -1,6 +1,6 @@
 from typing import Callable, FrozenSet, Optional, Tuple, Type
 
-from .. import _decorators
+from .._runtime import Validator, RaisesValidator, ReasonValidator, HasPatcher
 from .._cached_property import cached_property
 from .._source import get_validator_source
 from .._types import ExceptionType
@@ -9,7 +9,7 @@ from .._types import ExceptionType
 class Contract:
     """The base class for all contracts returned by `get_contracts`.
     """
-    _wrapped: _decorators.Validator
+    _wrapped: Validator
 
     def __init__(self, wrapped):
         self._wrapped = wrapped
@@ -89,7 +89,7 @@ class Example(_ValidatedContract):
 class Raises(Contract):
     """Wrapper for `deal.raises`.
     """
-    _wrapped: _decorators.RaisesValidator
+    _wrapped: RaisesValidator
 
     @property
     def exceptions(self) -> Tuple[Type[Exception], ...]:
@@ -101,7 +101,7 @@ class Raises(Contract):
 class Reason(_ValidatedContract):
     """Wrapper for `deal.reason`.
     """
-    _wrapped: _decorators.ReasonValidator
+    _wrapped: ReasonValidator
 
     @property
     def event(self) -> Type[Exception]:
@@ -113,7 +113,7 @@ class Reason(_ValidatedContract):
 class Has(Contract):
     """Wrapper for `deal.has`.
     """
-    _wrapped: _decorators.HasPatcher
+    _wrapped: HasPatcher
 
     @property
     def markers(self) -> FrozenSet[str]:

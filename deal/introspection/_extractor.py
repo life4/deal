@@ -1,6 +1,6 @@
 from typing import Callable, Iterator
 
-from .._decorators import Contracts
+from .._runtime import Contracts
 from ._wrappers import Contract
 from . import _wrappers
 

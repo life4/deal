@@ -4,7 +4,7 @@ from typing import Iterator, List, Optional, Type, TypeVar
 
 import astroid
 
-from .._decorators import HasPatcher
+from .._runtime import HasPatcher
 from ._contract import Category, Contract
 from ._error import Error
 from ._extractors import (

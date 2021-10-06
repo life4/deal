@@ -2,7 +2,7 @@ from functools import partial, update_wrapper
 from types import MethodType
 from typing import Callable, List, TypeVar
 
-from .validator import InvariantValidator
+from ._validators import InvariantValidator
 
 
 T = TypeVar('T', bound=type)

@@ -3,7 +3,7 @@ import pytest
 import deal
 from deal._imports import deactivate
 
-from .test_decorators.helpers import run_sync
+from .test_runtime.helpers import run_sync
 
 
 def test_contract_state_switch_custom_param():
