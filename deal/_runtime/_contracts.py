@@ -1,12 +1,15 @@
 from asyncio import iscoroutinefunction
 from functools import update_wrapper
 from inspect import isgeneratorfunction
-from typing import Callable, Dict, Generic, List, Optional, Tuple, TypeVar
+from typing import TYPE_CHECKING, Callable, Dict, Generic, List, Optional, Tuple, TypeVar
 
 from .._exceptions import ContractError
 from .._state import state
-from ._has_patcher import HasPatcher
-from ._validators import RaisesValidator, ReasonValidator, Validator
+
+
+if TYPE_CHECKING:
+    from ._has_patcher import HasPatcher
+    from ._validators import RaisesValidator, ReasonValidator, Validator
 
 
 F = TypeVar('F', bound=Callable)
@@ -28,13 +31,13 @@ class Contracts(Generic[F]):
 
     func: F
     wrapped: F
-    pres: List[Validator]
-    posts: List[Validator]
-    ensures: List[Validator]
-    examples: List[Validator]
-    raises: List[RaisesValidator]
-    reasons: List[ReasonValidator]
-    patcher: Optional[HasPatcher]
+    pres: List['Validator']
+    posts: List['Validator']
+    ensures: List['Validator']
+    examples: List['Validator']
+    raises: List['RaisesValidator']
+    reasons: List['ReasonValidator']
+    patcher: Optional['HasPatcher']
 
     def __init__(self, func: F):
         self.func = func
@@ -47,14 +50,14 @@ class Contracts(Generic[F]):
         self.patcher = None
 
     @classmethod
-    def attach(cls, contract_type: str, validator: Validator, func: F) -> F:
+    def attach(cls, contract_type: str, validator: 'Validator', func: F) -> F:
         contracts = cls.ensure_wrapped(func)
         validator.function = func
         getattr(contracts, contract_type).append(validator)
         return contracts.wrapped
 
     @classmethod
-    def attach_has(cls, patcher: HasPatcher, func: F) -> F:
+    def attach_has(cls, patcher: 'HasPatcher', func: F) -> F:
         contracts = cls.ensure_wrapped(func)
         contracts.patcher = patcher
         return contracts.wrapped

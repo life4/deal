@@ -1,4 +1,4 @@
-from typing import Callable, FrozenSet, Optional, Tuple, Type
+from typing import FrozenSet, Optional, Tuple, Type
 
 from .._cached_property import cached_property
 from .._runtime import HasPatcher, RaisesValidator, ReasonValidator, Validator
@@ -9,16 +9,11 @@ from .._types import ExceptionType
 class Contract:
     """The base class for all contracts returned by `get_contracts`.
     """
+    __slots__ = ('_wrapped',)
     _wrapped: Validator
 
     def __init__(self, wrapped):
         self._wrapped = wrapped
-
-    @property
-    def function(self) -> Callable:
-        """The function that the contract wraps.
-        """
-        return self._wrapped.function
 
     @property
     def exception(self) -> ExceptionType:
@@ -28,6 +23,8 @@ class Contract:
 
     @property
     def exception_type(self) -> Type[Exception]:
+        """The type of the exception raised if the contract is not satisfied.
+        """
         return self._wrapped.exception_type
 
     @property
@@ -62,8 +59,8 @@ class _ValidatedContract(Contract):
         For named functions it is the name of the function.
         For lambdas it is the body of the lambda.
         """
-        validator = self._wrapped._make_validator()
-        return get_validator_source(validator)
+        self._wrapped.init()
+        return get_validator_source(self._wrapped.validator)
 
 
 class Pre(_ValidatedContract):
@@ -113,10 +110,26 @@ class Reason(_ValidatedContract):
 class Has(Contract):
     """Wrapper for `deal.has`.
     """
-    _wrapped: HasPatcher
+    __slots__ = ('_patcher',)
+    _patcher: HasPatcher
+
+    def __init__(self, wrapped):
+        self._patcher = wrapped
+
+    @property
+    def exception(self) -> ExceptionType:
+        return self._patcher.exception
+
+    @property
+    def exception_type(self) -> Type[Exception]:
+        return self._patcher.exception_type
+
+    @property
+    def message(self) -> Optional[str]:
+        return self._patcher.message
 
     @property
     def markers(self) -> FrozenSet[str]:
         """Side-effects that the function may have.
         """
-        return self._wrapped.markers
+        return self._patcher.markers

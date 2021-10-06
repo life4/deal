@@ -22,7 +22,7 @@ for contract in contracts:
 ```
 """
 
-from ._extractor import get_contracts
+from ._extractor import get_contracts, unwrap
 from ._wrappers import Contract, Ensure, Example, Has, Post, Pre, Raises, Reason
 
 
@@ -36,4 +36,5 @@ __all__ = [
     'Raises',
     'Reason',
     'get_contracts',
+    'unwrap',
 ]

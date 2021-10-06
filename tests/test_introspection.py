@@ -23,13 +23,24 @@ def test_get_contracts__pre():
     contract = contracts[0]
     assert type(contract) is deal.introspection.Pre
     assert isinstance(contract, deal.introspection.Pre)
-    assert contract.function is func
     contract.validate(2)
     with pytest.raises(deal.PreContractError):
         contract.validate(-1)
     assert contract.exception is deal.PreContractError
     assert contract.message is None
     assert contract.source == 'validator'
+
+
+def test_unwrap():
+    def validator(x):
+        return x > 0
+
+    def func(x):
+        return x * 2
+
+    wrapped = deal.pre(validator)(func)
+    assert deal.introspection.unwrap(wrapped) is func
+    assert deal.introspection.unwrap(func) is func
 
 
 def test_custom_exception_and_message():
@@ -80,6 +91,9 @@ def test_get_contracts__has():
     assert type(contract) is deal.introspection.Has
     assert isinstance(contract, deal.introspection.Has)
     assert contract.markers == frozenset({'io', 'db'})
+    assert contract.exception is deal.MarkerError
+    assert contract.exception_type is deal.MarkerError
+    assert contract.message is None
 
 
 def test_get_contracts__multiple():
