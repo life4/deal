@@ -1,7 +1,7 @@
 from typing import Callable, FrozenSet, Optional, Tuple, Type
 
-from .._runtime import Validator, RaisesValidator, ReasonValidator, HasPatcher
 from .._cached_property import cached_property
+from .._runtime import HasPatcher, RaisesValidator, ReasonValidator, Validator
 from .._source import get_validator_source
 from .._types import ExceptionType
 

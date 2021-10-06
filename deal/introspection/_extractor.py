@@ -1,8 +1,8 @@
 from typing import Callable, Iterator
 
 from .._runtime import Contracts
-from ._wrappers import Contract
 from . import _wrappers
+from ._wrappers import Contract
 
 
 ATTR = '__deal_contract'

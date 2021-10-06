@@ -1,7 +1,7 @@
 from functools import partial
 from typing import Callable, Optional, Type, TypeVar, Union, overload
 
-from . import _runtime, _exceptions
+from . import _exceptions, _runtime
 from ._types import ExceptionType
 
 

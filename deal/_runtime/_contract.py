@@ -1,12 +1,12 @@
-from inspect import isgeneratorfunction
 from asyncio import iscoroutinefunction
 from functools import update_wrapper
+from inspect import isgeneratorfunction
 from typing import Callable, Dict, Generic, List, Optional, Tuple, TypeVar
 
-from ._has_patcher import HasPatcher
-from ._validators import RaisesValidator, Validator, ReasonValidator
-from .._state import state
 from .._exceptions import ContractError
+from .._state import state
+from ._has_patcher import HasPatcher
+from ._validators import RaisesValidator, ReasonValidator, Validator
 
 
 F = TypeVar('F', bound=Callable)
