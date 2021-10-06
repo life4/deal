@@ -89,10 +89,9 @@ class Validator:
             return vaa.wrap(validator, simple=False)
 
         # implicitly wrap in vaa.simple only funcs with one `_` argument.
-        if inspect.isfunction(validator):
-            params = inspect.signature(validator).parameters
-            if set(params) == {'_'}:
-                return vaa.simple(validator, error=self.message)
+        params = _get_signature(validator).parameters
+        if set(params) == {'_'}:
+            return vaa.simple(validator, error=self.message)
 
         return validator
 
