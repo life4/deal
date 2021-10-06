@@ -188,8 +188,13 @@ def raises(
 
     [exception]: https://deal.readthedocs.io/basic/exceptions.html
     """
-    cls = _decorators.Raises[C]
-    return cls(*exceptions, message=message, exception=exception)
+    contract = _decorators.RaisesValidator(
+        exceptions=exceptions,
+        message=message,
+        exception=exception or _exceptions.RaisesContractError,
+    )
+    func = partial(_decorators.Contracts.attach, 'raises', contract)
+    return func  # type: ignore[return-value]
 
 
 def has(
@@ -362,8 +367,13 @@ def example(validator: Callable[[], bool]) -> Callable[[C], C]:
 
     ```
     """
-    cls = _decorators.Example[C]
-    return cls(validator)
+    contract = _decorators.Validator(
+        validator=validator,
+        message=None,
+        exception=_exceptions.ExampleContractError,
+    )
+    func = partial(_decorators.Contracts.attach, 'examples', contract)
+    return func  # type: ignore[return-value]
 
 
 @overload

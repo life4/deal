@@ -7,9 +7,7 @@ from ._wrappers import Contract
 
 
 WRAPPERS = MappingProxyType({
-    _decorators.Example: _wrappers.Example,
     _decorators.Has: _wrappers.Has,
-    _decorators.Raises: _wrappers.Raises,
     _decorators.Reason: _wrappers.Reason,
 })
 

@@ -1,7 +1,7 @@
 import inspect
 from contextlib import suppress
 from functools import lru_cache
-from typing import Any, Callable, Dict, NoReturn, Optional, Type
+from typing import Any, Callable, Dict, Optional, Tuple, Type
 
 import vaa
 
@@ -96,7 +96,7 @@ class Validator:
 
         return validator
 
-    def _raise(self, *, message: str = None, errors=None, params=None) -> NoReturn:
+    def _exception(self, *, message: str = None, errors=None, params=None) -> Exception:
         exception = self.exception
         if isinstance(exception, Exception):
             if not message and exception.args:
@@ -110,7 +110,7 @@ class Validator:
 
         # raise beautiful ContractError
         if issubclass(exception, ContractError):
-            raise exception(
+            return exception(
                 message=message or '',
                 validator=self.validator,
                 errors=errors,
@@ -123,7 +123,7 @@ class Validator:
             args.append(message)
         if errors:
             args.append(errors)
-        raise exception(*args)
+        return exception(*args)
 
     def init(self) -> None:
         self.validator = self._make_validator()
@@ -166,7 +166,7 @@ class Validator:
         # if no errors returned, raise the default exception
         errors = validator.errors
         if not errors:
-            self._raise(params=params)
+            raise self._exception(params=params)
 
         # Flatten single error without field to one simple str message.
         # This is for better readability of simple validators.
@@ -176,7 +176,7 @@ class Validator:
                     if errors[0].field is None:
                         errors = errors[0].message
 
-        self._raise(errors=errors, params=params)
+        raise self._exception(errors=errors, params=params)
 
     def _simple_validation(self, *args, **kwargs) -> None:
         """Validate contract using simple validator.
@@ -187,10 +187,49 @@ class Validator:
         # is invalid (validator returns error message)
         if type(validation_result) is str:
             params = _args_to_vars(args=args, kwargs=kwargs, signature=self.signature)
-            self._raise(message=validation_result, params=params)
+            raise self._exception(message=validation_result, params=params)
         # is valid (truely result)
         if validation_result:
             return
         # is invalid (falsy result)
         params = _args_to_vars(args=args, kwargs=kwargs, signature=self.signature)
-        self._raise(params=params)
+        raise self._exception(params=params)
+
+
+class RaisesValidator(Validator):
+    __slots__ = ('exceptions', )
+    exceptions: Tuple[Type[Exception]]
+
+    def __init__(self, exceptions, exception, message):
+        self.exceptions = exceptions
+        self.validator = None
+        super().__init__(validator=None, message=message, exception=exception)
+
+    def init(self) -> None:
+        self.signature = _get_signature(self.function)
+        self.validate = self._validate
+
+    def _init(  # type: ignore[override]
+        self,
+        exc: Exception,
+        args: Tuple[object],
+        kwargs: Dict[str, object],
+    ) -> None:
+        """
+        Called as `validator` when the function is called in the first time.
+        Does some costly deferred initializations (involving `inspect`).
+        Then sets more appropriate validator as `validator` and calls it.
+        """
+        self.init()
+        self.validate(exc, args, kwargs)
+
+    def _validate(
+        self,
+        exc: Exception,
+        args: Tuple[object],
+        kwargs: Dict[str, object],
+    ) -> None:
+        if type(exc) in self.exceptions:
+            return
+        # params = _args_to_vars(args=args, kwargs=kwargs, signature=self.signature)
+        raise self._exception() from exc

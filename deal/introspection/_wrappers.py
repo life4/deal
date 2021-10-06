@@ -84,13 +84,12 @@ class Ensure(_ValidatedContract):
 class Example(_ValidatedContract):
     """Wrapper for `deal.example`.
     """
-    _wrapped: _decorators.Example
 
 
 class Raises(Contract):
     """Wrapper for `deal.raises`.
     """
-    _wrapped: _decorators.Raises
+    _wrapped: _decorators.RaisesValidator
 
     @property
     def exceptions(self) -> Tuple[Type[Exception], ...]:

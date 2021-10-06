@@ -2,8 +2,9 @@ from inspect import isgeneratorfunction
 from asyncio import iscoroutinefunction
 from functools import update_wrapper
 from typing import Callable, Dict, Generic, List, Tuple, TypeVar
-from .validator import Validator
+from .validator import RaisesValidator, Validator
 from .._state import state
+from .._exceptions import ContractError
 
 
 F = TypeVar('F', bound=Callable)
@@ -16,12 +17,16 @@ class Contracts(Generic[F]):
     pres: List[Validator]
     posts: List[Validator]
     ensures: List[Validator]
+    examples: List[Validator]
+    raises: List[RaisesValidator]
 
     def __init__(self, func: F):
         self.func = func
         self.pres = []
         self.posts = []
         self.ensures = []
+        self.examples = []
+        self.raises = []
 
     @classmethod
     def attach(cls, contract_type: str, validator: Validator, func: F) -> F:
@@ -38,11 +43,11 @@ class Contracts(Generic[F]):
         contracts = cls(func)
 
         if iscoroutinefunction(func):
-            def wrapper(*args, **kwargs):
-                return contracts.run_async(args, kwargs)
+            async def wrapper(*args, **kwargs):
+                return await contracts.run_async(args, kwargs)
         elif isgeneratorfunction(func):
             def wrapper(*args, **kwargs):
-                return contracts.run_iter(args, kwargs)
+                yield from contracts.run_iter(args, kwargs)
         else:
             def wrapper(*args, **kwargs):
                 return contracts.run_sync(args, kwargs)
@@ -56,6 +61,7 @@ class Contracts(Generic[F]):
         if not state.debug:
             return self.func(*args, **kwargs)
 
+        # pre-validation
         state.debug = False
         try:
             for validator in self.pres:
@@ -63,8 +69,17 @@ class Contracts(Generic[F]):
         finally:
             state.debug = True
 
-        result = self.func(*args, **kwargs)
+        # running the function
+        try:
+            result = self.func(*args, **kwargs)
+        except ContractError:
+            raise
+        except Exception as exc:
+            for validator in self.raises:
+                validator.validate(exc, args, kwargs)
+            raise
 
+        # post-validation
         state.debug = False
         try:
             for validator in self.posts:
@@ -80,6 +95,7 @@ class Contracts(Generic[F]):
         if not state.debug:
             return await self.func(*args, **kwargs)
 
+        # pre-validation
         state.debug = False
         try:
             for validator in self.pres:
@@ -87,7 +103,17 @@ class Contracts(Generic[F]):
         finally:
             state.debug = True
 
-        result = await self.func(*args, **kwargs)
+        # running the function
+        try:
+            result = await self.func(*args, **kwargs)
+        except ContractError:
+            raise
+        except Exception as exc:
+            for validator in self.raises:
+                validator.validate(exc, args, kwargs)
+            raise
+
+        # post-validation
         state.debug = False
         try:
             for validator in self.posts:
@@ -103,6 +129,7 @@ class Contracts(Generic[F]):
         if not state.debug:
             yield from self.func(*args, **kwargs)
 
+        # pre-validation
         state.debug = False
         try:
             for validator in self.pres:
@@ -110,7 +137,21 @@ class Contracts(Generic[F]):
         finally:
             state.debug = True
 
-        for result in self.func(*args, **kwargs):
+        generator = self.func(*args, **kwargs)
+        while True:
+            # running the function
+            try:
+                result = next(generator)
+            except StopIteration:
+                return
+            except ContractError:
+                raise
+            except Exception as exc:
+                for validator in self.raises:
+                    validator.validate(exc, args, kwargs)
+                raise
+
+            # post-validation
             state.debug = False
             try:
                 for validator in self.posts:
