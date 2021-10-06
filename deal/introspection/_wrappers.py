@@ -1,8 +1,7 @@
-from typing import Callable, FrozenSet, Optional, Tuple, Type
+from typing import Any, Callable, FrozenSet, Optional, Tuple, Type
 
 from .. import _decorators
 from .._cached_property import cached_property
-from .._decorators.base import Base
 from .._source import get_validator_source
 from .._types import ExceptionType
 
@@ -10,7 +9,7 @@ from .._types import ExceptionType
 class Contract:
     """The base class for all contracts returned by `get_contracts`.
     """
-    _wrapped: Base
+    _wrapped: _decorators.Validator
 
     def __init__(self, wrapped):
         self._wrapped = wrapped
@@ -47,7 +46,7 @@ class _ValidatedContract(Contract):
         You can call it manually if you want to initialize the contract before validation.
         For instance, if you need a consistent execution time for the function.
         """
-        self._wrapped.validator.init()
+        self._wrapped.init()
 
     def validate(self, *args, **kwargs) -> None:
         """Run the validator.
@@ -63,26 +62,23 @@ class _ValidatedContract(Contract):
         For named functions it is the name of the function.
         For lambdas it is the body of the lambda.
         """
-        validator = self._wrapped.validator._make_validator()
+        validator = self._wrapped._make_validator()
         return get_validator_source(validator)
 
 
 class Pre(_ValidatedContract):
     """Wrapper for `deal.pre`.
     """
-    _wrapped: _decorators.Pre
 
 
 class Post(_ValidatedContract):
     """Wrapper for `deal.post`.
     """
-    _wrapped: _decorators.Post
 
 
 class Ensure(_ValidatedContract):
     """Wrapper for `deal.ensure`.
     """
-    _wrapped: _decorators.Ensure
 
 
 class Example(_ValidatedContract):

@@ -1,7 +1,7 @@
 import inspect
 from contextlib import suppress
 from functools import lru_cache
-from typing import Any, Callable, Dict, NoReturn, Optional
+from typing import Any, Callable, Dict, NoReturn, Optional, Type
 
 import vaa
 
@@ -72,6 +72,12 @@ class Validator:
         self.exception = exception
         if message and isinstance(self.exception, type):
             self.exception = self.exception(message)
+
+    @property
+    def exception_type(self) -> Type[Exception]:
+        if isinstance(self.exception, Exception):
+            return type(self.exception)
+        return self.exception
 
     def _make_validator(self) -> Callable:
         """

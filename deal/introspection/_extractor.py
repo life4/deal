@@ -7,11 +7,8 @@ from ._wrappers import Contract
 
 
 WRAPPERS = MappingProxyType({
-    _decorators.Ensure: _wrappers.Ensure,
     _decorators.Example: _wrappers.Example,
     _decorators.Has: _wrappers.Has,
-    _decorators.Post: _wrappers.Post,
-    _decorators.Pre: _wrappers.Pre,
     _decorators.Raises: _wrappers.Raises,
     _decorators.Reason: _wrappers.Reason,
 })
@@ -20,6 +17,7 @@ WRAPPERS = MappingProxyType({
 def get_contracts(func: Callable) -> Iterator[Contract]:
     while True:
         cells = getattr(func, '__closure__', None)
+        ...
         if cells:
             for cell in cells:
                 obj = cell.cell_contents

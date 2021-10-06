@@ -1,6 +1,7 @@
+from functools import partial
 from typing import Callable, Optional, Type, TypeVar, Union, overload
 
-from . import _decorators
+from . import _decorators, _exceptions
 from ._types import ExceptionType
 
 
@@ -45,8 +46,13 @@ def pre(
     [wiki]: https://en.wikipedia.org/wiki/Precondition
     [value]: https://deal.readthedocs.io/basic/values.html
     """
-    cls = _decorators.Pre[C]
-    return cls(validator=validator, message=message, exception=exception)
+    contract = _decorators.Validator(
+        validator=validator,
+        message=message,
+        exception=exception or _exceptions.PreContractError,
+    )
+    func = partial(_decorators.Contracts.attach, 'pres', contract)
+    return func  # type: ignore[return-value]
 
 
 def post(
@@ -85,8 +91,13 @@ def post(
     [wiki]: https://en.wikipedia.org/wiki/Postcondition
     [value]: https://deal.readthedocs.io/basic/values.html
     """
-    cls = _decorators.Post[C]
-    return cls(validator=validator, message=message, exception=exception)
+    contract = _decorators.Validator(
+        validator=validator,
+        message=message,
+        exception=exception or _exceptions.PostContractError,
+    )
+    func = partial(_decorators.Contracts.attach, 'posts', contract)
+    return func  # type: ignore[return-value]
 
 
 def ensure(
@@ -128,8 +139,13 @@ def ensure(
     [wiki]: https://en.wikipedia.org/wiki/Postcondition
     [value]: https://deal.readthedocs.io/basic/values.html
     """
-    cls = _decorators.Ensure[C]
-    return cls(validator=validator, message=message, exception=exception)
+    contract = _decorators.Validator(
+        validator=validator,
+        message=message,
+        exception=exception or _exceptions.PostContractError,
+    )
+    func = partial(_decorators.Contracts.attach, 'ensures', contract)
+    return func  # type: ignore[return-value]
 
 
 def raises(
