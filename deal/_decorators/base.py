@@ -1,4 +1,4 @@
-import inspect
+from inspect import isgeneratorfunction
 from asyncio import iscoroutinefunction
 from functools import update_wrapper
 from typing import Callable, Generic, NamedTuple, Optional, Type, TypeVar
@@ -52,7 +52,11 @@ class Base(Generic[CallableType]):
         return self.exception
 
     def validate(self, *args, **kwargs) -> None:
-        self.validator.validate(*args, **kwargs)
+        state.debug = False
+        try:
+            self.validator.validate(*args, **kwargs)
+        finally:
+            state.debug = True
 
     @staticmethod
     def _defaults() -> Defaults:
@@ -74,7 +78,7 @@ class Base(Generic[CallableType]):
                 return await function(*args, **kwargs)
             return update_wrapper(wrapped_async, function)  # type: ignore[return-value]
 
-        if inspect.isgeneratorfunction(function):
+        if isgeneratorfunction(function):
             def wrapped_gen(*args, **kwargs):
                 if state.debug:
                     yield from self.patched_generator(*args, **kwargs)

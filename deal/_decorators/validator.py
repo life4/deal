@@ -6,7 +6,6 @@ from typing import Any, Callable, Dict, NoReturn, Optional
 import vaa
 
 from .._exceptions import ContractError
-from .._state import state
 from .._types import ExceptionType
 
 
@@ -138,7 +137,6 @@ class Validator:
         self.init()
         self.validate(*args, **kwargs)
 
-    @state.disabled
     def _vaa_validation(self, *args, **kwargs) -> None:
         """Validate contract using vaa wrapped validator.
         """
@@ -174,7 +172,6 @@ class Validator:
 
         self._raise(errors=errors, params=params)
 
-    @state.disabled
     def _simple_validation(self, *args, **kwargs) -> None:
         """Validate contract using simple validator.
 
