@@ -352,12 +352,12 @@ def inv(
     [wiki]: https://en.wikipedia.org/wiki/Class_invariant
     [value]: https://deal.readthedocs.io/basic/values.html
     """
-    cls = _decorators.Invariant[C]
-    return cls(
+    contract = _decorators.InvariantValidator(
         validator=validator,
         message=message,
-        exception=exception,
+        exception=exception or _exceptions.InvContractError,
     )
+    return partial(_decorators.invariant, contract)
 
 
 def example(validator: Callable[[], bool]) -> Callable[[C], C]:

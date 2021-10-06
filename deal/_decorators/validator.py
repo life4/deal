@@ -228,3 +228,16 @@ class ReasonValidator(Validator):
     def __init__(self, event, **kwargs):
         self.event = event
         super().__init__(**kwargs)
+
+
+class InvariantValidator(Validator):
+    def init(self) -> None:
+        self.signature = None
+        self.validator = self._make_validator()
+        if hasattr(self.validator, 'is_valid'):
+            self.validate = self._vaa_validation
+        else:
+            self.validate = self._simple_validation
+
+    def _vaa_validation(self, obj) -> None:  # type: ignore[override]
+        return super()._vaa_validation(**vars(obj))

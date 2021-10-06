@@ -54,7 +54,7 @@ class Base(Generic[CallableType]):
     def validate(self, *args, **kwargs) -> None:
         state.debug = False
         try:
-            self.validator.validate(*args, **kwargs)
+            self.validator.validate(args, kwargs)
         finally:
             state.debug = True
 
