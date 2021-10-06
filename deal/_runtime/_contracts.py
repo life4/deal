@@ -14,6 +14,18 @@ ATTR = '__deal_contract'
 
 
 class Contracts(Generic[F]):
+    __slots__ = (
+        'func',
+        'wrapped',
+        'pres',
+        'posts',
+        'ensures',
+        'examples',
+        'raises',
+        'reasons',
+        'patcher',
+    )
+
     func: F
     wrapped: F
     pres: List[Validator]

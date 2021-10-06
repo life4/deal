@@ -8,6 +8,8 @@ from .._types import ExceptionType
 
 
 class PatchedStringIO(StringIO):
+    __slots__ = ('exception')
+
     def __init__(self, exception: ExceptionType):
         self.exception = exception
 
@@ -16,6 +18,8 @@ class PatchedStringIO(StringIO):
 
 
 class PatchedSocket:
+    __slots__ = ('exception')
+
     def __init__(self, exception: ExceptionType):
         self.exception = exception
 
@@ -24,7 +28,14 @@ class PatchedSocket:
 
 
 class HasPatcher:
-    # __slots__ = ('markers', 'true_socket', 'true_stdout', 'true_stderr')
+    __slots__ = (
+        'markers',
+        'message',
+        'exception',
+        'true_socket',
+        'true_stdout',
+        'true_stderr',
+    )
     markers: FrozenSet[str]
 
     def __init__(self, markers, message: str = None, exception: ExceptionType = None):
