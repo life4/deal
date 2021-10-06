@@ -2,7 +2,6 @@ import gc
 import typing
 from collections import Counter
 
-
 from ._cached_property import cached_property
 
 

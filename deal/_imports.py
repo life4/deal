@@ -5,7 +5,8 @@ from typing import Any, Callable, List, Optional
 
 from _frozen_importlib_external import PathFinder  # pyright: reportMissingImports=false
 
-from . import _aliases
+import deal
+
 from ._state import state
 
 
@@ -61,7 +62,7 @@ class DealLoader:
             contracts.append(contract)
 
         # execute module with contracts
-        wrapped = _aliases.chain(*contracts)(self._loader.exec_module)
+        wrapped = deal.chain(*contracts)(self._loader.exec_module)
         wrapped(module)
 
     @staticmethod
@@ -94,7 +95,7 @@ class DealLoader:
             return None
         if node.value.id != 'deal':
             return None
-        contract = getattr(_aliases, node.attr, None)
+        contract = getattr(deal, node.attr, None)
         if contract is None:
             return None
         return contract
