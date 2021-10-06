@@ -3,7 +3,7 @@ import typing
 from collections import Counter
 
 
-from._cached_property import cached_property
+from ._cached_property import cached_property
 
 
 class MemoryTracker:

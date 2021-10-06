@@ -6,10 +6,11 @@ from ._validators import InvariantValidator
 
 
 T = TypeVar('T', bound=type)
+ATTR = '_deal_invariants'
 DEAL_ATTRS = frozenset({
     '_deal_patched_method',
     '_deal_validate',
-    '_deal_invariants',
+    ATTR,
 })
 
 
@@ -41,17 +42,17 @@ class InvariantedClass:
 
 
 def invariant(validator: InvariantValidator, _class: T) -> T:
-    invs = getattr(_class, '_deal_invariants', None)
+    invs = getattr(_class, ATTR, None)
     if invs is None:
         patched_class = type(
             _class.__name__ + 'Invarianted',
             (InvariantedClass, _class),
-            {'_deal_invariants': [validator]},
+            {ATTR: [validator]},
         )
     else:
         patched_class = type(
             _class.__name__,
             (_class, ),
-            {'_deal_invariants': invs + [validator]},
+            {ATTR: invs + [validator]},
         )
     return patched_class  # type: ignore[return-value]

@@ -7,11 +7,11 @@ from ._validators import InvariantValidator, RaisesValidator, ReasonValidator, V
 
 __all__ = [
     'Contracts',
-    'Validator',
-    'RaisesValidator',
-    'InvariantValidator',
-    'ReasonValidator',
     'Dispatch',
     'HasPatcher',
     'invariant',
+    'InvariantValidator',
+    'RaisesValidator',
+    'ReasonValidator',
+    'Validator',
 ]
