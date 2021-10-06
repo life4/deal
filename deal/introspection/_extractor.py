@@ -22,6 +22,10 @@ def get_contracts(func: Callable) -> Iterator[Contract]:
                 yield _wrappers.Raises(validator)
             for validator in contracts.reasons:
                 yield _wrappers.Reason(validator)
+            for validator in contracts.examples:
+                yield _wrappers.Example(validator)
+            if contracts.patcher:
+                yield _wrappers.Has(contracts.patcher)
 
         if not hasattr(func, '__wrapped__'):
             return

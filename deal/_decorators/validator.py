@@ -239,5 +239,5 @@ class InvariantValidator(Validator):
         else:
             self.validate = self._simple_validation
 
-    def _vaa_validation(self, obj) -> None:  # type: ignore[override]
-        return super()._vaa_validation(**vars(obj))
+    def _vaa_validation(self, args, kwargs, exc=None) -> None:
+        return super()._vaa_validation((), vars(args[0]), exc=exc)

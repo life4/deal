@@ -158,6 +158,7 @@ class Contracts(Generic[F]):
     def run_iter(self, args: Tuple[object], kwargs: Dict[str, object]):
         if not state.debug:
             yield from self.func(*args, **kwargs)
+            return
 
         # pre-validation
         state.debug = False

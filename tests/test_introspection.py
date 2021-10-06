@@ -126,7 +126,7 @@ def test_init():
     assert len(contracts) == 1
     contract = contracts[0]
     assert type(contract) is deal.introspection.Pre
-    val = contract._wrapped.validator
+    val = contract._wrapped
     assert val.validate.__name__ == '_init'
     contract.init()
     assert val.validate.__name__ != '_init'

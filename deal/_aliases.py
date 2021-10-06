@@ -280,7 +280,7 @@ def reason(
      ZeroDivisionError: division by zero
      The above exception was the direct cause of the following exception:
         ...
-    ReasonContractError
+    ReasonContractError: expected b == 0 (where a=2, b=2)
 
     ```
 

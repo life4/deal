@@ -3,7 +3,7 @@
 from importlib import import_module
 
 import deal
-from deal._decorators.base import Base
+from deal._decorators.validator import Validator
 
 
 # will be filled from the linter
@@ -21,17 +21,17 @@ def inject(name: str) -> bool:
     return True
 
 
-def validate(*args, **kwargs) -> None:
+def validate(args, kwargs) -> None:
     """Run validator, trying to fix missed imports on the way.
     """
-    base = Base(validator=contract)  # type: ignore
+    base = Validator(validator=contract, exception=deal.ContractError)
     if func is not Ellipsis:
-        base.validator.function = func
+        base.function = func
 
     old_name = None
     for _ in range(10):  # maximum 10 tries, just in case
         try:
-            base.validate(*args, **kwargs)
+            base.validate(args, kwargs)
             return
         except NameError as err:
             # Oh no, we didn't properly inject a variable,
@@ -51,7 +51,7 @@ def validate(*args, **kwargs) -> None:
 
 
 try:
-    validate(*args, **kwargs)  # type: ignore  # noqa: F821
+    validate(args, kwargs)  # type: ignore  # noqa: F821
 except deal.ContractError as exc:
     result = False
     if exc.args:

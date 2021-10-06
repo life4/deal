@@ -1,4 +1,4 @@
-from typing import Any, Callable, FrozenSet, Optional, Tuple, Type
+from typing import Callable, FrozenSet, Optional, Tuple, Type
 
 from .. import _decorators
 from .._cached_property import cached_property
