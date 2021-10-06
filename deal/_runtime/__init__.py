@@ -1,4 +1,4 @@
-from ._contract import Contracts
+from ._contracts import Contracts
 from ._dispatch import Dispatch
 from ._has_patcher import HasPatcher
 from ._invariant import invariant

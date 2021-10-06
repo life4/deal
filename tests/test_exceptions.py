@@ -178,7 +178,7 @@ def test_repr_raises_exc():
 
 
 def test_exception_hook(capsys):
-    pre_path = str(Path('deal', '_runtime', '_contract.py'))
+    pre_path = str(Path('deal', '_runtime', '_contracts.py'))
     f = deal.pre(lambda x: x > 0)(lambda x: x)
     with pytest.raises(deal.PreContractError) as exc_info:
         f(-2)
