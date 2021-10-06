@@ -53,7 +53,7 @@ class _ValidatedContract(Contract):
 
         If validation fails, the `exception` is raised.
         """
-        self._wrapped.validate(*args, **kwargs)
+        self._wrapped.validate(args, kwargs)
 
     @cached_property
     def source(self) -> str:
@@ -101,7 +101,7 @@ class Raises(Contract):
 class Reason(_ValidatedContract):
     """Wrapper for `deal.reason`.
     """
-    _wrapped: _decorators.Reason
+    _wrapped: _decorators.ReasonValidator
 
     @property
     def event(self) -> Type[Exception]:

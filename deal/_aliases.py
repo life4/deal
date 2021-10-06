@@ -281,8 +281,14 @@ def reason(
 
     [exception]: https://deal.readthedocs.io/basic/exceptions.html
     """
-    cls = _decorators.Reason[C]
-    return cls(event=event, validator=validator, message=message, exception=exception)
+    contract = _decorators.ReasonValidator(
+        event=event,
+        validator=validator,
+        message=message,
+        exception=exception or _exceptions.ReasonContractError,
+    )
+    func = partial(_decorators.Contracts.attach, 'reasons', contract)
+    return func  # type: ignore[return-value]
 
 
 def inv(

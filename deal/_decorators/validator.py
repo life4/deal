@@ -134,16 +134,16 @@ class Validator:
             self.signature = _get_signature(self.validator)
             self.validate = self._simple_validation
 
-    def _init(self, *args, **kwargs) -> None:
+    def _init(self, args, kwargs, exc=None) -> None:
         """
         Called as `validator` when the function is called in the first time.
         Does some costly deferred initializations (involving `inspect`).
         Then sets more appropriate validator as `validator` and calls it.
         """
         self.init()
-        self.validate(*args, **kwargs)
+        self.validate(args, kwargs, exc)
 
-    def _vaa_validation(self, *args, **kwargs) -> None:
+    def _vaa_validation(self, args, kwargs, exc=None) -> None:
         """Validate contract using vaa wrapped validator.
         """
 
@@ -166,7 +166,7 @@ class Validator:
         # if no errors returned, raise the default exception
         errors = validator.errors
         if not errors:
-            raise self._exception(params=params)
+            raise self._exception(params=params) from exc
 
         # Flatten single error without field to one simple str message.
         # This is for better readability of simple validators.
@@ -176,9 +176,9 @@ class Validator:
                     if errors[0].field is None:
                         errors = errors[0].message
 
-        raise self._exception(errors=errors, params=params)
+        raise self._exception(errors=errors, params=params) from exc
 
-    def _simple_validation(self, *args, **kwargs) -> None:
+    def _simple_validation(self, args, kwargs, exc=None) -> None:
         """Validate contract using simple validator.
 
         Simple validator is a validator that reflects the function signature.
@@ -187,13 +187,13 @@ class Validator:
         # is invalid (validator returns error message)
         if type(validation_result) is str:
             params = _args_to_vars(args=args, kwargs=kwargs, signature=self.signature)
-            raise self._exception(message=validation_result, params=params)
+            raise self._exception(message=validation_result, params=params) from exc
         # is valid (truely result)
         if validation_result:
             return
         # is invalid (falsy result)
         params = _args_to_vars(args=args, kwargs=kwargs, signature=self.signature)
-        raise self._exception(params=params)
+        raise self._exception(params=params) from exc
 
 
 class RaisesValidator(Validator):
@@ -209,27 +209,27 @@ class RaisesValidator(Validator):
         self.signature = _get_signature(self.function)
         self.validate = self._validate
 
-    def _init(  # type: ignore[override]
-        self,
-        exc: Exception,
-        args: Tuple[object],
-        kwargs: Dict[str, object],
-    ) -> None:
+    def _init(self, args, kwargs, exc=None) -> None:
         """
         Called as `validator` when the function is called in the first time.
         Does some costly deferred initializations (involving `inspect`).
         Then sets more appropriate validator as `validator` and calls it.
         """
         self.init()
-        self.validate(exc, args, kwargs)
+        self.validate(args, kwargs, exc=exc)
 
-    def _validate(
-        self,
-        exc: Exception,
-        args: Tuple[object],
-        kwargs: Dict[str, object],
-    ) -> None:
-        if type(exc) in self.exceptions:
+    def _validate(self, args, kwargs, exc=None) -> None:
+        exc_type = type(exc)
+        if exc_type in self.exceptions:
             return
         # params = _args_to_vars(args=args, kwargs=kwargs, signature=self.signature)
-        raise self._exception() from exc
+        raise self._exception() from exc_type
+
+
+class ReasonValidator(Validator):
+    __slots__ = ('event', )
+    event: Type[Exception]
+
+    def __init__(self, event, **kwargs):
+        self.event = event
+        super().__init__(**kwargs)

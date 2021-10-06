@@ -2,7 +2,7 @@ from inspect import isgeneratorfunction
 from asyncio import iscoroutinefunction
 from functools import update_wrapper
 from typing import Callable, Dict, Generic, List, Tuple, TypeVar
-from .validator import RaisesValidator, Validator
+from .validator import RaisesValidator, Validator, ReasonValidator
 from .._state import state
 from .._exceptions import ContractError
 
@@ -19,6 +19,7 @@ class Contracts(Generic[F]):
     ensures: List[Validator]
     examples: List[Validator]
     raises: List[RaisesValidator]
+    reasons: List[ReasonValidator]
 
     def __init__(self, func: F):
         self.func = func
@@ -27,6 +28,7 @@ class Contracts(Generic[F]):
         self.ensures = []
         self.examples = []
         self.raises = []
+        self.reasons = []
 
     @classmethod
     def attach(cls, contract_type: str, validator: Validator, func: F) -> F:
@@ -65,7 +67,7 @@ class Contracts(Generic[F]):
         state.debug = False
         try:
             for validator in self.pres:
-                validator.validate(*args, **kwargs)
+                validator.validate(args, kwargs)
         finally:
             state.debug = True
 
@@ -76,16 +78,20 @@ class Contracts(Generic[F]):
             raise
         except Exception as exc:
             for validator in self.raises:
-                validator.validate(exc, args, kwargs)
+                validator.validate(args, kwargs, exc=exc)
+            exc_type = type(exc)
+            for validator in self.reasons:
+                if exc_type is validator.event:
+                    validator.validate(args, kwargs, exc=exc)
             raise
 
         # post-validation
         state.debug = False
         try:
             for validator in self.posts:
-                validator.validate(result)
+                validator.validate((result,), {})
             for validator in self.ensures:
-                validator.validate(*args, **kwargs, result=result)
+                validator.validate(args, dict(kwargs, result=result))
         finally:
             state.debug = True
 
@@ -99,7 +105,7 @@ class Contracts(Generic[F]):
         state.debug = False
         try:
             for validator in self.pres:
-                validator.validate(*args, **kwargs)
+                validator.validate(args, kwargs)
         finally:
             state.debug = True
 
@@ -110,16 +116,20 @@ class Contracts(Generic[F]):
             raise
         except Exception as exc:
             for validator in self.raises:
-                validator.validate(exc, args, kwargs)
+                validator.validate(args, kwargs, exc=exc)
+            exc_type = type(exc)
+            for validator in self.reasons:
+                if exc_type is validator.event:
+                    validator.validate(args, kwargs, exc=exc)
             raise
 
         # post-validation
         state.debug = False
         try:
             for validator in self.posts:
-                validator.validate(result)
+                validator.validate((result,), {})
             for validator in self.ensures:
-                validator.validate(*args, **kwargs, result=result)
+                validator.validate(args, dict(kwargs, result=result))
         finally:
             state.debug = True
 
@@ -133,7 +143,7 @@ class Contracts(Generic[F]):
         state.debug = False
         try:
             for validator in self.pres:
-                validator.validate(*args, **kwargs)
+                validator.validate(args, kwargs)
         finally:
             state.debug = True
 
@@ -148,16 +158,20 @@ class Contracts(Generic[F]):
                 raise
             except Exception as exc:
                 for validator in self.raises:
-                    validator.validate(exc, args, kwargs)
+                    validator.validate(args, kwargs, exc=exc)
+                exc_type = type(exc)
+                for validator in self.reasons:
+                    if exc_type is validator.event:
+                        validator.validate(args, kwargs, exc=exc)
                 raise
 
             # post-validation
             state.debug = False
             try:
                 for validator in self.posts:
-                    validator.validate(result)
+                    validator.validate((result,), {})
                 for validator in self.ensures:
-                    validator.validate(*args, **kwargs, result=result)
+                    validator.validate(args, dict(kwargs, result=result))
             finally:
                 state.debug = True
             yield result
