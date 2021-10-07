@@ -2,7 +2,7 @@ from typing import Callable, Iterator, TypeVar
 
 from .._runtime import Contracts
 from . import _wrappers
-from ._wrappers import Contract
+from ._wrappers import Contract, ValidatedContract
 
 
 ATTR = '__deal_contract'
@@ -16,6 +16,17 @@ def unwrap(func: F) -> F:
     if isinstance(contracts, Contracts):
         return contracts.func
     return func
+
+
+def init_all(func: Callable) -> None:
+    """Call .init() on all contracts.
+
+    This is useful when you need to explicitly precache contracts.
+    For example, when profiling the function.
+    """
+    for contract in get_contracts(func):
+        if isinstance(contract, ValidatedContract):
+            contract.init()
 
 
 def get_contracts(func: Callable) -> Iterator[Contract]:

@@ -3,12 +3,8 @@ from contextlib import suppress
 from pathlib import Path
 from typing import Any, Dict, Optional, Tuple, Type
 
-import pygments
-from pygments.formatters.terminal import TerminalFormatter
-from pygments.lexers.python import PythonLexer
-
 from ._cached_property import cached_property
-from ._colors import COLORS, NOCOLORS
+from ._colors import COLORS, NOCOLORS, highlight
 from ._source import get_validator_source
 from ._state import state
 
@@ -87,12 +83,7 @@ class ContractError(AssertionError):
     def colored_source(self) -> str:
         """The colored source code of the validator.
         """
-        source = pygments.highlight(
-            code=self.source,
-            lexer=PythonLexer(),
-            formatter=TerminalFormatter(),
-        )
-        return source.rstrip()
+        return highlight(self.source)
 
     @cached_property
     def variables(self) -> str:

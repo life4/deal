@@ -1,4 +1,11 @@
 """Entrypoint for mypy plugin.
+
+Activate it in mypy config (pyproject.toml):
+
+```toml
+[tool.mypy]
+plugins = ["deal.mypy"]
+```
 """
 # This file is excluded from coverage.
 

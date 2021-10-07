@@ -34,7 +34,10 @@ class Contract:
         return self._wrapped.message
 
 
-class _ValidatedContract(Contract):
+class ValidatedContract(Contract):
+    """The base class for all contracts supporting validation.
+    """
+
     def init(self) -> None:
         """Initialize the contract.
 
@@ -63,22 +66,22 @@ class _ValidatedContract(Contract):
         return get_validator_source(self._wrapped.validator)
 
 
-class Pre(_ValidatedContract):
+class Pre(ValidatedContract):
     """Wrapper for `deal.pre`.
     """
 
 
-class Post(_ValidatedContract):
+class Post(ValidatedContract):
     """Wrapper for `deal.post`.
     """
 
 
-class Ensure(_ValidatedContract):
+class Ensure(ValidatedContract):
     """Wrapper for `deal.ensure`.
     """
 
 
-class Example(_ValidatedContract):
+class Example(ValidatedContract):
     """Wrapper for `deal.example`.
     """
 
@@ -95,7 +98,7 @@ class Raises(Contract):
         return self._wrapped.exceptions
 
 
-class Reason(_ValidatedContract):
+class Reason(ValidatedContract):
     """Wrapper for `deal.reason`.
     """
     _wrapped: ReasonValidator

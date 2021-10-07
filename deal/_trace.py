@@ -2,7 +2,7 @@ import ast
 import inspect
 import sys
 from trace import Trace
-from typing import Any, Iterator, NamedTuple, Optional, Set, Tuple
+from typing import Any, Callable, Iterator, NamedTuple, Optional, Set, Tuple
 
 
 class TraceResult(NamedTuple):
@@ -16,15 +16,14 @@ class TraceResult(NamedTuple):
         return round(len(self.covered_lines) * 100 / len(self.all_lines))
 
 
-class Only:
-    def __init__(self, file_name: str):
-        self.file_name = file_name
+class Only(NamedTuple):
+    file_name: str
 
     def names(self, filename: str, modulename: str) -> int:
         return int(filename != self.file_name)
 
 
-def trace(func, **kwargs) -> TraceResult:
+def trace(func: Callable, **kwargs) -> TraceResult:
     # find the file where the original function is defined
     original_func = inspect.unwrap(func)
     file_name = original_func.__code__.co_filename
@@ -71,7 +70,7 @@ def _collect_trace_results(t: Trace, func, file_name: str, func_result) -> Trace
     )
 
 
-def _get_func_body_statements(func) -> Set[int]:
+def _get_func_body_statements(func: Callable) -> Set[int]:
     func_name = func.__name__
     file_name = func.__code__.co_filename
 
