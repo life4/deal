@@ -7,7 +7,6 @@ import pytest
 import vaa
 
 import deal
-from deal._decorators.base import Base
 from deal._exceptions import _excepthook, exception_hook
 from deal._state import state
 
@@ -179,7 +178,7 @@ def test_repr_raises_exc():
 
 
 def test_exception_hook(capsys):
-    pre_path = str(Path('deal', '_decorators', 'pre.py'))
+    pre_path = str(Path('deal', '_runtime', '_contracts.py'))
     f = deal.pre(lambda x: x > 0)(lambda x: x)
     with pytest.raises(deal.PreContractError) as exc_info:
         f(-2)
@@ -203,14 +202,14 @@ def test_exception_hook(capsys):
 
 
 def test_exception_hook_ignores_non_contract_exceptions(capsys):
-    with pytest.raises(NotImplementedError) as exc_info:
-        Base.patched_function(None)
+    with pytest.raises(deal.NoMatchError) as exc_info:
+        deal.dispatch(lambda: 0)()
 
     # the custom hook does not reduce non-contract tracebacks
     exception_hook(exc_info.type, exc_info.value, exc_info.tb)
     captured = capsys.readouterr()
     assert captured.out == ''
-    base_path = str(Path('deal', '_decorators', 'base.py'))
+    base_path = str(Path('deal', '_runtime', '_dispatch.py'))
     assert base_path in captured.err
 
 

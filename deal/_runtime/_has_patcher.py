@@ -5,10 +5,11 @@ from typing import FrozenSet, Type
 
 from .._exceptions import MarkerError, OfflineContractError, SilentContractError
 from .._types import ExceptionType
-from .base import Base, CallableType
 
 
 class PatchedStringIO(StringIO):
+    __slots__ = ('exception')
+
     def __init__(self, exception: ExceptionType):
         self.exception = exception
 
@@ -17,6 +18,8 @@ class PatchedStringIO(StringIO):
 
 
 class PatchedSocket:
+    __slots__ = ('exception')
+
     def __init__(self, exception: ExceptionType):
         self.exception = exception
 
@@ -24,53 +27,29 @@ class PatchedSocket:
         raise self.exception
 
 
-class Has(Base[CallableType]):
+class HasPatcher:
+    __slots__ = (
+        'markers',
+        'message',
+        'exception',
+        'true_socket',
+        'true_stdout',
+        'true_stderr',
+    )
     markers: FrozenSet[str]
 
-    def __init__(self, *markers, message: str = None, exception: ExceptionType = None):
-        """
-        Step 1. Set allowed markers.
-        """
+    def __init__(self, markers, message: str = None, exception: ExceptionType = None):
         self.markers = frozenset(markers)
         self.message = message
         self.exception = exception or MarkerError
+        if message and isinstance(self.exception, type):
+            self.exception = self.exception(message)
 
-    def patched_function(self, *args, **kwargs):
-        """
-        Step 3. Wrapped function calling.
-        """
-        self.patch()
-        try:
-            return self.function(*args, **kwargs)
-        finally:
-            self.unpatch()
-
-    async def async_patched_function(self, *args, **kwargs):
-        """
-        Step 3. Wrapped function calling.
-        """
-        self.patch()
-        try:
-            return await self.function(*args, **kwargs)
-        finally:
-            self.unpatch()
-
-    def patched_generator(self, *args, **kwargs):
-        """
-        Step 3. Wrapped function calling.
-        """
-        generator = self.function(*args, **kwargs)
-        while True:
-            self.patch()
-            try:
-                result = next(generator)
-            except StopIteration:
-                return
-            finally:
-                self.unpatch()
-            yield result
-
-    # known markers
+    @property
+    def exception_type(self) -> Type[Exception]:
+        if isinstance(self.exception, Exception):
+            return type(self.exception)
+        return self.exception
 
     @property
     def has_network(self) -> bool:
@@ -170,13 +149,8 @@ class Has(Base[CallableType]):
             sys.stderr = self.true_stderr
 
     def _get_exception(self, default: Type[Exception]) -> ExceptionType:
-        if self.exception is MarkerError:
+        if self.exception_type is MarkerError:
             if self.message is None:
                 return default
             return default(self.message)
-
-        if self.message is None:
-            return self.exception
-        if isinstance(self.exception, Exception):
-            return self.exception
-        return self.exception(self.message)
+        return self.exception

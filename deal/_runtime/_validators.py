@@ -1,18 +1,12 @@
 import inspect
-from asyncio import iscoroutinefunction
 from contextlib import suppress
-from functools import lru_cache, update_wrapper
-from typing import Any, Callable, Dict, Generic, NoReturn, Optional, Type, TypeVar
+from functools import lru_cache
+from typing import Any, Callable, Dict, Optional, Tuple, Type
 
 import vaa
 
 from .._exceptions import ContractError
-from .._state import state
 from .._types import ExceptionType
-
-
-#: We use this type in many other subclasses of `Base` decorator.
-CallableType = TypeVar('CallableType', bound=Callable)
 
 
 @lru_cache(maxsize=16)
@@ -48,49 +42,42 @@ def _args_to_vars(
     return params
 
 
-class Base(Generic[CallableType]):
-    """The base class for all deal contracts.
-    """
-    __slots__ = (
-        'exception',
-        'function',
-        'signature',
-        'validate',
-        'validator',
-        'raw_validator',
-        'message',
-    )
-
+class Validator:
     exception: ExceptionType
-    function: CallableType
     signature: Optional[inspect.Signature]
     validate: Any
     validator: Any
     raw_validator: Any
     message: Optional[str]
+    function: Any
+    __slots__ = (
+        'exception',
+        'signature',
+        'validate',
+        'validator',
+        'raw_validator',
+        'message',
+        'function',
+    )
 
-    def __init__(self, validator, *, message: str = None,
-                 exception: ExceptionType = None):
-        """
-        Step 1. Set contract (validator).
-        """
+    def __init__(
+        self,
+        validator, *,
+        message: str = None,
+        exception: ExceptionType,
+    ):
         self.validate = self._init
         self.raw_validator = validator
         self.message = message
-        if exception:
-            self.exception = exception
-        else:
-            self.exception = self._default_exception()
-        if message:
-            self.exception = self.exception(message)    # type: ignore
+        self.exception = exception
+        if message and isinstance(self.exception, type):
+            self.exception = self.exception(message)
 
-    @classmethod
-    def _default_exception(cls) -> Type[ContractError]:
-        """
-        Returns default exception for this contract.
-        We can't use class-level defaults for it becuase subclasses use __slots__.
-        """
-        return ContractError
+    @property
+    def exception_type(self) -> Type[Exception]:
+        if isinstance(self.exception, Exception):
+            return type(self.exception)
+        return self.exception
 
     def _make_validator(self) -> Callable:
         """
@@ -102,14 +89,13 @@ class Base(Generic[CallableType]):
             return vaa.wrap(validator, simple=False)
 
         # implicitly wrap in vaa.simple only funcs with one `_` argument.
-        if inspect.isfunction(validator):
-            params = inspect.signature(validator).parameters
-            if set(params) == {'_'}:
-                return vaa.simple(validator, error=self.message)
+        params = _get_signature(validator).parameters
+        if set(params) == {'_'}:
+            return vaa.simple(validator, error=self.message)
 
         return validator
 
-    def _raise(self, *, message: str = None, errors=None, params=None) -> NoReturn:
+    def _exception(self, *, message: str = None, errors=None, params=None) -> Exception:
         exception = self.exception
         if isinstance(exception, Exception):
             if not message and exception.args:
@@ -123,7 +109,7 @@ class Base(Generic[CallableType]):
 
         # raise beautiful ContractError
         if issubclass(exception, ContractError):
-            raise exception(
+            return exception(
                 message=message or '',
                 validator=self.validator,
                 errors=errors,
@@ -136,14 +122,9 @@ class Base(Generic[CallableType]):
             args.append(message)
         if errors:
             args.append(errors)
-        raise exception(*args)
+        return exception(*args)
 
-    def _init(self, *args, **kwargs):
-        """
-        Called as `validator` when the function is called in the first time.
-        Does some costly deferred initializations (involving `inspect`).
-        Then sets more appropriate validator as `validator` and calls it.
-        """
+    def init(self) -> None:
         self.validator = self._make_validator()
         if hasattr(self.validator, 'is_valid'):
             self.signature = _get_signature(self.function)
@@ -151,10 +132,17 @@ class Base(Generic[CallableType]):
         else:
             self.signature = _get_signature(self.validator)
             self.validate = self._simple_validation
-        return self.validate(*args, **kwargs)
 
-    @state.disabled
-    def _vaa_validation(self, *args, **kwargs) -> None:
+    def _init(self, args, kwargs, exc=None) -> None:
+        """
+        Called as `validator` when the function is called in the first time.
+        Does some costly deferred initializations (involving `inspect`).
+        Then sets more appropriate validator as `validator` and calls it.
+        """
+        self.init()
+        self.validate(args, kwargs, exc)
+
+    def _vaa_validation(self, args, kwargs, exc=None) -> None:
         """Validate contract using vaa wrapped validator.
         """
 
@@ -177,7 +165,7 @@ class Base(Generic[CallableType]):
         # if no errors returned, raise the default exception
         errors = validator.errors
         if not errors:
-            self._raise(params=params)
+            raise self._exception(params=params) from exc
 
         # Flatten single error without field to one simple str message.
         # This is for better readability of simple validators.
@@ -187,10 +175,9 @@ class Base(Generic[CallableType]):
                     if errors[0].field is None:
                         errors = errors[0].message
 
-        self._raise(errors=errors, params=params)
+        raise self._exception(errors=errors, params=params) from exc
 
-    @state.disabled
-    def _simple_validation(self, *args, **kwargs) -> None:
+    def _simple_validation(self, args, kwargs, exc=None) -> None:
         """Validate contract using simple validator.
 
         Simple validator is a validator that reflects the function signature.
@@ -199,55 +186,57 @@ class Base(Generic[CallableType]):
         # is invalid (validator returns error message)
         if type(validation_result) is str:
             params = _args_to_vars(args=args, kwargs=kwargs, signature=self.signature)
-            self._raise(message=validation_result, params=params)
+            raise self._exception(message=validation_result, params=params) from exc
         # is valid (truely result)
         if validation_result:
             return
         # is invalid (falsy result)
         params = _args_to_vars(args=args, kwargs=kwargs, signature=self.signature)
-        self._raise(params=params)
+        raise self._exception(params=params) from exc
 
-    def __call__(self, function: CallableType) -> CallableType:
-        """
-        Step 2. Return wrapped function.
-        """
-        self.function = function
 
-        if iscoroutinefunction(function):
-            async def wrapped_async(*args, **kwargs):
-                if state.debug:
-                    return await self.async_patched_function(*args, **kwargs)
-                return await function(*args, **kwargs)
-            return update_wrapper(wrapped_async, function)  # type: ignore[return-value]
+class RaisesValidator(Validator):
+    __slots__ = ('exceptions', )
+    exceptions: Tuple[Type[Exception]]
 
-        if inspect.isgeneratorfunction(function):
-            def wrapped_gen(*args, **kwargs):
-                if state.debug:
-                    yield from self.patched_generator(*args, **kwargs)
-                else:
-                    yield from function(*args, **kwargs)
-            return update_wrapper(wrapped_gen, function)  # type: ignore[return-value]
+    def __init__(self, exceptions, exception, message):
+        self.exceptions = exceptions
+        self.validator = None
+        super().__init__(validator=None, message=message, exception=exception)
 
-        def wrapped_func(*args, **kwargs):
-            if state.debug:
-                return self.patched_function(*args, **kwargs)
-            return function(*args, **kwargs)
-        return update_wrapper(wrapped_func, function)  # type: ignore[return-value]
+    def init(self) -> None:
+        self.signature = _get_signature(self.function)
+        self.validate = self._validate
 
-    def patched_function(self, *args, **kwargs):
-        """
-        Step 3. Wrapped function calling.
-        """
-        raise NotImplementedError
+    def _init(self, args, kwargs, exc=None) -> None:
+        self.init()
+        self.validate(args, kwargs, exc=exc)
 
-    async def async_patched_function(self, *args, **kwargs):
-        """
-        Step 3. Wrapped function calling.
-        """
-        raise NotImplementedError
+    def _validate(self, args, kwargs, exc=None) -> None:
+        exc_type = type(exc)
+        if exc_type in self.exceptions:
+            return
+        # params = _args_to_vars(args=args, kwargs=kwargs, signature=self.signature)
+        raise self._exception() from exc_type
 
-    def patched_generator(self, *args, **kwargs):
-        """
-        Step 3. Wrapped function calling.
-        """
-        raise NotImplementedError
+
+class ReasonValidator(Validator):
+    __slots__ = ('event', )
+    event: Type[Exception]
+
+    def __init__(self, event, **kwargs):
+        self.event = event
+        super().__init__(**kwargs)
+
+
+class InvariantValidator(Validator):
+    def init(self) -> None:
+        self.signature = None
+        self.validator = self._make_validator()
+        if hasattr(self.validator, 'is_valid'):
+            self.validate = self._vaa_validation
+        else:
+            self.validate = self._simple_validation
+
+    def _vaa_validation(self, args, kwargs, exc=None) -> None:
+        return super()._vaa_validation((), vars(args[0]), exc=exc)

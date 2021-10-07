@@ -6,16 +6,16 @@ See [documentation] for more details.
 [documentation]: https://deal.readthedocs.io/index.html
 """
 from . import introspection
-from ._aliases import (
-    catch, chain, dispatch, ensure, example, has,
-    implies, inv, post, pre, pure, raises, reason, safe,
-)
 from ._exceptions import (
     ContractError, ExampleContractError, InvContractError, MarkerError,
     NoMatchError, OfflineContractError, PostContractError, PreContractError,
     RaisesContractError, ReasonContractError, SilentContractError,
 )
 from ._imports import activate, module_load
+from ._runtime import (
+    catch, chain, dispatch, ensure, example, has,
+    implies, inv, post, pre, pure, raises, reason, safe,
+)
 from ._schemes import Scheme
 from ._sphinx import autodoc
 from ._state import disable, enable, reset

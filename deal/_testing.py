@@ -9,12 +9,12 @@ from hypothesis.internal.reflection import proxies
 
 from . import introspection
 from ._cached_property import cached_property
-from ._types import ArgsKwargsType
 
 
 F = typing.Callable[..., None]
 FuzzInputType = typing.Union[bytes, bytearray, memoryview, typing.BinaryIO]
 FuzzType = typing.Callable[[FuzzInputType], typing.Optional[bytes]]
+ArgsKwargsType = typing.Tuple[tuple, typing.Dict[str, typing.Any]]
 EXAMPLE = object()
 
 
@@ -163,7 +163,7 @@ class cases:  # noqa: N
             args.append('kwargs={!r}'.format(self.kwargs))
         return 'deal.cases({})'.format(', '.join(args))
 
-    def make_case(self, *args, **kwargs) -> TestCase:
+    def _make_case(self, *args, **kwargs) -> TestCase:
         """Make test case with the given arguments.
         """
         return TestCase(
@@ -175,14 +175,18 @@ class cases:  # noqa: N
         )
 
     @cached_property
-    def validators(self) -> typing.Tuple[introspection.Pre, ...]:
+    def _contracts(self) -> typing.Tuple[introspection.Contract, ...]:
+        return tuple(introspection.get_contracts(self.func))
+
+    @cached_property
+    def _pres(self) -> typing.Tuple[introspection.Pre, ...]:
         """Returns pre-condition validators.
 
         It is used in the process of generating hypothesis strategies
         To let hypothesis more effectively avoid wrong input values.
         """
         validators = []
-        for obj in introspection.get_contracts(self.func):
+        for obj in self._contracts:
             if isinstance(obj, introspection.Pre):
                 validators.append(obj)
         return tuple(validators)
@@ -194,22 +198,10 @@ class cases:  # noqa: N
         The exceptions are extracted from `@deal.raises` of the tested function.
         """
         exceptions: list = []
-        for obj in introspection.get_contracts(self.func):
+        for obj in self._contracts:
             if isinstance(obj, introspection.Raises):
                 exceptions.extend(obj.exceptions)
         return tuple(exceptions)
-
-    @cached_property
-    def examples(self) -> typing.Tuple[introspection.Example, ...]:
-        """
-        Returns exceptions that will be suppressed by individual test cases.
-        The exceptions are extracted from `@deal.raises` of the tested function.
-        """
-        examples = []
-        for obj in introspection.get_contracts(self.func):
-            if isinstance(obj, introspection.Example):
-                examples.append(obj)
-        return tuple(examples)
 
     @cached_property
     def strategy(self) -> hypothesis.strategies.SearchStrategy:
@@ -329,10 +321,16 @@ class cases:  # noqa: N
         return self._wrap(lambda case: case())
 
     def _wrap(self, test_func: F) -> F:
-        def run_examples(args, kwargs) -> None:
-            case = self.make_case()
-            for example in self.examples:
-                case = case._replace(func=example.validate)
+        # precache all contracts, so hypothesis won't explode
+        # because of inconsistent execution time.
+        introspection.init_all(test_func)
+
+        def run_examples(args: tuple, kwargs: dict) -> None:
+            case = self._make_case()
+            for contract in self._contracts:
+                if not isinstance(contract, introspection.Example):
+                    continue
+                case = case._replace(func=contract.validate)
                 test_func(case, *args, **kwargs)
 
         def wrapper(case: ArgsKwargsType, *args, **kwargs) -> None:
@@ -341,12 +339,12 @@ class cases:  # noqa: N
             if ex is EXAMPLE:
                 run_examples(args, kwargs)
                 return
-            for validator in self.validators:
+            for validator in self._pres:
                 try:
                     validator.validate(*ex[0], **ex[1])
                 except validator.exception_type:
                     hypothesis.reject()
-            case = self.make_case(*ex[0], **ex[1])
+            case = self._make_case(*ex[0], **ex[1])
             test_func(case, *args, **kwargs)
 
         wrapper = self._impersonate(wrapper=wrapper, wrapped=test_func)

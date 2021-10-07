@@ -1,4 +1,11 @@
 """Entrypoint for mypy plugin.
+
+Activate it in mypy config (pyproject.toml):
+
+```toml
+[tool.mypy]
+plugins = ["deal.mypy"]
+```
 """
 # This file is excluded from coverage.
 
@@ -45,15 +52,15 @@ class DealMypyPlugin(Plugin):
             perf[name].append(now - start)
 
     def get_function_signature_hook(self, fullname: str):
-        if fullname == 'deal._aliases.pre':
+        if fullname == 'deal._runtime_decorators.pre':
             return self._handle_pre
-        if fullname == 'deal._aliases.post':
+        if fullname == 'deal._runtime_decorators.post':
             return self._handle_post
-        if fullname == 'deal._aliases.ensure':
+        if fullname == 'deal._runtime_decorators.ensure':
             return self._handle_ensure
-        if fullname == 'deal._aliases.reason':
+        if fullname == 'deal._runtime_decorators.reason':
             return self._handle_reason
-        if fullname == 'deal._aliases.inv':
+        if fullname == 'deal._runtime_decorators.inv':
             return self._handle_inv
         return None
 

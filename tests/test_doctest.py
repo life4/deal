@@ -6,7 +6,7 @@ from unittest.mock import Mock
 
 import pytest
 
-import deal._aliases
+import deal._runtime
 import deal._testing
 from deal._state import state
 
@@ -30,7 +30,7 @@ finder = doctest.DocTestFinder(exclude_empty=True)
 
 
 @pytest.mark.parametrize('test', chain(
-    finder.find(deal._aliases),
+    finder.find(deal._runtime),
     finder.find(deal._testing),
 ))
 def test_doctest(test):

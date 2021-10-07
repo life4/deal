@@ -12,6 +12,12 @@ dist/
 coverage.xml
 htmlcov/
 
+# profiling
+/callgraph.svg
+/profile.svg
+/profile.pstats
+/*.lprof
+
 # other
 README.rst
 docs/build/
@@ -24,4 +30,3 @@ docs/build/
 .hypothesis/
 .task/
 poetry.lock
-/profile.svg

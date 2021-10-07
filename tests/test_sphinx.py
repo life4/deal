@@ -90,10 +90,10 @@ def test_autodoc_smoke(style: str, tmp_path: Path):
                 * **ValueError** -- a is equal to b
                 * **ZeroDivisionError** -- "b == 0"
             Contracts:
-                * "b != 0"
                 * b is not zero
-                * "b != result"
+                * "b != 0"
                 * "res != .13"
+                * "b != result"
             Examples:
                 * "example_{style}(6, 2) == 3"
     """)

@@ -4,7 +4,7 @@ from typing import Iterator, List, Optional, Type, TypeVar
 
 import astroid
 
-from .._decorators import Has
+from .._runtime import HasPatcher
 from ._contract import Category, Contract
 from ._error import Error
 from ._extractors import (
@@ -263,11 +263,12 @@ class CheckMarkers(FuncRule):
                 markers = []
             if markers is None:
                 continue
-            yield from self._check(func=func, has=Has(*markers))
+            yield from self._check(func=func, markers=markers)
             return
 
     @classmethod
-    def _check(cls, func: Func, has: Has) -> Iterator[Error]:
+    def _check(cls, func: Func, markers: List[str]) -> Iterator[Error]:
+        has = HasPatcher(markers)
         # function without IO must return something
         if not has.has_io and not has_returns(body=func.body):
             yield Error(

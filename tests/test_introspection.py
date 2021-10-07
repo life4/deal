@@ -1,33 +1,6 @@
 import pytest
 
 import deal
-from deal._decorators import Invariant
-from deal._decorators.base import Base
-from deal.introspection import _wrappers
-from deal.introspection._extractor import WRAPPERS
-
-
-def test_all_wrappers_registered():
-    wrappers = set()
-    for name in dir(_wrappers):
-        if name.startswith('_'):
-            continue
-        wrapper = getattr(_wrappers, name)
-        if wrapper is deal.introspection.Contract:
-            continue
-        if not isinstance(wrapper, type):
-            continue
-        if not issubclass(wrapper, deal.introspection.Contract):
-            continue
-        wrappers.add(wrapper)
-    assert wrappers == set(WRAPPERS.values())
-    assert deal.introspection.Contract not in WRAPPERS.values()
-
-
-def test_all_contracts_have_wrappers():
-    contracts = set(Base.__subclasses__())
-    excluded = {Invariant}
-    assert contracts == set(WRAPPERS) | excluded
 
 
 def test_usage_example():
@@ -50,13 +23,24 @@ def test_get_contracts__pre():
     contract = contracts[0]
     assert type(contract) is deal.introspection.Pre
     assert isinstance(contract, deal.introspection.Pre)
-    assert contract.function is func
     contract.validate(2)
     with pytest.raises(deal.PreContractError):
         contract.validate(-1)
     assert contract.exception is deal.PreContractError
     assert contract.message is None
     assert contract.source == 'validator'
+
+
+def test_unwrap():
+    def validator(x):
+        return x > 0
+
+    def func(x):
+        return x * 2
+
+    wrapped = deal.pre(validator)(func)
+    assert deal.introspection.unwrap(wrapped) is func
+    assert deal.introspection.unwrap(func) is func
 
 
 def test_custom_exception_and_message():
@@ -107,6 +91,9 @@ def test_get_contracts__has():
     assert type(contract) is deal.introspection.Has
     assert isinstance(contract, deal.introspection.Has)
     assert contract.markers == frozenset({'io', 'db'})
+    assert contract.exception is deal.MarkerError
+    assert contract.exception_type is deal.MarkerError
+    assert contract.message is None
 
 
 def test_get_contracts__multiple():
@@ -142,3 +129,39 @@ def test_get_contracts__example_func():
 
     contracts = list(deal.introspection.get_contracts(example))
     assert len(contracts) == 9
+
+
+def test_init():
+    @deal.pre(lambda x: x > 0)
+    def func(x):
+        return x * 2
+
+    contracts = list(deal.introspection.get_contracts(func))
+    assert len(contracts) == 1
+    contract = contracts[0]
+    assert type(contract) is deal.introspection.Pre
+    val = contract._wrapped
+    assert val.validate.__name__ == '_init'
+    contract.init()
+    assert val.validate.__name__ != '_init'
+    assert val.signature
+
+
+def test_init_all():
+    @deal.pre(lambda x: x > 0)
+    @deal.pure
+    @deal.post(lambda x: x > 0)
+    def func(x):
+        return x * 2
+
+    contracts = list(deal.introspection.get_contracts(func))
+    assert len(contracts) == 4
+    val1 = contracts[0]._wrapped
+    val2 = contracts[1]._wrapped
+    assert val1.validate.__name__ == '_init'
+    assert val2.validate.__name__ == '_init'
+    deal.introspection.init_all(func)
+    assert val1.validate.__name__ != '_init'
+    assert val2.validate.__name__ != '_init'
+    assert val1.signature
+    assert val2.signature

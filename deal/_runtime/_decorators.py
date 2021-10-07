@@ -1,7 +1,13 @@
+from functools import partial
 from typing import Callable, Optional, Type, TypeVar, Union, overload
 
-from . import _decorators
-from ._types import ExceptionType
+from .. import _exceptions
+from .._types import ExceptionType
+from ._contracts import Contracts
+from ._dispatch import Dispatch
+from ._has_patcher import HasPatcher
+from ._invariant import invariant
+from ._validators import InvariantValidator, RaisesValidator, ReasonValidator, Validator
 
 
 C = TypeVar('C', bound=Callable)
@@ -45,8 +51,13 @@ def pre(
     [wiki]: https://en.wikipedia.org/wiki/Precondition
     [value]: https://deal.readthedocs.io/basic/values.html
     """
-    cls = _decorators.Pre[C]
-    return cls(validator=validator, message=message, exception=exception)
+    contract = Validator(
+        validator=validator,
+        message=message,
+        exception=exception or _exceptions.PreContractError,
+    )
+    func = partial(Contracts.attach, 'pres', contract)
+    return func  # type: ignore[return-value]
 
 
 def post(
@@ -85,8 +96,13 @@ def post(
     [wiki]: https://en.wikipedia.org/wiki/Postcondition
     [value]: https://deal.readthedocs.io/basic/values.html
     """
-    cls = _decorators.Post[C]
-    return cls(validator=validator, message=message, exception=exception)
+    contract = Validator(
+        validator=validator,
+        message=message,
+        exception=exception or _exceptions.PostContractError,
+    )
+    func = partial(Contracts.attach, 'posts', contract)
+    return func  # type: ignore[return-value]
 
 
 def ensure(
@@ -128,8 +144,13 @@ def ensure(
     [wiki]: https://en.wikipedia.org/wiki/Postcondition
     [value]: https://deal.readthedocs.io/basic/values.html
     """
-    cls = _decorators.Ensure[C]
-    return cls(validator=validator, message=message, exception=exception)
+    contract = Validator(
+        validator=validator,
+        message=message,
+        exception=exception or _exceptions.PostContractError,
+    )
+    func = partial(Contracts.attach, 'ensures', contract)
+    return func  # type: ignore[return-value]
 
 
 def raises(
@@ -172,8 +193,13 @@ def raises(
 
     [exception]: https://deal.readthedocs.io/basic/exceptions.html
     """
-    cls = _decorators.Raises[C]
-    return cls(*exceptions, message=message, exception=exception)
+    contract = RaisesValidator(
+        exceptions=exceptions,
+        message=message,
+        exception=exception or _exceptions.RaisesContractError,
+    )
+    func = partial(Contracts.attach, 'raises', contract)
+    return func  # type: ignore[return-value]
 
 
 def has(
@@ -211,8 +237,13 @@ def has(
     [side-effects]: https://deal.readthedocs.io/basic/side-effects.html
     [linter]: https://deal.readthedocs.io/basic/linter.html
     """
-    cls = _decorators.Has[C]
-    return cls(*markers, message=message, exception=exception)
+    patcher = HasPatcher(
+        markers=markers,
+        message=message,
+        exception=exception,
+    )
+    func = partial(Contracts.attach_has, patcher)
+    return func  # type: ignore[return-value]
 
 
 def reason(
@@ -254,14 +285,20 @@ def reason(
      ZeroDivisionError: division by zero
      The above exception was the direct cause of the following exception:
         ...
-    ReasonContractError
+    ReasonContractError: expected b == 0 (where a=2, b=2)
 
     ```
 
     [exception]: https://deal.readthedocs.io/basic/exceptions.html
     """
-    cls = _decorators.Reason[C]
-    return cls(event=event, validator=validator, message=message, exception=exception)
+    contract = ReasonValidator(
+        event=event,
+        validator=validator,
+        message=message,
+        exception=exception or _exceptions.ReasonContractError,
+    )
+    func = partial(Contracts.attach, 'reasons', contract)
+    return func  # type: ignore[return-value]
 
 
 def inv(
@@ -320,12 +357,12 @@ def inv(
     [wiki]: https://en.wikipedia.org/wiki/Class_invariant
     [value]: https://deal.readthedocs.io/basic/values.html
     """
-    cls = _decorators.Invariant[C]
-    return cls(
+    contract = InvariantValidator(
         validator=validator,
         message=message,
-        exception=exception,
+        exception=exception or _exceptions.InvContractError,
     )
+    return partial(invariant, contract)
 
 
 def example(validator: Callable[[], bool]) -> Callable[[C], C]:
@@ -346,8 +383,13 @@ def example(validator: Callable[[], bool]) -> Callable[[C], C]:
 
     ```
     """
-    cls = _decorators.Example[C]
-    return cls(validator)
+    contract = Validator(
+        validator=validator,
+        message=None,
+        exception=_exceptions.ExampleContractError,
+    )
+    func = partial(Contracts.attach, 'examples', contract)
+    return func  # type: ignore[return-value]
 
 
 @overload
@@ -518,7 +560,7 @@ def catch(func: Callable, *args, **kwargs) -> Optional[Type[Exception]]:
     return None
 
 
-def dispatch(func: C) -> _decorators.Dispatch[C]:
+def dispatch(func: C) -> Dispatch[C]:
     """Combine multiple functions into one.
 
     When the decorated function is called, it will try to call all registered
@@ -553,4 +595,4 @@ def dispatch(func: C) -> _decorators.Dispatch[C]:
     ```
 
     """
-    return _decorators.Dispatch.wrap(func)
+    return Dispatch.wrap(func)

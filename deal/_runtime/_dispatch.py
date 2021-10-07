@@ -1,24 +1,26 @@
 from functools import update_wrapper
-from typing import Generic, List
+from typing import Callable, Generic, List, TypeVar
 
 from .._exceptions import NoMatchError, PreContractError
-from .base import CallableType
 
 
-class Dispatch(Generic[CallableType]):
-    _functions: List[CallableType]
-    __call__: CallableType
+F = TypeVar('F', bound=Callable)
+
+
+class Dispatch(Generic[F]):
+    _functions: List[F]
+    __call__: F
 
     def __init__(self):
         self._functions = []
 
     @classmethod
-    def wrap(cls, func: CallableType) -> 'Dispatch[CallableType]':
+    def wrap(cls, func: F) -> 'Dispatch[F]':
         self = cls()
         update_wrapper(wrapper=self, wrapped=func)
         return self
 
-    def register(self, function: CallableType) -> CallableType:
+    def register(self, function: F) -> F:
         self._functions.append(function)
         return function
 

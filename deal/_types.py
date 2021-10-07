@@ -1,5 +1,4 @@
-from typing import Any, Dict, Tuple, Type, Union
+from typing import Type, Union
 
 
 ExceptionType = Union[Exception, Type[Exception]]
-ArgsKwargsType = Tuple[Tuple[Any, ...], Dict[str, Any]]
