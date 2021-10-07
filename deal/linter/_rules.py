@@ -252,6 +252,7 @@ class CheckMarkers(FuncRule):
         'stdout': 46,
         'stderr': 47,
         'network': 48,
+        'stdin': 49,
     })
 
     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:

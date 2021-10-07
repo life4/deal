@@ -31,6 +31,11 @@ from deal.linter._stub import StubsManager
     ('open("fpath", "r")', ('read', )),
     ('open("fpath")', ('read', )),
     ('open("fpath", encoding="utf8")', ('read', )),
+
+    ('input()', ('stdin', )),
+    ('input("say hi: ")', ('stdin', )),
+    ('sys.stdin.read()', ('stdin', )),
+    ('sys.stdin.read(10)', ('stdin', )),
 ])
 def test_io_hardcoded(text, expected):
     tree = astroid.parse(text)
@@ -100,7 +105,7 @@ def test_get_globals_simple(text, expected):
     assert markers == expected
 
 
-def test_io_recursive_analise_body():
+def test_io_recursive_analize_body():
     text = """
     def inner(text):
         print(text)

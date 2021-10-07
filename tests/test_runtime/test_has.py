@@ -28,6 +28,22 @@ def test_has_network(markers: list, expected: bool):
 
 @pytest.mark.parametrize('markers, expected', [
     (['io'], True),
+    (['stdin'], True),
+    (['input'], True),
+
+    (['read'], False),
+    (['write'], False),
+    (['print'], False),
+    (['stdout'], False),
+    (['stderr'], False),
+    (['unknown'], False),
+])
+def test_has_stdin(markers: list, expected: bool):
+    assert make_has(markers).has_stdin is expected
+
+
+@pytest.mark.parametrize('markers, expected', [
+    (['io'], True),
     (['network'], True),
     (['socket'], True),
     (['network', 'stdout'], True),

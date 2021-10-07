@@ -50,16 +50,24 @@ def handle_call(expr, dive: bool = True, stubs: StubsManager = None) -> Iterator
     if name is None:
         return
 
-    # stdout and stderr
+    # stdout, stderr
     token = _check_print(expr=expr, name=name)
     if token is not None:
         yield token
         return
-    if name.startswith('sys.stdout.'):
-        yield Token(marker='stdout', value='sys.stdout', **token_info)
+    if name.startswith('sys.stdout'):
+        yield Token(marker='stdout', value='sys.stdout.', **token_info)
         return
-    if name.startswith('sys.stderr.'):
-        yield Token(marker='stderr', value='sys.stderr', **token_info)
+    if name.startswith('sys.stderr'):
+        yield Token(marker='stderr', value='sys.stderr.', **token_info)
+        return
+
+    # stdin
+    if name.startswith('sys.stdin'):
+        yield Token(marker='stdin', value='sys.stdin.', **token_info)
+        return
+    if name == 'input':
+        yield Token(marker='stdin', value='input', **token_info)
         return
 
     # read and write

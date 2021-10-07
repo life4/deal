@@ -48,6 +48,7 @@ Deal already know about some markers and will report if they are violated:
 | DEAL046 | -- `stdout`  | `sys.stdout` and `print`         |
 | DEAL047 | -- `stderr`  | `sys.stderr`                     |
 | DEAL048 | -- `network` | network communications, `socket` |
+| DEAL049 | -- `stdin`   | `sys.stdin`                      |
 
 ## Runtime
 

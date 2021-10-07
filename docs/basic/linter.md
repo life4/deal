@@ -49,6 +49,7 @@ Markers:
 | DEAL046 | missed marker (stdout)  |
 | DEAL047 | missed marker (stderr)  |
 | DEAL048 | missed marker (network) |
+| DEAL049 | missed marker (stdin)   |
 
 ## Partial execution
 

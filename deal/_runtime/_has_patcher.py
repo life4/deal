@@ -114,6 +114,16 @@ class HasPatcher:
         return False
 
     @property
+    def has_stdin(self) -> bool:
+        if 'io' in self.markers:
+            return True
+        if 'input' in self.markers:
+            return True
+        if 'stdin' in self.markers:
+            return True
+        return False
+
+    @property
     def has_write(self) -> bool:
         if 'io' in self.markers:
             return True
