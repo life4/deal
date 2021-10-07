@@ -145,3 +145,23 @@ def test_init():
     contract.init()
     assert val.validate.__name__ != '_init'
     assert val.signature
+
+
+def test_init_all():
+    @deal.pre(lambda x: x > 0)
+    @deal.pure
+    @deal.post(lambda x: x > 0)
+    def func(x):
+        return x * 2
+
+    contracts = list(deal.introspection.get_contracts(func))
+    assert len(contracts) == 4
+    val1 = contracts[0]._wrapped
+    val2 = contracts[1]._wrapped
+    assert val1.validate.__name__ == '_init'
+    assert val2.validate.__name__ == '_init'
+    deal.introspection.init_all(func)
+    assert val1.validate.__name__ != '_init'
+    assert val2.validate.__name__ != '_init'
+    assert val1.signature
+    assert val2.signature
