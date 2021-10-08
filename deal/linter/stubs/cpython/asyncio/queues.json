@@ -1,0 +1,27 @@
+{
+  "Queue.__init__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "Queue.get_nowait": {
+    "raises": [
+      "QueueEmpty"
+    ]
+  },
+  "Queue.put_nowait": {
+    "raises": [
+      "QueueFull"
+    ]
+  },
+  "Queue.task_done": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

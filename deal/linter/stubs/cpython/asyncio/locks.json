@@ -1,0 +1,69 @@
+{
+  "BoundedSemaphore.__init__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "BoundedSemaphore.release": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Condition.__init__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "Condition.notify": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "Event.__init__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "Lock.__init__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "Lock.release": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "Semaphore.__init__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  }
+}

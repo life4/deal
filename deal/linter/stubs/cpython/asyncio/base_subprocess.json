@@ -1,0 +1,32 @@
+{
+  "BaseSubprocessTransport.__del__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "BaseSubprocessTransport._check_proc": {
+    "raises": [
+      "ProcessLookupError"
+    ]
+  },
+  "BaseSubprocessTransport._process_exited": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "BaseSubprocessTransport._start": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "BaseSubprocessTransport._try_finish": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

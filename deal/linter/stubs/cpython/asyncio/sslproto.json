@@ -1,0 +1,56 @@
+{
+  "SSLProtocol.__init__": {
+    "raises": [
+      "RuntimeError",
+      "ValueError"
+    ]
+  },
+  "_SSLPipe.do_handshake": {
+    "raises": [
+      "AssertionError",
+      "RuntimeError"
+    ]
+  },
+  "_SSLPipe.feed_appdata": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_SSLPipe.feed_eof": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_SSLPipe.shutdown": {
+    "raises": [
+      "AssertionError",
+      "RuntimeError"
+    ]
+  },
+  "_SSLProtocolTransport.__del__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_SSLProtocolTransport.is_reading": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_SSLProtocolTransport.write": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_create_transport_context": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}

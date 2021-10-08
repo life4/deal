@@ -1,0 +1,54 @@
+{
+  "Future.__await__": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "Future._log_traceback": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Future.exception": {
+    "raises": [
+      "exc"
+    ]
+  },
+  "Future.get_loop": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "Future.result": {
+    "raises": [
+      "exc",
+      "self._exception"
+    ]
+  },
+  "Future.set_exception": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_chain_future": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_copy_future_state": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_set_concurrent_future_state": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "wrap_future": {
+    "raises": [
+      "AssertionError",
+      "TypeError"
+    ]
+  }
+}

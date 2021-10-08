@@ -1,0 +1,37 @@
+{
+  "FlowControlMixin._get_close_waiter": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "FlowControlMixin.pause_writing": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "FlowControlMixin.resume_writing": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "StreamReader.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "StreamReader.feed_data": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "StreamReader.set_transport": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "StreamWriter.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "Task.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Task.__step": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "Task.set_exception": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "Task.set_result": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_enter_task": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_gather": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_leave_task": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "as_completed": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "ensure_future": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "gather": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "run_coroutine_threadsafe": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "shield": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  }
+}

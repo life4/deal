@@ -1,0 +1,27 @@
+{
+  "CoroWrapper.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "CoroWrapper.__repr__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_format_coroutine": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "coroutine": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  }
+}
