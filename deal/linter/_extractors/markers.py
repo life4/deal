@@ -1,4 +1,5 @@
 import ast
+import random
 from typing import Iterator, Optional
 
 import astroid
@@ -11,6 +12,14 @@ from .value import get_value
 
 
 get_markers = Extractor()
+DEFINITELY_RANDOM_FUNCS = frozenset({
+    'randint',
+    'randbytes',
+    'randrange',
+    'getrandbits',
+    'shuffle',
+})
+MAYBE_RANDOM_FUNCS = frozenset(dir(random))
 
 
 @get_markers.register(*TOKENS.GLOBAL)
@@ -50,7 +59,7 @@ def handle_call(expr, dive: bool = True, stubs: StubsManager = None) -> Iterator
     if name is None:
         return
 
-    # stdout, stderr
+    # stdout, stderr, stdin
     token = _check_print(expr=expr, name=name)
     if token is not None:
         yield token
@@ -61,13 +70,19 @@ def handle_call(expr, dive: bool = True, stubs: StubsManager = None) -> Iterator
     if name.startswith('sys.stderr'):
         yield Token(marker='stderr', value='sys.stderr.', **token_info)
         return
-
-    # stdin
     if name.startswith('sys.stdin'):
         yield Token(marker='stdin', value='sys.stdin.', **token_info)
         return
     if name == 'input':
         yield Token(marker='stdin', value='input', **token_info)
+        return
+
+    # random, import
+    if name == '__import__':
+        yield Token(marker='import', **token_info)
+        return
+    if _is_random(expr=expr, name=name):
+        yield Token(marker='random', value=name, **token_info)
         return
 
     # read and write
@@ -79,11 +94,6 @@ def handle_call(expr, dive: bool = True, stubs: StubsManager = None) -> Iterator
         return
     if _is_pathlib_write(expr):
         yield Token(marker='write', value='Path.open', **token_info)
-        return
-
-    # import
-    if name == '__import__':
-        yield Token(marker='import', **token_info)
         return
 
     yield from _infer_markers(expr=expr, dive=dive, stubs=stubs)
@@ -238,3 +248,18 @@ def _check_print(expr, name: str) -> Optional[Token]:
         line=expr.lineno,
         col=expr.col_offset,
     )
+
+
+def _is_random(expr, name: str) -> bool:
+    if name.startswith('random.'):
+        return True
+    if '.' in name:
+        return False
+    if name in DEFINITELY_RANDOM_FUNCS:
+        return True
+    if name in MAYBE_RANDOM_FUNCS:
+        for value in infer(expr.func):
+            if isinstance(value, astroid.BoundMethod):
+                if value.bound.pytype() == 'random.Random':
+                    return True
+    return False

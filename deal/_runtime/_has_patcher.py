@@ -71,6 +71,8 @@ class HasPatcher:
             return True
         if self.has_stderr:
             return True
+        if self.has_stdin:
+            return True
         if self.has_network:
             return True
         return False
@@ -96,6 +98,10 @@ class HasPatcher:
     @property
     def has_import(self) -> bool:
         return 'import' in self.markers
+
+    @property
+    def has_random(self) -> bool:
+        return 'random' in self.markers
 
     @property
     def has_global(self) -> bool:

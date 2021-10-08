@@ -36,6 +36,11 @@ from deal.linter._stub import StubsManager
     ('input("say hi: ")', ('stdin', )),
     ('sys.stdin.read()', ('stdin', )),
     ('sys.stdin.read(10)', ('stdin', )),
+
+    ('random.randint(10)', ('random', )),
+    ('random.randrange(10)', ('random', )),
+    ('random.random(10)', ('random', )),
+    ('randrange(10)', ('random', )),
 ])
 def test_io_hardcoded(text, expected):
     tree = astroid.parse(text)
@@ -68,6 +73,20 @@ def test_io_hardcoded(text, expected):
     ('class Path:\n def write_text(): pass\nPath.write_text()', ()),
 ])
 def test_io_infer(text, expected):
+    tree = astroid.parse(text)
+    print(tree.repr_tree())
+    tokens = list(get_markers(body=tree.body))
+    markers = tuple(t.marker for t in tokens if t.marker != 'import')
+    assert markers == expected
+
+
+@pytest.mark.parametrize('text, expected', [
+    ('from random import choice \nchoice([1,2])', ('random', )),
+    ('choice([1,2])', ()),
+    ('choice = lambda:0 \nchoice()', ()),
+    ('class A:\n def b(self): pass \nchoice = A().b \nchoice()', ()),
+])
+def test_other_infer(text, expected):
     tree = astroid.parse(text)
     print(tree.repr_tree())
     tokens = list(get_markers(body=tree.body))
