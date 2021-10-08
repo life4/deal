@@ -1,0 +1,12 @@
+{
+  "Server.__init__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  }
+}

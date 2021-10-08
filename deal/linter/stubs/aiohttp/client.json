@@ -1,0 +1,12 @@
+{
+  "ClientSession.__init__": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "ClientSession.__init_subclass__": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

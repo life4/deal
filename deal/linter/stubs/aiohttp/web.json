@@ -1,0 +1,12 @@
+{
+  "_cancel_tasks": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "BaseRequest.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "BaseRequest.clone": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "BaseRequest.host": {
+    "has": [
+      "network"
+    ]
+  },
+  "BaseRequest.http_range": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Request.app": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Request.config_dict": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Request.match_info": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

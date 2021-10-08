@@ -1,0 +1,33 @@
+{
+  "StreamReader.begin_http_chunk_receiving": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "StreamReader.end_http_chunk_receiving": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "StreamReader.feed_data": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "StreamReader.read_nowait": {
+    "raises": [
+      "RuntimeError",
+      "self._exception"
+    ]
+  },
+  "StreamReader.unread_data": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  }
+}

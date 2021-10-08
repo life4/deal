@@ -1,0 +1,14 @@
+{
+  "FormData._gen_form_data": {
+    "raises": [
+      "AssertionError",
+      "RuntimeError",
+      "TypeError"
+    ]
+  },
+  "FormData.add_field": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

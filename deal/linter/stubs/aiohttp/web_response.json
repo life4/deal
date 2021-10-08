@@ -1,0 +1,69 @@
+{
+  "Response.__init__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "Response._compress_body": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Response.body": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Response.content_length": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "Response.text": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "StreamResponse.__repr__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "StreamResponse._generate_content_type_header": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "StreamResponse.charset": {
+    "raises": [
+      "AssertionError",
+      "RuntimeError"
+    ]
+  },
+  "StreamResponse.content_length": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "StreamResponse.enable_chunked_encoding": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "StreamResponse.etag": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "StreamResponse.set_status": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "json_response": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

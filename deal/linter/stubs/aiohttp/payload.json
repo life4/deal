@@ -1,0 +1,32 @@
+{
+  "AsyncIterablePayload.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "BytesPayload.__init__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "Payload.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "PayloadRegistry.get": {
+    "raises": [
+      "LookupError"
+    ]
+  },
+  "PayloadRegistry.register": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

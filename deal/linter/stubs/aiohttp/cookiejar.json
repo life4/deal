@@ -1,0 +1,32 @@
+{
+  "CookieJar.__init__": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "CookieJar._parse_date": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "CookieJar.clear": {
+    "has": [
+      "time"
+    ]
+  },
+  "CookieJar.filter_cookies": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "CookieJar.save": {
+    "has": [
+      "write"
+    ]
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "DeflateBuffer.__init__": {
+    "raises": [
+      "ContentEncodingError"
+    ]
+  },
+  "DeflateBuffer.feed_data": {
+    "raises": [
+      "ContentEncodingError"
+    ]
+  },
+  "DeflateBuffer.feed_eof": {
+    "raises": [
+      "ContentEncodingError"
+    ]
+  },
+  "HttpPayloadParser.feed_eof": {
+    "raises": [
+      "ContentLengthError",
+      "TransferEncodingError"
+    ]
+  },
+  "HttpRequestParser.parse_message": {
+    "raises": [
+      "BadStatusLine",
+      "LineTooLong"
+    ]
+  },
+  "HttpResponseParser.parse_message": {
+    "raises": [
+      "BadStatusLine",
+      "LineTooLong"
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "AppRunner.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "AppRunner._make_request": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "BaseRunner._check_site": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "BaseRunner._reg_site": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "BaseRunner._unreg_site": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "BaseSite.__init__": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "NamedPipeSite.__init__": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_raise_graceful_exit": {
+    "raises": [
+      "GracefulExit"
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "ClientWebSocketResponse.__init__": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "BodyPartReader._decode_content": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "BodyPartReader._decode_content_transfer": {
+    "raises": [
+      "AssertionError",
+      "RuntimeError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "MultipartReader._get_boundary": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "MultipartWriter.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "MultipartWriter._boundary_value": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "MultipartWriter.append": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "MultipartWriter.append_form": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "MultipartWriter.append_payload": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "parse_content_disposition": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "AioHTTPTestCase.get_app": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "BaseTestServer.handler": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "BaseTestServer.make_url": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "TestClient.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "setup_test_loop": {
+    "has": [
+      "global",
+      "import"
+    ]
+  }
+}

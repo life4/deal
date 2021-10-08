@@ -1,0 +1,12 @@
+{
+  "AsyncResolver.__init__": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "ThreadedResolver.__init__": {
+    "raises": [
+      "RuntimeError"
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "WebSocketResponse.__init__": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "WebSocketResponse._handshake": {
+    "raises": [
+      "HTTPBadRequest"
+    ]
+  },
+  "WebSocketResponse._post_start": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "WebSocketResponse._pre_start": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "WebSocketResponse._reset_heartbeat": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "WebSocketResponse._send_heartbeat": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "WebSocketResponse.can_prepare": {
+    "raises": [
+      "RuntimeError"
+    ]
+  }
+}

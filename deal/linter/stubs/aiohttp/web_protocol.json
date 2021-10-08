@@ -1,0 +1,22 @@
+{
+  "RequestHandler.connection_made": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "RequestHandler.data_received": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "RequestHandler.handle_error": {
+    "raises": [
+      "ConnectionError"
+    ]
+  },
+  "RequestHandler.set_parser": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}
