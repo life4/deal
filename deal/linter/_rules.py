@@ -257,6 +257,7 @@ class CheckMarkers(FuncRule):
         'syscall': 50,
 
         'random': 55,
+        'time': 56,
     })
 
     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:

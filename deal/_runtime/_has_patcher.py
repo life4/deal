@@ -96,18 +96,6 @@ class HasPatcher:
         return False
 
     @property
-    def has_import(self) -> bool:
-        return 'import' in self.markers
-
-    @property
-    def has_random(self) -> bool:
-        return 'random' in self.markers
-
-    @property
-    def has_syscall(self) -> bool:
-        return 'syscall' in self.markers
-
-    @property
     def has_global(self) -> bool:
         if 'global' in self.markers:
             return True

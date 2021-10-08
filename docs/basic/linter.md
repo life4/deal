@@ -52,6 +52,7 @@ Markers:
 | DEAL049 | missed marker (stdin)   |
 | DEAL050 | missed marker (syscall) |
 | DEAL055 | missed marker (random)  |
+| DEAL056 | missed marker (time)    |
 
 ## Partial execution
 

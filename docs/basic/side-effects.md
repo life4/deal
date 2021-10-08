@@ -51,6 +51,7 @@ Deal already know about some markers and will report if they are violated:
 | DEAL049 | -- `stdin`   | `sys.stdin`                      |
 | DEAL050 | -- `syscall` | system calls: `subprocess`, `os` |
 | DEAL055 | `random`     | functions from `random` module   |
+| DEAL056 | `time`       | accessing system time            |
 
 ## Runtime
 

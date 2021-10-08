@@ -49,6 +49,27 @@ SYSCALLS = frozenset({
     'subprocess.Popen',
 })
 SYSCALLS_PREFIXES = ('os.exec', 'os.spawn', 'os.popen')
+TIMES = frozenset({
+    'os.times',
+    'datetime.now',
+    'date.today',
+    'datetime.datetime.now',
+    'datetime.date.today',
+
+    'time.clock_gettime',
+    'time.clock_gettime_ns',
+    'time.get_clock_info',
+    'time.monotonic',
+    'time.monotonic_ns',
+    'time.perf_counter',
+    'time.perf_counter_ns',
+    'time.process_time',
+    'time.process_time_ns',
+    'time.time',
+    'time.time_ns',
+    'time.thread_time',
+    'time.thread_time_ns',
+})
 
 
 @get_markers.register(*TOKENS.GLOBAL)
@@ -115,6 +136,9 @@ def handle_call(expr, dive: bool = True, stubs: StubsManager = None) -> Iterator
         return
     if _is_syscall(expr=expr, name=name):
         yield Token(marker='syscall', value=name, **token_info)
+        return
+    if _is_time(expr=expr, name=name):
+        yield Token(marker='time', value=name, **token_info)
         return
 
     # read and write
@@ -301,5 +325,13 @@ def _is_syscall(expr, name: str) -> bool:
     if name in SYSCALLS:
         return True
     if name.startswith(SYSCALLS_PREFIXES):
+        return True
+    return False
+
+
+def _is_time(expr, name: str) -> bool:
+    if name in TIMES:
+        return True
+    if f'time.{name}' in TIMES:
         return True
     return False
