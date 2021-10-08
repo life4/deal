@@ -4,6 +4,12 @@
       "TypeError"
     ]
   },
+  "UID.__init__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
   "_BinaryPlistParser._read_ints": {
     "raises": [
       "InvalidFileException"
@@ -27,7 +33,8 @@
   "_BinaryPlistWriter._write_object": {
     "raises": [
       "OverflowError",
-      "TypeError"
+      "TypeError",
+      "ValueError"
     ]
   },
   "_DumbXMLWriter.end_element": {
@@ -53,6 +60,11 @@
   "_PlistParser.end_key": {
     "raises": [
       "ValueError"
+    ]
+  },
+  "_PlistParser.handle_entity_decl": {
+    "raises": [
+      "InvalidFileException"
     ]
   },
   "_PlistWriter.write_dict": {

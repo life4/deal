@@ -64,6 +64,7 @@
       "global"
     ],
     "raises": [
+      "AssertionError",
       "OSError",
       "TypeError",
       "ValueError"

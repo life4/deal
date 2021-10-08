@@ -32,6 +32,16 @@
       "ValueError"
     ]
   },
+  "_syscmd_file": {
+    "has": [
+      "import"
+    ]
+  },
+  "_syscmd_ver": {
+    "has": [
+      "import"
+    ]
+  },
   "architecture": {
     "has": [
       "import"
@@ -102,7 +112,13 @@
   },
   "uname": {
     "has": [
-      "global"
+      "global",
+      "import"
+    ]
+  },
+  "uname_result._make": {
+    "raises": [
+      "TypeError"
     ]
   }
 }

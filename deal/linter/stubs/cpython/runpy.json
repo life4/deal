@@ -8,6 +8,9 @@
     "has": [
       "import",
       "read"
+    ],
+    "raises": [
+      "TypeError"
     ]
   },
   "_get_module_details": {

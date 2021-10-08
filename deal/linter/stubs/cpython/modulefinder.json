@@ -58,6 +58,11 @@
       "RuntimeError"
     ]
   },
+  "_find_module": {
+    "raises": [
+      "ImportError"
+    ]
+  },
   "test": {
     "has": [
       "import",

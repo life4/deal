@@ -40,6 +40,12 @@
       "ValueError"
     ]
   },
+  "read_bytearray8": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
   "read_bytes1": {
     "raises": [
       "AssertionError",

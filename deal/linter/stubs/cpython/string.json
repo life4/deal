@@ -14,6 +14,12 @@
       "TypeError"
     ]
   },
+  "Template.__init_subclass__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
   "Template._invalid": {
     "raises": [
       "ValueError"

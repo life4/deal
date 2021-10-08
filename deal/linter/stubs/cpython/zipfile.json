@@ -1,4 +1,34 @@
 {
+  "Path.__str__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Path.iterdir": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Path.joinpath": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Path.name": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Path.open": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Path.parent": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "PyZipFile._get_codename": {
     "raises": [
       "NotImplementedError",
@@ -36,9 +66,29 @@
       "BadZipFile"
     ]
   },
+  "ZipExtFile.read": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ZipExtFile.readable": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "ZipExtFile.seek": {
     "raises": [
       "NotImplementedError",
+      "ValueError"
+    ]
+  },
+  "ZipExtFile.seekable": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ZipExtFile.tell": {
+    "raises": [
       "ValueError"
     ]
   },
@@ -210,7 +260,8 @@
   },
   "_get_decompressor": {
     "raises": [
-      "NotImplementedError"
+      "NotImplementedError",
+      "RuntimeError"
     ]
   },
   "main": {

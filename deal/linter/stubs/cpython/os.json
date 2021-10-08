@@ -30,6 +30,11 @@
       "TypeError"
     ]
   },
+  "_walk": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "execvp": {
     "raises": [
       "last_exc",
@@ -66,7 +71,8 @@
   },
   "popen": {
     "has": [
-      "import"
+      "import",
+      "syscall"
     ],
     "raises": [
       "TypeError",

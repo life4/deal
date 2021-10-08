@@ -24,6 +24,11 @@
       "ValueError"
     ]
   },
+  "Option.__init__": {
+    "raises": [
+      "OptionError"
+    ]
+  },
   "Option._check_action": {
     "raises": [
       "OptionError"
@@ -137,6 +142,11 @@
   "Values._update": {
     "raises": [
       "ValueError"
+    ]
+  },
+  "Values.read_module": {
+    "has": [
+      "import"
     ]
   },
   "_match_abbrev": {

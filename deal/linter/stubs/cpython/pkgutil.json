@@ -85,6 +85,9 @@
     ]
   },
   "get_data": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "ModuleNotFoundError",
       "TypeError",
@@ -111,6 +114,12 @@
   "read_code": {
     "has": [
       "import"
+    ]
+  },
+  "resolve_name": {
+    "raises": [
+      "TypeError",
+      "ValueError"
     ]
   }
 }

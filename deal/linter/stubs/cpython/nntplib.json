@@ -7,6 +7,103 @@
       "err"
     ]
   },
+  "NNTP._create_socket": {
+    "has": [
+      "network"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "NNTP._getdescriptions": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "NNTP._getline": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "EOFError",
+      "NNTPDataError"
+    ]
+  },
+  "NNTP._getoverviewfmt": {
+    "raises": [
+      "NNTPDataError"
+    ]
+  },
+  "NNTP._getresp": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "NNTPPermanentError",
+      "NNTPProtocolError",
+      "NNTPTemporaryError"
+    ]
+  },
+  "NNTP._post": {
+    "raises": [
+      "NNTPReplyError"
+    ]
+  },
+  "NNTP._putcmd": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "NNTP._putline": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "NNTP._statparse": {
+    "raises": [
+      "NNTPReplyError"
+    ]
+  },
+  "NNTP.date": {
+    "raises": [
+      "NNTPDataError",
+      "NNTPReplyError"
+    ]
+  },
+  "NNTP.getwelcome": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "NNTP.group": {
+    "raises": [
+      "NNTPReplyError"
+    ]
+  },
+  "NNTP.login": {
+    "raises": [
+      "NNTPPermanentError",
+      "NNTPReplyError",
+      "ValueError"
+    ]
+  },
+  "NNTP.newgroups": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "NNTP.newnews": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "NNTP.xhdr": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
   "_NNTPBase._getdescriptions": {
     "raises": [
       "TypeError",

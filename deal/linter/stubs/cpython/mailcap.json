@@ -17,7 +17,8 @@
   "test": {
     "has": [
       "import",
-      "stdout"
+      "stdout",
+      "syscall"
     ]
   }
 }

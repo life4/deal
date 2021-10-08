@@ -1,4 +1,9 @@
 {
+  "InteractiveConsole.raw_input": {
+    "has": [
+      "stdin"
+    ]
+  },
   "InteractiveInterpreter.write": {
     "has": [
       "stderr"

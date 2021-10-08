@@ -10,6 +10,12 @@
       "TypeError"
     ]
   },
+  "_copytree": {
+    "raises": [
+      "Error",
+      "TypeError"
+    ]
+  },
   "_destinsrc": {
     "raises": [
       "TypeError"
@@ -18,6 +24,20 @@
   "_ensure_directory": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "_fastcopy_fcopyfile": {
+    "raises": [
+      "_GiveupOnFastCopy",
+      "err"
+    ]
+  },
+  "_fastcopy_sendfile": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "_GiveupOnFastCopy"
     ]
   },
   "_make_tarball": {
@@ -69,6 +89,7 @@
       "read"
     ],
     "raises": [
+      "FileNotFoundError",
       "SameFileError",
       "SpecialFileError",
       "TypeError"
@@ -79,6 +100,7 @@
       "read"
     ],
     "raises": [
+      "FileNotFoundError",
       "SameFileError",
       "SpecialFileError",
       "TypeError"
@@ -89,6 +111,7 @@
       "read"
     ],
     "raises": [
+      "FileNotFoundError",
       "SameFileError",
       "SpecialFileError"
     ]
@@ -108,6 +131,7 @@
   "move": {
     "raises": [
       "Error",
+      "PermissionError",
       "TypeError"
     ]
   },

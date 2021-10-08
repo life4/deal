@@ -22,6 +22,15 @@
       "global"
     ]
   },
+  "_main": {
+    "has": [
+      "import",
+      "stdout"
+    ],
+    "raises": [
+      "SystemExit"
+    ]
+  },
   "add_type": {
     "has": [
       "global"

@@ -1,0 +1,7 @@
+{
+  "_maybe_compile": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

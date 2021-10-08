@@ -29,6 +29,16 @@
       "ValueError"
     ]
   },
+  "_BaseAddress.__format__": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
   "_BaseAddress.__lt__": {
     "raises": [
       "TypeError"
@@ -104,6 +114,11 @@
   "_BaseV6._parse_hextet": {
     "raises": [
       "ValueError"
+    ]
+  },
+  "_BaseV6._split_scope_id": {
+    "raises": [
+      "AddressValueError"
     ]
   },
   "_BaseV6._string_from_ip_int": {

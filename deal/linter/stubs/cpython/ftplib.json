@@ -9,6 +9,7 @@
       "network"
     ],
     "raises": [
+      "ValueError",
       "err"
     ]
   },
@@ -40,6 +41,7 @@
   "FTP.makeport": {
     "raises": [
       "OSError",
+      "ValueError",
       "err"
     ]
   },

@@ -1,4 +1,9 @@
 {
+  "LMTP.connect": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "SMTP.__init__": {
     "has": [
       "network"
@@ -12,6 +17,7 @@
       "network"
     ],
     "raises": [
+      "ValueError",
       "err"
     ]
   },
@@ -58,6 +64,11 @@
   "SMTP.mail": {
     "raises": [
       "SMTPNotSupportedError"
+    ]
+  },
+  "SMTP.putcmd": {
+    "raises": [
+      "ValueError"
     ]
   },
   "SMTP.send": {

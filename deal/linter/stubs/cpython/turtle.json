@@ -150,6 +150,7 @@
   },
   "read_docstrings": {
     "has": [
+      "import",
       "stdout"
     ]
   },

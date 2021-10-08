@@ -1,0 +1,331 @@
+{
+  "BufferedRWPair.__init__": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "BufferedRandom.seek": {
+    "raises": [
+      "OSError",
+      "ValueError"
+    ]
+  },
+  "BufferedReader.__init__": {
+    "raises": [
+      "OSError",
+      "ValueError"
+    ]
+  },
+  "BufferedReader.read": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BufferedReader.seek": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BufferedWriter.__init__": {
+    "raises": [
+      "OSError",
+      "ValueError"
+    ]
+  },
+  "BufferedWriter._flush_unlocked": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BufferedWriter.seek": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BufferedWriter.write": {
+    "raises": [
+      "BlockingIOError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BytesIO.__getstate__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BytesIO.getbuffer": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BytesIO.getvalue": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BytesIO.read": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BytesIO.readable": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BytesIO.seek": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BytesIO.seekable": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BytesIO.tell": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BytesIO.truncate": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BytesIO.writable": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BytesIO.write": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "FileIO.__del__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "FileIO.__getstate__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "FileIO.__init__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "FileIO._checkReadable": {
+    "raises": [
+      "UnsupportedOperation"
+    ]
+  },
+  "FileIO._checkWritable": {
+    "raises": [
+      "UnsupportedOperation"
+    ]
+  },
+  "FileIO.seek": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "IOBase.__next__": {
+    "raises": [
+      "StopIteration"
+    ]
+  },
+  "IOBase._checkClosed": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "IOBase._checkReadable": {
+    "raises": [
+      "UnsupportedOperation"
+    ]
+  },
+  "IOBase._checkSeekable": {
+    "raises": [
+      "UnsupportedOperation"
+    ]
+  },
+  "IOBase._checkWritable": {
+    "raises": [
+      "UnsupportedOperation"
+    ]
+  },
+  "IOBase._unsupported": {
+    "raises": [
+      "UnsupportedOperation"
+    ]
+  },
+  "IOBase.readline": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "OpenWrapper.__new__": {
+    "has": [
+      "read"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "StringIO.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "TextIOWrapper.__init__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "LookupError",
+      "ValueError"
+    ]
+  },
+  "TextIOWrapper.__next__": {
+    "raises": [
+      "StopIteration"
+    ]
+  },
+  "TextIOWrapper._check_newline": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "TextIOWrapper._get_decoder": {
+    "raises": [
+      "LookupError"
+    ]
+  },
+  "TextIOWrapper._get_encoder": {
+    "raises": [
+      "LookupError"
+    ]
+  },
+  "TextIOWrapper._read_chunk": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "TextIOWrapper._rewind_decoded_chars": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "TextIOWrapper.detach": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "TextIOWrapper.read": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "TextIOWrapper.readline": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "TextIOWrapper.reconfigure": {
+    "raises": [
+      "TypeError",
+      "UnsupportedOperation"
+    ]
+  },
+  "TextIOWrapper.seek": {
+    "raises": [
+      "OSError",
+      "UnsupportedOperation",
+      "ValueError"
+    ]
+  },
+  "TextIOWrapper.seekable": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "TextIOWrapper.tell": {
+    "raises": [
+      "AssertionError",
+      "OSError",
+      "UnsupportedOperation"
+    ]
+  },
+  "TextIOWrapper.write": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_BufferedIOMixin.__getstate__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_BufferedIOMixin.detach": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_BufferedIOMixin.flush": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_BufferedIOMixin.seek": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "_BufferedIOMixin.tell": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "_open_code_with_warning": {
+    "has": [
+      "import",
+      "read"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "open": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  }
+}

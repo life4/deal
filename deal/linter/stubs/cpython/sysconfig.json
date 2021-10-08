@@ -19,8 +19,16 @@
     ]
   },
   "_init_non_posix": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
+    ]
+  },
+  "_init_posix": {
+    "has": [
+      "import"
     ]
   },
   "_main": {

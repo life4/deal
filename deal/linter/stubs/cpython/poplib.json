@@ -4,6 +4,7 @@
       "network"
     ],
     "raises": [
+      "ValueError",
       "err"
     ]
   },

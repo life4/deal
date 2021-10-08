@@ -4,6 +4,16 @@
       "RuntimeError"
     ]
   },
+  "cached_property.__get__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "cached_property.__set_name__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "lru_cache": {
     "raises": [
       "TypeError"
@@ -29,9 +39,31 @@
       "TypeError"
     ]
   },
+  "reduce": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "singledispatch": {
     "has": [
       "import"
+    ]
+  },
+  "singledispatchmethod.__init__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "singledispatchmethod.register": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "TypeError"
     ]
   },
   "total_ordering": {

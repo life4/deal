@@ -1,8 +1,18 @@
 {
   "GzipFile.__init__": {
+    "has": [
+      "import"
+    ],
     "raises": [
+      "RuntimeError",
       "TypeError",
-      "ValueError"
+      "ValueError",
+      "message"
+    ]
+  },
+  "GzipFile._write_gzip_header": {
+    "has": [
+      "time"
     ]
   },
   "GzipFile.filename": {
@@ -61,11 +71,13 @@
   },
   "_GzipReader._read_eof": {
     "raises": [
+      "BadGzipFile",
       "OSError"
     ]
   },
   "_GzipReader._read_gzip_header": {
     "raises": [
+      "BadGzipFile",
       "OSError"
     ]
   },
@@ -75,6 +87,17 @@
       "stdout"
     ],
     "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "main": {
+    "has": [
+      "import",
+      "read"
+    ],
+    "raises": [
+      "SystemExit",
       "TypeError",
       "ValueError"
     ]

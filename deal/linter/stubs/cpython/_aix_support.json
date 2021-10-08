@@ -1,0 +1,30 @@
+{
+  "_aix_bgt": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "_aix_bos_rte": {
+    "raises": [
+      "NotImplementedError",
+      "ValueError"
+    ]
+  },
+  "aix_buildtag": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  }
+}

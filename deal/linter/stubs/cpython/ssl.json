@@ -15,6 +15,11 @@
       "message"
     ]
   },
+  "SSLContext._msg_callback": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "SSLContext.load_default_certs": {
     "raises": [
       "TypeError"

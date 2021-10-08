@@ -1,0 +1,13 @@
+{
+  "Popen.wait": {
+    "has": [
+      "syscall"
+    ]
+  },
+  "check_output": {
+    "raises": [
+      "NotImplementedError",
+      "ValueError"
+    ]
+  }
+}

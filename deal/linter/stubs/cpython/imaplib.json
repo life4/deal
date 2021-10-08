@@ -20,6 +20,7 @@
       "network"
     ],
     "raises": [
+      "ValueError",
       "err"
     ]
   },
@@ -54,6 +55,11 @@
     "raises": [
       "TypeError",
       "ValueError"
+    ]
+  },
+  "IMAP4_stream.open": {
+    "has": [
+      "syscall"
     ]
   },
   "Time2Internaldate": {

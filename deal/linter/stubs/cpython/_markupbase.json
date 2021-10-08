@@ -1,0 +1,22 @@
+{
+  "ParserBase.__init__": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "ParserBase.error": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "ParserBase.parse_declaration": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "ParserBase.parse_marked_section": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

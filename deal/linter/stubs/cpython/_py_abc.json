@@ -1,0 +1,14 @@
+{
+  "ABCMeta.__subclasscheck__": {
+    "raises": [
+      "AssertionError",
+      "TypeError"
+    ]
+  },
+  "ABCMeta.register": {
+    "raises": [
+      "RuntimeError",
+      "TypeError"
+    ]
+  }
+}

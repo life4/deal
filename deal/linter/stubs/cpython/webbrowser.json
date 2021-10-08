@@ -17,6 +17,11 @@
       "TypeError"
     ]
   },
+  "UnixBrowser._invoke": {
+    "has": [
+      "syscall"
+    ]
+  },
   "UnixBrowser.open": {
     "raises": [
       "Error"
@@ -37,7 +42,10 @@
       "import"
     ],
     "raises": [
-      "Error"
+      "Error",
+      "RuntimeError",
+      "TypeError",
+      "message"
     ]
   },
   "main": {

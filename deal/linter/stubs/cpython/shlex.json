@@ -33,5 +33,15 @@
     "raises": [
       "TypeError"
     ]
+  },
+  "split": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
   }
 }

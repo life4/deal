@@ -8,5 +8,10 @@
     "raises": [
       "TypeError"
     ]
+  },
+  "text": {
+    "raises": [
+      "TypeError"
+    ]
   }
 }

@@ -1,0 +1,17 @@
+{
+  "Quitter.__call__": {
+    "raises": [
+      "SystemExit"
+    ]
+  },
+  "_Helper.__call__": {
+    "has": [
+      "import"
+    ]
+  },
+  "_Printer.__init__": {
+    "has": [
+      "import"
+    ]
+  }
+}

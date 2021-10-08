@@ -139,6 +139,11 @@
       "ValueError"
     ]
   },
+  "TarInfo._create_header": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "TarInfo._posix_split_name": {
     "raises": [
       "ValueError"
@@ -183,6 +188,16 @@
     "raises": [
       "CompressionError",
       "ReadError"
+    ]
+  },
+  "_Stream._init_write_gz": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_Stream.read": {
+    "raises": [
+      "AssertionError"
     ]
   },
   "_Stream.seek": {

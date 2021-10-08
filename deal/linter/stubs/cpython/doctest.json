@@ -10,6 +10,9 @@
     ]
   },
   "DocFileSuite": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError",
       "ValueError"
@@ -96,6 +99,9 @@
     ]
   },
   "DocTestSuite": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]
@@ -118,6 +124,7 @@
   },
   "_load_testfile": {
     "has": [
+      "import",
       "read"
     ],
     "raises": [
@@ -132,6 +139,9 @@
     ]
   },
   "_normalize_module": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]
@@ -195,6 +205,9 @@
     ]
   },
   "testsource": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError",
       "ValueError"

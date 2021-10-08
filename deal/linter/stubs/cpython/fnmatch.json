@@ -1,4 +1,9 @@
 {
+  "_compile_pattern": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "filter": {
     "raises": [
       "TypeError"
@@ -7,6 +12,11 @@
   "fnmatch": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "translate": {
+    "raises": [
+      "AssertionError"
     ]
   }
 }

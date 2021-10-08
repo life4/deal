@@ -211,6 +211,9 @@
     ]
   },
   "Maildir._create_tmp": {
+    "has": [
+      "time"
+    ],
     "raises": [
       "ExternalClashError",
       "TypeError"
@@ -222,6 +225,9 @@
     ]
   },
   "Maildir._refresh": {
+    "has": [
+      "time"
+    ],
     "raises": [
       "TypeError"
     ]
@@ -238,6 +244,9 @@
     ]
   },
   "Maildir.clean": {
+    "has": [
+      "time"
+    ],
     "raises": [
       "TypeError"
     ]
@@ -269,6 +278,11 @@
     "raises": [
       "NotEmptyError",
       "TypeError"
+    ]
+  },
+  "MaildirMessage.__init__": {
+    "has": [
+      "time"
     ]
   },
   "MaildirMessage._explain_to": {

@@ -10,12 +10,14 @@
   "_readmodule": {
     "raises": [
       "ImportError",
+      "ModuleNotFoundError",
       "ValueError"
     ]
   },
   "readmodule_ex": {
     "raises": [
-      "ImportError"
+      "ImportError",
+      "ModuleNotFoundError"
     ]
   }
 }

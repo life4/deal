@@ -16,6 +16,21 @@
       "import"
     ]
   },
+  "_find_mac_near_keyword": {
+    "has": [
+      "import"
+    ]
+  },
+  "_find_mac_under_heading": {
+    "has": [
+      "import"
+    ]
+  },
+  "_get_command_stdout": {
+    "has": [
+      "import"
+    ]
+  },
   "_ipconfig_getnode": {
     "has": [
       "import"
@@ -76,7 +91,9 @@
   "uuid1": {
     "has": [
       "global",
-      "import"
+      "import",
+      "random",
+      "time"
     ],
     "raises": [
       "AssertionError"

@@ -1,0 +1,12 @@
+{
+  "BaseStream._check_not_closed": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "DecompressReader.seek": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

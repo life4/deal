@@ -10,8 +10,14 @@
     ]
   },
   "MailmanProxy.__init__": {
+    "has": [
+      "import"
+    ],
     "raises": [
-      "ValueError"
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
     ]
   },
   "MailmanProxy.process_message": {

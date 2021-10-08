@@ -34,6 +34,11 @@
       "network"
     ]
   },
+  "create_server": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "getaddrinfo": {
     "has": [
       "network"

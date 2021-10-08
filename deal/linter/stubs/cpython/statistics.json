@@ -1,4 +1,40 @@
 {
+  "NormalDist.__init__": {
+    "raises": [
+      "StatisticsError"
+    ]
+  },
+  "NormalDist.cdf": {
+    "raises": [
+      "StatisticsError"
+    ]
+  },
+  "NormalDist.from_samples": {
+    "raises": [
+      "StatisticsError"
+    ]
+  },
+  "NormalDist.inv_cdf": {
+    "raises": [
+      "StatisticsError"
+    ]
+  },
+  "NormalDist.overlap": {
+    "raises": [
+      "StatisticsError",
+      "TypeError"
+    ]
+  },
+  "NormalDist.pdf": {
+    "raises": [
+      "StatisticsError"
+    ]
+  },
+  "NormalDist.zscore": {
+    "raises": [
+      "StatisticsError"
+    ]
+  },
   "_coerce": {
     "raises": [
       "AssertionError",
@@ -36,6 +72,16 @@
     "raises": [
       "AssertionError",
       "TypeError"
+    ]
+  },
+  "fmean": {
+    "raises": [
+      "StatisticsError"
+    ]
+  },
+  "geometric_mean": {
+    "raises": [
+      "StatisticsError"
     ]
   },
   "harmonic_mean": {
@@ -88,6 +134,13 @@
     "raises": [
       "AssertionError",
       "StatisticsError"
+    ]
+  },
+  "quantiles": {
+    "raises": [
+      "StatisticsError",
+      "ValueError",
+      "ZeroDivisionError"
     ]
   },
   "stdev": {
