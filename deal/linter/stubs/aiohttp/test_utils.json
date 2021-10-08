@@ -20,6 +20,9 @@
     ]
   },
   "BaseTestServer.start_server": {
+    "has": [
+      "network"
+    ],
     "raises": [
       "AssertionError"
     ]
@@ -27,6 +30,16 @@
   "TestClient.__init__": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "get_port_socket": {
+    "has": [
+      "network"
+    ]
+  },
+  "get_unused_port_socket": {
+    "has": [
+      "network"
     ]
   },
   "setup_test_loop": {

@@ -25,7 +25,27 @@
       "NotImplementedError"
     ]
   },
+  "BaseConnector._release_acquired": {
+    "has": [
+      "random"
+    ]
+  },
   "BaseConnector._release_waiter": {
+    "has": [
+      "random"
+    ]
+  },
+  "BaseConnector.close": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "BaseConnector.connect": {
     "has": [
       "random"
     ]

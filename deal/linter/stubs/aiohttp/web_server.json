@@ -8,5 +8,15 @@
       "TypeError",
       "message"
     ]
+  },
+  "Server.shutdown": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
   }
 }

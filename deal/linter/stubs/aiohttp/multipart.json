@@ -38,12 +38,23 @@
       "ValueError"
     ]
   },
+  "BodyPartReader.json": {
+    "raises": [
+      "JSONDecodeError",
+      "TypeError"
+    ]
+  },
   "BodyPartReader.read_chunk": {
     "raises": [
       "AssertionError"
     ]
   },
   "MultipartPayloadWriter.write": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "MultipartPayloadWriter.write_eof": {
     "raises": [
       "AssertionError"
     ]

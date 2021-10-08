@@ -4,12 +4,22 @@
       "RuntimeError"
     ]
   },
+  "CookieJar._do_expiration": {
+    "has": [
+      "time"
+    ]
+  },
   "CookieJar._parse_date": {
     "raises": [
       "AssertionError"
     ]
   },
   "CookieJar.clear": {
+    "has": [
+      "time"
+    ]
+  },
+  "CookieJar.clear_domain": {
     "has": [
       "time"
     ]
