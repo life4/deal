@@ -20,6 +20,35 @@ DEFINITELY_RANDOM_FUNCS = frozenset({
     'shuffle',
 })
 MAYBE_RANDOM_FUNCS = frozenset(dir(random))
+SYSCALLS = frozenset({
+    # https://docs.python.org/3/library/os.html#process-management
+    'os.abort',
+    'os.execv',
+    'os.fork',
+    'os.forkpty',
+    'os.kill',
+    'os.killpg',
+    'os.plock',
+    'os.posix_spawn',
+    'os.posix_spawnp',
+    'os.putenv',
+    'os.startfile',
+    'os.system',
+    'os.wait',
+    'os.wait3',
+    'os.wait4',
+    'os.waitid',
+    'os.waitpid',
+
+    'subprocess.call',
+    'subprocess.check_call',
+    'subprocess.check_out',
+    'subprocess.getoutput',
+    'subprocess.getstatusoutput',
+    'subprocess.run',
+    'subprocess.Popen',
+})
+SYSCALLS_PREFIXES = ('os.exec', 'os.spawn', 'os.popen')
 
 
 @get_markers.register(*TOKENS.GLOBAL)
@@ -77,12 +106,15 @@ def handle_call(expr, dive: bool = True, stubs: StubsManager = None) -> Iterator
         yield Token(marker='stdin', value='input', **token_info)
         return
 
-    # random, import
+    # random, import,
     if name == '__import__':
         yield Token(marker='import', **token_info)
         return
     if _is_random(expr=expr, name=name):
         yield Token(marker='random', value=name, **token_info)
+        return
+    if _is_syscall(expr=expr, name=name):
+        yield Token(marker='syscall', value=name, **token_info)
         return
 
     # read and write
@@ -262,4 +294,12 @@ def _is_random(expr, name: str) -> bool:
             if isinstance(value, astroid.BoundMethod):
                 if value.bound.pytype() == 'random.Random':
                     return True
+    return False
+
+
+def _is_syscall(expr, name: str) -> bool:
+    if name in SYSCALLS:
+        return True
+    if name.startswith(SYSCALLS_PREFIXES):
+        return True
     return False

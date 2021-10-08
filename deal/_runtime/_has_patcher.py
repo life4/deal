@@ -104,6 +104,10 @@ class HasPatcher:
         return 'random' in self.markers
 
     @property
+    def has_syscall(self) -> bool:
+        return 'syscall' in self.markers
+
+    @property
     def has_global(self) -> bool:
         if 'global' in self.markers:
             return True

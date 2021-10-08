@@ -41,6 +41,14 @@ from deal.linter._stub import StubsManager
     ('random.randrange(10)', ('random', )),
     ('random.random(10)', ('random', )),
     ('randrange(10)', ('random', )),
+
+    ('os.system("echo")', ('syscall', )),
+    ('os.execvp("echo", ["hi"])', ('syscall', )),
+    ('subprocess.run("echo")', ('syscall', )),
+    ('subprocess.call("echo")', ('syscall', )),
+    ('subprocess.call(["echo"])', ('syscall', )),
+    ('proc = subprocess.Popen("echo")', ('syscall', )),
+    ('subprocess.SubprocessError()', ()),
 ])
 def test_io_hardcoded(text, expected):
     tree = astroid.parse(text)

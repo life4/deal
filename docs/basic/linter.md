@@ -50,6 +50,7 @@ Markers:
 | DEAL047 | missed marker (stderr)  |
 | DEAL048 | missed marker (network) |
 | DEAL049 | missed marker (stdin)   |
+| DEAL050 | missed marker (syscall) |
 | DEAL055 | missed marker (random)  |
 
 ## Partial execution

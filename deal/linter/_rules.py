@@ -254,6 +254,7 @@ class CheckMarkers(FuncRule):
         'stderr': 47,
         'network': 48,
         'stdin': 49,
+        'syscall': 50,
 
         'random': 55,
     })
