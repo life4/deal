@@ -15,6 +15,7 @@ TOKENS = SimpleNamespace(
     ASSERT=(ast.Assert, astroid.Assert),
     ASSIGN=(ast.Assign, astroid.Assign),
     ATTR=(ast.Attribute, astroid.Attribute),
+    AWAIT=(ast.Await, astroid.Await),
     BIN_OP=(ast.BinOp, astroid.BinOp),
     CALL=(ast.Call, astroid.Call),
     COMPARE=(ast.Compare, astroid.Compare),
@@ -45,8 +46,7 @@ def traverse(body: List) -> Iterator:
     for expr in body:
         # breaking apart statements
         if isinstance(expr, TOKENS.EXPR):
-            yield expr.value
-            yield from _travers_expr(expr=expr.value)
+            yield from _traverse_expr(expr=expr.value)
             continue
         if isinstance(expr, TOKENS.IF + TOKENS.FOR):
             yield from traverse(body=expr.body)
@@ -66,11 +66,14 @@ def traverse(body: List) -> Iterator:
         if isinstance(expr, TOKENS.WITH):
             yield from traverse(body=expr.body)
         elif isinstance(expr, TOKENS.RETURN + TOKENS.ASSIGN):
-            yield expr.value
+            yield from _traverse_expr(expr.value)
         yield expr
 
 
-def _travers_expr(expr):
+def _traverse_expr(expr) -> Iterator:
+    yield expr
+    if isinstance(expr, TOKENS.AWAIT):
+        yield from _traverse_expr(expr.value)
     if isinstance(expr, TOKENS.CALL):
         for subnode in expr.args:
             yield from traverse(body=[subnode])

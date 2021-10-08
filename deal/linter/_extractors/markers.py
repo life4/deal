@@ -69,14 +69,19 @@ TIMES = frozenset({
     'time.thread_time',
     'time.thread_time_ns',
 })
-SOCKET_METHODS = frozenset({
-    'socket.connect',
-    'socket.sendall',
-    'socket.recv',
-    'socket.listen',
-    'socket.bind',
-    'socket.getaddrinfo',
-    'socket.close',
+NETWORK_FUNCS = frozenset({
+    '_socket.socket.connect',
+    '_socket.socket.sendall',
+    '_socket.socket.recv',
+    '_socket.socket.listen',
+    '_socket.socket.bind',
+    '_socket.socket.getaddrinfo',
+    '_socket.socket.close',
+
+    'asyncio.streams.open_connection',
+    'asyncio.streams.start_server',
+    'asyncio.streams.open_unix_connection',
+    'asyncio.streams.start_unix_server',
 })
 
 
@@ -180,7 +185,8 @@ def _infer_markers(expr, dive: bool, stubs: StubsManager = None) -> Iterator[Tok
 def _markers_from_inferred(expr: NodeNG, inferred: tuple) -> Iterator[Token]:
     for node in inferred:
         module, full_name = get_full_name(node)
-        if full_name in SOCKET_METHODS:
+        qual_name = f'{module}.{full_name}'
+        if qual_name in NETWORK_FUNCS:
             yield Token(
                 marker='network',
                 value=full_name,

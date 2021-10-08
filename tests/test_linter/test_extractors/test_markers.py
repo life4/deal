@@ -121,6 +121,18 @@ def test_socket():
     assert markers == ('import', 'network')
 
 
+def test_asyncio_socket():
+    text = """
+        import asyncio
+        r, w = await asyncio.open_connection('127.0.0.1', 8888)
+    """
+    tree = astroid.parse(text)
+    print(tree.repr_tree())
+    tokens = list(get_markers(body=tree.body))
+    markers = tuple(t.marker for t in tokens)
+    assert markers == ('import', 'network')
+
+
 @pytest.mark.parametrize('text, expected', [
     ('global a', ('global', )),
     ('global a, b, c', ('global', )),
