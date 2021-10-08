@@ -100,24 +100,6 @@ def test_has_stderr(markers: list, expected: bool):
     (['socket'], False),
     (['network', 'stderr'], False),
     (['network', 'stdout'], False),
-    (['import', 'network', 'stderr'], True),
-    (['stderr'], False),
-    (['stdout'], False),
-    (['print'], False),
-    (['write'], False),
-    (['read'], False),
-    (['import'], True),
-])
-def test_has_import(markers: list, expected: bool):
-    assert make_has(markers).has_import is expected
-
-
-@pytest.mark.parametrize('markers, expected', [
-    (['io'], False),
-    (['network'], False),
-    (['socket'], False),
-    (['network', 'stderr'], False),
-    (['network', 'stdout'], False),
     (['import', 'global', 'stderr'], True),
     (['stderr'], False),
     (['stdout'], False),
