@@ -44,12 +44,47 @@
       "NotImplementedError"
     ]
   },
+  "AbstractEventLoop.connect_read_pipe": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.connect_write_pipe": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.create_connection": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.create_datagram_endpoint": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
   "AbstractEventLoop.create_future": {
     "raises": [
       "NotImplementedError"
     ]
   },
+  "AbstractEventLoop.create_server": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
   "AbstractEventLoop.create_task": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.create_unix_connection": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.create_unix_server": {
     "raises": [
       "NotImplementedError"
     ]
@@ -70,6 +105,16 @@
     ]
   },
   "AbstractEventLoop.get_task_factory": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.getaddrinfo": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.getnameinfo": {
     "raises": [
       "NotImplementedError"
     ]
@@ -114,6 +159,11 @@
       "NotImplementedError"
     ]
   },
+  "AbstractEventLoop.sendfile": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
   "AbstractEventLoop.set_debug": {
     "raises": [
       "NotImplementedError"
@@ -134,7 +184,62 @@
       "NotImplementedError"
     ]
   },
+  "AbstractEventLoop.shutdown_asyncgens": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.shutdown_default_executor": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.sock_accept": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.sock_connect": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.sock_recv": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.sock_recv_into": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.sock_sendall": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.sock_sendfile": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.start_tls": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
   "AbstractEventLoop.stop": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.subprocess_exec": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.subprocess_shell": {
     "raises": [
       "NotImplementedError"
     ]
@@ -180,6 +285,21 @@
     ]
   },
   "AbstractServer.is_serving": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractServer.serve_forever": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractServer.start_serving": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractServer.wait_closed": {
     "raises": [
       "NotImplementedError"
     ]

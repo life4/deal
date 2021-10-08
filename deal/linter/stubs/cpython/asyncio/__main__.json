@@ -1,4 +1,9 @@
 {
+  "AsyncIOInteractiveConsole.runcode": {
+    "has": [
+      "stderr"
+    ]
+  },
   "REPLThread.run": {
     "has": [
       "import"

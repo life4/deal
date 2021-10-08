@@ -15,6 +15,36 @@
       "RuntimeError"
     ]
   },
+  "BaseSelectorEventLoop.sock_accept": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BaseSelectorEventLoop.sock_connect": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BaseSelectorEventLoop.sock_recv": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BaseSelectorEventLoop.sock_recv_into": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BaseSelectorEventLoop.sock_sendall": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
   "_SelectorDatagramTransport.sendto": {
     "raises": [
       "TypeError",

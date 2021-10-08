@@ -1,0 +1,27 @@
+{
+  "Process._read_stream": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "create_subprocess_exec": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "create_subprocess_shell": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  }
+}

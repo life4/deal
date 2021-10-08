@@ -121,6 +121,11 @@
       "ValueError"
     ]
   },
+  "_UnixSelectorEventLoop._make_subprocess_transport": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
   "_UnixSelectorEventLoop.add_signal_handler": {
     "raises": [
       "RuntimeError",
@@ -135,6 +140,26 @@
       "RuntimeError",
       "TypeError",
       "message"
+    ]
+  },
+  "_UnixSelectorEventLoop.create_unix_connection": {
+    "has": [
+      "network"
+    ],
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_UnixSelectorEventLoop.create_unix_server": {
+    "has": [
+      "network"
+    ],
+    "raises": [
+      "OSError",
+      "TypeError",
+      "ValueError"
     ]
   },
   "_UnixSelectorEventLoop.remove_signal_handler": {

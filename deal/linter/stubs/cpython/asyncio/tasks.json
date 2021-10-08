@@ -35,6 +35,11 @@
       "RuntimeError"
     ]
   },
+  "_wait": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "as_completed": {
     "has": [
       "import"
@@ -67,6 +72,38 @@
     ]
   },
   "shield": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "sleep": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "wait": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "wait_for": {
     "has": [
       "import"
     ],

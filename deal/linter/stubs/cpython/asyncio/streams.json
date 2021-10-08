@@ -1,4 +1,10 @@
 {
+  "FlowControlMixin._drain_helper": {
+    "raises": [
+      "AssertionError",
+      "ConnectionResetError"
+    ]
+  },
   "FlowControlMixin._get_close_waiter": {
     "raises": [
       "NotImplementedError"
@@ -14,14 +20,47 @@
       "AssertionError"
     ]
   },
+  "StreamReader.__anext__": {
+    "raises": [
+      "StopAsyncIteration"
+    ]
+  },
   "StreamReader.__init__": {
     "raises": [
       "ValueError"
     ]
   },
+  "StreamReader._wait_for_data": {
+    "raises": [
+      "AssertionError",
+      "RuntimeError"
+    ]
+  },
   "StreamReader.feed_data": {
     "raises": [
       "AssertionError"
+    ]
+  },
+  "StreamReader.read": {
+    "raises": [
+      "self._exception"
+    ]
+  },
+  "StreamReader.readexactly": {
+    "raises": [
+      "ValueError",
+      "self._exception"
+    ]
+  },
+  "StreamReader.readline": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "StreamReader.readuntil": {
+    "raises": [
+      "ValueError",
+      "self._exception"
     ]
   },
   "StreamReader.set_transport": {
@@ -32,6 +71,31 @@
   "StreamWriter.__init__": {
     "raises": [
       "AssertionError"
+    ]
+  },
+  "StreamWriter.drain": {
+    "raises": [
+      "exc"
+    ]
+  },
+  "open_connection": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "start_server": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
     ]
   }
 }

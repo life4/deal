@@ -55,9 +55,15 @@
       "RuntimeError"
     ]
   },
+  "BaseEventLoop._create_server_getaddrinfo": {
+    "raises": [
+      "OSError"
+    ]
+  },
   "BaseEventLoop._getaddrinfo_debug": {
     "has": [
-      "network"
+      "network",
+      "time"
     ]
   },
   "BaseEventLoop._make_datagram_transport": {
@@ -76,6 +82,11 @@
     ]
   },
   "BaseEventLoop._make_ssl_transport": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "BaseEventLoop._make_subprocess_transport": {
     "raises": [
       "NotImplementedError"
     ]
@@ -100,7 +111,42 @@
       "RuntimeError"
     ]
   },
+  "BaseEventLoop.connect_accepted_socket": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BaseEventLoop.create_connection": {
+    "raises": [
+      "OSError",
+      "ValueError"
+    ]
+  },
+  "BaseEventLoop.create_datagram_endpoint": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError",
+      "OSError",
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "BaseEventLoop.create_server": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
   "BaseEventLoop.run_until_complete": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "BaseEventLoop.sendfile": {
     "raises": [
       "RuntimeError"
     ]
@@ -125,6 +171,27 @@
       "TypeError"
     ]
   },
+  "BaseEventLoop.sock_sendfile": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BaseEventLoop.start_tls": {
+    "raises": [
+      "RuntimeError",
+      "TypeError"
+    ]
+  },
+  "BaseEventLoop.subprocess_exec": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BaseEventLoop.subprocess_shell": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "BaseEventLoop.time": {
     "has": [
       "time"
@@ -140,6 +207,11 @@
       "AssertionError"
     ]
   },
+  "Server.serve_forever": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
   "_SendfileFallbackProtocol.__init__": {
     "raises": [
       "TypeError"
@@ -153,6 +225,11 @@
   "_SendfileFallbackProtocol.data_received": {
     "raises": [
       "RuntimeError"
+    ]
+  },
+  "_SendfileFallbackProtocol.drain": {
+    "raises": [
+      "ConnectionError"
     ]
   },
   "_SendfileFallbackProtocol.eof_received": {

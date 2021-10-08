@@ -30,6 +30,12 @@
       "RuntimeError"
     ]
   },
+  "Condition.wait": {
+    "raises": [
+      "RuntimeError",
+      "exceptions.CancelledError"
+    ]
+  },
   "Event.__init__": {
     "has": [
       "import"
