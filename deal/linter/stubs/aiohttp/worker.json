@@ -27,6 +27,12 @@
       "ValueError"
     ]
   },
+  "GunicornWebWorker._run": {
+    "raises": [
+      "AssertionError",
+      "RuntimeError"
+    ]
+  },
   "GunicornWebWorker._wait_next_notify": {
     "raises": [
       "AssertionError"

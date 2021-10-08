@@ -87,6 +87,12 @@
       "AssertionError"
     ]
   },
+  "StaticResource._handle": {
+    "raises": [
+      "HTTPForbidden",
+      "HTTPNotFound"
+    ]
+  },
   "StaticResource.set_options_route": {
     "raises": [
       "RuntimeError"
@@ -95,6 +101,11 @@
   "StaticResource.url_for": {
     "raises": [
       "ZeroDivisionError"
+    ]
+  },
+  "SystemRoute._handle": {
+    "raises": [
+      "self._http_exception"
     ]
   },
   "SystemRoute.url_for": {
@@ -137,6 +148,11 @@
   "View._raise_allowed_methods": {
     "raises": [
       "HTTPMethodNotAllowed"
+    ]
+  },
+  "_default_expect_handler": {
+    "raises": [
+      "HTTPExpectationFailed"
     ]
   }
 }

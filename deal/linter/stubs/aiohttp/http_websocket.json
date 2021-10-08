@@ -11,6 +11,12 @@
       "WebSocketError"
     ]
   },
+  "WebSocketWriter._send_frame": {
+    "raises": [
+      "AssertionError",
+      "ConnectionResetError"
+    ]
+  },
   "WebSocketWriter._write": {
     "raises": [
       "ConnectionResetError"

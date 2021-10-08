@@ -24,6 +24,11 @@
       "RuntimeError"
     ]
   },
+  "Application._handle": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "Application._set_loop": {
     "has": [
       "import"
@@ -53,6 +58,11 @@
       "RuntimeError",
       "TypeError",
       "message"
+    ]
+  },
+  "CleanupContext._on_cleanup": {
+    "raises": [
+      "CleanupError"
     ]
   }
 }

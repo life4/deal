@@ -1,4 +1,9 @@
 {
+  "BodyPartReader.__anext__": {
+    "raises": [
+      "StopAsyncIteration"
+    ]
+  },
   "BodyPartReader._decode_content": {
     "raises": [
       "RuntimeError"
@@ -12,10 +17,56 @@
       "ValueError"
     ]
   },
+  "BodyPartReader._read_chunk_from_length": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "BodyPartReader._read_chunk_from_stream": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BodyPartReader.form": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BodyPartReader.read_chunk": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "MultipartPayloadWriter.write": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "MultipartReader.__anext__": {
+    "raises": [
+      "StopAsyncIteration"
+    ]
+  },
   "MultipartReader._get_boundary": {
     "raises": [
       "AssertionError",
       "ValueError"
+    ]
+  },
+  "MultipartReader._read_boundary": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "MultipartResponseWrapper.__anext__": {
+    "raises": [
+      "StopAsyncIteration"
     ]
   },
   "MultipartWriter.__init__": {

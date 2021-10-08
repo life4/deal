@@ -1,4 +1,9 @@
 {
+  "RequestHandler._handle_request": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "RequestHandler.connection_made": {
     "raises": [
       "AssertionError"
@@ -9,12 +14,22 @@
       "AssertionError"
     ]
   },
+  "RequestHandler.finish_response": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
   "RequestHandler.handle_error": {
     "raises": [
       "ConnectionError"
     ]
   },
   "RequestHandler.set_parser": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "RequestHandler.start": {
     "raises": [
       "AssertionError"
     ]

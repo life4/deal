@@ -19,6 +19,23 @@
       "ValueError"
     ]
   },
+  "BaseRequest.json": {
+    "raises": [
+      "HTTPBadRequest"
+    ]
+  },
+  "BaseRequest.post": {
+    "raises": [
+      "HTTPUnsupportedMediaType",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BaseRequest.text": {
+    "raises": [
+      "HTTPUnsupportedMediaType"
+    ]
+  },
   "Request.app": {
     "raises": [
       "AssertionError"

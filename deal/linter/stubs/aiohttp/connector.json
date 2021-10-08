@@ -20,6 +20,11 @@
       "AssertionError"
     ]
   },
+  "BaseConnector._create_connection": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
   "BaseConnector._release_waiter": {
     "has": [
       "random"
@@ -40,9 +45,30 @@
       "RuntimeError"
     ]
   },
+  "NamedPipeConnector._create_connection": {
+    "raises": [
+      "ClientConnectorError"
+    ]
+  },
   "TCPConnector.__init__": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "TCPConnector._create_direct_connection": {
+    "raises": [
+      "AssertionError",
+      "ClientConnectorError",
+      "TypeError",
+      "ValueError",
+      "last_exc"
+    ]
+  },
+  "TCPConnector._create_proxy_connection": {
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ValueError"
     ]
   },
   "TCPConnector._get_ssl_context": {
@@ -60,6 +86,13 @@
       "message"
     ]
   },
+  "TCPConnector._start_tls_connection": {
+    "raises": [
+      "ClientConnectionError",
+      "ClientConnectorCertificateError",
+      "ClientConnectorSSLError"
+    ]
+  },
   "TCPConnector._warn_about_tls_in_tls": {
     "has": [
       "import"
@@ -70,9 +103,20 @@
       "message"
     ]
   },
+  "TCPConnector._wrap_create_connection": {
+    "raises": [
+      "ClientConnectorCertificateError",
+      "ClientConnectorSSLError"
+    ]
+  },
   "TCPConnector.clear_dns_cache": {
     "raises": [
       "ValueError"
+    ]
+  },
+  "UnixConnector._create_connection": {
+    "raises": [
+      "UnixClientConnectorError"
     ]
   },
   "_DNSCacheTable.add": {

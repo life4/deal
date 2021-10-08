@@ -1,4 +1,10 @@
 {
+  "BaseProtocol._drain_helper": {
+    "raises": [
+      "AssertionError",
+      "ConnectionResetError"
+    ]
+  },
   "BaseProtocol.pause_writing": {
     "raises": [
       "AssertionError"

@@ -10,6 +10,11 @@
       "AssertionError"
     ]
   },
+  "Response._do_start_compression": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "Response.body": {
     "raises": [
       "ValueError"
@@ -25,12 +30,33 @@
       "AssertionError"
     ]
   },
+  "Response.write_eof": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "StreamResponse.__repr__": {
     "raises": [
       "AssertionError"
     ]
   },
+  "StreamResponse._do_start_compression": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "StreamResponse._generate_content_type_header": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "StreamResponse._prepare_headers": {
+    "raises": [
+      "AssertionError",
+      "RuntimeError"
+    ]
+  },
+  "StreamResponse._write_headers": {
     "raises": [
       "AssertionError"
     ]
@@ -46,6 +72,17 @@
       "RuntimeError"
     ]
   },
+  "StreamResponse.drain": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError",
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
   "StreamResponse.enable_chunked_encoding": {
     "raises": [
       "RuntimeError"
@@ -57,6 +94,17 @@
     ]
   },
   "StreamResponse.set_status": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "StreamResponse.write": {
+    "raises": [
+      "AssertionError",
+      "RuntimeError"
+    ]
+  },
+  "StreamResponse.write_eof": {
     "raises": [
       "AssertionError"
     ]

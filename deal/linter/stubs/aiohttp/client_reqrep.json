@@ -9,6 +9,11 @@
       "AssertionError"
     ]
   },
+  "ClientRequest.send": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "ClientRequest.update_auth": {
     "raises": [
       "TypeError"
@@ -44,6 +49,11 @@
       "ValueError"
     ]
   },
+  "ClientRequest.write_bytes": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "ClientResponse.__del__": {
     "has": [
       "import"
@@ -69,10 +79,20 @@
       "AssertionError"
     ]
   },
+  "ClientResponse.json": {
+    "raises": [
+      "ContentTypeError"
+    ]
+  },
   "ClientResponse.raise_for_status": {
     "raises": [
       "AssertionError",
       "ClientResponseError"
+    ]
+  },
+  "ClientResponse.read": {
+    "raises": [
+      "ClientConnectionError"
     ]
   },
   "Fingerprint.__init__": {

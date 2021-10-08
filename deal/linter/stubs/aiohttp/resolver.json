@@ -4,6 +4,11 @@
       "RuntimeError"
     ]
   },
+  "AsyncResolver.resolve": {
+    "raises": [
+      "OSError"
+    ]
+  },
   "ThreadedResolver.__init__": {
     "raises": [
       "RuntimeError"

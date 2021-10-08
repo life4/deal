@@ -29,9 +29,34 @@
       "RuntimeError"
     ]
   },
+  "BaseSite.stop": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "NamedPipeSite.__init__": {
     "raises": [
       "RuntimeError"
+    ]
+  },
+  "NamedPipeSite.start": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "SockSite.start": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "TCPSite.start": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "UnixSite.start": {
+    "raises": [
+      "AssertionError"
     ]
   },
   "_raise_graceful_exit": {

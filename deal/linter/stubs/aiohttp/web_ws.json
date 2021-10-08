@@ -1,4 +1,9 @@
 {
+  "WebSocketResponse.__anext__": {
+    "raises": [
+      "StopAsyncIteration"
+    ]
+  },
   "WebSocketResponse.__init__": {
     "raises": [
       "ZeroDivisionError"
@@ -30,6 +35,71 @@
     ]
   },
   "WebSocketResponse.can_prepare": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "WebSocketResponse.close": {
+    "raises": [
+      "AssertionError",
+      "RuntimeError"
+    ]
+  },
+  "WebSocketResponse.ping": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "WebSocketResponse.pong": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "WebSocketResponse.prepare": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "WebSocketResponse.receive": {
+    "raises": [
+      "AssertionError",
+      "RuntimeError"
+    ]
+  },
+  "WebSocketResponse.receive_bytes": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "WebSocketResponse.receive_json": {
+    "raises": [
+      "JSONDecodeError",
+      "TypeError"
+    ]
+  },
+  "WebSocketResponse.receive_str": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "WebSocketResponse.send_bytes": {
+    "raises": [
+      "RuntimeError",
+      "TypeError"
+    ]
+  },
+  "WebSocketResponse.send_str": {
+    "raises": [
+      "RuntimeError",
+      "TypeError"
+    ]
+  },
+  "WebSocketResponse.write": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "WebSocketResponse.write_eof": {
     "raises": [
       "RuntimeError"
     ]
