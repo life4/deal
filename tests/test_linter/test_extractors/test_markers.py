@@ -109,6 +109,18 @@ def test_other_infer(text, expected):
     assert markers == expected
 
 
+def test_socket():
+    text = """
+        import socket
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((HOST, PORT))
+    """
+    tree = astroid.parse(text)
+    tokens = list(get_markers(body=tree.body))
+    markers = tuple(t.marker for t in tokens)
+    assert markers == ('import', 'network')
+
+
 @pytest.mark.parametrize('text, expected', [
     ('global a', ('global', )),
     ('global a, b, c', ('global', )),

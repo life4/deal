@@ -1,8 +1,8 @@
 import ast
-import random
 from typing import Iterator, Optional
 
 import astroid
+from astroid.node_classes import NodeNG
 
 from .._contract import Category
 from .._stub import StubsManager
@@ -19,7 +19,6 @@ DEFINITELY_RANDOM_FUNCS = frozenset({
     'getrandbits',
     'shuffle',
 })
-MAYBE_RANDOM_FUNCS = frozenset(dir(random))
 SYSCALLS = frozenset({
     # https://docs.python.org/3/library/os.html#process-management
     'os.abort',
@@ -69,6 +68,15 @@ TIMES = frozenset({
     'time.time_ns',
     'time.thread_time',
     'time.thread_time_ns',
+})
+SOCKET_METHODS = frozenset({
+    'socket.connect',
+    'socket.sendall',
+    'socket.recv',
+    'socket.listen',
+    'socket.bind',
+    'socket.getaddrinfo',
+    'socket.close',
 })
 
 
@@ -163,10 +171,32 @@ def _infer_markers(expr, dive: bool, stubs: StubsManager = None) -> Iterator[Tok
             stubs_found = True
             yield token
 
-    # Infer function call and check the function body for raises.
-    # Do not dive into called function if we already found stubs for it.
-    if not stubs_found and dive:
-        yield from _markers_from_func(expr=expr, inferred=inferred)
+    if not stubs_found:
+        yield from _markers_from_inferred(expr=expr, inferred=inferred)
+        if dive:
+            yield from _markers_from_func(expr=expr, inferred=inferred)
+
+
+def _markers_from_inferred(expr: NodeNG, inferred: tuple) -> Iterator[Token]:
+    for node in inferred:
+        module, full_name = get_full_name(node)
+        if full_name in SOCKET_METHODS:
+            yield Token(
+                marker='network',
+                value=full_name,
+                line=expr.lineno,
+                col=expr.col_offset,
+            )
+            return
+        if isinstance(node, astroid.BoundMethod):
+            if node.bound.pytype() == 'random.Random':
+                yield Token(
+                    marker='random',
+                    value=full_name,
+                    line=expr.lineno,
+                    col=expr.col_offset,
+                )
+                return
 
 
 @get_markers.register(*TOKENS.WITH)
@@ -241,9 +271,9 @@ def _markers_from_stubs(expr: astroid.Call, inferred, stubs: StubsManager) -> It
             yield Token(marker=name, line=expr.lineno, col=expr.col_offset)
 
 
-def _markers_from_func(expr, inferred) -> Iterator[Token]:
+def _markers_from_func(expr: NodeNG, inferred: tuple) -> Iterator[Token]:
     for value in inferred:
-        if type(value) is not astroid.FunctionDef:
+        if not isinstance(value, (astroid.FunctionDef, astroid.UnboundMethod)):
             continue
 
         # recursively infer markers from the function body
@@ -313,11 +343,6 @@ def _is_random(expr, name: str) -> bool:
         return False
     if name in DEFINITELY_RANDOM_FUNCS:
         return True
-    if name in MAYBE_RANDOM_FUNCS:
-        for value in infer(expr.func):
-            if isinstance(value, astroid.BoundMethod):
-                if value.bound.pytype() == 'random.Random':
-                    return True
     return False
 
 
