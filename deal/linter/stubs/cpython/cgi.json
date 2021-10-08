@@ -21,6 +21,9 @@
     ]
   },
   "FieldStorage.__init__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError",
       "ValueError"

@@ -11,9 +11,11 @@
   },
   "Grail._find_grail_rc": {
     "has": [
+      "global",
       "import"
     ],
     "raises": [
+      "AssertionError",
       "TypeError"
     ]
   },

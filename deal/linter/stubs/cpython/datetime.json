@@ -113,6 +113,9 @@
     ]
   },
   "datetime.__add__": {
+    "has": [
+      "time"
+    ],
     "raises": [
       "OverflowError"
     ]
@@ -190,6 +193,9 @@
     ]
   },
   "time.__hash__": {
+    "has": [
+      "time"
+    ],
     "raises": [
       "AssertionError"
     ]

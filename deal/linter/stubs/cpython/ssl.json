@@ -1,4 +1,9 @@
 {
+  "DER_cert_to_PEM_cert": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "PEM_cert_to_DER_cert": {
     "raises": [
       "TypeError",

@@ -9,6 +9,16 @@
       "TurtleGraphicsError"
     ]
   },
+  "RawTurtle._getshapepoly": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "RawTurtle._polytrafo": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
   "RawTurtle._undo": {
     "has": [
       "stdout"

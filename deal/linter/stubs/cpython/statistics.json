@@ -75,6 +75,9 @@
     ]
   },
   "fmean": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "StatisticsError"
     ]

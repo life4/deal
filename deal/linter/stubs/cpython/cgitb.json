@@ -5,11 +5,17 @@
     ]
   },
   "html": {
+    "has": [
+      "time"
+    ],
     "raises": [
       "TypeError"
     ]
   },
   "text": {
+    "has": [
+      "time"
+    ],
     "raises": [
       "TypeError"
     ]

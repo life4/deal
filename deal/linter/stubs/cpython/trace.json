@@ -14,7 +14,8 @@
     ],
     "raises": [
       "SyntaxError",
-      "TypeError"
+      "TypeError",
+      "ZeroDivisionError"
     ]
   },
   "CoverageResults.write_results_file": {

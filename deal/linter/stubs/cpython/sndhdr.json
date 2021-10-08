@@ -22,6 +22,10 @@
     "has": [
       "import",
       "stdout"
+    ],
+    "raises": [
+      "AssertionError",
+      "TypeError"
     ]
   },
   "what": {

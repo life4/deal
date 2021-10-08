@@ -5,6 +5,7 @@
       "import"
     ],
     "raises": [
+      "AttributeError",
       "TypeError"
     ]
   },
@@ -93,6 +94,7 @@
   },
   "get_platform": {
     "has": [
+      "global",
       "import"
     ],
     "raises": [

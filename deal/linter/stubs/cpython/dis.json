@@ -38,6 +38,11 @@
       "TypeError"
     ]
   },
+  "code_info": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "dis": {
     "has": [
       "stdout"

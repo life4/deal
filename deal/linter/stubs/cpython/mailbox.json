@@ -34,6 +34,11 @@
       "TypeError"
     ]
   },
+  "MH.__contains__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "MH.__init__": {
     "raises": [
       "NoSuchMailboxError"
@@ -55,6 +60,11 @@
       "TypeError"
     ]
   },
+  "MH.add_folder": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "MH.get_bytes": {
     "raises": [
       "KeyError"
@@ -63,6 +73,11 @@
   "MH.get_file": {
     "raises": [
       "KeyError"
+    ]
+  },
+  "MH.get_folder": {
+    "raises": [
+      "TypeError"
     ]
   },
   "MH.get_message": {
@@ -81,6 +96,9 @@
   "MH.lock": {
     "has": [
       "read"
+    ],
+    "raises": [
+      "TypeError"
     ]
   },
   "MH.pack": {
@@ -106,6 +124,9 @@
   "MH.set_sequences": {
     "has": [
       "read"
+    ],
+    "raises": [
+      "TypeError"
     ]
   },
   "MHMessage._explain_to": {
@@ -129,6 +150,9 @@
     ]
   },
   "Mailbox.__init__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]
@@ -293,6 +317,14 @@
   "Maildir.get_file": {
     "has": [
       "read"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Maildir.get_folder": {
+    "raises": [
+      "TypeError"
     ]
   },
   "Maildir.get_message": {

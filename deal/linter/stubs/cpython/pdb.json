@@ -1,4 +1,9 @@
 {
+  "Pdb._complete_location": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "Pdb._runmodule": {
     "has": [
       "import"

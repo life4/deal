@@ -23,7 +23,8 @@
   "MailmanProxy.process_message": {
     "has": [
       "import",
-      "stdout"
+      "stdout",
+      "time"
     ]
   },
   "PureProxy.__init__": {

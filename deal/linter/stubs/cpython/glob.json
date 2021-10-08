@@ -20,6 +20,11 @@
       "TypeError"
     ]
   },
+  "glob": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "iglob": {
     "raises": [
       "AssertionError"

@@ -23,6 +23,7 @@
   },
   "IMAP4._connect": {
     "has": [
+      "random",
       "stderr",
       "time"
     ],
