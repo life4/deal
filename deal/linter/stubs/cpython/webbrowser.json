@@ -17,12 +17,26 @@
       "TypeError"
     ]
   },
+  "Grail._remote": {
+    "has": [
+      "import",
+      "network"
+    ]
+  },
+  "Grail.open": {
+    "has": [
+      "network"
+    ]
+  },
   "UnixBrowser._invoke": {
     "has": [
       "syscall"
     ]
   },
   "UnixBrowser.open": {
+    "has": [
+      "syscall"
+    ],
     "raises": [
       "Error"
     ]

@@ -1,4 +1,9 @@
 {
+  "POP3.__init__": {
+    "has": [
+      "stdout"
+    ]
+  },
   "POP3._create_socket": {
     "has": [
       "network"
@@ -13,7 +18,17 @@
       "stdout"
     ]
   },
+  "POP3._getlongresp": {
+    "has": [
+      "stdout"
+    ]
+  },
   "POP3._getresp": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "POP3._longcmd": {
     "has": [
       "stdout"
     ]
@@ -28,9 +43,24 @@
       "stdout"
     ]
   },
+  "POP3._shortcmd": {
+    "has": [
+      "stdout"
+    ]
+  },
   "POP3.apop": {
     "has": [
       "import"
+    ]
+  },
+  "POP3.close": {
+    "has": [
+      "network"
+    ]
+  },
+  "POP3.quit": {
+    "has": [
+      "network"
     ]
   },
   "POP3.stat": {

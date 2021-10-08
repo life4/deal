@@ -39,6 +39,7 @@
   },
   "PureProxy.process_message": {
     "has": [
+      "import",
       "stdout"
     ]
   },

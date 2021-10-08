@@ -16,6 +16,11 @@
     ]
   },
   "Template.open": {
+    "has": [
+      "read",
+      "syscall",
+      "write"
+    ],
     "raises": [
       "ValueError"
     ]
@@ -24,6 +29,7 @@
     "has": [
       "import",
       "read",
+      "stdout",
       "syscall"
     ],
     "raises": [
@@ -34,6 +40,7 @@
   "Template.open_w": {
     "has": [
       "import",
+      "stdout",
       "syscall",
       "write"
     ],

@@ -16,6 +16,9 @@
     ]
   },
   "TarFile._extract_member": {
+    "has": [
+      "stderr"
+    ],
     "raises": [
       "TypeError"
     ]
@@ -31,6 +34,9 @@
     ]
   },
   "TarFile.add": {
+    "has": [
+      "stderr"
+    ],
     "raises": [
       "TypeError"
     ]
@@ -58,11 +64,17 @@
     ]
   },
   "TarFile.extract": {
+    "has": [
+      "stderr"
+    ],
     "raises": [
       "TypeError"
     ]
   },
   "TarFile.extractall": {
+    "has": [
+      "stderr"
+    ],
     "raises": [
       "Error",
       "TypeError"
@@ -108,6 +120,11 @@
   "TarFile.makelink": {
     "raises": [
       "ExtractError"
+    ]
+  },
+  "TarFile.makeunknown": {
+    "has": [
+      "stderr"
     ]
   },
   "TarFile.next": {

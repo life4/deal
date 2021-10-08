@@ -54,6 +54,11 @@
       "import"
     ]
   },
+  "HelpFormatter._format_action": {
+    "has": [
+      "import"
+    ]
+  },
   "HelpFormatter._format_args": {
     "raises": [
       "ValueError"

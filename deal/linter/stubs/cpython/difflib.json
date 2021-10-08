@@ -36,7 +36,8 @@
   "_test": {
     "has": [
       "global",
-      "import"
+      "import",
+      "stdout"
     ],
     "raises": [
       "TypeError"

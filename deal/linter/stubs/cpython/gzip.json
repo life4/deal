@@ -1,7 +1,8 @@
 {
   "GzipFile.__init__": {
     "has": [
-      "import"
+      "import",
+      "time"
     ],
     "raises": [
       "RuntimeError",
@@ -55,6 +56,9 @@
     ]
   },
   "GzipFile.seek": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "OSError",
       "ValueError"

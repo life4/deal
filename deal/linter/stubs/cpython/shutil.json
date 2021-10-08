@@ -51,7 +51,8 @@
   },
   "_make_zipfile": {
     "has": [
-      "import"
+      "import",
+      "read"
     ],
     "raises": [
       "TypeError"

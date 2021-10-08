@@ -9,6 +9,11 @@
       "TurtleGraphicsError"
     ]
   },
+  "RawTurtle._undo": {
+    "has": [
+      "stdout"
+    ]
+  },
   "RawTurtle._undogoto": {
     "has": [
       "stdout"
@@ -102,6 +107,16 @@
   "Vec2D.rotate": {
     "raises": [
       "ZeroDivisionError"
+    ]
+  },
+  "_Root.__init__": {
+    "has": [
+      "import"
+    ]
+  },
+  "_Screen._destroy": {
+    "has": [
+      "global"
     ]
   },
   "_Screen.exitonclick": {

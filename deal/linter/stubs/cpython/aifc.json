@@ -47,6 +47,11 @@
       "Error"
     ]
   },
+  "Aifc_read.readframes": {
+    "has": [
+      "import"
+    ]
+  },
   "Aifc_read.setpos": {
     "raises": [
       "Error"
@@ -153,6 +158,11 @@
   "Aifc_write.setsampwidth": {
     "raises": [
       "Error"
+    ]
+  },
+  "Aifc_write.writeframesraw": {
+    "has": [
+      "import"
     ]
   },
   "_read_float": {

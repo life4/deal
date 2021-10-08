@@ -44,13 +44,17 @@
     ]
   },
   "Random.randrange": {
+    "has": [
+      "random"
+    ],
     "raises": [
       "ValueError"
     ]
   },
   "Random.sample": {
     "has": [
-      "import"
+      "import",
+      "random"
     ],
     "raises": [
       "RuntimeError",
@@ -77,7 +81,8 @@
   },
   "Random.shuffle": {
     "has": [
-      "import"
+      "import",
+      "random"
     ],
     "raises": [
       "RuntimeError",

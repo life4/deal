@@ -1,12 +1,23 @@
 {
+  "FTP.__exit__": {
+    "has": [
+      "network"
+    ]
+  },
   "FTP.abort": {
     "has": [
       "stdout"
     ]
   },
-  "FTP.connect": {
+  "FTP.close": {
     "has": [
       "network"
+    ]
+  },
+  "FTP.connect": {
+    "has": [
+      "network",
+      "stdout"
     ],
     "raises": [
       "ValueError",
@@ -20,6 +31,11 @@
     "raises": [
       "EOFError",
       "Error"
+    ]
+  },
+  "FTP.getmultiline": {
+    "has": [
+      "stdout"
     ]
   },
   "FTP.getresp": {
@@ -39,6 +55,9 @@
     ]
   },
   "FTP.makeport": {
+    "has": [
+      "network"
+    ],
     "raises": [
       "OSError",
       "ValueError",
@@ -49,7 +68,8 @@
     "has": [
       "global",
       "import",
-      "network"
+      "network",
+      "stdout"
     ],
     "raises": [
       "err"
@@ -66,6 +86,26 @@
     ],
     "raises": [
       "ValueError"
+    ]
+  },
+  "FTP.quit": {
+    "has": [
+      "network"
+    ]
+  },
+  "FTP.sendcmd": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "FTP.voidcmd": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "FTP.voidresp": {
+    "has": [
+      "stdout"
     ]
   },
   "ftpcp": {

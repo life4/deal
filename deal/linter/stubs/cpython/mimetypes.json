@@ -1,7 +1,8 @@
 {
   "MimeTypes.__init__": {
     "has": [
-      "global"
+      "global",
+      "read"
     ]
   },
   "MimeTypes.guess_type": {
@@ -53,7 +54,8 @@
   },
   "init": {
     "has": [
-      "global"
+      "global",
+      "read"
     ]
   }
 }

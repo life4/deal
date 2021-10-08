@@ -39,12 +39,22 @@
       "read"
     ]
   },
+  "ImpLoader.get_code": {
+    "has": [
+      "read"
+    ]
+  },
   "ImpLoader.get_data": {
     "has": [
       "read"
     ]
   },
   "ImpLoader.get_source": {
+    "has": [
+      "read"
+    ]
+  },
+  "ImpLoader.load_module": {
     "has": [
       "read"
     ]

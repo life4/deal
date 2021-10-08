@@ -9,7 +9,23 @@
       "AttributeError"
     ]
   },
+  "IMAP4._append_untagged": {
+    "has": [
+      "stderr",
+      "time"
+    ]
+  },
+  "IMAP4._command": {
+    "has": [
+      "stderr",
+      "time"
+    ]
+  },
   "IMAP4._connect": {
+    "has": [
+      "stderr",
+      "time"
+    ],
     "raises": [
       "TypeError",
       "ValueError"
@@ -24,6 +40,24 @@
       "err"
     ]
   },
+  "IMAP4._get_line": {
+    "has": [
+      "stderr",
+      "time"
+    ]
+  },
+  "IMAP4._get_response": {
+    "has": [
+      "stderr",
+      "time"
+    ]
+  },
+  "IMAP4._match": {
+    "has": [
+      "stderr",
+      "time"
+    ]
+  },
   "IMAP4._mode_ascii": {
     "raises": [
       "TypeError",
@@ -36,6 +70,12 @@
       "ValueError"
     ]
   },
+  "IMAP4._untagged_response": {
+    "has": [
+      "stderr",
+      "time"
+    ]
+  },
   "IMAP4.append": {
     "raises": [
       "ValueError"
@@ -46,9 +86,19 @@
       "IMAP4.error"
     ]
   },
+  "IMAP4.logout": {
+    "has": [
+      "network"
+    ]
+  },
   "IMAP4.search": {
     "raises": [
       "IMAP4.error"
+    ]
+  },
+  "IMAP4.shutdown": {
+    "has": [
+      "network"
     ]
   },
   "IMAP4.starttls": {

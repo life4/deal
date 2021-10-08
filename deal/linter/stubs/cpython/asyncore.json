@@ -9,14 +9,47 @@
       "OSError"
     ]
   },
+  "dispatcher.handle_accepted": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "dispatcher.handle_close": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "dispatcher.handle_connect": {
+    "has": [
+      "stdout"
+    ]
+  },
   "dispatcher.handle_connect_event": {
     "raises": [
       "OSError"
     ]
   },
   "dispatcher.handle_error": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "AssertionError"
+    ]
+  },
+  "dispatcher.handle_expt": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "dispatcher.handle_read": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "dispatcher.handle_write": {
+    "has": [
+      "stdout"
     ]
   },
   "dispatcher.log": {
@@ -25,6 +58,11 @@
     ]
   },
   "dispatcher.log_info": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "dispatcher_with_send.send": {
     "has": [
       "stdout"
     ]

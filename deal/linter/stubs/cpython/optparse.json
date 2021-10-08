@@ -116,6 +116,11 @@
       "ValueError"
     ]
   },
+  "OptionParser.error": {
+    "has": [
+      "stderr"
+    ]
+  },
   "OptionParser.exit": {
     "has": [
       "stderr"

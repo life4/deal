@@ -38,6 +38,7 @@
   },
   "PyZipFile.writepy": {
     "has": [
+      "read",
       "stdout"
     ],
     "raises": [
@@ -122,6 +123,9 @@
     ]
   },
   "ZipFile._open_to_write": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "ValueError"
     ]
@@ -164,11 +168,17 @@
     ]
   },
   "ZipFile.extract": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "TypeError"
     ]
   },
   "ZipFile.extractall": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "TypeError"
     ]
@@ -196,6 +206,7 @@
   },
   "ZipFile.write": {
     "has": [
+      "import",
       "read"
     ],
     "raises": [

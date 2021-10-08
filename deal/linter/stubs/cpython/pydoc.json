@@ -27,7 +27,13 @@
   },
   "Helper.help": {
     "has": [
+      "import",
       "stdout"
+    ]
+  },
+  "Helper.showsymbol": {
+    "has": [
+      "import"
     ]
   },
   "Helper.showtopic": {

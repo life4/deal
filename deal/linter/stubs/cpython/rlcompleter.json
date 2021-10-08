@@ -9,6 +9,11 @@
       "import"
     ]
   },
+  "Completer.complete": {
+    "has": [
+      "import"
+    ]
+  },
   "Completer.global_matches": {
     "has": [
       "import"

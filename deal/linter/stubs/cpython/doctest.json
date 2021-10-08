@@ -9,6 +9,11 @@
       "UnexpectedException"
     ]
   },
+  "DebugRunner.run": {
+    "has": [
+      "import"
+    ]
+  },
   "DocFileSuite": {
     "has": [
       "import"
@@ -53,7 +58,8 @@
   },
   "DocTestFinder.find": {
     "has": [
-      "global"
+      "global",
+      "stdout"
     ],
     "raises": [
       "TypeError",
@@ -178,6 +184,11 @@
       "stdout"
     ]
   },
+  "run_docstring_examples": {
+    "has": [
+      "import"
+    ]
+  },
   "set_unittest_reportflags": {
     "has": [
       "global"
@@ -189,7 +200,9 @@
   "testfile": {
     "has": [
       "global",
-      "read"
+      "import",
+      "read",
+      "stdout"
     ],
     "raises": [
       "TypeError",
@@ -198,7 +211,9 @@
   },
   "testmod": {
     "has": [
-      "global"
+      "global",
+      "import",
+      "stdout"
     ],
     "raises": [
       "TypeError"

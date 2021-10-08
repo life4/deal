@@ -1,5 +1,8 @@
 {
   "shlex.__next__": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "StopIteration"
     ]

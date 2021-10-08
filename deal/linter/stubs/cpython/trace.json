@@ -83,7 +83,10 @@
   },
   "main": {
     "has": [
-      "import"
+      "import",
+      "read",
+      "stderr",
+      "stdout"
     ],
     "raises": [
       "SystemExit",

@@ -1,10 +1,25 @@
 {
+  "NNTP.__exit__": {
+    "has": [
+      "network"
+    ]
+  },
   "NNTP.__init__": {
     "has": [
       "network"
     ],
     "raises": [
       "err"
+    ]
+  },
+  "NNTP._base_init": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "NNTP._close": {
+    "has": [
+      "network"
     ]
   },
   "NNTP._create_socket": {
@@ -45,7 +60,20 @@
       "NNTPTemporaryError"
     ]
   },
+  "NNTP._longcmd": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "NNTP._longcmdstring": {
+    "has": [
+      "stdout"
+    ]
+  },
   "NNTP._post": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "NNTPReplyError"
     ]
@@ -56,6 +84,11 @@
     ]
   },
   "NNTP._putline": {
+    "has": [
+      "stdout"
+    ]
+  },
+  "NNTP._shortcmd": {
     "has": [
       "stdout"
     ]
@@ -96,6 +129,11 @@
   "NNTP.newnews": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "NNTP.quit": {
+    "has": [
+      "network"
     ]
   },
   "NNTP.xhdr": {

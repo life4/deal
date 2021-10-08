@@ -5,6 +5,9 @@
     ]
   },
   "create_archive": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "ZipAppError"
     ]

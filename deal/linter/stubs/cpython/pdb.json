@@ -20,6 +20,11 @@
       "AssertionError"
     ]
   },
+  "Pdb.do_break": {
+    "has": [
+      "import"
+    ]
+  },
   "Pdb.do_run": {
     "has": [
       "import"
@@ -46,6 +51,11 @@
   "Pdb.message": {
     "has": [
       "stdout"
+    ]
+  },
+  "Pdb.reset": {
+    "has": [
+      "import"
     ]
   },
   "Pdb.sigint_handler": {

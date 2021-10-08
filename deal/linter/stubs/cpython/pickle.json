@@ -67,6 +67,9 @@
     ]
   },
   "_Unpickler.get_extension": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "UnpicklingError",
       "ValueError"
@@ -127,6 +130,16 @@
       "UnpicklingError"
     ]
   },
+  "_Unpickler.load_global": {
+    "has": [
+      "import"
+    ]
+  },
+  "_Unpickler.load_inst": {
+    "has": [
+      "import"
+    ]
+  },
   "_Unpickler.load_long4": {
     "raises": [
       "UnpicklingError"
@@ -163,6 +176,9 @@
     ]
   },
   "_Unpickler.load_stack_global": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "UnpicklingError"
     ]
@@ -200,7 +216,8 @@
   "_test": {
     "has": [
       "global",
-      "import"
+      "import",
+      "stdout"
     ],
     "raises": [
       "TypeError"
