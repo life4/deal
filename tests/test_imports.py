@@ -1,4 +1,5 @@
 import ast
+from contextlib import suppress
 from pathlib import Path
 from textwrap import dedent
 
@@ -18,6 +19,7 @@ from deal._imports import DealLoader, deactivate, get_name
 def test_get_name(text, expected):
     tree = ast.parse(text)
     print(ast.dump(tree))
+    assert isinstance(tree, ast.Module)
     expr = tree.body[0].value
     assert get_name(expr=expr) == expected
 
@@ -47,6 +49,7 @@ def test_get_contracts():
 def test_exec_contract(text, expected):
     tree = ast.parse(text)
     print(ast.dump(tree))
+    assert isinstance(tree, ast.Module)
     actual = DealLoader._exec_contract(node=tree.body[0].value)
     assert actual == expected
 
@@ -181,7 +184,8 @@ def test_smoke_pure():
     finally:
         assert deactivate()
         assert not deactivate()
-        Path('tmp123.py').unlink()
+        with suppress(FileNotFoundError):
+            Path('tmp123.py').unlink()
 
 
 def test_smoke_has():
