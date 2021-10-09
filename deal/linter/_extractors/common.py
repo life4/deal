@@ -60,8 +60,6 @@ def _traverse_ast(node: ast.AST) -> Iterator[ast.AST]:
 def _traverse_astroid(node: NodeNG) -> Iterator[NodeNG]:
     todo = deque([node])
     while todo:
-        # print('+', node, repr(node.as_string()))
-        print('+', node.as_string())
         node = todo.popleft()
         if isinstance(node, astroid.TryExcept):
             for h in node.handlers:
