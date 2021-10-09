@@ -85,6 +85,7 @@ def test_stub_file(tmp_path: Path):
 
 @pytest.mark.parametrize('given, expected', [
     ('def f(): pass', ['f']),
+    ('async def f(): pass', ['f']),
     ('def f(): pass\n\ndef g(): pass', ['f', 'g']),
     ('class C:\n def f(): pass', ['C.f']),
     ('class A:\n class B:\n  def f(): pass', ['A.B.f']),
@@ -135,10 +136,13 @@ def test_stubs_manager(tmp_path: Path):
     # test get
     assert stubs.get('example') is stubs._modules['example']
     expected = {'raises': ['AssertionError', 'TypeError']}
-    assert stubs.get('typing')._content['get_type_hints'] == expected
+    stub = stubs.get('typing')
+    assert stub
+    assert stub._content['get_type_hints'] == expected
 
     # test do not re-create already cached stub
     old_stub = stubs.get('example')
+    assert old_stub
     old_stub.dump()
     new_stub = stubs.create(path)
     assert new_stub is old_stub
