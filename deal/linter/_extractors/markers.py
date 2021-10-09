@@ -177,7 +177,9 @@ def _infer_markers(expr, dive: bool, stubs: StubsManager = None) -> Iterator[Tok
             yield token
 
     if not stubs_found:
-        yield from _markers_from_inferred(expr=expr, inferred=inferred)
+        for token in _markers_from_inferred(expr=expr, inferred=inferred):
+            dive = False
+            yield token
         if dive:
             yield from _markers_from_func(expr=expr, inferred=inferred)
 
@@ -203,26 +205,6 @@ def _markers_from_inferred(expr: NodeNG, inferred: tuple) -> Iterator[Token]:
                     col=expr.col_offset,
                 )
                 return
-
-
-@get_markers.register(*TOKENS.WITH)
-def handle_with(expr, **kwargs) -> Optional[Token]:
-    token_info = dict(line=expr.lineno, col=expr.col_offset)
-    for item in expr.items:
-        if isinstance(item, ast.withitem):
-            item = item.context_expr
-        else:
-            item = item[0]
-        if _is_pathlib_write(item):
-            return Token(marker='write', value='Path.open', **token_info)
-        if not isinstance(item, TOKENS.CALL):
-            continue
-        name = get_name(item.func)
-        if name == 'open':
-            if _is_open_to_write(item):
-                return Token(marker='write', value='open', **token_info)
-            return Token(marker='read', value='open', **token_info)
-    return None
 
 
 def _is_open_to_write(expr) -> bool:

@@ -80,11 +80,11 @@ def test_no_stubs_for_module():
     stubs = StubsManager()
 
     text = """
-        from astroid import inference_tip
+        from astroid import parse
 
         @deal.raises()
         def child():
-            inference_tip()
+            parse()
     """
     tree = astroid.parse(dedent(text))
     print(tree.repr_tree())

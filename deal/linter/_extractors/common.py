@@ -1,4 +1,5 @@
 import ast
+from collections import deque
 from contextlib import suppress
 from functools import partial
 from pathlib import Path
@@ -13,23 +14,15 @@ from .._stub import EXTENSION, StubFile, StubsManager
 
 TOKENS = SimpleNamespace(
     ASSERT=(ast.Assert, astroid.Assert),
-    ASSIGN=(ast.Assign, astroid.Assign),
     ATTR=(ast.Attribute, astroid.Attribute),
-    AWAIT=(ast.Await, astroid.Await),
     BIN_OP=(ast.BinOp, astroid.BinOp),
     CALL=(ast.Call, astroid.Call),
     COMPARE=(ast.Compare, astroid.Compare),
     EXPR=(ast.Expr, astroid.Expr),
-    FOR=(ast.For, astroid.For),
-    FUNC=(ast.FunctionDef, astroid.FunctionDef),
     GLOBAL=(ast.Global, astroid.Global),
-    IF=(ast.If, astroid.If),
-    NAME=(ast.Name, astroid.Name),
     NONLOCAL=(ast.Nonlocal, astroid.Nonlocal),
     RAISE=(ast.Raise, astroid.Raise),
     RETURN=(ast.Return, astroid.Return),
-    UNARY_OP=(ast.UnaryOp, astroid.UnaryOp),
-    WITH=(ast.With, astroid.With),
     YIELD=(ast.Yield, astroid.Yield),
 )
 
@@ -44,41 +37,37 @@ class Token(NamedTuple):
 
 def traverse(body: List) -> Iterator:
     for expr in body:
-        # breaking apart statements
-        if isinstance(expr, TOKENS.EXPR):
-            yield from _traverse_expr(expr=expr.value)
-            continue
-        if isinstance(expr, TOKENS.IF + TOKENS.FOR):
-            yield from traverse(body=expr.body)
-            yield from traverse(body=expr.orelse)
-            continue
-
-        # breaking apart try-except
-        if isinstance(expr, (ast.Try, astroid.TryExcept)):
-            for handler in expr.handlers:
-                yield from traverse(body=handler.body)
-            yield from traverse(body=expr.orelse)
-        if isinstance(expr, (ast.Try, astroid.TryFinally)):
-            yield from traverse(body=expr.finalbody)
-            continue
-
-        # extracting things
-        if isinstance(expr, TOKENS.WITH):
-            yield from traverse(body=expr.body)
-        elif isinstance(expr, TOKENS.RETURN + TOKENS.ASSIGN):
-            yield from _traverse_expr(expr.value)
-        yield expr
+        if isinstance(expr, ast.AST):
+            yield from _traverse_ast(expr)
+        else:
+            yield from _traverse_astroid(expr)
 
 
-def _traverse_expr(expr) -> Iterator:
-    yield expr
-    if isinstance(expr, TOKENS.AWAIT):
-        yield from _traverse_expr(expr.value)
-    if isinstance(expr, TOKENS.CALL):
-        for subnode in expr.args:
-            yield from traverse(body=[subnode])
-        for subnode in (expr.keywords or ()):
-            yield from traverse(body=[subnode.value])
+def _traverse_ast(node: ast.AST) -> Iterator[ast.AST]:
+    todo = deque([node])
+    while todo:
+        node = todo.popleft()
+        if isinstance(node, ast.Try):
+            for h in node.handlers:
+                todo.extend(h.body)
+            todo.extend(node.orelse)
+            todo.extend(node.finalbody)
+        else:
+            todo.extend(ast.iter_child_nodes(node))
+            yield node
+
+
+def _traverse_astroid(node: NodeNG) -> Iterator[NodeNG]:
+    todo = deque([node])
+    while todo:
+        node = todo.popleft()
+        if isinstance(node, astroid.TryExcept):
+            for h in node.handlers:
+                todo.extend(h.body)
+            todo.extend(node.orelse)
+        else:
+            todo.extend(node.get_children())
+            yield node
 
 
 def get_name(expr) -> Optional[str]:
@@ -179,7 +168,7 @@ class Extractor:
 
     def handle(self, expr, **kwargs):
         handler = self.handlers.get(type(expr))
-        if not handler:
+        if handler is None:
             return
         token = handler(expr=expr, **kwargs)
         if token is None:
