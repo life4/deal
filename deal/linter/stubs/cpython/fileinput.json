@@ -1,8 +1,13 @@
 {
   "FileInput.__getitem__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "IndexError",
-      "RuntimeError"
+      "RuntimeError",
+      "TypeError",
+      "message"
     ]
   },
   "FileInput.__init__": {

@@ -11,6 +11,22 @@
       "message"
     ]
   },
+  "Random._randbelow_with_getrandbits": {
+    "has": [
+      "random"
+    ]
+  },
+  "Random._randbelow_without_getrandbits": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ZeroDivisionError",
+      "message"
+    ]
+  },
   "Random.choice": {
     "raises": [
       "IndexError"
@@ -28,20 +44,50 @@
     ]
   },
   "Random.randrange": {
+    "has": [
+      "random"
+    ],
     "raises": [
       "ValueError"
     ]
   },
   "Random.sample": {
+    "has": [
+      "import",
+      "random"
+    ],
     "raises": [
+      "RuntimeError",
       "TypeError",
-      "ValueError"
+      "ValueError",
+      "message"
+    ]
+  },
+  "Random.seed": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
     ]
   },
   "Random.setstate": {
     "raises": [
       "TypeError",
       "ValueError"
+    ]
+  },
+  "Random.shuffle": {
+    "has": [
+      "import",
+      "random"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
     ]
   },
   "SystemRandom._notimplemented": {
@@ -58,13 +104,18 @@
   "_test": {
     "has": [
       "import",
-      "stdout"
+      "stdout",
+      "time"
     ]
   },
   "_test_generator": {
     "has": [
       "import",
-      "stdout"
+      "stdout",
+      "time"
+    ],
+    "raises": [
+      "StatisticsError"
     ]
   }
 }

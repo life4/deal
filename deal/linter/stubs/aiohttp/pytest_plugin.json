@@ -1,0 +1,28 @@
+{
+  "_runtime_warning_context": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "loop": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "proactor_loop": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "pytest_generate_tests": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

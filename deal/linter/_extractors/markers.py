@@ -2,6 +2,7 @@ import ast
 from typing import Iterator, Optional
 
 import astroid
+from astroid.node_classes import NodeNG
 
 from .._contract import Category
 from .._stub import StubsManager
@@ -11,6 +12,77 @@ from .value import get_value
 
 
 get_markers = Extractor()
+DEFINITELY_RANDOM_FUNCS = frozenset({
+    'randint',
+    'randbytes',
+    'randrange',
+    'getrandbits',
+    'shuffle',
+})
+SYSCALLS = frozenset({
+    # https://docs.python.org/3/library/os.html#process-management
+    'os.abort',
+    'os.execv',
+    'os.fork',
+    'os.forkpty',
+    'os.kill',
+    'os.killpg',
+    'os.plock',
+    'os.posix_spawn',
+    'os.posix_spawnp',
+    'os.putenv',
+    'os.startfile',
+    'os.system',
+    'os.wait',
+    'os.wait3',
+    'os.wait4',
+    'os.waitid',
+    'os.waitpid',
+
+    'subprocess.call',
+    'subprocess.check_call',
+    'subprocess.check_out',
+    'subprocess.getoutput',
+    'subprocess.getstatusoutput',
+    'subprocess.run',
+    'subprocess.Popen',
+})
+SYSCALLS_PREFIXES = ('os.exec', 'os.spawn', 'os.popen')
+TIMES = frozenset({
+    'os.times',
+    'datetime.now',
+    'date.today',
+    'datetime.datetime.now',
+    'datetime.date.today',
+
+    'time.clock_gettime',
+    'time.clock_gettime_ns',
+    'time.get_clock_info',
+    'time.monotonic',
+    'time.monotonic_ns',
+    'time.perf_counter',
+    'time.perf_counter_ns',
+    'time.process_time',
+    'time.process_time_ns',
+    'time.time',
+    'time.time_ns',
+    'time.thread_time',
+    'time.thread_time_ns',
+})
+NETWORK_FUNCS = frozenset({
+    '_socket.socket.connect',
+    '_socket.socket.sendall',
+    '_socket.socket.recv',
+    '_socket.socket.listen',
+    '_socket.socket.bind',
+    '_socket.socket.getaddrinfo',
+    '_socket.socket.close',
+
+    'asyncio.streams.open_connection',
+    'asyncio.streams.start_server',
+    'asyncio.streams.open_unix_connection',
+    'asyncio.streams.start_unix_server',
+})
 
 
 @get_markers.register(*TOKENS.GLOBAL)
@@ -50,16 +122,36 @@ def handle_call(expr, dive: bool = True, stubs: StubsManager = None) -> Iterator
     if name is None:
         return
 
-    # stdout and stderr
+    # stdout, stderr, stdin
     token = _check_print(expr=expr, name=name)
     if token is not None:
         yield token
         return
-    if name.startswith('sys.stdout.'):
-        yield Token(marker='stdout', value='sys.stdout', **token_info)
+    if name.startswith('sys.stdout'):
+        yield Token(marker='stdout', value='sys.stdout.', **token_info)
         return
-    if name.startswith('sys.stderr.'):
-        yield Token(marker='stderr', value='sys.stderr', **token_info)
+    if name.startswith('sys.stderr'):
+        yield Token(marker='stderr', value='sys.stderr.', **token_info)
+        return
+    if name.startswith('sys.stdin'):
+        yield Token(marker='stdin', value='sys.stdin.', **token_info)
+        return
+    if name == 'input':
+        yield Token(marker='stdin', value='input', **token_info)
+        return
+
+    # random, import,
+    if name == '__import__':
+        yield Token(marker='import', **token_info)
+        return
+    if _is_random(expr=expr, name=name):
+        yield Token(marker='random', value=name, **token_info)
+        return
+    if _is_syscall(expr=expr, name=name):
+        yield Token(marker='syscall', value=name, **token_info)
+        return
+    if _is_time(expr=expr, name=name):
+        yield Token(marker='time', value=name, **token_info)
         return
 
     # read and write
@@ -73,11 +165,6 @@ def handle_call(expr, dive: bool = True, stubs: StubsManager = None) -> Iterator
         yield Token(marker='write', value='Path.open', **token_info)
         return
 
-    # import
-    if name == '__import__':
-        yield Token(marker='import', **token_info)
-        return
-
     yield from _infer_markers(expr=expr, dive=dive, stubs=stubs)
 
 
@@ -89,10 +176,33 @@ def _infer_markers(expr, dive: bool, stubs: StubsManager = None) -> Iterator[Tok
             stubs_found = True
             yield token
 
-    # Infer function call and check the function body for raises.
-    # Do not dive into called function if we already found stubs for it.
-    if not stubs_found and dive:
-        yield from _markers_from_func(expr=expr, inferred=inferred)
+    if not stubs_found:
+        yield from _markers_from_inferred(expr=expr, inferred=inferred)
+        if dive:
+            yield from _markers_from_func(expr=expr, inferred=inferred)
+
+
+def _markers_from_inferred(expr: NodeNG, inferred: tuple) -> Iterator[Token]:
+    for node in inferred:
+        module, full_name = get_full_name(node)
+        qual_name = f'{module}.{full_name}'
+        if qual_name in NETWORK_FUNCS:
+            yield Token(
+                marker='network',
+                value=full_name,
+                line=expr.lineno,
+                col=expr.col_offset,
+            )
+            return
+        if isinstance(node, astroid.BoundMethod):
+            if node.bound.pytype() == 'random.Random':
+                yield Token(
+                    marker='random',
+                    value=full_name,
+                    line=expr.lineno,
+                    col=expr.col_offset,
+                )
+                return
 
 
 @get_markers.register(*TOKENS.WITH)
@@ -167,9 +277,9 @@ def _markers_from_stubs(expr: astroid.Call, inferred, stubs: StubsManager) -> It
             yield Token(marker=name, line=expr.lineno, col=expr.col_offset)
 
 
-def _markers_from_func(expr, inferred) -> Iterator[Token]:
+def _markers_from_func(expr: NodeNG, inferred: tuple) -> Iterator[Token]:
     for value in inferred:
-        if type(value) is not astroid.FunctionDef:
+        if not isinstance(value, (astroid.FunctionDef, astroid.UnboundMethod)):
             continue
 
         # recursively infer markers from the function body
@@ -230,3 +340,29 @@ def _check_print(expr, name: str) -> Optional[Token]:
         line=expr.lineno,
         col=expr.col_offset,
     )
+
+
+def _is_random(expr, name: str) -> bool:
+    if name.startswith('random.'):
+        return True
+    if '.' in name:
+        return False
+    if name in DEFINITELY_RANDOM_FUNCS:
+        return True
+    return False
+
+
+def _is_syscall(expr, name: str) -> bool:
+    if name in SYSCALLS:
+        return True
+    if name.startswith(SYSCALLS_PREFIXES):
+        return True
+    return False
+
+
+def _is_time(expr, name: str) -> bool:
+    if name in TIMES:
+        return True
+    if f'time.{name}' in TIMES:
+        return True
+    return False

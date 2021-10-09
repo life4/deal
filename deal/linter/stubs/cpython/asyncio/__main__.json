@@ -1,0 +1,17 @@
+{
+  "AsyncIOInteractiveConsole.runcode": {
+    "has": [
+      "stderr"
+    ]
+  },
+  "REPLThread.run": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}

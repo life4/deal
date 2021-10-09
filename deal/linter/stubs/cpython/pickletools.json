@@ -17,7 +17,8 @@
   "_test": {
     "has": [
       "global",
-      "import"
+      "import",
+      "stdout"
     ],
     "raises": [
       "TypeError"
@@ -35,6 +36,12 @@
     "has": [
       "stdout"
     ],
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "read_bytearray8": {
     "raises": [
       "AssertionError",
       "ValueError"

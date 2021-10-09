@@ -46,6 +46,11 @@
       "UnpicklingError"
     ]
   },
+  "_Unframer.readinto": {
+    "raises": [
+      "UnpicklingError"
+    ]
+  },
   "_Unframer.readline": {
     "raises": [
       "UnpicklingError"
@@ -56,7 +61,15 @@
       "TypeError"
     ]
   },
+  "_Unpickler.find_class": {
+    "has": [
+      "import"
+    ]
+  },
   "_Unpickler.get_extension": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "UnpicklingError",
       "ValueError"
@@ -73,6 +86,11 @@
     ]
   },
   "_Unpickler.load_binbytes8": {
+    "raises": [
+      "UnpicklingError"
+    ]
+  },
+  "_Unpickler.load_binget": {
     "raises": [
       "UnpicklingError"
     ]
@@ -97,9 +115,29 @@
       "UnpicklingError"
     ]
   },
+  "_Unpickler.load_bytearray8": {
+    "raises": [
+      "UnpicklingError"
+    ]
+  },
   "_Unpickler.load_frame": {
     "raises": [
       "ValueError"
+    ]
+  },
+  "_Unpickler.load_get": {
+    "raises": [
+      "UnpicklingError"
+    ]
+  },
+  "_Unpickler.load_global": {
+    "has": [
+      "import"
+    ]
+  },
+  "_Unpickler.load_inst": {
+    "has": [
+      "import"
     ]
   },
   "_Unpickler.load_long4": {
@@ -107,9 +145,19 @@
       "UnpicklingError"
     ]
   },
+  "_Unpickler.load_long_binget": {
+    "raises": [
+      "UnpicklingError"
+    ]
+  },
   "_Unpickler.load_long_binput": {
     "raises": [
       "ValueError"
+    ]
+  },
+  "_Unpickler.load_next_buffer": {
+    "raises": [
+      "UnpicklingError"
     ]
   },
   "_Unpickler.load_persid": {
@@ -128,6 +176,9 @@
     ]
   },
   "_Unpickler.load_stack_global": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "UnpicklingError"
     ]
@@ -165,7 +216,8 @@
   "_test": {
     "has": [
       "global",
-      "import"
+      "import",
+      "stdout"
     ],
     "raises": [
       "TypeError"

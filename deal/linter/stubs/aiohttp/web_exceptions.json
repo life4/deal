@@ -1,0 +1,17 @@
+{
+  "HTTPException.__init__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "HTTPMove.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

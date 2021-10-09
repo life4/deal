@@ -11,6 +11,7 @@
   },
   "Stats.init": {
     "has": [
+      "read",
       "stdout"
     ]
   },

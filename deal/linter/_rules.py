@@ -246,12 +246,18 @@ class CheckMarkers(FuncRule):
     codes = MappingProxyType({
         'global': 41,
         'import': 42,
+
         'io': 43,
         'read': 44,
         'write': 45,
         'stdout': 46,
         'stderr': 47,
         'network': 48,
+        'stdin': 49,
+        'syscall': 50,
+
+        'random': 55,
+        'time': 56,
     })
 
     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:

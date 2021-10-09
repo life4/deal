@@ -1,0 +1,245 @@
+{
+  "BaseEventLoop.__del__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "BaseEventLoop._add_callback": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "BaseEventLoop._asyncgen_firstiter_hook": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "BaseEventLoop._check_callback": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "BaseEventLoop._check_closed": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "BaseEventLoop._check_default_executor": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "BaseEventLoop._check_running": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "BaseEventLoop._check_sendfile_params": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BaseEventLoop._check_thread": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "BaseEventLoop._create_server_getaddrinfo": {
+    "raises": [
+      "OSError"
+    ]
+  },
+  "BaseEventLoop._getaddrinfo_debug": {
+    "has": [
+      "network",
+      "time"
+    ]
+  },
+  "BaseEventLoop._make_datagram_transport": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "BaseEventLoop._make_read_pipe_transport": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "BaseEventLoop._make_socket_transport": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "BaseEventLoop._make_ssl_transport": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "BaseEventLoop._make_subprocess_transport": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "BaseEventLoop._make_write_pipe_transport": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "BaseEventLoop._process_events": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "BaseEventLoop._write_to_self": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "BaseEventLoop.close": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "BaseEventLoop.connect_accepted_socket": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BaseEventLoop.create_connection": {
+    "raises": [
+      "OSError",
+      "ValueError"
+    ]
+  },
+  "BaseEventLoop.create_datagram_endpoint": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError",
+      "OSError",
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "BaseEventLoop.create_server": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BaseEventLoop.run_until_complete": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "BaseEventLoop.sendfile": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "BaseEventLoop.set_default_executor": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "BaseEventLoop.set_exception_handler": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "BaseEventLoop.set_task_factory": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "BaseEventLoop.sock_sendfile": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BaseEventLoop.start_tls": {
+    "raises": [
+      "RuntimeError",
+      "TypeError"
+    ]
+  },
+  "BaseEventLoop.subprocess_exec": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BaseEventLoop.subprocess_shell": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BaseEventLoop.time": {
+    "has": [
+      "time"
+    ]
+  },
+  "Server._attach": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Server._detach": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Server.serve_forever": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_SendfileFallbackProtocol.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_SendfileFallbackProtocol.connection_made": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_SendfileFallbackProtocol.data_received": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_SendfileFallbackProtocol.drain": {
+    "raises": [
+      "ConnectionError"
+    ]
+  },
+  "_SendfileFallbackProtocol.eof_received": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_set_reuseport": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

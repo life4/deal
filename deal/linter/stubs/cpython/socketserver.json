@@ -1,4 +1,10 @@
 {
+  "BaseServer._handle_request_noblock": {
+    "has": [
+      "import",
+      "stderr"
+    ]
+  },
   "BaseServer.handle_error": {
     "has": [
       "import",
@@ -9,6 +15,26 @@
   "DatagramRequestHandler.setup": {
     "has": [
       "import"
+    ]
+  },
+  "TCPServer.__init__": {
+    "has": [
+      "network"
+    ]
+  },
+  "TCPServer.server_activate": {
+    "has": [
+      "network"
+    ]
+  },
+  "TCPServer.server_bind": {
+    "has": [
+      "network"
+    ]
+  },
+  "TCPServer.server_close": {
+    "has": [
+      "network"
     ]
   }
 }

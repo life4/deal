@@ -1,0 +1,29 @@
+{
+  "TopologicalSorter.add": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "TopologicalSorter.done": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "TopologicalSorter.get_ready": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "TopologicalSorter.is_active": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "TopologicalSorter.prepare": {
+    "raises": [
+      "CycleError",
+      "ValueError"
+    ]
+  }
+}

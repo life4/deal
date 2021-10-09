@@ -1,0 +1,31 @@
+{
+  "PipeHandle.__del__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "PipeHandle.fileno": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Popen.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "pipe": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "FileExistsError",
+      "TypeError"
+    ]
+  }
+}

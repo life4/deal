@@ -1,0 +1,158 @@
+{
+  "AbstractRoute.__init__": {
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "Domain.validation": {
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "DynamicResource.__init__": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "DynamicResource.add_prefix": {
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "MaskDomain.__init__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "PlainResource.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "PlainResource.add_prefix": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "PrefixResource.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "PrefixResource.add_prefix": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "PrefixedSubAppResource.url_for": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "Resource.add_route": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "Resource.register_route": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "ResourceRoute.get_info": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "ResourceRoute.url_for": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "StaticResource.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "StaticResource._directory_as_html": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "StaticResource._handle": {
+    "raises": [
+      "HTTPForbidden",
+      "HTTPNotFound"
+    ]
+  },
+  "StaticResource.set_options_route": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "StaticResource.url_for": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "SystemRoute._handle": {
+    "raises": [
+      "self._http_exception"
+    ]
+  },
+  "SystemRoute.url_for": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "UrlDispatcher.add_resource": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "UrlDispatcher.add_static": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "UrlDispatcher.register_resource": {
+    "raises": [
+      "AssertionError",
+      "RuntimeError",
+      "ValueError"
+    ]
+  },
+  "UrlMappingMatchInfo.add_app": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "UrlMappingMatchInfo.current_app": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "UrlMappingMatchInfo.set_current_app": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "View._raise_allowed_methods": {
+    "raises": [
+      "HTTPMethodNotAllowed"
+    ]
+  },
+  "_default_expect_handler": {
+    "raises": [
+      "HTTPExpectationFailed"
+    ]
+  }
+}

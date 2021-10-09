@@ -1,7 +1,8 @@
 {
   "MimeTypes.__init__": {
     "has": [
-      "global"
+      "global",
+      "read"
     ]
   },
   "MimeTypes.guess_type": {
@@ -20,6 +21,15 @@
   "_default_mime_types": {
     "has": [
       "global"
+    ]
+  },
+  "_main": {
+    "has": [
+      "import",
+      "stdout"
+    ],
+    "raises": [
+      "SystemExit"
     ]
   },
   "add_type": {
@@ -44,7 +54,8 @@
   },
   "init": {
     "has": [
-      "global"
+      "global",
+      "read"
     ]
   }
 }

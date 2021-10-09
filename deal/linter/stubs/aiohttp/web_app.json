@@ -1,0 +1,68 @@
+{
+  "Application.__init__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "Application.__init_subclass__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Application._add_subapp": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "Application._check_frozen": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "Application._handle": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Application._set_loop": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "Application.add_domain": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Application.add_subapp": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "Application.debug": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "CleanupContext._on_cleanup": {
+    "raises": [
+      "CleanupError"
+    ]
+  }
+}

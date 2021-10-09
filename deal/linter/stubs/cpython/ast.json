@@ -1,4 +1,44 @@
 {
+  "NodeVisitor.visit_Constant": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_Unparser._fstring_Constant": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_Unparser._fstring_FormattedValue": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_Unparser._str_literal_helper": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_Unparser.visit_Raise": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_Unparser.visit_YieldFrom": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_new": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "dump": {
     "raises": [
       "TypeError"
@@ -10,6 +50,26 @@
     ],
     "raises": [
       "TypeError"
+    ]
+  },
+  "literal_eval": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "main": {
+    "has": [
+      "import",
+      "stdout"
+    ],
+    "raises": [
+      "AssertionError",
+      "TypeError"
+    ]
+  },
+  "parse": {
+    "raises": [
+      "AssertionError"
     ]
   },
   "walk": {

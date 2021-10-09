@@ -1,0 +1,347 @@
+{
+  "AbstractEventLoop._timer_handle_cancelled": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.add_reader": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.add_signal_handler": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.add_writer": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.call_at": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.call_exception_handler": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.call_later": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.call_soon_threadsafe": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.close": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.connect_read_pipe": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.connect_write_pipe": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.create_connection": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.create_datagram_endpoint": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.create_future": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.create_server": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.create_task": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.create_unix_connection": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.create_unix_server": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.default_exception_handler": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.get_debug": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.get_exception_handler": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.get_task_factory": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.getaddrinfo": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.getnameinfo": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.is_closed": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.is_running": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.remove_reader": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.remove_signal_handler": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.remove_writer": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.run_forever": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.run_in_executor": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.run_until_complete": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.sendfile": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.set_debug": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.set_default_executor": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.set_exception_handler": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.set_task_factory": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.shutdown_asyncgens": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.shutdown_default_executor": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.sock_accept": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.sock_connect": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.sock_recv": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.sock_recv_into": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.sock_sendall": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.sock_sendfile": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.start_tls": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.stop": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.subprocess_exec": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.subprocess_shell": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoop.time": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoopPolicy.get_child_watcher": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoopPolicy.get_event_loop": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoopPolicy.new_event_loop": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoopPolicy.set_child_watcher": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractEventLoopPolicy.set_event_loop": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractServer.close": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractServer.get_loop": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractServer.is_serving": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractServer.serve_forever": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractServer.start_serving": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractServer.wait_closed": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "BaseDefaultEventLoopPolicy.get_event_loop": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "BaseDefaultEventLoopPolicy.set_event_loop": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "TimerHandle.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_init_event_loop_policy": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "get_event_loop_policy": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "get_running_loop": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "set_event_loop_policy": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

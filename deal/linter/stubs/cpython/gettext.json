@@ -8,9 +8,73 @@
       "ValueError"
     ]
   },
+  "GNUTranslations.lgettext": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "GNUTranslations.lngettext": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
   "NullTranslations.install": {
     "has": [
       "import"
+    ]
+  },
+  "NullTranslations.lgettext": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError",
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "NullTranslations.lngettext": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError",
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "NullTranslations.output_charset": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "NullTranslations.set_output_charset": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
     ]
   },
   "_as_int": {
@@ -21,6 +85,11 @@
       "RuntimeError",
       "TypeError",
       "message"
+    ]
+  },
+  "_expand_lang": {
+    "has": [
+      "import"
     ]
   },
   "_parse": {
@@ -36,7 +105,13 @@
   },
   "bind_textdomain_codeset": {
     "has": [
-      "global"
+      "global",
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
     ]
   },
   "bindtextdomain": {
@@ -63,6 +138,54 @@
       "FileNotFoundError"
     ]
   },
+  "ldgettext": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError",
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "ldngettext": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError",
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "lgettext": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError",
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "lngettext": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError",
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
   "textdomain": {
     "has": [
       "global"
@@ -74,8 +197,13 @@
       "read"
     ],
     "raises": [
+      "AssertionError",
       "Error",
-      "FileNotFoundError"
+      "FileNotFoundError",
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
     ]
   }
 }

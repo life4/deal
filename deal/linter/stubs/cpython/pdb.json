@@ -1,4 +1,9 @@
 {
+  "Pdb._complete_location": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "Pdb._runmodule": {
     "has": [
       "import"
@@ -18,6 +23,11 @@
   "Pdb._select_frame": {
     "raises": [
       "AssertionError"
+    ]
+  },
+  "Pdb.do_break": {
+    "has": [
+      "import"
     ]
   },
   "Pdb.do_run": {
@@ -48,6 +58,11 @@
       "stdout"
     ]
   },
+  "Pdb.reset": {
+    "has": [
+      "import"
+    ]
+  },
   "Pdb.sigint_handler": {
     "raises": [
       "KeyboardInterrupt"
@@ -64,6 +79,7 @@
       "global"
     ],
     "raises": [
+      "AssertionError",
       "OSError",
       "TypeError",
       "ValueError"

@@ -36,6 +36,9 @@
     ]
   },
   "HelpFormatter.__init__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError",
       "ValueError"
@@ -49,6 +52,16 @@
   "HelpFormatter._fill_text": {
     "has": [
       "import"
+    ]
+  },
+  "HelpFormatter._format_action": {
+    "has": [
+      "import"
+    ]
+  },
+  "HelpFormatter._format_args": {
+    "raises": [
+      "ValueError"
     ]
   },
   "HelpFormatter._format_usage": {
@@ -108,6 +121,11 @@
     ]
   },
   "_AppendConstAction.__call__": {
+    "has": [
+      "import"
+    ]
+  },
+  "_ExtendAction.__call__": {
     "has": [
       "import"
     ]

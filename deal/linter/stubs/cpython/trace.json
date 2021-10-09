@@ -14,7 +14,8 @@
     ],
     "raises": [
       "SyntaxError",
-      "TypeError"
+      "TypeError",
+      "ZeroDivisionError"
     ]
   },
   "CoverageResults.write_results_file": {
@@ -83,7 +84,10 @@
   },
   "main": {
     "has": [
-      "import"
+      "import",
+      "read",
+      "stderr",
+      "stdout"
     ],
     "raises": [
       "SystemExit",

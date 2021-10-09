@@ -1,0 +1,12 @@
+{
+  "FileResponse._sendfile": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "FileResponse.prepare": {
+    "has": [
+      "global"
+    ]
+  }
+}

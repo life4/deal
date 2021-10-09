@@ -1,0 +1,85 @@
+{
+  "BaseSelectorEventLoop._ensure_fd_no_transport": {
+    "raises": [
+      "RuntimeError",
+      "ValueError"
+    ]
+  },
+  "BaseSelectorEventLoop._make_self_pipe": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BaseSelectorEventLoop.close": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "BaseSelectorEventLoop.sock_accept": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BaseSelectorEventLoop.sock_connect": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BaseSelectorEventLoop.sock_recv": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BaseSelectorEventLoop.sock_recv_into": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BaseSelectorEventLoop.sock_sendall": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_SelectorDatagramTransport.sendto": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_SelectorSocketTransport._make_empty_waiter": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_SelectorSocketTransport._write_ready": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_SelectorSocketTransport.write": {
+    "raises": [
+      "RuntimeError",
+      "TypeError"
+    ]
+  },
+  "_SelectorTransport.__del__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_check_ssl_socket": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

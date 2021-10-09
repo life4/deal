@@ -1,0 +1,54 @@
+{
+  "BaseRequest.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "BaseRequest.clone": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "BaseRequest.host": {
+    "has": [
+      "network"
+    ]
+  },
+  "BaseRequest.http_range": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BaseRequest.json": {
+    "raises": [
+      "HTTPBadRequest"
+    ]
+  },
+  "BaseRequest.post": {
+    "raises": [
+      "HTTPUnsupportedMediaType",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BaseRequest.text": {
+    "raises": [
+      "HTTPUnsupportedMediaType"
+    ]
+  },
+  "Request.app": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Request.config_dict": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Request.match_info": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

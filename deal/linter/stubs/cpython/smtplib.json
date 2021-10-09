@@ -1,4 +1,18 @@
 {
+  "LMTP.connect": {
+    "has": [
+      "network",
+      "stderr"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SMTP.__exit__": {
+    "has": [
+      "network"
+    ]
+  },
   "SMTP.__init__": {
     "has": [
       "network"
@@ -9,9 +23,11 @@
   },
   "SMTP._get_socket": {
     "has": [
-      "network"
+      "network",
+      "stderr"
     ],
     "raises": [
+      "ValueError",
       "err"
     ]
   },
@@ -27,17 +43,31 @@
       "TypeError"
     ]
   },
+  "SMTP.close": {
+    "has": [
+      "network"
+    ]
+  },
   "SMTP.connect": {
+    "has": [
+      "stderr"
+    ],
     "raises": [
       "OSError"
     ]
   },
   "SMTP.data": {
+    "has": [
+      "stderr"
+    ],
     "raises": [
       "SMTPDataError"
     ]
   },
   "SMTP.ehlo": {
+    "has": [
+      "network"
+    ],
     "raises": [
       "AssertionError",
       "SMTPServerDisconnected"
@@ -46,6 +76,11 @@
   "SMTP.ehlo_or_helo_if_needed": {
     "raises": [
       "SMTPHeloError"
+    ]
+  },
+  "SMTP.getreply": {
+    "has": [
+      "stderr"
     ]
   },
   "SMTP.login": {
@@ -60,7 +95,21 @@
       "SMTPNotSupportedError"
     ]
   },
+  "SMTP.putcmd": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "SMTP.quit": {
+    "has": [
+      "network"
+    ]
+  },
   "SMTP.send": {
+    "has": [
+      "network",
+      "stderr"
+    ],
     "raises": [
       "SMTPServerDisconnected"
     ]
@@ -73,6 +122,9 @@
     ]
   },
   "SMTP.sendmail": {
+    "has": [
+      "network"
+    ],
     "raises": [
       "SMTPDataError",
       "SMTPRecipientsRefused",

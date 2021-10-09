@@ -1,0 +1,37 @@
+{
+  "ClientSession.__init__": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "ClientSession.__init_subclass__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "ClientSession._request": {
+    "raises": [
+      "InvalidURL",
+      "RuntimeError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "ClientSession._ws_connect": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError",
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "_SessionRequestContextManager.__aexit__": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

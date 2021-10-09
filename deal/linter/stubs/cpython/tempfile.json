@@ -67,6 +67,11 @@
       "global"
     ]
   },
+  "gettempdirb": {
+    "has": [
+      "global"
+    ]
+  },
   "mkdtemp": {
     "has": [
       "global"

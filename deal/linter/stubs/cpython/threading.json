@@ -36,9 +36,15 @@
       "ValueError"
     ]
   },
+  "Semaphore.release": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "Thread.__init__": {
     "raises": [
-      "AssertionError"
+      "AssertionError",
+      "RuntimeError"
     ]
   },
   "Thread.__repr__": {
@@ -125,7 +131,20 @@
       "AssertionError"
     ]
   },
+  "_make_invoke_excepthook": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_register_atexit": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
   "_shutdown": {
+    "has": [
+      "global"
+    ],
     "raises": [
       "AssertionError"
     ]

@@ -1,0 +1,12 @@
+{
+  "StreamWriter._write": {
+    "raises": [
+      "ConnectionResetError"
+    ]
+  },
+  "_safe_header": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

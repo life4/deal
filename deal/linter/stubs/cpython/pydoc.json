@@ -20,9 +20,20 @@
       "ValueError"
     ]
   },
+  "Helper.getline": {
+    "has": [
+      "stdin"
+    ]
+  },
   "Helper.help": {
     "has": [
+      "import",
       "stdout"
+    ]
+  },
+  "Helper.showsymbol": {
+    "has": [
+      "import"
     ]
   },
   "Helper.showtopic": {
@@ -112,7 +123,8 @@
   },
   "pipepager": {
     "has": [
-      "import"
+      "import",
+      "syscall"
     ]
   },
   "plainpager": {
@@ -139,6 +151,7 @@
     "has": [
       "global",
       "import",
+      "syscall",
       "write"
     ],
     "raises": [

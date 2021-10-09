@@ -1,0 +1,118 @@
+{
+  "BodyPartReader.__anext__": {
+    "raises": [
+      "StopAsyncIteration"
+    ]
+  },
+  "BodyPartReader._decode_content": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "BodyPartReader._decode_content_transfer": {
+    "raises": [
+      "AssertionError",
+      "RuntimeError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BodyPartReader._read_chunk_from_length": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "BodyPartReader._read_chunk_from_stream": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BodyPartReader.form": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "BodyPartReader.json": {
+    "raises": [
+      "JSONDecodeError",
+      "TypeError"
+    ]
+  },
+  "BodyPartReader.read_chunk": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "MultipartPayloadWriter.write": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "MultipartPayloadWriter.write_eof": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "MultipartReader.__anext__": {
+    "raises": [
+      "StopAsyncIteration"
+    ]
+  },
+  "MultipartReader._get_boundary": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "MultipartReader._read_boundary": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "MultipartResponseWrapper.__anext__": {
+    "raises": [
+      "StopAsyncIteration"
+    ]
+  },
+  "MultipartWriter.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "MultipartWriter._boundary_value": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "MultipartWriter.append": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "MultipartWriter.append_form": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "MultipartWriter.append_payload": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "parse_content_disposition": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  }
+}

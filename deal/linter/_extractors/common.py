@@ -6,6 +6,7 @@ from types import SimpleNamespace
 from typing import Callable, Iterator, List, NamedTuple, Optional, Tuple
 
 import astroid
+from astroid.node_classes import NodeNG
 
 from .._stub import EXTENSION, StubFile, StubsManager
 
@@ -14,6 +15,7 @@ TOKENS = SimpleNamespace(
     ASSERT=(ast.Assert, astroid.Assert),
     ASSIGN=(ast.Assign, astroid.Assign),
     ATTR=(ast.Attribute, astroid.Attribute),
+    AWAIT=(ast.Await, astroid.Await),
     BIN_OP=(ast.BinOp, astroid.BinOp),
     CALL=(ast.Call, astroid.Call),
     COMPARE=(ast.Compare, astroid.Compare),
@@ -44,8 +46,7 @@ def traverse(body: List) -> Iterator:
     for expr in body:
         # breaking apart statements
         if isinstance(expr, TOKENS.EXPR):
-            yield expr.value
-            yield from _travers_expr(expr=expr.value)
+            yield from _traverse_expr(expr=expr.value)
             continue
         if isinstance(expr, TOKENS.IF + TOKENS.FOR):
             yield from traverse(body=expr.body)
@@ -65,11 +66,14 @@ def traverse(body: List) -> Iterator:
         if isinstance(expr, TOKENS.WITH):
             yield from traverse(body=expr.body)
         elif isinstance(expr, TOKENS.RETURN + TOKENS.ASSIGN):
-            yield expr.value
+            yield from _traverse_expr(expr.value)
         yield expr
 
 
-def _travers_expr(expr):
+def _traverse_expr(expr) -> Iterator:
+    yield expr
+    if isinstance(expr, TOKENS.AWAIT):
+        yield from _traverse_expr(expr.value)
     if isinstance(expr, TOKENS.CALL):
         for subnode in expr.args:
             yield from traverse(body=[subnode])
@@ -97,7 +101,7 @@ def get_name(expr) -> Optional[str]:
     return None
 
 
-def get_full_name(expr) -> Tuple[str, str]:
+def get_full_name(expr: NodeNG) -> Tuple[str, str]:
     if expr.parent is None:
         return '', expr.name
 
@@ -116,8 +120,8 @@ def get_full_name(expr) -> Tuple[str, str]:
     return path, func_name
 
 
-def infer(expr) -> Tuple[astroid.node_classes.NodeNG, ...]:
-    if not isinstance(expr, astroid.node_classes.NodeNG):
+def infer(expr) -> Tuple[NodeNG, ...]:
+    if not isinstance(expr, NodeNG):
         return tuple()
     with suppress(astroid.exceptions.InferenceError, RecursionError):
         guesses = expr.infer()
@@ -147,7 +151,7 @@ def get_stub(
     return stubs.read(path=path)
 
 
-def _get_module(expr: astroid.node_classes.NodeNG) -> Optional[astroid.Module]:
+def _get_module(expr: NodeNG) -> Optional[astroid.Module]:
     if type(expr) is astroid.Module:
         return expr
     if expr.parent is None:

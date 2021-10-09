@@ -1,0 +1,205 @@
+{
+  "AbstractChildWatcher.__enter__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractChildWatcher.__exit__": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractChildWatcher.add_child_handler": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractChildWatcher.attach_loop": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractChildWatcher.close": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractChildWatcher.is_active": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "AbstractChildWatcher.remove_child_handler": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "BaseChildWatcher._do_waitpid": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "BaseChildWatcher._do_waitpid_all": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "BaseChildWatcher.attach_loop": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError",
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "FastChildWatcher.add_child_handler": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "MultiLoopChildWatcher._do_waitpid": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "PidfdChildWatcher.attach_loop": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "SafeChildWatcher._do_waitpid": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "ThreadedChildWatcher.__del__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "ThreadedChildWatcher._do_waitpid": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_UnixDefaultEventLoopPolicy.set_child_watcher": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_UnixReadPipeTransport.__del__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_UnixReadPipeTransport.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_UnixSelectorEventLoop._check_signal": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_UnixSelectorEventLoop._make_subprocess_transport": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_UnixSelectorEventLoop.add_signal_handler": {
+    "raises": [
+      "RuntimeError",
+      "TypeError"
+    ]
+  },
+  "_UnixSelectorEventLoop.close": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_UnixSelectorEventLoop.create_unix_connection": {
+    "has": [
+      "network"
+    ],
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_UnixSelectorEventLoop.create_unix_server": {
+    "has": [
+      "network"
+    ],
+    "raises": [
+      "OSError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_UnixSelectorEventLoop.remove_signal_handler": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_UnixSubprocessTransport._start": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_UnixWritePipeTransport.__del__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_UnixWritePipeTransport.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_UnixWritePipeTransport._write_ready": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_UnixWritePipeTransport.write": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_UnixWritePipeTransport.write_eof": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "BasicAuth.__new__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BasicAuth.decode": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BasicAuth.from_url": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "ChainMapProxy.__getitem__": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "ChainMapProxy.__init_subclass__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "CookieMixin.set_cookie": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "TimerContext.__enter__": {
+    "raises": [
+      "RuntimeError",
+      "asyncio.TimeoutError"
+    ]
+  },
+  "TimerContext.__exit__": {
+    "raises": [
+      "asyncio.TimeoutError"
+    ]
+  },
+  "_is_ip_address": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "ceil_timeout": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "content_disposition_header": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "get_env_proxy_for_url": {
+    "raises": [
+      "LookupError"
+    ]
+  },
+  "netrc_from_env": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "proxies_from_env": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "quoted_string": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "reify.__set__": {
+    "raises": [
+      "AttributeError"
+    ]
+  },
+  "rfc822_formatted_time": {
+    "has": [
+      "global",
+      "time"
+    ]
+  },
+  "validate_etag_value": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

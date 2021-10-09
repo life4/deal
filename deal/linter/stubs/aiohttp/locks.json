@@ -1,0 +1,7 @@
+{
+  "EventResultOrError.wait": {
+    "raises": [
+      "self._exc"
+    ]
+  }
+}

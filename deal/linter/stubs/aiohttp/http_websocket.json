@@ -1,0 +1,40 @@
+{
+  "WSMessage.json": {
+    "raises": [
+      "JSONDecodeError",
+      "TypeError"
+    ]
+  },
+  "WebSocketReader._feed_data": {
+    "raises": [
+      "AssertionError",
+      "WebSocketError"
+    ]
+  },
+  "WebSocketWriter._send_frame": {
+    "raises": [
+      "AssertionError",
+      "ConnectionResetError"
+    ]
+  },
+  "WebSocketWriter._write": {
+    "raises": [
+      "ConnectionResetError"
+    ]
+  },
+  "_websocket_mask_python": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "ws_ext_gen": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ws_ext_parse": {
+    "raises": [
+      "WSHandshakeError"
+    ]
+  }
+}

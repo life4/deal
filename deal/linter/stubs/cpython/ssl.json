@@ -1,4 +1,9 @@
 {
+  "DER_cert_to_PEM_cert": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "PEM_cert_to_DER_cert": {
     "raises": [
       "TypeError",
@@ -13,6 +18,11 @@
       "RuntimeError",
       "TypeError",
       "message"
+    ]
+  },
+  "SSLContext._msg_callback": {
+    "raises": [
+      "TypeError"
     ]
   },
   "SSLContext.load_default_certs": {

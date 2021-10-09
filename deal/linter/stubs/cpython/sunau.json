@@ -91,6 +91,11 @@
       "Error"
     ]
   },
+  "Au_write.writeframes": {
+    "has": [
+      "import"
+    ]
+  },
   "Au_write.writeframesraw": {
     "has": [
       "import"

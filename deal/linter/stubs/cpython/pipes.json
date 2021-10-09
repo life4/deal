@@ -5,12 +5,23 @@
       "ValueError"
     ]
   },
+  "Template.copy": {
+    "has": [
+      "stdout",
+      "syscall"
+    ]
+  },
   "Template.makepipeline": {
     "has": [
       "stdout"
     ]
   },
   "Template.open": {
+    "has": [
+      "read",
+      "syscall",
+      "write"
+    ],
     "raises": [
       "ValueError"
     ]
@@ -18,7 +29,9 @@
   "Template.open_r": {
     "has": [
       "import",
-      "read"
+      "read",
+      "stdout",
+      "syscall"
     ],
     "raises": [
       "TypeError",
@@ -28,6 +41,8 @@
   "Template.open_w": {
     "has": [
       "import",
+      "stdout",
+      "syscall",
       "write"
     ],
     "raises": [

@@ -12,6 +12,10 @@
     "has": [
       "import",
       "stdout"
+    ],
+    "raises": [
+      "AssertionError",
+      "TypeError"
     ]
   }
 }

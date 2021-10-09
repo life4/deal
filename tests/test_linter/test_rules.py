@@ -268,6 +268,80 @@ def test_check_has_io():
         assert actual[0][2] == expected
 
 
+def test_check_has_stdin():
+    checker = CheckMarkers()
+    text = """
+    import sys
+
+    @deal.has('stdin')
+    def test(a):
+        return sys.stdin.read(10)
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    for func in (funcs1[0], funcs2[0]):
+        actual = [tuple(err) for err in checker(func)]
+        assert len(actual) == 0
+
+
+def test_check_has_unexpected_stdin():
+    checker = CheckMarkers()
+    text = """
+    import sys
+
+    @deal.has()
+    def test(a):
+        return sys.stdin.read(10)
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    for func in (funcs1[0], funcs2[0]):
+        actual = [tuple(err) for err in checker(func)]
+        assert len(actual) == 1
+        expected = 'DEAL049 missed marker (stdin)'
+        assert actual[0][2] == expected
+
+
+def test_check_has_unexpected_random():
+    checker = CheckMarkers()
+    text = """
+    import random
+
+    @deal.has()
+    def test(a):
+        return random.choice(a)
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    for func in (funcs1[0], funcs2[0]):
+        actual = [tuple(err) for err in checker(func)]
+        assert len(actual) == 1
+        expected = 'DEAL055 missed marker (random)'
+        assert actual[0][2] == expected
+
+
+def test_check_has_unexpected_syscall():
+    checker = CheckMarkers()
+    text = """
+    import subprocess
+
+    @deal.has()
+    def test(a):
+        return subprocess.run(a)
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    for func in (funcs1[0], funcs2[0]):
+        actual = [tuple(err) for err in checker(func)]
+        assert len(actual) == 1
+        expected = 'DEAL050 missed marker (syscall)'
+        assert actual[0][2] == expected
+
+
 def test_check_has_custom_markers():
     checker = CheckMarkers()
     text = """

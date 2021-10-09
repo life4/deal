@@ -1,0 +1,51 @@
+{
+  "AioHTTPTestCase.get_app": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "BaseTestServer.close": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "BaseTestServer.handler": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "BaseTestServer.make_url": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "BaseTestServer.start_server": {
+    "has": [
+      "network"
+    ],
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "TestClient.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "get_port_socket": {
+    "has": [
+      "network"
+    ]
+  },
+  "get_unused_port_socket": {
+    "has": [
+      "network"
+    ]
+  },
+  "setup_test_loop": {
+    "has": [
+      "global",
+      "import"
+    ]
+  }
+}

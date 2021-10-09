@@ -70,7 +70,8 @@
   },
   "setlocale": {
     "raises": [
-      "Error"
+      "Error",
+      "TypeError"
     ]
   }
 }

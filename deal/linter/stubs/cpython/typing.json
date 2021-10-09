@@ -1,4 +1,34 @@
 {
+  "Annotated.__class_getitem__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Annotated.__init_subclass__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Annotated.__new__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Any": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "ClassVar": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Final": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "ForwardRef.__init__": {
     "raises": [
       "SyntaxError",
@@ -25,6 +55,11 @@
       "TypeError"
     ]
   },
+  "NamedTuple": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "NamedTuple.__new__": {
     "raises": [
       "TypeError"
@@ -32,7 +67,23 @@
   },
   "NamedTupleMeta.__new__": {
     "raises": [
+      "AssertionError",
       "AttributeError",
+      "TypeError"
+    ]
+  },
+  "NoReturn": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Optional": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Protocol.__init_subclass__": {
+    "raises": [
       "TypeError"
     ]
   },
@@ -40,6 +91,51 @@
     "raises": [
       "TypeError",
       "ValueError"
+    ]
+  },
+  "TypedDict": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Union": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_AnnotatedAlias.copy_with": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_BaseGenericAlias.__call__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_BaseGenericAlias.__getattr__": {
+    "raises": [
+      "AttributeError"
+    ]
+  },
+  "_BaseGenericAlias.__subclasscheck__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_CallableGenericAlias.__repr__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_CallableType.__getitem__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_CallableType.__getitem_inner__": {
+    "raises": [
+      "TypeError"
     ]
   },
   "_Final.__init_subclass__": {
@@ -88,12 +184,37 @@
       "TypeError"
     ]
   },
+  "_SpecialForm.__mro_entries__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "_SpecialForm.__new__": {
     "raises": [
       "TypeError"
     ]
   },
   "_SpecialForm.__subclasscheck__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_SpecialGenericAlias.__getitem__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_TupleType.__getitem__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_TypedDictMeta.__new__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_TypedDictMeta.__subclasscheck__": {
     "raises": [
       "TypeError"
     ]
@@ -113,6 +234,11 @@
       "TypeError"
     ]
   },
+  "_deduplicate": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
   "_get_defaults": {
     "raises": [
       "AssertionError"
@@ -122,6 +248,17 @@
     "raises": [
       "TypeError",
       "ValueError"
+    ]
+  },
+  "_namedtuple_mro_entries": {
+    "raises": [
+      "AssertionError",
+      "TypeError"
+    ]
+  },
+  "_no_init_or_replace_init": {
+    "raises": [
+      "TypeError"
     ]
   },
   "_overload_dummy": {
@@ -142,6 +279,11 @@
   "get_type_hints": {
     "raises": [
       "AssertionError",
+      "TypeError"
+    ]
+  },
+  "runtime_checkable": {
+    "raises": [
       "TypeError"
     ]
   }

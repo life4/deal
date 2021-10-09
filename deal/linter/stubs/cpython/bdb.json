@@ -50,8 +50,16 @@
     ]
   },
   "Bdb.runcall": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
+    ]
+  },
+  "Bdb.runctx": {
+    "has": [
+      "import"
     ]
   },
   "Bdb.runeval": {
@@ -60,6 +68,11 @@
     ]
   },
   "Bdb.set_break": {
+    "has": [
+      "import"
+    ]
+  },
+  "Bdb.set_trace": {
     "has": [
       "import"
     ]
@@ -109,6 +122,11 @@
     ],
     "raises": [
       "ZeroDivisionError"
+    ]
+  },
+  "test": {
+    "has": [
+      "import"
     ]
   }
 }

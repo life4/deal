@@ -11,13 +11,34 @@
   },
   "Grail._find_grail_rc": {
     "has": [
+      "global",
       "import"
     ],
     "raises": [
+      "AssertionError",
       "TypeError"
     ]
   },
+  "Grail._remote": {
+    "has": [
+      "import",
+      "network"
+    ]
+  },
+  "Grail.open": {
+    "has": [
+      "network"
+    ]
+  },
+  "UnixBrowser._invoke": {
+    "has": [
+      "syscall"
+    ]
+  },
   "UnixBrowser.open": {
+    "has": [
+      "syscall"
+    ],
     "raises": [
       "Error"
     ]
@@ -37,7 +58,10 @@
       "import"
     ],
     "raises": [
-      "Error"
+      "Error",
+      "RuntimeError",
+      "TypeError",
+      "message"
     ]
   },
   "main": {

@@ -1,4 +1,19 @@
 {
+  "InteractiveConsole.interact": {
+    "has": [
+      "stderr"
+    ]
+  },
+  "InteractiveConsole.raw_input": {
+    "has": [
+      "stdin"
+    ]
+  },
+  "InteractiveInterpreter.showsyntaxerror": {
+    "has": [
+      "stderr"
+    ]
+  },
   "InteractiveInterpreter.write": {
     "has": [
       "stderr"

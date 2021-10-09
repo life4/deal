@@ -23,6 +23,11 @@
       "import"
     ]
   },
+  "Path.link_to": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
   "Path.owner": {
     "has": [
       "import"
@@ -84,6 +89,16 @@
     ]
   },
   "WindowsPath.owner": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "_NormalAccessor.group": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "_NormalAccessor.owner": {
     "raises": [
       "NotImplementedError"
     ]

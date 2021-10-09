@@ -1,0 +1,108 @@
+{
+  "ClientRequest.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "ClientRequest.host": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "ClientRequest.send": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "ClientRequest.update_auth": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "ClientRequest.update_body_from_data": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "ClientRequest.update_content_encoding": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ClientRequest.update_host": {
+    "raises": [
+      "InvalidURL"
+    ]
+  },
+  "ClientRequest.update_proxy": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ClientRequest.update_transfer_encoding": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ClientRequest.update_version": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ClientRequest.write_bytes": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "ClientResponse.__del__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "ClientResponse.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "ClientResponse.get_encoding": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "ClientResponse.host": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "ClientResponse.json": {
+    "raises": [
+      "ContentTypeError"
+    ]
+  },
+  "ClientResponse.raise_for_status": {
+    "raises": [
+      "AssertionError",
+      "ClientResponseError"
+    ]
+  },
+  "ClientResponse.read": {
+    "raises": [
+      "ClientConnectionError"
+    ]
+  },
+  "Fingerprint.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Fingerprint.check": {
+    "raises": [
+      "ServerFingerprintMismatch"
+    ]
+  }
+}

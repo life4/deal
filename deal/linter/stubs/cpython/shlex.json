@@ -1,5 +1,8 @@
 {
   "shlex.__next__": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "StopIteration"
     ]
@@ -32,6 +35,16 @@
   "shlex.sourcehook": {
     "raises": [
       "TypeError"
+    ]
+  },
+  "split": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
     ]
   }
 }

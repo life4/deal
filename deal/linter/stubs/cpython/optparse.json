@@ -24,6 +24,11 @@
       "ValueError"
     ]
   },
+  "Option.__init__": {
+    "raises": [
+      "OptionError"
+    ]
+  },
   "Option._check_action": {
     "raises": [
       "OptionError"
@@ -111,6 +116,11 @@
       "ValueError"
     ]
   },
+  "OptionParser.error": {
+    "has": [
+      "stderr"
+    ]
+  },
   "OptionParser.exit": {
     "has": [
       "stderr"
@@ -137,6 +147,11 @@
   "Values._update": {
     "raises": [
       "ValueError"
+    ]
+  },
+  "Values.read_module": {
+    "has": [
+      "import"
     ]
   },
   "_match_abbrev": {

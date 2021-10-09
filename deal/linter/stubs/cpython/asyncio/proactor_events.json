@@ -1,0 +1,55 @@
+{
+  "BaseProactorEventLoop._make_self_pipe": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "BaseProactorEventLoop.close": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_ProactorBasePipeTransport.__del__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_ProactorBaseWritePipeTransport._make_empty_waiter": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_ProactorBaseWritePipeTransport.write": {
+    "raises": [
+      "AssertionError",
+      "RuntimeError",
+      "TypeError"
+    ]
+  },
+  "_ProactorDatagramTransport.sendto": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_ProactorDuplexPipeTransport.write_eof": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "_ProactorReadPipeTransport._data_received": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_ProactorWritePipeTransport._pipe_closed": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

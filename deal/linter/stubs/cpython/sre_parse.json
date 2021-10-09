@@ -15,6 +15,9 @@
     ]
   },
   "parse": {
+    "has": [
+      "stdout"
+    ],
     "raises": [
       "AssertionError",
       "ValueError"

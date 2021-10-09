@@ -1,0 +1,37 @@
+{
+  "RequestHandler._handle_request": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "RequestHandler.connection_made": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "RequestHandler.data_received": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "RequestHandler.finish_response": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "RequestHandler.handle_error": {
+    "raises": [
+      "ConnectionError"
+    ]
+  },
+  "RequestHandler.set_parser": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "RequestHandler.start": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

@@ -4,6 +4,11 @@
       "OSError"
     ]
   },
+  "fork": {
+    "has": [
+      "syscall"
+    ]
+  },
   "master_open": {
     "raises": [
       "OSError"
@@ -12,6 +17,11 @@
   "openpty": {
     "raises": [
       "OSError"
+    ]
+  },
+  "spawn": {
+    "has": [
+      "syscall"
     ]
   }
 }

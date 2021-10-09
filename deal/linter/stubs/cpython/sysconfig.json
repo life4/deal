@@ -5,6 +5,7 @@
       "import"
     ],
     "raises": [
+      "AttributeError",
       "TypeError"
     ]
   },
@@ -19,8 +20,16 @@
     ]
   },
   "_init_non_posix": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
+    ]
+  },
+  "_init_posix": {
+    "has": [
+      "import"
     ]
   },
   "_main": {
@@ -85,6 +94,7 @@
   },
   "get_platform": {
     "has": [
+      "global",
       "import"
     ],
     "raises": [

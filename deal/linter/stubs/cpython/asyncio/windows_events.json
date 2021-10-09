@@ -1,0 +1,27 @@
+{
+  "IocpProactor.__del__": {
+    "has": [
+      "time"
+    ]
+  },
+  "IocpProactor._check_closed": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "IocpProactor._poll": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "IocpProactor.close": {
+    "has": [
+      "time"
+    ]
+  },
+  "_WaitCancelFuture.cancel": {
+    "raises": [
+      "RuntimeError"
+    ]
+  }
+}

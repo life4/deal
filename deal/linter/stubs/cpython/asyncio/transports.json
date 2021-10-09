@@ -1,0 +1,122 @@
+{
+  "BaseTransport.close": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "BaseTransport.get_protocol": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "BaseTransport.is_closing": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "BaseTransport.set_protocol": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "DatagramTransport.abort": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "DatagramTransport.sendto": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "ReadTransport.is_reading": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "ReadTransport.pause_reading": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "ReadTransport.resume_reading": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "SubprocessTransport.get_pid": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "SubprocessTransport.get_pipe_transport": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "SubprocessTransport.get_returncode": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "SubprocessTransport.kill": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "SubprocessTransport.send_signal": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "SubprocessTransport.terminate": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "WriteTransport.abort": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "WriteTransport.can_write_eof": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "WriteTransport.get_write_buffer_size": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "WriteTransport.set_write_buffer_limits": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "WriteTransport.write": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "WriteTransport.write_eof": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "_FlowControlMixin.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_FlowControlMixin._set_write_buffer_limits": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_FlowControlMixin.get_write_buffer_size": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  }
+}

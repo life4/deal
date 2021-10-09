@@ -1,0 +1,32 @@
+{
+  "ClientWebSocketResponse.__anext__": {
+    "raises": [
+      "StopAsyncIteration"
+    ]
+  },
+  "ClientWebSocketResponse.__init__": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "ClientWebSocketResponse.receive_bytes": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "ClientWebSocketResponse.receive_str": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "ClientWebSocketResponse.send_bytes": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "ClientWebSocketResponse.send_str": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

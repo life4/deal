@@ -1,0 +1,51 @@
+{
+  "GunicornTokioWebWorker.init_process": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "GunicornUVLoopWebWorker.init_process": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "GunicornWebWorker._create_ssl_context": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "GunicornWebWorker._get_valid_log_format": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "GunicornWebWorker._run": {
+    "raises": [
+      "AssertionError",
+      "RuntimeError"
+    ]
+  },
+  "GunicornWebWorker._wait_next_notify": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "GunicornWebWorker.handle_abort": {
+    "raises": [
+      "SystemExit"
+    ]
+  },
+  "GunicornWebWorker.run": {
+    "raises": [
+      "SystemExit"
+    ]
+  }
+}

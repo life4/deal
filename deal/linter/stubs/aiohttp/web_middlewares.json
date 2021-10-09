@@ -1,0 +1,17 @@
+{
+  "middleware": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "normalize_path_middleware": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

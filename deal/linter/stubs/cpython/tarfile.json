@@ -16,6 +16,9 @@
     ]
   },
   "TarFile._extract_member": {
+    "has": [
+      "stderr"
+    ],
     "raises": [
       "TypeError"
     ]
@@ -31,6 +34,9 @@
     ]
   },
   "TarFile.add": {
+    "has": [
+      "stderr"
+    ],
     "raises": [
       "TypeError"
     ]
@@ -58,11 +64,17 @@
     ]
   },
   "TarFile.extract": {
+    "has": [
+      "stderr"
+    ],
     "raises": [
       "TypeError"
     ]
   },
   "TarFile.extractall": {
+    "has": [
+      "stderr"
+    ],
     "raises": [
       "Error",
       "TypeError"
@@ -110,6 +122,11 @@
       "ExtractError"
     ]
   },
+  "TarFile.makeunknown": {
+    "has": [
+      "stderr"
+    ]
+  },
   "TarFile.next": {
     "raises": [
       "ReadError"
@@ -136,6 +153,11 @@
     "raises": [
       "CompressionError",
       "ReadError",
+      "ValueError"
+    ]
+  },
+  "TarInfo._create_header": {
+    "raises": [
       "ValueError"
     ]
   },
@@ -183,6 +205,16 @@
     "raises": [
       "CompressionError",
       "ReadError"
+    ]
+  },
+  "_Stream._init_write_gz": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_Stream.read": {
+    "raises": [
+      "AssertionError"
     ]
   },
   "_Stream.seek": {

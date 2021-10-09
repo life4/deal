@@ -31,6 +31,31 @@ from deal.linter._stub import StubsManager
     ('open("fpath", "r")', ('read', )),
     ('open("fpath")', ('read', )),
     ('open("fpath", encoding="utf8")', ('read', )),
+
+    ('input()', ('stdin', )),
+    ('input("say hi: ")', ('stdin', )),
+    ('sys.stdin.read()', ('stdin', )),
+    ('sys.stdin.read(10)', ('stdin', )),
+
+    ('random.randint(10)', ('random', )),
+    ('random.randrange(10)', ('random', )),
+    ('random.random(10)', ('random', )),
+    ('randrange(10)', ('random', )),
+
+    ('os.system("echo")', ('syscall', )),
+    ('os.execvp("echo", ["hi"])', ('syscall', )),
+    ('subprocess.run("echo")', ('syscall', )),
+    ('subprocess.call("echo")', ('syscall', )),
+    ('subprocess.call(["echo"])', ('syscall', )),
+    ('proc = subprocess.Popen("echo")', ('syscall', )),
+    ('subprocess.SubprocessError()', ()),
+
+    ('time.time()', ('time', )),
+    ('time()', ('time', )),
+    ('time_ns()', ('time', )),
+    ('os.times()', ('time', )),
+    ('datetime.now()', ('time', )),
+    ('now()', ()),
 ])
 def test_io_hardcoded(text, expected):
     tree = astroid.parse(text)
@@ -71,6 +96,44 @@ def test_io_infer(text, expected):
 
 
 @pytest.mark.parametrize('text, expected', [
+    ('from random import choice \nchoice([1,2])', ('random', )),
+    ('choice([1,2])', ()),
+    ('choice = lambda:0 \nchoice()', ()),
+    ('class A:\n def b(self): pass \nchoice = A().b \nchoice()', ()),
+])
+def test_other_infer(text, expected):
+    tree = astroid.parse(text)
+    print(tree.repr_tree())
+    tokens = list(get_markers(body=tree.body))
+    markers = tuple(t.marker for t in tokens if t.marker != 'import')
+    assert markers == expected
+
+
+def test_socket():
+    text = """
+        import socket
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((HOST, PORT))
+    """
+    tree = astroid.parse(text)
+    tokens = list(get_markers(body=tree.body))
+    markers = tuple(t.marker for t in tokens)
+    assert markers == ('import', 'network')
+
+
+def test_asyncio_socket():
+    text = """
+        import asyncio
+        r, w = await asyncio.open_connection('127.0.0.1', 8888)
+    """
+    tree = astroid.parse(text)
+    print(tree.repr_tree())
+    tokens = list(get_markers(body=tree.body))
+    markers = tuple(t.marker for t in tokens)
+    assert markers == ('import', 'network')
+
+
+@pytest.mark.parametrize('text, expected', [
     ('global a', ('global', )),
     ('global a, b, c', ('global', )),
 
@@ -100,7 +163,7 @@ def test_get_globals_simple(text, expected):
     assert markers == expected
 
 
-def test_io_recursive_analise_body():
+def test_io_recursive_analize_body():
     text = """
     def inner(text):
         print(text)

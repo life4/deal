@@ -9,6 +9,21 @@
       "TurtleGraphicsError"
     ]
   },
+  "RawTurtle._getshapepoly": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "RawTurtle._polytrafo": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "RawTurtle._undo": {
+    "has": [
+      "stdout"
+    ]
+  },
   "RawTurtle._undogoto": {
     "has": [
       "stdout"
@@ -104,6 +119,16 @@
       "ZeroDivisionError"
     ]
   },
+  "_Root.__init__": {
+    "has": [
+      "import"
+    ]
+  },
+  "_Screen._destroy": {
+    "has": [
+      "global"
+    ]
+  },
   "_Screen.exitonclick": {
     "raises": [
       "SystemExit"
@@ -150,6 +175,7 @@
   },
   "read_docstrings": {
     "has": [
+      "import",
       "stdout"
     ]
   },

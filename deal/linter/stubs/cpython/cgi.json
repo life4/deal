@@ -21,6 +21,9 @@
     ]
   },
   "FieldStorage.__init__": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError",
       "ValueError"
@@ -41,11 +44,13 @@
   },
   "FieldStorage.read_multi": {
     "raises": [
+      "TypeError",
       "ValueError"
     ]
   },
   "FieldStorage.read_urlencoded": {
     "raises": [
+      "TypeError",
       "ValueError"
     ]
   },

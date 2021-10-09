@@ -16,7 +16,8 @@
   },
   "demo": {
     "has": [
-      "import"
+      "import",
+      "stdout"
     ]
   },
   "dircmp.__getattr__": {

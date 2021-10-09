@@ -12,7 +12,8 @@
   "_perfcheck": {
     "has": [
       "import",
-      "stdout"
+      "stdout",
+      "time"
     ]
   }
 }

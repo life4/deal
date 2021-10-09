@@ -1,0 +1,81 @@
+{
+  "AsyncStreamIterator.__anext__": {
+    "raises": [
+      "StopAsyncIteration"
+    ]
+  },
+  "ChunkTupleAsyncStreamIterator.__anext__": {
+    "raises": [
+      "StopAsyncIteration"
+    ]
+  },
+  "DataQueue.read": {
+    "raises": [
+      "AssertionError",
+      "EofStream",
+      "self._exception"
+    ]
+  },
+  "StreamReader._wait": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "StreamReader.begin_http_chunk_receiving": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "StreamReader.end_http_chunk_receiving": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "StreamReader.feed_data": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "StreamReader.read": {
+    "raises": [
+      "self._exception"
+    ]
+  },
+  "StreamReader.read_nowait": {
+    "raises": [
+      "RuntimeError",
+      "self._exception"
+    ]
+  },
+  "StreamReader.readany": {
+    "raises": [
+      "self._exception"
+    ]
+  },
+  "StreamReader.readexactly": {
+    "raises": [
+      "self._exception"
+    ]
+  },
+  "StreamReader.readuntil": {
+    "raises": [
+      "ValueError",
+      "self._exception"
+    ]
+  },
+  "StreamReader.unread_data": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "StreamReader.wait_eof": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

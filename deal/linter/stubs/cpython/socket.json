@@ -34,12 +34,25 @@
       "network"
     ]
   },
+  "create_server": {
+    "has": [
+      "network"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  },
   "getaddrinfo": {
     "has": [
       "network"
     ]
   },
   "getfqdn": {
+    "has": [
+      "network"
+    ]
+  },
+  "socket.__exit__": {
     "has": [
       "network"
     ]
@@ -55,12 +68,27 @@
       "ValueError"
     ]
   },
+  "socket._decref_socketios": {
+    "has": [
+      "network"
+    ]
+  },
+  "socket._real_close": {
+    "has": [
+      "network"
+    ]
+  },
   "socket._sendfile_use_send": {
     "raises": [
       "ValueError"
     ]
   },
   "socket.accept": {
+    "has": [
+      "network"
+    ]
+  },
+  "socket.close": {
     "has": [
       "network"
     ]

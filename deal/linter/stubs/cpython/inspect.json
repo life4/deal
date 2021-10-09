@@ -48,6 +48,11 @@
       "message"
     ]
   },
+  "_ClassFinder.visit_ClassDef": {
+    "raises": [
+      "ClassFoundException"
+    ]
+  },
   "_getfullargs": {
     "raises": [
       "TypeError"
@@ -94,8 +99,13 @@
     ]
   },
   "_signature_from_function": {
+    "has": [
+      "import"
+    ],
     "raises": [
-      "TypeError"
+      "AssertionError",
+      "TypeError",
+      "ValueError"
     ]
   },
   "_signature_fromstr": {
@@ -136,6 +146,7 @@
       "global"
     ],
     "raises": [
+      "AssertionError",
       "OSError",
       "TypeError",
       "ValueError"
@@ -170,6 +181,11 @@
       "TypeError",
       "ValueError",
       "message"
+    ]
+  },
+  "getargvalues": {
+    "raises": [
+      "TypeError"
     ]
   },
   "getattr_static": {

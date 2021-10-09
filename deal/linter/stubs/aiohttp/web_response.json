@@ -1,0 +1,117 @@
+{
+  "Response.__init__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "Response._compress_body": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Response._do_start_compression": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Response.body": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Response.content_length": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "Response.text": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "Response.write_eof": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "StreamResponse.__repr__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "StreamResponse._do_start_compression": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "StreamResponse._generate_content_type_header": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "StreamResponse._prepare_headers": {
+    "raises": [
+      "AssertionError",
+      "RuntimeError"
+    ]
+  },
+  "StreamResponse._write_headers": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "StreamResponse.charset": {
+    "raises": [
+      "AssertionError",
+      "RuntimeError"
+    ]
+  },
+  "StreamResponse.content_length": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "StreamResponse.drain": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError",
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "StreamResponse.enable_chunked_encoding": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "StreamResponse.etag": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "StreamResponse.set_status": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "StreamResponse.write": {
+    "raises": [
+      "AssertionError",
+      "RuntimeError"
+    ]
+  },
+  "StreamResponse.write_eof": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "json_response": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "_ZipImportResourceReader.contents": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_ZipImportResourceReader.open_resource": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "FileNotFoundError"
+    ]
+  },
+  "_ZipImportResourceReader.resource_path": {
+    "raises": [
+      "FileNotFoundError"
+    ]
+  },
+  "_get_data": {
+    "raises": [
+      "EOFError",
+      "OSError",
+      "ZipImportError"
+    ]
+  },
+  "_get_decompress_func": {
+    "has": [
+      "global"
+    ],
+    "raises": [
+      "ZipImportError"
+    ]
+  },
+  "_get_module_code": {
+    "raises": [
+      "EOFError",
+      "OSError",
+      "TypeError",
+      "ZipImportError"
+    ]
+  },
+  "_get_pyc_source": {
+    "raises": [
+      "AssertionError",
+      "EOFError",
+      "OSError",
+      "ZipImportError"
+    ]
+  },
+  "_read_directory": {
+    "raises": [
+      "ZipImportError"
+    ]
+  },
+  "_unmarshal_code": {
+    "raises": [
+      "AssertionError",
+      "TypeError"
+    ]
+  },
+  "zipimporter.__init__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "ZipImportError"
+    ]
+  },
+  "zipimporter.get_code": {
+    "raises": [
+      "ZipImportError"
+    ]
+  },
+  "zipimporter.get_data": {
+    "raises": [
+      "EOFError",
+      "OSError",
+      "ZipImportError"
+    ]
+  },
+  "zipimporter.get_filename": {
+    "raises": [
+      "ZipImportError"
+    ]
+  },
+  "zipimporter.get_resource_reader": {
+    "has": [
+      "import"
+    ]
+  },
+  "zipimporter.get_source": {
+    "raises": [
+      "ZipImportError"
+    ]
+  },
+  "zipimporter.is_package": {
+    "raises": [
+      "ZipImportError"
+    ]
+  },
+  "zipimporter.load_module": {
+    "raises": [
+      "ImportError",
+      "ZipImportError"
+    ]
+  }
+}

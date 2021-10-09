@@ -1,0 +1,27 @@
+{
+  "TransportSocket.__getstate__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "TransportSocket._na": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "TransportSocket.setblocking": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "TransportSocket.settimeout": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

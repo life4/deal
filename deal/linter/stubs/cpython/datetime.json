@@ -5,8 +5,13 @@
     ]
   },
   "_check_int_field": {
+    "has": [
+      "import"
+    ],
     "raises": [
-      "TypeError"
+      "RuntimeError",
+      "TypeError",
+      "message"
     ]
   },
   "_check_time_fields": {
@@ -96,6 +101,11 @@
       "AssertionError"
     ]
   },
+  "date.fromisocalendar": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "date.fromisoformat": {
     "raises": [
       "TypeError",
@@ -103,6 +113,9 @@
     ]
   },
   "datetime.__add__": {
+    "has": [
+      "time"
+    ],
     "raises": [
       "OverflowError"
     ]
@@ -164,12 +177,25 @@
       "ValueError"
     ]
   },
+  "datetime.time": {
+    "has": [
+      "time"
+    ]
+  },
+  "datetime.timetz": {
+    "has": [
+      "time"
+    ]
+  },
   "time.__format__": {
     "raises": [
       "TypeError"
     ]
   },
   "time.__hash__": {
+    "has": [
+      "time"
+    ],
     "raises": [
       "AssertionError"
     ]

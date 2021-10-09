@@ -9,7 +9,15 @@
       "UnexpectedException"
     ]
   },
+  "DebugRunner.run": {
+    "has": [
+      "import"
+    ]
+  },
   "DocFileSuite": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError",
       "ValueError"
@@ -50,7 +58,8 @@
   },
   "DocTestFinder.find": {
     "has": [
-      "global"
+      "global",
+      "stdout"
     ],
     "raises": [
       "TypeError",
@@ -96,6 +105,9 @@
     ]
   },
   "DocTestSuite": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]
@@ -118,6 +130,7 @@
   },
   "_load_testfile": {
     "has": [
+      "import",
       "read"
     ],
     "raises": [
@@ -132,6 +145,9 @@
     ]
   },
   "_normalize_module": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError"
     ]
@@ -168,6 +184,11 @@
       "stdout"
     ]
   },
+  "run_docstring_examples": {
+    "has": [
+      "import"
+    ]
+  },
   "set_unittest_reportflags": {
     "has": [
       "global"
@@ -179,7 +200,9 @@
   "testfile": {
     "has": [
       "global",
-      "read"
+      "import",
+      "read",
+      "stdout"
     ],
     "raises": [
       "TypeError",
@@ -188,13 +211,18 @@
   },
   "testmod": {
     "has": [
-      "global"
+      "global",
+      "import",
+      "stdout"
     ],
     "raises": [
       "TypeError"
     ]
   },
   "testsource": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "TypeError",
       "ValueError"

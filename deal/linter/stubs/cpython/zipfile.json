@@ -1,4 +1,34 @@
 {
+  "Path.__str__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Path.iterdir": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Path.joinpath": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Path.name": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Path.open": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Path.parent": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "PyZipFile._get_codename": {
     "raises": [
       "NotImplementedError",
@@ -8,6 +38,7 @@
   },
   "PyZipFile.writepy": {
     "has": [
+      "read",
       "stdout"
     ],
     "raises": [
@@ -36,9 +67,29 @@
       "BadZipFile"
     ]
   },
+  "ZipExtFile.read": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ZipExtFile.readable": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "ZipExtFile.seek": {
     "raises": [
       "NotImplementedError",
+      "ValueError"
+    ]
+  },
+  "ZipExtFile.seekable": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ZipExtFile.tell": {
+    "raises": [
       "ValueError"
     ]
   },
@@ -72,6 +123,9 @@
     ]
   },
   "ZipFile._open_to_write": {
+    "has": [
+      "import"
+    ],
     "raises": [
       "ValueError"
     ]
@@ -114,11 +168,17 @@
     ]
   },
   "ZipFile.extract": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "TypeError"
     ]
   },
   "ZipFile.extractall": {
+    "has": [
+      "read"
+    ],
     "raises": [
       "TypeError"
     ]
@@ -146,6 +206,7 @@
   },
   "ZipFile.write": {
     "has": [
+      "import",
       "read"
     ],
     "raises": [
@@ -210,7 +271,8 @@
   },
   "_get_decompressor": {
     "raises": [
-      "NotImplementedError"
+      "NotImplementedError",
+      "RuntimeError"
     ]
   },
   "main": {

@@ -10,14 +10,21 @@
     ]
   },
   "MailmanProxy.__init__": {
+    "has": [
+      "import"
+    ],
     "raises": [
-      "ValueError"
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
     ]
   },
   "MailmanProxy.process_message": {
     "has": [
       "import",
-      "stdout"
+      "stdout",
+      "time"
     ]
   },
   "PureProxy.__init__": {
@@ -33,6 +40,7 @@
   },
   "PureProxy.process_message": {
     "has": [
+      "import",
       "stdout"
     ]
   },

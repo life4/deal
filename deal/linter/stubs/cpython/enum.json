@@ -46,6 +46,11 @@
       "AttributeError"
     ]
   },
+  "EnumMeta._check_for_existing_members": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "EnumMeta._create_": {
     "raises": [
       "TypeError"
@@ -82,9 +87,14 @@
     ]
   },
   "_EnumDict.__setitem__": {
+    "has": [
+      "import"
+    ],
     "raises": [
+      "RuntimeError",
       "TypeError",
-      "ValueError"
+      "ValueError",
+      "message"
     ]
   },
   "unique": {
