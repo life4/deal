@@ -177,7 +177,9 @@ def _infer_markers(expr, dive: bool, stubs: StubsManager = None) -> Iterator[Tok
             yield token
 
     if not stubs_found:
-        yield from _markers_from_inferred(expr=expr, inferred=inferred)
+        for token in _markers_from_inferred(expr=expr, inferred=inferred):
+            dive = False
+            yield token
         if dive:
             yield from _markers_from_func(expr=expr, inferred=inferred)
 
