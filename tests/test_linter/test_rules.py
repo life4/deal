@@ -2,11 +2,13 @@ import ast
 from textwrap import dedent
 
 import astroid
+import pytest
 
 from deal.linter._func import Func
 from deal.linter._rules import (
     CheckAsserts, CheckExamples, CheckImports, CheckMarkers,
     CheckPre, CheckRaises, CheckReturns, rules,
+    CheckEnsureArgs,
 )
 
 
@@ -483,3 +485,36 @@ def test_check_example_ensure():
         actual = [tuple(err) for err in checker(func)]
         expected = [(1, 14, 'DEAL013 example violates contract (deal.ensure)')]
         assert actual == expected
+
+
+@pytest.mark.parametrize('expr, should_pass', [
+    ('lambda a, result: 0', True),
+    ('lambda a, result: 0', True),
+    ('lambda a, *, result: 0', True),
+    ('lambda *a, result: 0', True),
+    ('lambda *a, result=None: 0', True),
+
+    ('unknown', True),
+    ('sum', True),
+
+    ('lambda a: 0', False),
+    ('lambda a, res: 0', False),
+    ('lambda a, *, res: 0', False),
+])
+def test_ensure_args(expr, should_pass):
+    checker = CheckEnsureArgs()
+    text = f"""
+    @deal.ensure({expr})
+    def double(a):
+        return a * 2
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    for func in (funcs1[0], funcs2[0]):
+        actual = [tuple(err) for err in checker(func)]
+        if should_pass:
+            assert actual == [], 'should pass but does not'
+        else:
+            expected = [(1, 13, 'DEAL002 ensure contract must have `result` arg')]
+            assert actual == expected, 'should not pass but does'

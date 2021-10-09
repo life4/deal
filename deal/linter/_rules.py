@@ -1,4 +1,5 @@
 import ast
+from itertools import chain
 from types import MappingProxyType
 from typing import Iterator, List, Optional, Type, TypeVar
 
@@ -72,6 +73,52 @@ class CheckImports(ModuleRule):
                 row=token.line,
                 col=token.col,
             )
+
+
+@register
+class CheckEnsureArgs(FuncRule):
+    __slots__ = ()
+    code = 2
+    message = 'ensure contract must have `result` arg'
+
+    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+        for contract in func.contracts:
+            if contract.category != Category.ENSURE:
+                continue
+            yield from self._check(contract)
+
+    def _check(self, contract: Contract) -> Iterator[Error]:
+        validator = contract.args[0]
+        if not self._result_found(validator):
+            yield Error(
+                code=self.code,
+                text=self.message,
+                row=validator.lineno,
+                col=validator.col_offset,
+            )
+
+    def _result_found(self, validator) -> bool:
+        if isinstance(validator, ast.Lambda):
+            args = chain(
+                validator.args.args,
+                validator.args.kwonlyargs,
+            )
+            for arg in args:
+                if arg.arg == 'result':
+                    return True
+            return False
+        if isinstance(validator, astroid.Lambda):
+            assert isinstance(validator.args, astroid.Arguments)
+            args = chain(
+                validator.args.args,
+                validator.args.kwonlyargs,
+            )
+            for arg in args:
+                assert isinstance(arg, astroid.AssignName)
+                if arg.name == 'result':
+                    return True
+            return False
+        return True
 
 
 @register
