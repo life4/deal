@@ -51,3 +51,40 @@ def test_match_default():
     f.register(double4)
     f.register(lambda x: x * 2)
     assert f(10) == 20
+
+
+def test_propagate_pre_contract_error():
+    f = deal.dispatch(double)
+    f.register(double3)
+
+    @deal.pre(lambda: False)
+    def bad_func():
+        return 0
+
+    @f.register
+    @deal.pre(lambda x: x == 4)
+    def _double4(x: int) -> int:
+        return bad_func()
+
+    assert f(3) == 6
+    with pytest.raises(deal.PreContractError) as exc_info:
+        f(4)
+    assert exc_info.value.source == 'False'
+
+
+def test_propagate_pre_contract_error_from_default():
+    f = deal.dispatch(double)
+    f.register(double3)
+
+    @deal.pre(lambda: False)
+    def bad_func():
+        return 0
+
+    @f.register
+    def _double(x: int) -> int:
+        return bad_func()
+
+    assert f(3) == 6
+    with pytest.raises(deal.PreContractError) as exc_info:
+        f(4)
+    assert exc_info.value.source == 'False'
