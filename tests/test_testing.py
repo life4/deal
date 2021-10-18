@@ -141,6 +141,20 @@ def test_disable_type_checks():
     case()
 
 
+def test_return_type():
+    def identity(a) -> int:
+        return a
+
+    kwargs: dict = dict(kwargs={}, func=identity, exceptions=(), check_types=True)
+    case = deal.TestCase(args=(12, ), **kwargs)
+    case()
+
+    case = deal.TestCase(args=('hi', ), **kwargs)
+    msg = 'type of the return value must be int; got str instead'
+    with pytest.raises(TypeError, match=msg):
+        case()
+
+
 def test_type_var():
     T = TypeVar('T')  # noqa: N806
 
@@ -153,11 +167,6 @@ def test_type_var():
 
     case = deal.TestCase(args=(['ab'], ['cd', 'ef']), **kwargs)
     case()
-
-    case = deal.TestCase(args=('ab', 1), **kwargs)
-    msg = 'type of the return value must be exactly str; got int instead'
-    with pytest.raises(TypeError, match=msg):
-        case()
 
 
 @deal.cases(div1)
