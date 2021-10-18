@@ -57,21 +57,13 @@ class TestCase(typing.NamedTuple):
     def _check_result(self, result: typing.Any) -> None:
         if not self.check_types:
             return
-        hints = typing.get_type_hints(self.func)
-        if 'return' not in hints:
-            return
         memo = typeguard._CallMemo(
             func=self.func,
             args=self.args,
             kwargs=self.kwargs,
         )
         typeguard.check_argument_types(memo=memo)
-        typeguard.check_type(
-            argname='the return value',
-            value=result,
-            expected_type=hints['return'],
-            memo=memo,
-        )
+        typeguard.check_return_type(result, memo=memo)
 
 
 class cases:  # noqa: N

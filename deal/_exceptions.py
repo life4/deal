@@ -46,6 +46,7 @@ class ContractError(AssertionError):
     errors: Optional[Any]
     validator: Any
     params: Dict[str, Any]
+    origin: Optional[object]
 
     def __init__(
         self,
@@ -53,11 +54,13 @@ class ContractError(AssertionError):
         errors=None,
         validator=None,
         params: Dict[str, Any] = None,
+        origin: Optional[object] = None,
     ) -> None:
         self.message = message
         self.errors = errors
         self.validator = validator
         self.params = params or {}
+        self.origin = origin
 
         args = []
         if message:

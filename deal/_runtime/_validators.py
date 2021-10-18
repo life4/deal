@@ -43,13 +43,6 @@ def _args_to_vars(
 
 
 class Validator:
-    exception: ExceptionType
-    signature: Optional[inspect.Signature]
-    validate: Any
-    validator: Any
-    raw_validator: Any
-    message: Optional[str]
-    function: Any
     __slots__ = (
         'exception',
         'signature',
@@ -59,6 +52,14 @@ class Validator:
         'message',
         'function',
     )
+
+    exception: ExceptionType
+    signature: Optional[inspect.Signature]
+    validate: Any
+    validator: Any
+    raw_validator: Any
+    message: Optional[str]
+    function: Any
 
     def __init__(
         self,
@@ -114,6 +115,7 @@ class Validator:
                 validator=self.validator,
                 errors=errors,
                 params=params,
+                origin=getattr(self, 'function', None),
             )
 
         # raise boring custom exception
