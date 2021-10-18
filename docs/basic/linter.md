@@ -26,6 +26,7 @@ General:
 | Code    | Message |
 | ------- | ------- |
 | DEAL001 | do not use `from deal import ...`, use `import deal` instead |
+| DEAL002 | ensure contract must have `result` arg |
 
 Contracts:
 

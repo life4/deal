@@ -8,7 +8,7 @@ import deal
 @deal.pre(lambda items: bool(items))
 # result is an element withit the given list
 @deal.ensure(lambda items, result: result in items)
-@deal.has()
+@deal.has('random')
 def choice(items: List[str]) -> str:
     """Get a random element from the given list.
     """
