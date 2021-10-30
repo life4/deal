@@ -100,3 +100,20 @@ def test_inherit_one_parent__preserve_contracts():
         b.f(6)
     with pytest.raises(deal.PreContractError):
         b.f(-2)
+
+
+def test_inherit_class():
+    class A:
+        @deal.pre(lambda self, x: x == 3)
+        def f(self, x):
+            raise NotImplementedError
+
+    @deal.inherit
+    class B(A):
+        def f(self, x):
+            return x * 2
+
+    b = B()
+    assert b.f(3) == 6
+    with pytest.raises(deal.PreContractError):
+        b.f(4)

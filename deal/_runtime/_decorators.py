@@ -14,6 +14,7 @@ from ._validators import InvariantValidator, RaisesValidator, ReasonValidator, V
 C = TypeVar('C', bound=Callable)
 F = TypeVar('F', bound=Callable)
 T = TypeVar('T')
+TF = TypeVar('TF', bound=Union[Callable, type])
 
 
 def pre(
@@ -599,5 +600,5 @@ def dispatch(func: C) -> Dispatch[C]:
     return Dispatch.wrap(func)
 
 
-def inherit(func: F) -> F:
-    return Inherit[F](func)  # type: ignore[return-value]
+def inherit(func: TF) -> TF:
+    return Inherit.wrap(func)
