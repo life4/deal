@@ -1,6 +1,6 @@
 from ._contracts import Contracts
 from ._decorators import (
-    catch, chain, dispatch, ensure, example, has,
+    catch, chain, dispatch, ensure, example, has, inherit,
     implies, inv, post, pre, pure, raises, reason, safe,
 )
 from ._dispatch import Dispatch
@@ -16,6 +16,7 @@ __all__ = [
     'ensure',
     'example',
     'has',
+    'inherit',
     'inv',
     'post',
     'pre',

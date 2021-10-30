@@ -13,7 +13,7 @@ from ._exceptions import (
 )
 from ._imports import activate, module_load
 from ._runtime import (
-    catch, chain, dispatch, ensure, example, has,
+    catch, chain, dispatch, ensure, example, has, inherit,
     implies, inv, post, pre, pure, raises, reason, safe,
 )
 from ._schemes import Scheme
@@ -44,6 +44,7 @@ __all__ = [
     'ensure',
     'example',
     'has',
+    'inherit',
     'inv',
     'post',
     'pre',

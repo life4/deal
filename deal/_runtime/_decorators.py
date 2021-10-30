@@ -6,6 +6,7 @@ from .._types import ExceptionType
 from ._contracts import Contracts
 from ._dispatch import Dispatch
 from ._has_patcher import HasPatcher
+from ._inherit import Inherit
 from ._invariant import invariant
 from ._validators import InvariantValidator, RaisesValidator, ReasonValidator, Validator
 
@@ -596,3 +597,7 @@ def dispatch(func: C) -> Dispatch[C]:
 
     """
     return Dispatch.wrap(func)
+
+
+def inherit(func: F) -> F:
+    return Inherit[F](func)  # type: ignore[return-value]
