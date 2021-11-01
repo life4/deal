@@ -5,6 +5,7 @@ from ._decorators import (
 )
 from ._dispatch import Dispatch
 from ._has_patcher import HasPatcher
+from ._inherit import Inherit
 from ._invariant import invariant
 from ._validators import InvariantValidator, RaisesValidator, ReasonValidator, Validator
 
@@ -33,6 +34,7 @@ __all__ = [
     'Contracts',
     'Dispatch',
     'HasPatcher',
+    'Inherit',
     'invariant',
     'InvariantValidator',
     'RaisesValidator',

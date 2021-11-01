@@ -1,6 +1,6 @@
 from typing import Callable, Iterator, TypeVar
 
-from .._runtime import Contracts
+from .._runtime import Contracts, Inherit
 from . import _wrappers
 from ._wrappers import Contract, ValidatedContract
 
@@ -31,6 +31,8 @@ def init_all(func: Callable) -> None:
 
 def get_contracts(func: Callable) -> Iterator[Contract]:
     while True:
+        if isinstance(func, Inherit):
+            func = func._patch()
         contracts = getattr(func, ATTR, None)
         if isinstance(contracts, Contracts):
             for validator in contracts.pres:

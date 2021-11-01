@@ -94,8 +94,11 @@ class Contracts(Generic[F]):
         contracts.examples.extend(self.examples)
         contracts.raises.extend(self.raises)
         contracts.reasons.extend(self.reasons)
-        if contracts.patcher is None:
-            contracts.patcher = self.patcher
+        if self.patcher is not None:
+            if contracts.patcher is not None:
+                contracts.patcher.markers |= self.patcher.markers
+            else:
+                contracts.patcher = self.patcher
         return contracts.wrapped
 
     def _run_sync(self, args: Tuple[object], kwargs: Dict[str, object]):

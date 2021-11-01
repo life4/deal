@@ -91,9 +91,7 @@ class HasPatcher:
     def has_stderr(self) -> bool:
         if 'io' in self.markers:
             return True
-        if 'stderr' in self.markers:
-            return True
-        return False
+        return 'stderr' in self.markers
 
     @property
     def has_global(self) -> bool:
@@ -107,9 +105,7 @@ class HasPatcher:
     def has_read(self) -> bool:
         if 'io' in self.markers:
             return True
-        if 'read' in self.markers:
-            return True
-        return False
+        return 'read' in self.markers
 
     @property
     def has_stdin(self) -> bool:
@@ -125,9 +121,7 @@ class HasPatcher:
     def has_write(self) -> bool:
         if 'io' in self.markers:
             return True
-        if 'write' in self.markers:
-            return True
-        return False
+        return 'write' in self.markers
 
     # patching
 

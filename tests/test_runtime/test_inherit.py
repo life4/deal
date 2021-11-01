@@ -117,3 +117,55 @@ def test_inherit_class():
     assert b.f(3) == 6
     with pytest.raises(deal.PreContractError):
         b.f(4)
+
+
+def test_has_inherit():
+    class A:
+        @deal.has('a', 'b')
+        def f(self, x):
+            raise NotImplementedError
+
+    @deal.inherit
+    class B(A):
+        def f(self, x):
+            return x * 2
+
+    b = B()
+    contract = next(deal.introspection.get_contracts(b.f))
+    assert isinstance(contract, deal.introspection.Has)
+    assert contract.markers == frozenset({'a', 'b'})
+
+
+def test_has_inherit_and_merge():
+    class A:
+        @deal.has('a', 'b')
+        def f(self, x):
+            raise NotImplementedError
+
+    @deal.inherit
+    class B(A):
+        @deal.has('c', 'd')
+        def f(self, x):
+            return x * 2
+
+    b = B()
+    contract = next(deal.introspection.get_contracts(b.f))
+    assert isinstance(contract, deal.introspection.Has)
+    assert contract.markers == frozenset({'a', 'b', 'c', 'd'})
+
+
+def test_has_preserve():
+    class A:
+        def f(self, x):
+            raise NotImplementedError
+
+    @deal.inherit
+    class B(A):
+        @deal.has('a', 'b')
+        def f(self, x):
+            return x * 2
+
+    b = B()
+    contract = next(deal.introspection.get_contracts(b.f))
+    assert isinstance(contract, deal.introspection.Has)
+    assert contract.markers == frozenset({'a', 'b'})

@@ -165,3 +165,41 @@ def test_init_all():
     assert val2.validate.__name__ != '_init'
     assert val1.signature
     assert val2.signature
+
+
+def test_get_contracts__inherit_class():
+    class A:
+        @deal.has('a', 'b')
+        def f(self, x):
+            raise NotImplementedError
+
+    @deal.inherit
+    class B(A):
+        def f(self, x):
+            return x * 2
+
+    b = B()
+    contracts = list(deal.introspection.get_contracts(b.f))
+    assert len(contracts) == 1
+    contract = contracts[0]
+    assert isinstance(contract, deal.introspection.Has)
+    assert contract.markers == frozenset({'a', 'b'})
+
+
+def test_get_contracts__inherit_func():
+    class A:
+        @deal.has('a', 'b')
+        def f(self, x):
+            raise NotImplementedError
+
+    class B(A):
+        @deal.inherit
+        def f(self, x):
+            return x * 2
+
+    b = B()
+    contracts = list(deal.introspection.get_contracts(b.f))
+    assert len(contracts) == 1
+    contract = contracts[0]
+    assert isinstance(contract, deal.introspection.Has)
+    assert contract.markers == frozenset({'a', 'b'})
