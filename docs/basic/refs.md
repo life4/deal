@@ -9,8 +9,9 @@ This page provides a quick navigation by the documentation in case if you're loo
 | `@deal.chain`    | {py:func}`deal.chain`    | {doc}`/details/contracts` / {ref}`details/contracts:deal.chain` |
 | `@deal.dispatch` | {py:func}`deal.dispatch` | {doc}`/details/dispatch` |
 | `@deal.ensure`   | {py:func}`deal.ensure`   | {doc}`/basic/values` / {ref}`basic/values:deal.ensure` |
-| `@deal.example`   | {py:func}`deal.example` | {doc}`/details/docs` / {ref}`details/docs:deal.example` |
+| `@deal.example`  | {py:func}`deal.example`  | {doc}`/details/docs` / {ref}`details/docs:deal.example` |
 | `@deal.has`      | {py:func}`deal.has`      | {doc}`/basic/side-effects` |
+| `@deal.inherit`  | {py:func}`deal.inherit`  | {doc}`/details/contracts` / {ref}`details/contracts:deal.inherit` |
 | `@deal.inv`      | {py:func}`deal.inv`      | {doc}`/basic/values` / {ref}`basic/values:deal.inv` |
 | `@deal.post`     | {py:func}`deal.post`     | {doc}`/basic/values` / {ref}`basic/values:deal.post` |
 | `@deal.pre`      | {py:func}`deal.pre`      | {doc}`/basic/values` / {ref}`basic/values:deal.pre` |

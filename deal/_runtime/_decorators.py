@@ -601,4 +601,36 @@ def dispatch(func: C) -> Dispatch[C]:
 
 
 def inherit(func: TF) -> TF:
+    """Inherit contracts from base classes.
+
+    Can be used to decorate either the whole class or a separate method.
+
+    ```pycon
+    >>> import deal
+    >>> class Shape:
+    ...   @deal.post(lambda r: r > 2)
+    ...   def get_sides(self):
+    ...     raise NotImplementedError
+    ...
+    >>> class Triangle(Shape):
+    ...   @deal.inherit
+    ...   def get_sides(self):
+    ...     return 3
+    ...
+    >>> class Line(Shape):
+    ...   @deal.inherit
+    ...   def get_sides(self):
+    ...     return 2
+    ...
+    >>> triangle = Triangle()
+    >>> triangle.get_sides()
+    3
+    >>> line = Line()
+    >>> line.get_sides()
+    Traceback (most recent call last):
+        ...
+    PreContractError: expected r > 0 (where r=2)
+
+    ```
+    """
     return Inherit.wrap(func)
