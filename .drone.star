@@ -20,10 +20,10 @@ def main(ctx):
             step(env="pytest", python="3.7"),
             step(env="pytest", python="3.8"),
             step(env="pytest", python="3.9"),
-            # https://github.com/pypa/wheel/issues/354
-            # step(env="pytest", python="3.10-rc"),
-            step(env="flake8", python="3.8"),
-            step(env="mypy", python="3.8"),
+            step(env="pytest", python="3.10"),
+            step(env="flake8", python="3.9"),
+            step(env="mypy", python="3.9"),
+            step(env="mypy_test", python="3.9"),
         ],
     )
 

@@ -12,7 +12,7 @@ def preserve_function_annotation() -> None:
         return 4
 
     # Preserve function type
-    # R: deal._runtime.dispatch.Dispatch[def (a: builtins.int) -> builtins.int]
+    # R: deal._runtime._dispatch.Dispatch[def (a: builtins.int) -> builtins.int]
     reveal_type(double)
 
     res = double(2)
