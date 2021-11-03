@@ -70,3 +70,12 @@ This page provides a quick navigation by the documentation in case if you're loo
 | mypy       | [python/mypy](https://github.com/python/mypy) | {doc}`/details/contracts` / {ref}`details/contracts:typing` |
 | pytest     | [pytest-dev/pytest](https://github.com/pytest-dev/pytest) | {doc}`/basic/tests`  |
 | sphinx     | [sphinx-doc/sphinx](https://github.com/sphinx-doc/sphinx) | {doc}`/details/docs` / {ref}`details/docs:sphinx autodoc` |
+
+## Articles
+
++ [Make tests a part of your app](https://dev.to/sobolevn/make-tests-a-part-of-your-app-8nm)
+
+## Projects integrating deal
+
++ [CrossHair](https://github.com/pschanely/CrossHair)
++ [flake8-functions-names](https://github.com/Melevir/flake8-functions-names)
