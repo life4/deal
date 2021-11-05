@@ -1,5 +1,9 @@
 # Dispatch
 
+```{warning}
+This feature is **experimental**. It works and the API is stable but the behavior in some corner cases may change in the future.
+```
+
 The decorator `deal.dispatch` allows combining multiple implementations of a function into one. When the combined function is called, deal will try to execute every implementation and return the result of the first one that hasn't raised `PreContractError`.
 
 ```python run

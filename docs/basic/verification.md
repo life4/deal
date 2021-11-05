@@ -1,5 +1,9 @@
 # Formal verification
 
+```{warning}
+This feature is **experimental** and always will be. The API is stable and verification is reliable but it always will work only for some simple cases.
+```
+
 Deal has a built-in formal verifier. That means, deal turns your code into a formal theorem and then proves that it is formally correct (or finds a counter-example when it is not). Turning wild Python code into mathematical expressions is hard, so application of the verifier is limited. Still, you should try it. It will work for only 1% of your code but when it does work, it finds actual bugs.
 
 ```bash
