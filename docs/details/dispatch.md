@@ -40,6 +40,8 @@ age2stage(20)  # 'adult'
 
 The initially decorated function (which you directly pass into `@deal.dispatch`) is never executed. It is used only to provide the name, docstring, and type annotations for the combined function. However, we specify `raise NotImplementedError` instead of just `pass` as the function body, so type checkers won't complain about invalid return type.
 
+Since dispatch requires contracts to be enabled, when you call a dispatched function, contracts get forcefully enabled for the function duration. It may be changed in the future to enable only needed {py:func}`deal.pre` contracts. So, keep it in mind: if you want to disable all contracts on the production all together, `deal.dispatch` could be a bad fit for your application.
+
 ## Motivation
 
 The decorator was introduced as a way to do the same as [functools.singledispatch] but using pre-conditions instead of types. It gives you much more flexibility, allowing you to implement anything you could do in some other languages with the combination of [pattern matching], [guards], and [function overloading]. A classic example is recursively calculating factorial.
