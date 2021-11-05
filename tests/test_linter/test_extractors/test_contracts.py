@@ -25,7 +25,9 @@ def test_get_contracts_decorators(text, expected):
 
     tree = ast.parse(text)
     print(ast.dump(tree))
-    decos = tree.body[-1].decorator_list
+    func = tree.body[-1]
+    assert isinstance(func, ast.FunctionDef)
+    decos = func.decorator_list
     returns = tuple(cat for cat, _ in get_contracts(decos))
     assert returns == expected
 
@@ -52,3 +54,39 @@ def test_get_contracts_infer():
     decos = tree.body[-2].decorators.nodes
     returns = tuple(cat for cat, _ in get_contracts(decos))
     assert returns == ('pure', 'post')
+
+
+def test_get_contracts_infer_inherit_method():
+    text = """
+        import deal
+
+        class B:
+            @deal.has()
+            def f(self):
+                pass
+
+        class A:
+            def f(self):
+                pass
+
+        class C(A, B):
+            @deal.pre(lambda: True)
+            def f(self):
+                pass
+
+        class D(Unknown, C):
+            @deal.inherit
+            @deal.post(lambda x: x>0)
+            def f(self):
+                return 2
+    """
+
+    tree = astroid.parse(dedent(text))
+    print(tree.repr_tree())
+    cls = tree.body[-1]
+    assert isinstance(cls, astroid.ClassDef)
+    method = cls.body[0]
+    assert isinstance(method, astroid.FunctionDef)
+    decos = method.decorators.nodes
+    returns = tuple(cat for cat, _ in get_contracts(decos))
+    assert returns == ('pre', 'has', 'inherit', 'post')
