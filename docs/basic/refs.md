@@ -9,8 +9,9 @@ This page provides a quick navigation by the documentation in case if you're loo
 | `@deal.chain`    | {py:func}`deal.chain`    | {doc}`/details/contracts` / {ref}`details/contracts:deal.chain` |
 | `@deal.dispatch` | {py:func}`deal.dispatch` | {doc}`/details/dispatch` |
 | `@deal.ensure`   | {py:func}`deal.ensure`   | {doc}`/basic/values` / {ref}`basic/values:deal.ensure` |
-| `@deal.example`   | {py:func}`deal.example` | {doc}`/details/docs` / {ref}`details/docs:deal.example` |
+| `@deal.example`  | {py:func}`deal.example`  | {doc}`/details/docs` / {ref}`details/docs:deal.example` |
 | `@deal.has`      | {py:func}`deal.has`      | {doc}`/basic/side-effects` |
+| `@deal.inherit`  | {py:func}`deal.inherit`  | {doc}`/details/contracts` / {ref}`details/contracts:deal.inherit` |
 | `@deal.inv`      | {py:func}`deal.inv`      | {doc}`/basic/values` / {ref}`basic/values:deal.inv` |
 | `@deal.post`     | {py:func}`deal.post`     | {doc}`/basic/values` / {ref}`basic/values:deal.post` |
 | `@deal.pre`      | {py:func}`deal.pre`      | {doc}`/basic/values` / {ref}`basic/values:deal.pre` |
@@ -69,3 +70,12 @@ This page provides a quick navigation by the documentation in case if you're loo
 | mypy       | [python/mypy](https://github.com/python/mypy) | {doc}`/details/contracts` / {ref}`details/contracts:typing` |
 | pytest     | [pytest-dev/pytest](https://github.com/pytest-dev/pytest) | {doc}`/basic/tests`  |
 | sphinx     | [sphinx-doc/sphinx](https://github.com/sphinx-doc/sphinx) | {doc}`/details/docs` / {ref}`details/docs:sphinx autodoc` |
+
+## Articles
+
++ [Make tests a part of your app](https://dev.to/sobolevn/make-tests-a-part-of-your-app-8nm)
+
+## Projects integrating deal
+
++ [CrossHair](https://github.com/pschanely/CrossHair)
++ [flake8-functions-names](https://github.com/Melevir/flake8-functions-names)

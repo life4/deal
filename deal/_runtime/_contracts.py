@@ -84,6 +84,23 @@ class Contracts(Generic[F]):
         contracts.wrapped = wrapper  # type: ignore[assignment]
         return contracts
 
+    def wrap(self, func: F) -> F:
+        """Wrap the function with the contracts.
+        """
+        contracts = self._ensure_wrapped(func)
+        contracts.pres.extend(self.pres)
+        contracts.posts.extend(self.posts)
+        contracts.ensures.extend(self.ensures)
+        contracts.examples.extend(self.examples)
+        contracts.raises.extend(self.raises)
+        contracts.reasons.extend(self.reasons)
+        if self.patcher is not None:
+            if contracts.patcher is not None:
+                contracts.patcher.markers |= self.patcher.markers
+            else:
+                contracts.patcher = self.patcher
+        return contracts.wrapped
+
     def _run_sync(self, args: Tuple[object], kwargs: Dict[str, object]):
         if not state.debug:
             return self.func(*args, **kwargs)

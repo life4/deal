@@ -22,6 +22,7 @@
 ## Helpers
 
 ```{eval-rst}
+.. autofunction:: deal.inherit
 .. autofunction:: deal.chain
 .. autofunction:: deal.pure
 .. autofunction:: deal.safe

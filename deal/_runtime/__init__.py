@@ -1,10 +1,11 @@
 from ._contracts import Contracts
 from ._decorators import (
-    catch, chain, dispatch, ensure, example, has,
+    catch, chain, dispatch, ensure, example, has, inherit,
     implies, inv, post, pre, pure, raises, reason, safe,
 )
 from ._dispatch import Dispatch
 from ._has_patcher import HasPatcher
+from ._inherit import Inherit
 from ._invariant import invariant
 from ._validators import InvariantValidator, RaisesValidator, ReasonValidator, Validator
 
@@ -16,6 +17,7 @@ __all__ = [
     'ensure',
     'example',
     'has',
+    'inherit',
     'inv',
     'post',
     'pre',
@@ -32,6 +34,7 @@ __all__ = [
     'Contracts',
     'Dispatch',
     'HasPatcher',
+    'Inherit',
     'invariant',
     'InvariantValidator',
     'RaisesValidator',

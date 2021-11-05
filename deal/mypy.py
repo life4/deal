@@ -52,15 +52,15 @@ class DealMypyPlugin(Plugin):
             perf[name].append(now - start)
 
     def get_function_signature_hook(self, fullname: str):
-        if fullname == 'deal._runtime_decorators.pre':
+        if fullname == 'deal._runtime._decorators.pre':
             return self._handle_pre
-        if fullname == 'deal._runtime_decorators.post':
+        if fullname == 'deal._runtime._decorators.post':
             return self._handle_post
-        if fullname == 'deal._runtime_decorators.ensure':
+        if fullname == 'deal._runtime._decorators.ensure':
             return self._handle_ensure
-        if fullname == 'deal._runtime_decorators.reason':
+        if fullname == 'deal._runtime._decorators.reason':
             return self._handle_reason
-        if fullname == 'deal._runtime_decorators.inv':
+        if fullname == 'deal._runtime._decorators.inv':
             return self._handle_inv
         return None
 
