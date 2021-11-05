@@ -41,6 +41,16 @@ tasks:
       - >
         {{.VENVS}}/base/bin/flitenv --venvs={{.VENVS}} docs install
 
+  release:
+    cmds:
+      - grep -F {{.CLI_ARGS}} deal/__init__.py
+      - git add deal/__init__.py
+      - git commit -m "bump version"
+      - git tag {{.CLI_ARGS}}
+      - flit publish
+      - git push
+      - git push --tags
+
   pytest:run:
     desc: "run Python tests"
     deps:

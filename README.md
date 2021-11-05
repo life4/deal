@@ -24,7 +24,7 @@ A Python library for [design by contract](https://en.wikipedia.org/wiki/Design_b
 * Partial execution: linter executes contracts to statically check possible values.
 * [Formal verification][verification]: prove that your code works for all input (or find out when it doesn't).
 * Fast: each code change is benchmarked and profiled.
-* Reliable: the deal itself has 100% test coverage, partially verified, and runs on production by multiple comanies since 2018.
+* Reliable: the library has 100% test coverage, partially verified, and runs on production by multiple companies since 2018.
 
 [values]: https://deal.readthedocs.io/basic/values.html
 [exceptions]: https://deal.readthedocs.io/basic/exceptions.html
