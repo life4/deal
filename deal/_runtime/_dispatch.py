@@ -2,6 +2,9 @@ from functools import update_wrapper
 from typing import TYPE_CHECKING, Callable, Generic, List, Optional, TypeVar
 
 from .._exceptions import NoMatchError, PreContractError
+from .._state import state
+
+
 if TYPE_CHECKING:
     from ._contracts import Contracts
 
@@ -30,14 +33,19 @@ class Dispatch(Generic[F]):
     def __call__(self, *args, **kwargs):  # type: ignore[no-redef]
         exceptions = []
         contracts: 'Optional[Contracts]'
-        for func in self._functions:
-            try:
-                return func(*args, **kwargs)
-            except PreContractError as exc:
-                contracts = getattr(func, ATTR, None)
-                if contracts is None:
-                    raise
-                if exc.origin is not contracts.func:
-                    raise
-                exceptions.append(exc)
+        old_state = state.debug
+        state.debug = True
+        try:
+            for func in self._functions:
+                try:
+                    return func(*args, **kwargs)
+                except PreContractError as exc:
+                    contracts = getattr(func, ATTR, None)
+                    if contracts is None:
+                        raise
+                    if exc.origin is not contracts.func:
+                        raise
+                    exceptions.append(exc)
+        finally:
+            state.debug = old_state
         raise NoMatchError(tuple(exceptions))

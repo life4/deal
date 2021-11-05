@@ -88,3 +88,14 @@ def test_propagate_pre_contract_error_from_default():
     with pytest.raises(deal.PreContractError) as exc_info:
         f(4)
     assert exc_info.value.source == 'False'
+
+
+def test_dispatch_works_with_disabled_contracts():
+    state.disable()
+    try:
+        f = deal.dispatch(double)
+        f.register(double3)
+        f.register(double4)
+        assert f(4) == 8
+    finally:
+        state.enable()

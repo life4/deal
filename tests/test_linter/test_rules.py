@@ -6,9 +6,8 @@ import pytest
 
 from deal.linter._func import Func
 from deal.linter._rules import (
-    CheckAsserts, CheckExamples, CheckImports, CheckMarkers,
-    CheckPre, CheckRaises, CheckReturns, rules,
-    CheckEnsureArgs,
+    CheckAsserts, CheckEnsureArgs, CheckExamples, CheckImports,
+    CheckMarkers, CheckPre, CheckRaises, CheckReturns, rules,
 )
 
 
