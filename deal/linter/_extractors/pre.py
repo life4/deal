@@ -30,14 +30,11 @@ def handle_call(expr: astroid.Call, context: Dict[str, ast.stmt] = None) -> Iter
         kwargs[subnode.arg] = value
 
     for func in infer(expr.func):
-        if type(func) is not astroid.FunctionDef:
-            continue
-        if not func.decorators:
+        if not isinstance(func, astroid.FunctionDef):
             continue
         code = f'def f({func.args.as_string()}):0'
         func_args = ast.parse(code).body[0].args  # type: ignore
-
-        for category, contract_args in get_contracts(func.decorators.nodes):
+        for category, contract_args in get_contracts(func):
             if category != 'pre':
                 continue
 

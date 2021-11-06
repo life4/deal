@@ -19,16 +19,12 @@ def test_get_contracts_decorators(text, expected):
 
     tree = astroid.parse(text)
     print(tree.repr_tree())
-    decos = tree.body[-1].decorators.nodes
-    returns = tuple(cat for cat, _ in get_contracts(decos))
+    returns = tuple(cat for cat, _ in get_contracts(tree.body[-1]))
     assert returns == expected
 
     tree = ast.parse(text)
     print(ast.dump(tree))
-    func = tree.body[-1]
-    assert isinstance(func, ast.FunctionDef)
-    decos = func.decorator_list
-    returns = tuple(cat for cat, _ in get_contracts(decos))
+    returns = tuple(cat for cat, _ in get_contracts(tree.body[-1]))
     assert returns == expected
 
 
@@ -51,8 +47,7 @@ def test_get_contracts_infer():
 
     tree = astroid.parse(dedent(text))
     print(tree.repr_tree())
-    decos = tree.body[-2].decorators.nodes
-    returns = tuple(cat for cat, _ in get_contracts(decos))
+    returns = tuple(cat for cat, _ in get_contracts(tree.body[-2]))
     assert returns == ('pure', 'post')
 
 
@@ -85,10 +80,7 @@ def test_get_contracts_infer_inherit_method():
     print(tree.repr_tree())
     cls = tree.body[-1]
     assert isinstance(cls, astroid.ClassDef)
-    method = cls.body[0]
-    assert isinstance(method, astroid.FunctionDef)
-    decos = method.decorators.nodes
-    returns = tuple(cat for cat, _ in get_contracts(decos))
+    returns = tuple(cat for cat, _ in get_contracts(cls.body[0]))
     assert returns == ('pre', 'has', 'inherit', 'post')
 
 
@@ -103,14 +95,10 @@ def test_get_contracts_inherit_function_do_not_fail():
 
     tree = astroid.parse(text)
     print(tree.repr_tree())
-    decos = tree.body[-1].decorators.nodes
-    returns = tuple(cat for cat, _ in get_contracts(decos))
+    returns = tuple(cat for cat, _ in get_contracts(tree.body[-1]))
     assert returns == ('inherit', )
 
     tree = ast.parse(text)
     print(ast.dump(tree))
-    func = tree.body[-1]
-    assert isinstance(func, ast.FunctionDef)
-    decos = func.decorator_list
-    returns = tuple(cat for cat, _ in get_contracts(decos))
+    returns = tuple(cat for cat, _ in get_contracts(tree.body[-1]))
     assert returns == ('inherit', )

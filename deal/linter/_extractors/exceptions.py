@@ -104,9 +104,7 @@ def _exceptions_from_func(expr) -> Iterator[Token]:
             yield Token(value=error.value, line=expr.lineno, col=expr.col_offset)
 
         # get explicitly specified exceptions from `@deal.raises`
-        if not value.decorators:
-            continue
-        for category, args in get_contracts(value.decorators.nodes):
+        for category, args in get_contracts(value):
             if category != 'raises':
                 continue
             for arg in args:

@@ -1,5 +1,5 @@
 import ast
-from typing import Iterator, List, Optional, Tuple, Union, overload
+from typing import Iterator, List, Optional, Tuple, Union
 
 import astroid
 
@@ -20,17 +20,19 @@ SUPPORTED_MARKERS = frozenset({'deal.pure', 'deal.safe', 'deal.inherit'})
 Attr = Union[ast.Attribute, astroid.Attribute]
 
 
-@overload
-def get_contracts(node: ast.expr) -> Iterator[Tuple[str, List[ast.expr]]]:
-    pass
+def get_contracts(func) -> Iterator[Tuple[str, list]]:
+    if isinstance(func, ast.FunctionDef):
+        yield from _get_contracts(func.decorator_list)
+        return
+
+    assert isinstance(func, (astroid.FunctionDef, astroid.UnboundMethod))
+    if func.decorators is None:
+        return
+    assert isinstance(func.decorators, astroid.Decorators)
+    yield from _get_contracts(func.decorators.nodes)
 
 
-@overload
-def get_contracts(node: astroid.Expr) -> Iterator[Tuple[str, List[astroid.Expr]]]:
-    pass
-
-
-def get_contracts(decorators):
+def _get_contracts(decorators: list) -> Iterator[Tuple[str, list]]:
     for contract in decorators:
         if isinstance(contract, TOKENS.ATTR):
             name = get_name(contract)
@@ -45,7 +47,7 @@ def get_contracts(decorators):
                 continue
             name = get_name(contract.func)
             if name == 'deal.chain':
-                yield from get_contracts(contract.args)
+                yield from _get_contracts(contract.args)
             if name not in SUPPORTED_CONTRACTS:
                 continue
             yield name.split('.')[-1], contract.args
@@ -63,7 +65,7 @@ def get_contracts(decorators):
             expr = expr.parent
             if not isinstance(expr, astroid.Assign):  # pragma: no cover
                 continue
-            yield from get_contracts([expr.value])
+            yield from _get_contracts([expr.value])
 
 
 def _resolve_inherit(contract: Attr) -> Iterator[Tuple[str, List[astroid.Expr]]]:
@@ -76,10 +78,7 @@ def _resolve_inherit(contract: Attr) -> Iterator[Tuple[str, List[astroid.Expr]]]
         assert isinstance(base_class, astroid.ClassDef)
         for method in base_class.mymethods():
             assert isinstance(method, astroid.FunctionDef)
-            decorators = method.decorators
-            if not isinstance(decorators, astroid.Decorators):
-                continue
-            yield from get_contracts(decorators.nodes)
+            yield from get_contracts(method)
 
 
 def _get_parent_class(node) -> Optional[astroid.ClassDef]:

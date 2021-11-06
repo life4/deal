@@ -36,7 +36,7 @@ class Func(NamedTuple):
             if not isinstance(expr, ast.FunctionDef):
                 continue
             contracts = []
-            for category, args in get_contracts(expr.decorator_list):
+            for category, args in get_contracts(expr):
                 contract = Contract(
                     args=args,
                     func_args=expr.args,
@@ -68,16 +68,14 @@ class Func(NamedTuple):
 
             # collect contracts
             contracts = []
-            if expr.decorators:
-                for category, args in get_contracts(expr.decorators.nodes):
-                    contract = Contract(
-                        args=args,
-                        func_args=func_args,
-                        category=Category(category),
-                        context=definitions,
-                    )
-                    contracts.append(contract)
-
+            for category, args in get_contracts(expr):
+                contract = Contract(
+                    args=args,
+                    func_args=func_args,
+                    category=Category(category),
+                    context=definitions,
+                )
+                contracts.append(contract)
             funcs.append(cls(
                 name=expr.name,
                 args=func_args,
