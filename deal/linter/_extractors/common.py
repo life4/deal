@@ -6,7 +6,6 @@ from pathlib import Path
 from typing import Callable, Iterator, List, NamedTuple, Optional, Tuple, Type, TypeVar
 
 import astroid
-from astroid.node_classes import NodeNG
 
 from .._stub import EXTENSION, StubFile, StubsManager
 
@@ -58,7 +57,7 @@ def _traverse_ast(node: ast.AST) -> Iterator[ast.AST]:
             yield node
 
 
-def _traverse_astroid(node: NodeNG) -> Iterator[NodeNG]:
+def _traverse_astroid(node: astroid.NodeNG) -> Iterator[astroid.NodeNG]:
     todo = deque([node])
     while todo:
         node = todo.popleft()
@@ -91,7 +90,7 @@ def get_name(expr) -> Optional[str]:
     return None
 
 
-def get_full_name(expr: NodeNG) -> Tuple[str, str]:
+def get_full_name(expr: astroid.NodeNG) -> Tuple[str, str]:
     if expr.parent is None:
         return '', expr.name
 
@@ -110,8 +109,8 @@ def get_full_name(expr: NodeNG) -> Tuple[str, str]:
     return path, func_name
 
 
-def infer(expr) -> Tuple[NodeNG, ...]:
-    if not isinstance(expr, NodeNG):
+def infer(expr) -> Tuple[astroid.NodeNG, ...]:
+    if not isinstance(expr, astroid.NodeNG):
         return tuple()
     with suppress(astroid.exceptions.InferenceError, RecursionError):
         guesses = expr.infer()
@@ -141,7 +140,7 @@ def get_stub(
     return stubs.read(path=path)
 
 
-def _get_module(expr: NodeNG) -> Optional[astroid.Module]:
+def _get_module(expr: astroid.NodeNG) -> Optional[astroid.Module]:
     if type(expr) is astroid.Module:
         return expr
     if expr.parent is None:

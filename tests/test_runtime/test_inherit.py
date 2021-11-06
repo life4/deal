@@ -119,6 +119,24 @@ def test_inherit_class():
         b.f(4)
 
 
+def test_inherit_inherit():
+    class A:
+        @deal.inherit
+        @deal.pre(lambda self, x: x == 3)
+        def f(self, x):
+            pass
+
+    class B(A):
+        @deal.inherit
+        def f(self, x):
+            return x * 2
+
+    b = B()
+    assert b.f(3) == 6
+    with pytest.raises(deal.PreContractError):
+        b.f(4)
+
+
 def test_has_inherit():
     class A:
         @deal.has('a', 'b')

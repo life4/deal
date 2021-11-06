@@ -90,3 +90,27 @@ def test_get_contracts_infer_inherit_method():
     decos = method.decorators.nodes
     returns = tuple(cat for cat, _ in get_contracts(decos))
     assert returns == ('pre', 'has', 'inherit', 'post')
+
+
+def test_get_contracts_inherit_function_do_not_fail():
+    text = dedent("""
+        import deal
+
+        @deal.inherit
+        def f(x):
+            pass
+    """)
+
+    tree = astroid.parse(text)
+    print(tree.repr_tree())
+    decos = tree.body[-1].decorators.nodes
+    returns = tuple(cat for cat, _ in get_contracts(decos))
+    assert returns == ('inherit', )
+
+    tree = ast.parse(text)
+    print(ast.dump(tree))
+    func = tree.body[-1]
+    assert isinstance(func, ast.FunctionDef)
+    decos = func.decorator_list
+    returns = tuple(cat for cat, _ in get_contracts(decos))
+    assert returns == ('inherit', )
