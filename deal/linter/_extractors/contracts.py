@@ -1,5 +1,5 @@
 import ast
-from typing import Iterator, List, Optional, Tuple, Union
+from typing import Iterator, List, Optional, Tuple, Union, overload
 
 import astroid
 
@@ -18,11 +18,19 @@ SUPPORTED_CONTRACTS = frozenset({
 })
 SUPPORTED_MARKERS = frozenset({'deal.pure', 'deal.safe', 'deal.inherit'})
 Attr = Union[ast.Attribute, astroid.Attribute]
-Expr = Union[ast.expr, astroid.Expr]
-Contract = Tuple[str, List[Expr]]
 
 
-def get_contracts(decorators: List[Expr]) -> Iterator[Contract]:
+@overload
+def get_contracts(node: ast.expr) -> Iterator[Tuple[str, List[ast.expr]]]:
+    pass
+
+
+@overload
+def get_contracts(node: astroid.Expr) -> Iterator[Tuple[str, List[astroid.Expr]]]:
+    pass
+
+
+def get_contracts(decorators):
     for contract in decorators:
         if isinstance(contract, TOKENS.ATTR):
             name = get_name(contract)
@@ -58,7 +66,7 @@ def get_contracts(decorators: List[Expr]) -> Iterator[Contract]:
             yield from get_contracts([expr.value])
 
 
-def _resolve_inherit(contract: Attr) -> Iterator[Contract]:
+def _resolve_inherit(contract: Attr) -> Iterator[Tuple[str, List[astroid.Expr]]]:
     if not isinstance(contract, astroid.Attribute):
         return
     cls = _get_parent_class(contract)

@@ -334,7 +334,7 @@ class CheckMarkers(FuncRule):
 
         for token in get_markers(body=func.body):
             assert token.marker
-            has_marker = getattr(has, 'has_{}'.format(token.marker), None)
+            has_marker = getattr(has, f'has_{token.marker}', None)
             if has_marker is None:
                 has_marker = token.marker in has.markers
             if has_marker:

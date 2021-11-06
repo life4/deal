@@ -63,7 +63,7 @@ class Func(NamedTuple):
                 continue
 
             # make signature
-            code = 'def f({}):0'.format(expr.args.as_string())
+            code = f'def f({expr.args.as_string()}):0'
             func_args = ast.parse(code).body[0].args  # type: ignore
 
             # collect contracts
@@ -89,7 +89,5 @@ class Func(NamedTuple):
         return funcs
 
     def __repr__(self) -> str:
-        return '{name}({cats})'.format(
-            name=type(self).__name__,
-            cats=', '.join(contract.category.value for contract in self.contracts),
-        )
+        cats = ', '.join(contract.category.value for contract in self.contracts)
+        return f'{type(self).__name__}({cats})'

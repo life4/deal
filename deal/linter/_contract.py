@@ -204,7 +204,4 @@ class Contract:
         return globals['result']
 
     def __repr__(self) -> str:
-        return '{name}({category})'.format(
-            name=type(self).__name__,
-            category=self.category.value,
-        )
+        return f'{type(self).__name__}({self.category.value})'

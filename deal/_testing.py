@@ -147,12 +147,12 @@ class cases:  # noqa: N
     def __repr__(self) -> str:
         args = [
             getattr(self.func, '__name__', repr(self.func)),
-            'count={}'.format(self.count),
+            f'count={self.count}',
         ]
         if self.seed is not None:
-            args.append('seed={}'.format(self.seed))
+            args.append(f'seed={self.seed}')
         if self.kwargs:
-            args.append('kwargs={!r}'.format(self.kwargs))
+            args.append(f'kwargs={repr(self.kwargs)}')
         return 'deal.cases({})'.format(', '.join(args))
 
     def _make_case(self, *args, **kwargs) -> TestCase:

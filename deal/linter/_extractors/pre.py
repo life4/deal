@@ -34,7 +34,7 @@ def handle_call(expr: astroid.Call, context: Dict[str, ast.stmt] = None) -> Iter
             continue
         if not func.decorators:
             continue
-        code = 'def f({}):0'.format(func.args.as_string())
+        code = f'def f({func.args.as_string()}):0'
         func_args = ast.parse(code).body[0].args  # type: ignore
 
         for category, contract_args in get_contracts(func.decorators.nodes):
@@ -64,7 +64,7 @@ def format_call_args(args: Sequence, kwargs: Dict[str, Any]) -> str:
     sep = ', '
     args_s = sep.join(map(repr, args))
     items = sorted(kwargs.items())
-    kwargs_s = sep.join(['{}={!r}'.format(k, v) for k, v in items])
+    kwargs_s = sep.join(f'{k}={repr(v)}' for k, v in items)
     if args and kwargs:
         return args_s + sep + kwargs_s
     return args_s + kwargs_s

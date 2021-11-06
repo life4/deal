@@ -111,7 +111,7 @@ def format_lines(statements: Set[int], lines: Set[int]) -> str:
         if start == end:
             pairs.append(str(start))
         else:
-            pairs.append('{}-{}'.format(start, end))
+            pairs.append(f'{start}-{end}')
     return ', '.join(pairs)
 
 
