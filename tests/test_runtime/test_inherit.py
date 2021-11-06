@@ -1,5 +1,6 @@
-import deal
 import pytest
+
+import deal
 
 
 def test_inherit_one_parent():

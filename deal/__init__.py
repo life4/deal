@@ -13,8 +13,8 @@ from ._exceptions import (
 )
 from ._imports import activate, module_load
 from ._runtime import (
-    catch, chain, dispatch, ensure, example, has, inherit,
-    implies, inv, post, pre, pure, raises, reason, safe,
+    catch, chain, dispatch, ensure, example, has, implies,
+    inherit, inv, post, pre, pure, raises, reason, safe,
 )
 from ._schemes import Scheme
 from ._sphinx import autodoc

@@ -1,12 +1,12 @@
+import ast
 from typing import Iterator, List, Optional, Tuple, Union
 
-import ast
 import astroid
 
 from .common import TOKENS, get_name
 
 
-SUPPORTED_CONTRACTS = {
+SUPPORTED_CONTRACTS = frozenset({
     'deal.ensure',
     'deal.example',
     'deal.has',
@@ -15,12 +15,14 @@ SUPPORTED_CONTRACTS = {
     'deal.pure',
     'deal.raises',
     'deal.safe',
-}
-SUPPORTED_MARKERS = {'deal.pure', 'deal.safe', 'deal.inherit'}
-Contract = Tuple[str, List[Union[ast.expr, astroid.Expr]]]
+})
+SUPPORTED_MARKERS = frozenset({'deal.pure', 'deal.safe', 'deal.inherit'})
+Attr = Union[ast.Attribute, astroid.Attribute]
+Expr = Union[ast.expr, astroid.Expr]
+Contract = Tuple[str, List[Expr]]
 
 
-def get_contracts(decorators: list) -> Iterator[Contract]:
+def get_contracts(decorators: List[Expr]) -> Iterator[Contract]:
     for contract in decorators:
         if isinstance(contract, TOKENS.ATTR):
             name = get_name(contract)
@@ -56,7 +58,7 @@ def get_contracts(decorators: list) -> Iterator[Contract]:
             yield from get_contracts([expr.value])
 
 
-def _resolve_inherit(contract: Union[ast.Attribute, astroid.Attribute]) -> Iterator[Contract]:
+def _resolve_inherit(contract: Attr) -> Iterator[Contract]:
     if not isinstance(contract, astroid.Attribute):
         return
     cls = _get_parent_class(contract)
