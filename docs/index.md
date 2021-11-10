@@ -29,6 +29,7 @@
     basic/tests
     basic/linter
     basic/verification
+    basic/crosshair
 
 .. toctree::
     :maxdepth: 1
