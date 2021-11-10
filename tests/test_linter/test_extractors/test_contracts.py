@@ -7,6 +7,10 @@ import pytest
 from deal.linter._extractors import get_contracts
 
 
+def get_cats(target) -> tuple:
+    return tuple(cat for cat, _ in get_contracts(target))
+
+
 @pytest.mark.parametrize('text, expected', [
     ('@deal.post(lambda x: x>0)', ('post', )),
     ('@deal.pure', ('pure', )),
@@ -14,21 +18,16 @@ from deal.linter._extractors import get_contracts
     ('@deal.chain(deal.pure)', ('pure', )),
     ('@deal.chain(deal.pure, deal.post(lambda x: x>0))', ('pure', 'post')),
 ])
-def test_get_contracts_decorators(text, expected):
+def test_decorators(text, expected):
     text += '\ndef f(x): pass'
-
     tree = astroid.parse(text)
-    print(tree.repr_tree())
-    returns = tuple(cat for cat, _ in get_contracts(tree.body[-1]))
-    assert returns == expected
-
+    assert get_cats(tree.body[-1]) == expected
     tree = ast.parse(text)
     print(ast.dump(tree))
-    returns = tuple(cat for cat, _ in get_contracts(tree.body[-1]))
-    assert returns == expected
+    assert get_cats(tree.body[-1]) == expected
 
 
-def test_get_contracts_infer():
+def test_infer():
     text = """
         from io import StringIO
         import deal
@@ -44,14 +43,11 @@ def test_get_contracts_infer():
             def f(x):
                 return x
     """
-
     tree = astroid.parse(dedent(text))
-    print(tree.repr_tree())
-    returns = tuple(cat for cat, _ in get_contracts(tree.body[-2]))
-    assert returns == ('pure', 'post')
+    assert get_cats(tree.body[-2]) == ('pure', 'post')
 
 
-def test_get_contracts_infer_inherit_method():
+def test_infer_inherit_method():
     text = """
         import deal
 
@@ -79,30 +75,35 @@ def test_get_contracts_infer_inherit_method():
             def f(self):
                 return 2
     """
-
     tree = astroid.parse(dedent(text))
-    print(tree.repr_tree())
     cls = tree.body[-1]
     assert isinstance(cls, astroid.ClassDef)
-    returns = tuple(cat for cat, _ in get_contracts(cls.body[0]))
-    assert returns == ('inherit', 'pre', 'has', 'post')
+    assert get_cats(cls.body[0]) == ('inherit', 'pre', 'has', 'post')
 
 
-def test_get_contracts_inherit_function_do_not_fail():
+def test_inherit_no_parents():
+    text = """
+        import deal
+        class A:
+            @deal.inherit
+            @deal.has()
+            def f(self):
+                pass
+    """
+    tree = astroid.parse(dedent(text))
+    cls = tree.body[-1]
+    assert isinstance(cls, astroid.ClassDef)
+    assert get_cats(cls.body[0]) == ('inherit', 'has')
+
+
+def test_inherit_function():
     text = dedent("""
         import deal
-
         @deal.inherit
         def f(x):
             pass
     """)
-
     tree = astroid.parse(text)
-    print(tree.repr_tree())
-    returns = tuple(cat for cat, _ in get_contracts(tree.body[-1]))
-    assert returns == ('inherit', )
-
+    assert get_cats(tree.body[-1]) == ('inherit', )
     tree = ast.parse(text)
-    print(ast.dump(tree))
-    returns = tuple(cat for cat, _ in get_contracts(tree.body[-1]))
-    assert returns == ('inherit', )
+    assert get_cats(tree.body[-1]) == ('inherit', )
