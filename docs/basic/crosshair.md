@@ -15,10 +15,7 @@ python3 -m pip install --user crosshair-tool
 Usage:
 
 ```bash
-python3 -m crosshair check \
-    --analysis_kind=deal \
-    --report_all
-    ./examples/div.py
+python3 -m crosshair watch ./examples/div.py
 ```
 
 ```{note}
