@@ -74,10 +74,13 @@ def _resolve_inherit(contract: Attr) -> Iterator[Tuple[str, List[astroid.Expr]]]
     cls = _get_parent_class(contract)
     if cls is None:
         return
+    func = _get_parent_func(contract)
     for base_class in cls.ancestors():
         assert isinstance(base_class, astroid.ClassDef)
         for method in base_class.mymethods():
             assert isinstance(method, astroid.FunctionDef)
+            if method.name != func.name:
+                continue
             yield from get_contracts(method)
 
 
@@ -87,3 +90,10 @@ def _get_parent_class(node) -> Optional[astroid.ClassDef]:
     if isinstance(node, (astroid.Attribute, astroid.FunctionDef, astroid.Decorators)):
         return _get_parent_class(node.parent)
     return None
+
+
+def _get_parent_func(node) -> astroid.FunctionDef:
+    if isinstance(node, (astroid.Attribute, astroid.Decorators)):
+        return _get_parent_func(node.parent)
+    assert isinstance(node, astroid.FunctionDef)
+    return node

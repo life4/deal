@@ -69,6 +69,10 @@ def test_get_contracts_infer_inherit_method():
             def f(self):
                 pass
 
+            @deal.raises(ZeroDivisionError)
+            def f2(self):
+                pass
+
         class D(Unknown, C):
             @deal.inherit
             @deal.post(lambda x: x>0)
