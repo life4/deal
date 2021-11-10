@@ -36,11 +36,11 @@ def _get_contracts(decorators: list) -> Iterator[Tuple[str, list]]:
     for contract in decorators:
         if isinstance(contract, TOKENS.ATTR):
             name = get_name(contract)
-            if name == 'deal.inherit':
-                yield from _resolve_inherit(contract)
             if name not in SUPPORTED_MARKERS:
                 continue
             yield name.split('.')[-1], []
+            if name == 'deal.inherit':
+                yield from _resolve_inherit(contract)
 
         if isinstance(contract, TOKENS.CALL):
             if not isinstance(contract.func, TOKENS.ATTR):

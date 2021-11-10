@@ -85,7 +85,7 @@ def test_get_contracts_infer_inherit_method():
     cls = tree.body[-1]
     assert isinstance(cls, astroid.ClassDef)
     returns = tuple(cat for cat, _ in get_contracts(cls.body[0]))
-    assert returns == ('pre', 'has', 'inherit', 'post')
+    assert returns == ('inherit', 'pre', 'has', 'post')
 
 
 def test_get_contracts_inherit_function_do_not_fail():
