@@ -116,7 +116,7 @@ class ContractError(AssertionError):
             else:
                 result += self.source
         if self.variables:
-            result += ' (where {})'.format(self.variables)
+            result += f' (where {self.variables})'
         return result
 
 

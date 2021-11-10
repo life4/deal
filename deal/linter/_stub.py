@@ -66,7 +66,7 @@ class StubsManager:
         if path.suffix == '.py':
             path = path.with_suffix(EXTENSION)
         if path.suffix != EXTENSION:
-            raise ValueError('invalid stub file extension: *{}'.format(path.suffix))
+            raise ValueError(f'invalid stub file extension: *{path.suffix}')
         if module_name is None:
             module_name = self._get_module_name(path=path)
         if module_name not in self._modules:
@@ -153,7 +153,7 @@ def generate_stub(*, path: Path, stubs: StubsManager = None) -> Path:
     from ._extractors import get_exceptions, get_markers
 
     if path.suffix != '.py':
-        raise ValueError('invalid Python file extension: *{}'.format(path.suffix))
+        raise ValueError(f'invalid Python file extension: *{path.suffix}')
 
     if stubs is None:
         stubs = StubsManager()

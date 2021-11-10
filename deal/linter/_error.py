@@ -22,7 +22,7 @@ class Error:
     def message(self) -> str:
         msg = self.full_code + ' ' + self.text
         if self.value:
-            msg += ' ({})'.format(self.value)
+            msg += f' ({self.value})'
         return msg
 
     def __iter__(self) -> typing.Iterator[typing.Union[int, str]]:
@@ -34,12 +34,8 @@ class Error:
         return self.message
 
     def __repr__(self) -> str:
-        return '{name}(row={row}, col={col}, code={code})'.format(
-            name=type(self).__name__,
-            row=self.row,
-            col=self.col,
-            code=self.code,
-        )
+        name = type(self).__name__
+        return f'{name}(row={self.row}, col={self.col}, code={self.code})'
 
     def __hash__(self):
         return hash((self.row, self.col, self.code))

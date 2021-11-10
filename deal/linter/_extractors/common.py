@@ -3,28 +3,28 @@ from collections import deque
 from contextlib import suppress
 from functools import partial
 from pathlib import Path
-from types import SimpleNamespace
-from typing import Callable, Iterator, List, NamedTuple, Optional, Tuple
+from typing import Callable, Iterator, List, NamedTuple, Optional, Tuple, Type, TypeVar
 
 import astroid
-from astroid.node_classes import NodeNG
 
 from .._stub import EXTENSION, StubFile, StubsManager
 
 
-TOKENS = SimpleNamespace(
-    ASSERT=(ast.Assert, astroid.Assert),
-    ATTR=(ast.Attribute, astroid.Attribute),
-    BIN_OP=(ast.BinOp, astroid.BinOp),
-    CALL=(ast.Call, astroid.Call),
-    COMPARE=(ast.Compare, astroid.Compare),
-    EXPR=(ast.Expr, astroid.Expr),
-    GLOBAL=(ast.Global, astroid.Global),
-    NONLOCAL=(ast.Nonlocal, astroid.Nonlocal),
-    RAISE=(ast.Raise, astroid.Raise),
-    RETURN=(ast.Return, astroid.Return),
-    YIELD=(ast.Yield, astroid.Yield),
-)
+T = TypeVar('T', bound=Type)
+N = Tuple[Type[T], Type[T]]
+
+
+class TOKENS:
+    ASSERT: N[ast.Assert] = (ast.Assert, astroid.Assert)
+    ATTR: N[ast.Attribute] = (ast.Attribute, astroid.Attribute)
+    BIN_OP: N[ast.BinOp] = (ast.BinOp, astroid.BinOp)
+    CALL: N[ast.Call] = (ast.Call, astroid.Call)
+    COMPARE: N[ast.Compare] = (ast.Compare, astroid.Compare)
+    GLOBAL: N[ast.Global] = (ast.Global, astroid.Global)
+    NONLOCAL: N[ast.Nonlocal] = (ast.Nonlocal, astroid.Nonlocal)
+    RAISE: N[ast.Raise] = (ast.Raise, astroid.Raise)
+    RETURN: N[ast.Return] = (ast.Return, astroid.Return)
+    YIELD: N[ast.Yield] = (ast.Yield, astroid.Yield)
 
 
 class Token(NamedTuple):
@@ -57,7 +57,7 @@ def _traverse_ast(node: ast.AST) -> Iterator[ast.AST]:
             yield node
 
 
-def _traverse_astroid(node: NodeNG) -> Iterator[NodeNG]:
+def _traverse_astroid(node: astroid.NodeNG) -> Iterator[astroid.NodeNG]:
     todo = deque([node])
     while todo:
         node = todo.popleft()
@@ -90,7 +90,7 @@ def get_name(expr) -> Optional[str]:
     return None
 
 
-def get_full_name(expr: NodeNG) -> Tuple[str, str]:
+def get_full_name(expr: astroid.NodeNG) -> Tuple[str, str]:
     if expr.parent is None:
         return '', expr.name
 
@@ -109,8 +109,8 @@ def get_full_name(expr: NodeNG) -> Tuple[str, str]:
     return path, func_name
 
 
-def infer(expr) -> Tuple[NodeNG, ...]:
-    if not isinstance(expr, NodeNG):
+def infer(expr) -> Tuple[astroid.NodeNG, ...]:
+    if not isinstance(expr, astroid.NodeNG):
         return tuple()
     with suppress(astroid.exceptions.InferenceError, RecursionError):
         guesses = expr.infer()
@@ -140,7 +140,7 @@ def get_stub(
     return stubs.read(path=path)
 
 
-def _get_module(expr: NodeNG) -> Optional[astroid.Module]:
+def _get_module(expr: astroid.NodeNG) -> Optional[astroid.Module]:
     if type(expr) is astroid.Module:
         return expr
     if expr.parent is None:

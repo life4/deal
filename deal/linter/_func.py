@@ -36,7 +36,7 @@ class Func(NamedTuple):
             if not isinstance(expr, ast.FunctionDef):
                 continue
             contracts = []
-            for category, args in get_contracts(expr.decorator_list):
+            for category, args in get_contracts(expr):
                 contract = Contract(
                     args=args,
                     func_args=expr.args,
@@ -63,21 +63,19 @@ class Func(NamedTuple):
                 continue
 
             # make signature
-            code = 'def f({}):0'.format(expr.args.as_string())
+            code = f'def f({expr.args.as_string()}):0'
             func_args = ast.parse(code).body[0].args  # type: ignore
 
             # collect contracts
             contracts = []
-            if expr.decorators:
-                for category, args in get_contracts(expr.decorators.nodes):
-                    contract = Contract(
-                        args=args,
-                        func_args=func_args,
-                        category=Category(category),
-                        context=definitions,
-                    )
-                    contracts.append(contract)
-
+            for category, args in get_contracts(expr):
+                contract = Contract(
+                    args=args,
+                    func_args=func_args,
+                    category=Category(category),
+                    context=definitions,
+                )
+                contracts.append(contract)
             funcs.append(cls(
                 name=expr.name,
                 args=func_args,
@@ -89,7 +87,5 @@ class Func(NamedTuple):
         return funcs
 
     def __repr__(self) -> str:
-        return '{name}({cats})'.format(
-            name=type(self).__name__,
-            cats=', '.join(contract.category.value for contract in self.contracts),
-        )
+        cats = ', '.join(contract.category.value for contract in self.contracts)
+        return f'{type(self).__name__}({cats})'

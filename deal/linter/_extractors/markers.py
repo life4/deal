@@ -2,7 +2,6 @@ import ast
 from typing import Iterator, Optional
 
 import astroid
-from astroid.node_classes import NodeNG
 
 from .._contract import Category
 from .._stub import StubsManager
@@ -184,7 +183,7 @@ def _infer_markers(expr, dive: bool, stubs: StubsManager = None) -> Iterator[Tok
             yield from _markers_from_func(expr=expr, inferred=inferred)
 
 
-def _markers_from_inferred(expr: NodeNG, inferred: tuple) -> Iterator[Token]:
+def _markers_from_inferred(expr: astroid.NodeNG, inferred: tuple) -> Iterator[Token]:
     for node in inferred:
         module, full_name = get_full_name(node)
         qual_name = f'{module}.{full_name}'
@@ -259,7 +258,7 @@ def _markers_from_stubs(expr: astroid.Call, inferred, stubs: StubsManager) -> It
             yield Token(marker=name, line=expr.lineno, col=expr.col_offset)
 
 
-def _markers_from_func(expr: NodeNG, inferred: tuple) -> Iterator[Token]:
+def _markers_from_func(expr: astroid.NodeNG, inferred: tuple) -> Iterator[Token]:
     for value in inferred:
         if not isinstance(value, (astroid.FunctionDef, astroid.UnboundMethod)):
             continue
@@ -274,9 +273,7 @@ def _markers_from_func(expr: NodeNG, inferred: tuple) -> Iterator[Token]:
             )
 
         # get explicitly specified markers from `@deal.has`
-        if not value.decorators:
-            continue
-        for category, args in get_contracts(value.decorators.nodes):
+        for category, args in get_contracts(value):
             if category != 'has':
                 continue
             for arg in args:

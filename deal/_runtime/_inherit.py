@@ -1,6 +1,7 @@
 from functools import update_wrapper
 from types import FunctionType, MethodType
-from typing import Generic, Optional, TypeVar, Callable
+from typing import Callable, Generic, Optional, TypeVar
+
 from ._contracts import Contracts
 
 

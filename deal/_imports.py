@@ -57,7 +57,7 @@ class DealLoader:
         for node in nodes:
             contract = self._exec_contract(node=node)
             if contract is None:
-                msg = 'unsupported contract: {}'.format(ast.dump(node))
+                msg = f'unsupported contract: {ast.dump(node)}'
                 raise RuntimeError(msg)
             contracts.append(contract)
 
