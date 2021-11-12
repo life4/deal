@@ -53,6 +53,16 @@ from deal.linter import Transformer
         def f():
             raise ValueError
     """,
+    # merge deal.raises
+    """
+        @deal.raises(ZeroDivisionError)
+        def f():
+            raise ValueError
+        ---
+        @deal.raises(ZeroDivisionError, ValueError)
+        def f():
+            raise ValueError
+    """,
 ])
 def test_transformer(content: str, tmp_path: Path) -> None:
     given, expected = content.split('---')

@@ -1,9 +1,12 @@
 from pathlib import Path
-from typing import Iterator, List, NamedTuple, Set, Union
+from typing import Iterator, List, NamedTuple, Set, Tuple, Union
 from .._cached_property import cached_property
 from ._contract import Category
 from ._func import Func
 from ._rules import CheckRaises
+
+
+Priority = int
 
 
 class Insert(NamedTuple):
@@ -14,6 +17,10 @@ class Insert(NamedTuple):
 
     def apply(self, lines: List[str]) -> None:
         lines.insert(self.line - 1, f'{self}\n')
+
+    @property
+    def key(self) -> Tuple[int, Priority]:
+        return (self.line, 1)
 
     def __str__(self) -> str:
         args = ', '.join(self.args)
@@ -26,6 +33,10 @@ class Remove(NamedTuple):
 
     def apply(self, lines: List[str]) -> None:
         lines.pop(self.line - 1)
+
+    @property
+    def key(self) -> Tuple[int, Priority]:
+        return (self.line, 2)
 
 
 Mutation = Union[Insert, Remove]
@@ -79,18 +90,26 @@ class Transformer:
                     contract=Category.HAS,
                     args=[],
                 )
+        contract_args = [self._exc_as_str(exc) for exc in declared]
+        contract_args.extend(sorted(excs))
         yield Insert(
             line=func.line,
             indent=func.col,
             contract=Category.RAISES,
-            args=sorted(excs),
+            args=contract_args,
         )
+
+    @staticmethod
+    def _exc_as_str(exc) -> str:
+        if isinstance(exc, str):
+            return exc
+        return exc.__name__
 
     def _apply_mutations(self, content: str) -> str:
         if not self.mutations:
             return content
         lines = content.splitlines(keepends=True)
-        self.mutations.sort(key=lambda x: x.line, reverse=True)
+        self.mutations.sort(key=lambda x: x.key, reverse=True)
         for mutation in self.mutations:
             mutation.apply(lines)
         return ''.join(lines)
