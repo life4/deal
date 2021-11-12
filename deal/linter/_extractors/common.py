@@ -31,8 +31,7 @@ class Token(NamedTuple):
     line: int
     col: int
     value: Optional[object] = None
-    # marker name or error message:
-    marker: Optional[str] = None
+    marker: Optional[str] = None  # marker name or error message
 
 
 def traverse(body: List) -> Iterator:

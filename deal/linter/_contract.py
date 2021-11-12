@@ -3,7 +3,7 @@ import builtins
 import enum
 from copy import copy
 from pathlib import Path
-from typing import Dict, FrozenSet, Iterable, List
+from typing import Dict, FrozenSet, Iterable, List, Type, Union
 
 import astroid
 
@@ -110,7 +110,7 @@ class Contract:
         return contract  # pragma: no cover
 
     @cached_property
-    def exceptions(self) -> list:
+    def exceptions(self) -> List[Union[str, Type[Exception]]]:
         from ._extractors import get_name
 
         excs = []
