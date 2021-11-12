@@ -1,33 +1,38 @@
 import sys
 from argparse import ArgumentParser
 from pathlib import Path
-from types import MappingProxyType
 from typing import Mapping, Sequence, TextIO, Type
 
 from ._base import Command
-from ._lint import LintCommand
-from ._memtest import MemtestCommand
-from ._prove import ProveCommand
-from ._stub import StubCommand
-from ._test import TestCommand
 
 
 CommandsType = Mapping[str, Type[Command]]
-COMMANDS: CommandsType = MappingProxyType(dict(
-    lint=LintCommand,
-    memtest=MemtestCommand,
-    prove=ProveCommand,
-    stub=StubCommand,
-    test=TestCommand,
-))
+
+
+def get_commands() -> CommandsType:
+    from ._lint import LintCommand
+    from ._memtest import MemtestCommand
+    from ._prove import ProveCommand
+    from ._stub import StubCommand
+    from ._test import TestCommand
+
+    return dict(
+        lint=LintCommand,
+        memtest=MemtestCommand,
+        prove=ProveCommand,
+        stub=StubCommand,
+        test=TestCommand,
+    )
 
 
 def main(
     argv: Sequence[str], *,
-    commands: CommandsType = COMMANDS,
+    commands: CommandsType = None,
     root: Path = None,
     stream: TextIO = sys.stdout,
 ) -> int:
+    if commands is None:
+        commands = get_commands()
     if root is None:  # pragma: no cover
         root = Path()
     parser = ArgumentParser(prog='python3 -m deal')
