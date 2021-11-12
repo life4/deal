@@ -1,7 +1,7 @@
 from pathlib import Path
 from textwrap import dedent
 import pytest
-from deal.linter import Transformer, Category
+from deal.linter import Transformer, TransformationType
 
 
 @pytest.mark.parametrize('content', [
@@ -21,6 +21,16 @@ from deal.linter import Transformer, Category
             return 1
         ---
         @deal.safe
+        def f():
+            return 1
+    """,
+    # preserve deal.safe with comments
+    """
+        @deal.safe   # oh hi mark
+        def f():
+            return 1
+        ---
+        @deal.safe   # oh hi mark
         def f():
             return 1
     """,
@@ -168,7 +178,10 @@ def test_transformer_raises(content: str, tmp_path: Path) -> None:
     expected = dedent(expected)
     path = tmp_path / "example.py"
     path.write_text(given)
-    tr = Transformer(path=path, categories=frozenset({Category.RAISES, Category.SAFE}))
+    tr = Transformer(
+        path=path,
+        types={TransformationType.RAISES, TransformationType.SAFE},
+    )
     actual = tr.transform()
     assert actual == expected
 
@@ -296,6 +309,17 @@ def test_transformer_raises(content: str, tmp_path: Path) -> None:
         def f():
             return 1
     """,
+    # do not add deal.raises if transformation type is disabled
+    """
+        def f():
+            raise ValueError
+            return 1
+        ---
+        @deal.has()
+        def f():
+            raise ValueError
+            return 1
+    """,
 ])
 def test_transformer_has(content: str, tmp_path: Path) -> None:
     given, expected = content.split('---')
@@ -303,6 +327,6 @@ def test_transformer_has(content: str, tmp_path: Path) -> None:
     expected = dedent(expected)
     path = tmp_path / "example.py"
     path.write_text(given)
-    tr = Transformer(path=path, categories=frozenset({Category.HAS}))
+    tr = Transformer(path=path, types={TransformationType.HAS})
     actual = tr.transform()
     assert actual == expected

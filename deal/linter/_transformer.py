@@ -1,5 +1,6 @@
+from enum import Enum
 from pathlib import Path
-from typing import FrozenSet, Iterator, List, NamedTuple, Set, Tuple, Union
+from typing import Iterator, List, NamedTuple, Set, Tuple, Union
 from ._contract import Category
 from ._func import Func
 from ._rules import CheckRaises, CheckMarkers
@@ -7,6 +8,12 @@ from ._extractors import get_value
 
 
 Priority = int
+
+
+class TransformationType(Enum):
+    RAISES = 'raises'
+    HAS = 'has'
+    SAFE = 'safe'
 
 
 class Insert(NamedTuple):
@@ -47,13 +54,9 @@ Mutation = Union[Insert, Remove]
 
 class Transformer(NamedTuple):
     path: Path
+    types: Set[TransformationType]
     mutations: List[Mutation] = []
     quote: str = "'"
-    categories: FrozenSet[Category] = frozenset({
-        Category.RAISES,
-        Category.SAFE,
-        Category.HAS,
-    })
 
     def transform(self) -> str:
         for func in Func.from_path(self.path):
@@ -86,7 +89,7 @@ class Transformer(NamedTuple):
         if not excs:
             if declared:
                 return
-            if Category.SAFE not in self.categories:
+            if TransformationType.SAFE not in self.types:
                 return
             for contract in func.contracts:
                 if contract.category in {Category.PURE, Category.SAFE}:
@@ -100,7 +103,7 @@ class Transformer(NamedTuple):
             return
 
         # if new exceptions detected, remove old contracts and add a new deal.raises
-        if Category.RAISES not in self.categories:
+        if TransformationType.RAISES not in self.types:
             return
         for contract in func.contracts:
             if contract.category not in cats:
@@ -129,7 +132,7 @@ class Transformer(NamedTuple):
         return exc.__name__
 
     def _mutations_markers(self, func: Func) -> Iterator[Mutation]:
-        if Category.HAS not in self.categories:
+        if TransformationType.HAS not in self.types:
             return
         cats = {Category.HAS, Category.PURE}
 
