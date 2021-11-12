@@ -1,7 +1,7 @@
 import ast
 from itertools import chain
 from types import MappingProxyType
-from typing import Iterator, List, Optional, Type, TypeVar, Union
+from typing import Iterator, List, Optional, Set, Type, TypeVar, Union
 
 import astroid
 
@@ -319,18 +319,18 @@ class CheckMarkers(FuncRule):
 
     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         for contract in func.contracts:
-            markers = None
+            markers: Optional[Set[str]] = None
             if contract.category == Category.HAS:
-                markers = [get_value(arg) for arg in contract.args]
+                markers = {get_value(arg) for arg in contract.args}
             elif contract.category == Category.PURE:
-                markers = []
+                markers = set()
             if markers is None:
                 continue
-            yield from self._check(func=func, markers=markers)
+            yield from self.get_undeclared(func=func, markers=markers)
             return
 
     @classmethod
-    def _check(cls, func: Func, markers: List[str]) -> Iterator[Error]:
+    def get_undeclared(cls, func: Func, markers: Set[str]) -> Iterator[Error]:
         has = HasPatcher(markers)
         # function without IO must return something
         if not has.has_io and not has_returns(body=func.body):

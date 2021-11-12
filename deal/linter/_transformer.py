@@ -1,9 +1,9 @@
 from pathlib import Path
-from typing import Iterator, List, NamedTuple, Set, Tuple, Union
-from .._cached_property import cached_property
+from typing import FrozenSet, Iterator, List, NamedTuple, Set, Tuple, Union
 from ._contract import Category
 from ._func import Func
-from ._rules import CheckRaises
+from ._rules import CheckRaises, CheckMarkers
+from ._extractors import get_value
 
 
 Priority = int
@@ -45,44 +45,48 @@ class Remove(NamedTuple):
 Mutation = Union[Insert, Remove]
 
 
-class Transformer:
+class Transformer(NamedTuple):
     path: Path
-    mutations: List[Mutation]
-
-    def __init__(self, path: Path) -> None:
-        self.path = path
-        self.mutations = []
-
-    @cached_property
-    def funcs(self) -> List[Func]:
-        return Func.from_path(self.path)
+    mutations: List[Mutation] = []
+    quote: str = "'"
+    categories: FrozenSet[Category] = frozenset({
+        Category.RAISES,
+        Category.SAFE,
+        Category.HAS,
+    })
 
     def transform(self) -> str:
-        for func in self.funcs:
+        for func in Func.from_path(self.path):
             self._collect_mutations(func)
         content = self.path.read_text()
         return self._apply_mutations(content)
 
     def _collect_mutations(self, func: Func) -> None:
-        for mut in self._mutations_excs(func):
-            self.mutations.append(mut)
+        self.mutations.clear()
+        self.mutations.extend(self._mutations_excs(func))
+        self.mutations.extend(self._mutations_markers(func))
 
     def _mutations_excs(self, func: Func) -> Iterator[Mutation]:
-        checker = CheckRaises()
-        excs: Set[str] = set()
         cats = {Category.RAISES, Category.SAFE, Category.PURE}
-        declared = []
+
+        # collect declared exceptions
+        declared: List[Union[str, type]] = []
         for contract in func.contracts:
             if contract.category not in cats:
                 continue
             declared.extend(contract.exceptions)
-        for error in checker.get_undeclared(func, declared):
+
+        # collect undeclared exceptions
+        excs: Set[str] = set()
+        for error in CheckRaises().get_undeclared(func, declared):
             assert isinstance(error.value, str)
             excs.add(error.value)
 
         # if no new exceptions found, add deal.safe
         if not excs:
             if declared:
+                return
+            if Category.SAFE not in self.categories:
                 return
             for contract in func.contracts:
                 if contract.category in {Category.PURE, Category.SAFE}:
@@ -96,6 +100,8 @@ class Transformer:
             return
 
         # if new exceptions detected, remove old contracts and add a new deal.raises
+        if Category.RAISES not in self.categories:
+            return
         for contract in func.contracts:
             if contract.category not in cats:
                 continue
@@ -121,6 +127,58 @@ class Transformer:
         if isinstance(exc, str):
             return exc
         return exc.__name__
+
+    def _mutations_markers(self, func: Func) -> Iterator[Mutation]:
+        if Category.HAS not in self.categories:
+            return
+        cats = {Category.HAS, Category.PURE}
+
+        # collect declared markers
+        declared: List[str] = []
+        for contract in func.contracts:
+            if contract.category not in cats:
+                continue
+            declared.extend(get_value(arg) for arg in contract.args)
+
+        # collect undeclared markers
+        markers: Set[str] = set()
+        for error in CheckMarkers().get_undeclared(func, set(declared)):
+            assert isinstance(error.value, str)
+            markers.add(error.value)
+
+        # if no new markers found, add deal.has()
+        if not markers:
+            for contract in func.contracts:
+                if contract.category in {Category.PURE, Category.HAS}:
+                    return
+            yield Insert(
+                line=func.line,
+                indent=func.col,
+                contract=Category.HAS,
+                args=[],
+            )
+            return
+
+        # if new exceptions detected, remove old contracts and add a new deal.raises
+        for contract in func.contracts:
+            if contract.category not in cats:
+                continue
+            yield Remove(contract.line)
+            if contract.category == Category.PURE:
+                yield Insert(
+                    line=func.line,
+                    indent=func.col,
+                    contract=Category.SAFE,
+                    args=[],
+                )
+        contract_args = [self._exc_as_str(marker) for marker in declared]
+        contract_args.extend(sorted(markers))
+        yield Insert(
+            line=func.line,
+            indent=func.col,
+            contract=Category.HAS,
+            args=[f'{self.quote}{arg}{self.quote}' for arg in contract_args],
+        )
 
     def _apply_mutations(self, content: str) -> str:
         if not self.mutations:
