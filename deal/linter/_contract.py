@@ -24,6 +24,11 @@ class Category(enum.Enum):
     PURE = 'pure'
     RAISES = 'raises'
     SAFE = 'safe'
+    INHERIT = 'inherit'
+
+    @property
+    def brackets_optional(self) -> bool:
+        return self in {Category.SAFE, Category.PURE}
 
 
 class Contract:

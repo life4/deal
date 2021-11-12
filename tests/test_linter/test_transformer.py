@@ -5,21 +5,31 @@ from deal.linter import Transformer
 
 
 @pytest.mark.parametrize('content', [
-    # no-op
+    # add deal.safe
     """
         def f():
             return 1
         ---
+        @deal.safe
         def f():
             return 1
     """,
-    # preserve contracts
+    # preserve deal.raises
     """
-        @deal.pre(lambda: True)
+        @deal.raises(KeyError)
         def f():
             return 1
         ---
-        @deal.pre(lambda: True)
+        @deal.raises(KeyError)
+        def f():
+            return 1
+    """,
+    """
+        @deal.raises(KeyError, UnknownError)
+        def f():
+            return 1
+        ---
+        @deal.raises(KeyError, UnknownError)
         def f():
             return 1
     """,
@@ -31,6 +41,15 @@ from deal.linter import Transformer
         @deal.raises(ValueError)
         def f():
             raise ValueError
+    """,
+    # add deal.raises for unknown error
+    """
+        def f():
+            raise UnknownError
+        ---
+        @deal.raises(UnknownError)
+        def f():
+            raise UnknownError
     """,
     # remove deal.safe if adding deal.raises
     """
@@ -62,6 +81,39 @@ from deal.linter import Transformer
         @deal.raises(ZeroDivisionError, ValueError)
         def f():
             raise ValueError
+    """,
+    # preserve contracts
+    """
+        @deal.safe
+        @deal.pre(lambda: True)
+        def f():
+            return 1
+        ---
+        @deal.safe
+        @deal.pre(lambda: True)
+        def f():
+            return 1
+    """,
+    """
+        @deal.pre(lambda: True)
+        def f():
+            return 1
+        ---
+        @deal.safe
+        @deal.pre(lambda: True)
+        def f():
+            return 1
+    """,
+    """
+        @deal.raises(ValueError)
+        @deal.pre(lambda: True)
+        def f():
+            1/0
+        ---
+        @deal.raises(ValueError, ZeroDivisionError)
+        @deal.pre(lambda: True)
+        def f():
+            1/0
     """,
 ])
 def test_transformer(content: str, tmp_path: Path) -> None:

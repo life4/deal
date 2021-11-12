@@ -24,7 +24,10 @@ class Insert(NamedTuple):
 
     def __str__(self) -> str:
         args = ', '.join(self.args)
-        dec = f'@deal.{self.contract.value}({args})'
+        if not self.args and self.contract.brackets_optional:
+            dec = f'@deal.{self.contract.value}'
+        else:
+            dec = f'@deal.{self.contract.value}({args})'
         return ' ' * self.indent + dec
 
 
@@ -77,8 +80,22 @@ class Transformer:
             assert isinstance(error.value, str)
             excs.add(error.value)
 
+        # if no new exceptions found, add deal.safe
         if not excs:
+            if declared:
+                return
+            for contract in func.contracts:
+                if contract.category in {Category.PURE, Category.SAFE}:
+                    return
+            yield Insert(
+                line=func.line,
+                indent=func.col,
+                contract=Category.SAFE,
+                args=[],
+            )
             return
+
+        # if new exceptions detected, remove old contracts and add a new deal.raises
         for contract in func.contracts:
             if contract.category not in cats:
                 continue
