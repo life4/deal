@@ -32,6 +32,27 @@ from deal.linter import Transformer
         def f():
             raise ValueError
     """,
+    # remove deal.safe if adding deal.raises
+    """
+        @deal.safe
+        def f():
+            raise ValueError
+        ---
+        @deal.raises(ValueError)
+        def f():
+            raise ValueError
+    """,
+    # remove deal.pure if adding deal.raises
+    """
+        @deal.pure
+        def f():
+            raise ValueError
+        ---
+        @deal.raises(ValueError)
+        @deal.has()
+        def f():
+            raise ValueError
+    """,
 ])
 def test_transformer(content: str, tmp_path: Path) -> None:
     given, expected = content.split('---')

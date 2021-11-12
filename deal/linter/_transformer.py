@@ -1,21 +1,34 @@
 from pathlib import Path
-from typing import List, NamedTuple, Optional, Set
+from typing import Iterator, List, NamedTuple, Set, Union
 from .._cached_property import cached_property
 from ._contract import Category
 from ._func import Func
 from ._rules import CheckRaises
 
 
-class Mutation(NamedTuple):
+class Insert(NamedTuple):
     line: int
     contract: Category
     args: List[str]
     indent: int
 
-    def __str__(self):
+    def apply(self, lines: List[str]) -> None:
+        lines.insert(self.line - 1, f'{self}\n')
+
+    def __str__(self) -> str:
         args = ', '.join(self.args)
         dec = f'@deal.{self.contract.value}({args})'
         return ' ' * self.indent + dec
+
+
+class Remove(NamedTuple):
+    line: int
+
+    def apply(self, lines: List[str]) -> None:
+        lines.pop(self.line - 1)
+
+
+Mutation = Union[Insert, Remove]
 
 
 class Transformer:
@@ -37,11 +50,10 @@ class Transformer:
         return self._apply_mutations(content)
 
     def _collect_mutations(self, func: Func) -> None:
-        mut = self._mutation_excs(func)
-        if mut is not None:
+        for mut in self._mutations_excs(func):
             self.mutations.append(mut)
 
-    def _mutation_excs(self, func: Func) -> Optional[Mutation]:
+    def _mutations_excs(self, func: Func) -> Iterator[Mutation]:
         checker = CheckRaises()
         excs: Set[str] = set()
         cats = {Category.RAISES, Category.SAFE, Category.PURE}
@@ -53,9 +65,21 @@ class Transformer:
         for error in checker.get_undeclared(func, declared):
             assert isinstance(error.value, str)
             excs.add(error.value)
+
         if not excs:
-            return None
-        return Mutation(
+            return
+        for contract in func.contracts:
+            if contract.category not in cats:
+                continue
+            yield Remove(contract.line)
+            if contract.category == Category.PURE:
+                yield Insert(
+                    line=func.line,
+                    indent=func.col,
+                    contract=Category.HAS,
+                    args=[],
+                )
+        yield Insert(
             line=func.line,
             indent=func.col,
             contract=Category.RAISES,
@@ -68,5 +92,5 @@ class Transformer:
         lines = content.splitlines(keepends=True)
         self.mutations.sort(key=lambda x: x.line, reverse=True)
         for mutation in self.mutations:
-            lines.insert(mutation.line - 1, f'{mutation}\n')
+            mutation.apply(lines)
         return ''.join(lines)

@@ -31,6 +31,7 @@ class Contract:
     category: Category
     func_args: ast.arguments
     context: Dict[str, ast.stmt]
+    line: int
 
     def __init__(
         self,
@@ -38,11 +39,13 @@ class Contract:
         category: Category,
         func_args: ast.arguments,
         context: Dict[str, ast.stmt] = None,
+        line: int = 0,
     ):
         self.args = tuple(args)
         self.category = category
         self.func_args = func_args
         self.context = context or dict()
+        self.line = line
 
     @cached_property
     def body(self) -> ast.AST:
