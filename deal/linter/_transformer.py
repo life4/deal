@@ -1,6 +1,8 @@
 from enum import Enum
 from pathlib import Path
 from typing import Iterator, List, NamedTuple, Set, Tuple, Union
+
+import astroid
 from ._contract import Category
 from ._func import Func
 from ._rules import CheckRaises, CheckMarkers
@@ -59,9 +61,10 @@ class Transformer(NamedTuple):
     quote: str = "'"
 
     def transform(self) -> str:
-        for func in Func.from_path(self.path):
-            self._collect_mutations(func)
         content = self.path.read_text()
+        tree = astroid.parse(content, path=self.path)
+        for func in Func.from_astroid(tree):
+            self._collect_mutations(func)
         return self._apply_mutations(content)
 
     def _collect_mutations(self, func: Func) -> None:

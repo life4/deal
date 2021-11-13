@@ -10,6 +10,7 @@ CommandsType = Mapping[str, Type[Command]]
 
 
 def get_commands() -> CommandsType:
+    from ._decorate import DecorateCommand
     from ._lint import LintCommand
     from ._memtest import MemtestCommand
     from ._prove import ProveCommand
@@ -17,6 +18,7 @@ def get_commands() -> CommandsType:
     from ._test import TestCommand
 
     return dict(
+        decorate=DecorateCommand,
         lint=LintCommand,
         memtest=MemtestCommand,
         prove=ProveCommand,

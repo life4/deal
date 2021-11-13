@@ -1,4 +1,4 @@
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 from pathlib import Path
 from typing import TextIO
 
@@ -18,5 +18,5 @@ class Command:
     def init_parser(parser: ArgumentParser) -> None:
         raise NotImplementedError
 
-    def __call__(self, args) -> int:
+    def __call__(self, args: Namespace) -> int:
         raise NotImplementedError
