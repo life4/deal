@@ -1,5 +1,21 @@
 # More on writing contracts
 
+## Generating contracts
+
+The best way to get started with deal is to automatically generate some contracts using {ref}`details/cli:decorate` CLI command:
+
+```bash
+python3 -m deal decorate my_project/
+```
+
+It will run {doc}`/basic/linter` on your code and add some of the missed contracts. The rest of contacts is still on you, though. Also, you should carefully check the generated code for correctness, deal may miss something.
+
+The following contracts are supported by the command and will be added to your code:
+
++ {py:func}`deal.has`
++ {py:func}`deal.raises`
++ {py:func}`deal.safe`
+
 ## Simplified signature
 
 The main problem with contracts is that they have to duplicate the original function's signature, including default arguments. While it's not a problem for small examples, things become more complicated when the signature grows. In this case, you can specify a function that accepts only one `_` argument, and deal will pass there a container with arguments of the function call, including default ones:
