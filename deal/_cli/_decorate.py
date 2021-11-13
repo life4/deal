@@ -15,7 +15,10 @@ class DecorateCommand(Command):
 
     Options:
     + `--types`: types of decorators to apply. All are enabled by default.
+    + `--double-quotes`: use double quotes. Single quotes are used by default.
 
+    The exit code is always 0. If you want to test the code for missed decorators,
+    use the `lint` command instead.
     """
 
     @staticmethod
@@ -27,6 +30,11 @@ class DecorateCommand(Command):
             default=['has', 'raises', 'safe'],
             help='types of decorators to apply',
         )
+        parser.add_argument(
+            '--double-quotes',
+            action='store_true',
+            help='use double quotes',
+        )
         parser.add_argument('paths', nargs='*', default='.')
 
     def __call__(self, args) -> int:
@@ -35,6 +43,8 @@ class DecorateCommand(Command):
             for path in get_paths(Path(arg)):
                 self.print(path)
                 tr = Transformer(path=path, types=types)
+                if args.double_quotes:
+                    tr = tr._replace(quote='"')
                 content = tr.transform()
                 path.write_text(content)
         return 0

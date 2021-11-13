@@ -1,0 +1,75 @@
+from io import StringIO
+from pathlib import Path
+from textwrap import dedent
+import pytest
+from deal._cli import main
+
+
+@pytest.mark.parametrize('flags, given, expected', [
+    (
+        [],
+        """
+            import deal
+            @deal.post(lambda x: x > 0)
+            def f(x):
+                print(1/0)
+                return -1
+        """,
+        """
+            import deal
+            @deal.has('stdout')
+            @deal.raises(ZeroDivisionError)
+            @deal.post(lambda x: x > 0)
+            def f(x):
+                print(1/0)
+                return -1
+        """
+    ),
+    (
+        ['--types', 'raises', 'safe'],
+        """
+            import deal
+            @deal.post(lambda x: x > 0)
+            def f(x):
+                print(1/0)
+                return -1
+        """,
+        """
+            import deal
+            @deal.raises(ZeroDivisionError)
+            @deal.post(lambda x: x > 0)
+            def f(x):
+                print(1/0)
+                return -1
+        """
+    ),
+    (
+        ['--types', 'has', '--double-quotes'],
+        """
+            import deal
+            @deal.post(lambda x: x > 0)
+            def f(x):
+                print(1/0)
+                return -1
+        """,
+        """
+            import deal
+            @deal.has("stdout")
+            @deal.post(lambda x: x > 0)
+            def f(x):
+                print(1/0)
+                return -1
+        """
+    ),
+])
+def test_decorate_command(flags: list, given: str, expected: str, tmp_path: Path):
+    file_path = tmp_path / 'example.py'
+    file_path.write_text(dedent(given))
+    stream = StringIO()
+    code = main(['decorate', *flags, '--', str(tmp_path)], stream=stream)
+    assert code == 0
+
+    stream.seek(0)
+    captured = stream.read()
+    assert captured.strip() == str(file_path)
+    assert file_path.read_text() == dedent(expected)
