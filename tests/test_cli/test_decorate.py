@@ -86,5 +86,5 @@ def test_decorate_command(flags: list, given: str, expected: str, tmp_path: Path
 
     stream.seek(0)
     captured = stream.read()
-    assert captured.strip() == str(file_path)
+    assert str(file_path) in captured
     assert file_path.read_text() == dedent(expected)
