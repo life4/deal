@@ -61,6 +61,21 @@ from deal._cli import main
                 return -1
         """
     ),
+    (
+        [],
+        """
+            import deal
+            @deal.pure
+            def f(x):
+                return x
+        """,
+        """
+            import deal
+            @deal.pure
+            def f(x):
+                return x
+        """
+    ),
 ])
 def test_decorate_command(flags: list, given: str, expected: str, tmp_path: Path):
     file_path = tmp_path / 'example.py'

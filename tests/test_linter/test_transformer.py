@@ -176,10 +176,9 @@ def test_transformer_raises(content: str, tmp_path: Path) -> None:
     given, expected = content.split('---')
     given = dedent(given)
     expected = dedent(expected)
-    path = tmp_path / "example.py"
-    path.write_text(given)
     tr = Transformer(
-        path=path,
+        content=given,
+        path=tmp_path / "example.py",
         types={TransformationType.RAISES, TransformationType.SAFE},
     )
     actual = tr.transform()
@@ -325,8 +324,10 @@ def test_transformer_has(content: str, tmp_path: Path) -> None:
     given, expected = content.split('---')
     given = dedent(given)
     expected = dedent(expected)
-    path = tmp_path / "example.py"
-    path.write_text(given)
-    tr = Transformer(path=path, types={TransformationType.HAS})
+    tr = Transformer(
+        content=given,
+        path=tmp_path / "example.py",
+        types={TransformationType.HAS},
+    )
     actual = tr.transform()
     assert actual == expected

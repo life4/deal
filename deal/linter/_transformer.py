@@ -55,17 +55,17 @@ Mutation = Union[Insert, Remove]
 
 
 class Transformer(NamedTuple):
+    content: str
     path: Path
     types: Set[TransformationType]
     mutations: List[Mutation] = []
     quote: str = "'"
 
     def transform(self) -> str:
-        content = self.path.read_text()
-        tree = astroid.parse(content, path=self.path)
+        tree = astroid.parse(self.content, path=self.path)
         for func in Func.from_astroid(tree):
             self._collect_mutations(func)
-        return self._apply_mutations(content)
+        return self._apply_mutations(self.content)
 
     def _collect_mutations(self, func: Func) -> None:
         self.mutations.clear()

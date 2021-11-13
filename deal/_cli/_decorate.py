@@ -42,9 +42,15 @@ class DecorateCommand(Command):
         for arg in args.paths:
             for path in get_paths(Path(arg)):
                 self.print(path)
-                tr = Transformer(path=path, types=types)
+                original_code = path.read_text(encoding='utf8')
+                tr = Transformer(
+                    content=original_code,
+                    path=path,
+                    types=types,
+                )
                 if args.double_quotes:
                     tr = tr._replace(quote='"')
-                content = tr.transform()
-                path.write_text(content)
+                modified_code = tr.transform()
+                if original_code != modified_code:
+                    path.write_text(modified_code)
         return 0
