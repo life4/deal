@@ -225,9 +225,10 @@ class Transformer(NamedTuple):
         line = 1
         skip = (astroid.ImportFrom, astroid.Import, astroid.Const)
         for stmt in tree.body:  # pragma: no cover
-            if not isinstance(stmt, skip):
-                break
-            line = stmt.lineno + 1
+            if isinstance(stmt, skip):
+                continue
+            line = getattr(stmt, 'lineno', line)
+            break
         yield InsertText(line=line, text='import deal')
 
     def _apply_mutations(self, content: str) -> str:

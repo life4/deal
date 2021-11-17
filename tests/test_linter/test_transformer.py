@@ -354,7 +354,6 @@ def test_transformer_has(content: str, tmp_path: Path) -> None:
             return 1
         ---
         import deal
-
         @deal.has()
         def f():
             return 1
@@ -367,8 +366,8 @@ def test_transformer_has(content: str, tmp_path: Path) -> None:
             return 1
         ---
         import re
-        import deal
 
+        import deal
         @deal.has()
         def f():
             return 1
@@ -385,8 +384,8 @@ def test_transformer_has(content: str, tmp_path: Path) -> None:
         ---
         import re
         from textwrap import dedent
-        import deal
 
+        import deal
         HI = 1
 
         @deal.has()
@@ -414,6 +413,24 @@ def test_transformer_has(content: str, tmp_path: Path) -> None:
         def f():
             return 1
     """,
+    # support multiline imports
+    """
+        from textwrap import (
+            dedent,
+        )
+
+        def f():
+            return 1
+        ---
+        from textwrap import (
+            dedent,
+        )
+
+        import deal
+        @deal.has()
+        def f():
+            return 1
+    """,
 ])
 def test_transformer_import(content: str, tmp_path: Path) -> None:
     given, expected = content.split('---')
@@ -425,4 +442,4 @@ def test_transformer_import(content: str, tmp_path: Path) -> None:
         types={TransformationType.HAS, TransformationType.IMPORT},
     )
     actual = tr.transform()
-    assert actual.strip() == expected.strip()
+    assert actual.lstrip('\n') == expected.lstrip('\n')

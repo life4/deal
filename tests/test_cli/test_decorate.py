@@ -11,7 +11,6 @@ from deal._cli import main
     (
         [],
         """
-            import deal
             @deal.post(lambda x: x > 0)
             def f(x):
                 print(1/0)
@@ -89,4 +88,4 @@ def test_decorate_command(flags: list, given: str, expected: str, tmp_path: Path
     stream.seek(0)
     captured = stream.read()
     assert str(file_path) in captured
-    assert file_path.read_text() == dedent(expected)
+    assert file_path.read_text().lstrip('\n') == dedent(expected).lstrip('\n')
