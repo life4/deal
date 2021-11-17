@@ -171,6 +171,17 @@ from deal.linter import Transformer, TransformationType
         def f():
             1/0
     """,
+    # # support methods
+    # """
+    #     class A:
+    #         def f(self):
+    #             1/0
+    #     ---
+    #     class A:
+    #         @deal.raises(ZeroDivisionError)
+    #         def f(self):
+    #             1/0
+    # """,
 ])
 def test_transformer_raises(content: str, tmp_path: Path) -> None:
     given, expected = content.split('---')
@@ -182,6 +193,7 @@ def test_transformer_raises(content: str, tmp_path: Path) -> None:
         types={TransformationType.RAISES, TransformationType.SAFE},
     )
     actual = tr.transform()
+    print(tr.mutations)
     assert actual == expected
 
 

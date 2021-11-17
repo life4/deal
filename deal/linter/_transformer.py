@@ -62,13 +62,13 @@ class Transformer(NamedTuple):
     quote: str = "'"
 
     def transform(self) -> str:
+        self.mutations.clear()
         tree = astroid.parse(self.content, path=self.path)
         for func in Func.from_astroid(tree):
             self._collect_mutations(func)
         return self._apply_mutations(self.content)
 
     def _collect_mutations(self, func: Func) -> None:
-        self.mutations.clear()
         self.mutations.extend(self._mutations_excs(func))
         self.mutations.extend(self._mutations_markers(func))
 
@@ -94,9 +94,8 @@ class Transformer(NamedTuple):
                 return
             if TransformationType.SAFE not in self.types:
                 return
-            for contract in func.contracts:
-                if contract.category in {Category.PURE, Category.SAFE}:
-                    return
+            if func.has_contract(Category.PURE, Category.SAFE):
+                return
             yield Insert(
                 line=func.line,
                 indent=func.col,
@@ -154,9 +153,8 @@ class Transformer(NamedTuple):
 
         # if no new markers found, add deal.has()
         if not markers:
-            for contract in func.contracts:
-                if contract.category in {Category.PURE, Category.HAS}:
-                    return
+            if func.has_contract(Category.PURE, Category.HAS):
+                return
             yield Insert(
                 line=func.line,
                 indent=func.col,
@@ -165,7 +163,7 @@ class Transformer(NamedTuple):
             )
             return
 
-        # if new exceptions detected, remove old contracts and add a new deal.raises
+        # if new markers detected, remove old contracts and add a new deal.raises
         for contract in func.contracts:
             if contract.category not in cats:
                 continue

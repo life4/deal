@@ -88,6 +88,12 @@ class Func(NamedTuple):
             ))
         return funcs
 
+    def has_contract(self, *categories: Category) -> bool:
+        for contract in self.contracts:
+            if contract.category in categories:
+                return True
+        return False
+
     def __repr__(self) -> str:
         cats = ', '.join(contract.category.value for contract in self.contracts)
         return f'{type(self).__name__}({cats})'
