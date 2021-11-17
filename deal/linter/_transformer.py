@@ -3,10 +3,11 @@ from pathlib import Path
 from typing import Iterator, List, NamedTuple, Set, Tuple, Union
 
 import astroid
+
 from ._contract import Category
-from ._func import Func
-from ._rules import CheckRaises, CheckMarkers
 from ._extractors import get_value
+from ._func import Func
+from ._rules import CheckMarkers, CheckRaises
 
 
 Priority = int

@@ -1,7 +1,9 @@
 from io import StringIO
 from pathlib import Path
 from textwrap import dedent
+
 import pytest
+
 from deal._cli import main
 
 

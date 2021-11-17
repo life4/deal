@@ -1,7 +1,9 @@
 from pathlib import Path
 from textwrap import dedent
+
 import pytest
-from deal.linter import Transformer, TransformationType
+
+from deal.linter import TransformationType, Transformer
 
 
 @pytest.mark.parametrize('content', [

@@ -1,10 +1,10 @@
 from argparse import ArgumentParser
 from pathlib import Path
 
-from ..linter import Transformer, TransformationType
+from .._colors import get_colors
+from ..linter import TransformationType, Transformer
 from ._base import Command
 from ._common import get_paths
-from .._colors import get_colors
 
 
 class DecorateCommand(Command):
