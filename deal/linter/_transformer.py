@@ -17,9 +17,25 @@ class TransformationType(Enum):
     RAISES = 'raises'
     HAS = 'has'
     SAFE = 'safe'
+    IMPORT = 'import'
 
 
-class Insert(NamedTuple):
+class InsertText(NamedTuple):
+    line: int
+    text: str
+
+    def apply(self, lines: List[str]) -> None:
+        lines.insert(self.line - 1, f'{self}\n')
+
+    @property
+    def key(self) -> Tuple[int, Priority]:
+        return (self.line, 1)
+
+    def __str__(self) -> str:
+        return self.text
+
+
+class InsertContract(NamedTuple):
     line: int
     contract: Category
     args: List[str]
@@ -52,10 +68,12 @@ class Remove(NamedTuple):
         return (self.line, 2)
 
 
-Mutation = Union[Insert, Remove]
+Mutation = Union[InsertText, InsertContract, Remove]
 
 
 class Transformer(NamedTuple):
+    """Transformer adds deal decorators into the given script.
+    """
     content: str
     path: Path
     types: Set[TransformationType]
@@ -67,6 +85,7 @@ class Transformer(NamedTuple):
         tree = astroid.parse(self.content, path=self.path)
         for func in Func.from_astroid(tree):
             self._collect_mutations(func)
+        self.mutations.extend(self._mutations_import(tree))
         return self._apply_mutations(self.content)
 
     def _collect_mutations(self, func: Func) -> None:
@@ -74,6 +93,8 @@ class Transformer(NamedTuple):
         self.mutations.extend(self._mutations_markers(func))
 
     def _mutations_excs(self, func: Func) -> Iterator[Mutation]:
+        """Add @deal.raises or @deal.safe if needed.
+        """
         cats = {Category.RAISES, Category.SAFE, Category.PURE}
 
         # collect declared exceptions
@@ -97,7 +118,7 @@ class Transformer(NamedTuple):
                 return
             if func.has_contract(Category.PURE, Category.SAFE):
                 return
-            yield Insert(
+            yield InsertContract(
                 line=func.line,
                 indent=func.col,
                 contract=Category.SAFE,
@@ -113,7 +134,7 @@ class Transformer(NamedTuple):
                 continue
             yield Remove(contract.line)
             if contract.category == Category.PURE:
-                yield Insert(
+                yield InsertContract(
                     line=func.line,
                     indent=func.col,
                     contract=Category.HAS,
@@ -121,7 +142,7 @@ class Transformer(NamedTuple):
                 )
         contract_args = [self._exc_as_str(exc) for exc in declared]
         contract_args.extend(sorted(excs))
-        yield Insert(
+        yield InsertContract(
             line=func.line,
             indent=func.col,
             contract=Category.RAISES,
@@ -135,6 +156,8 @@ class Transformer(NamedTuple):
         return exc.__name__
 
     def _mutations_markers(self, func: Func) -> Iterator[Mutation]:
+        """Add @deal.has if needed.
+        """
         if TransformationType.HAS not in self.types:
             return
         cats = {Category.HAS, Category.PURE}
@@ -156,7 +179,7 @@ class Transformer(NamedTuple):
         if not markers:
             if func.has_contract(Category.PURE, Category.HAS):
                 return
-            yield Insert(
+            yield InsertContract(
                 line=func.line,
                 indent=func.col,
                 contract=Category.HAS,
@@ -170,7 +193,7 @@ class Transformer(NamedTuple):
                 continue
             yield Remove(contract.line)
             if contract.category == Category.PURE:
-                yield Insert(
+                yield InsertContract(
                     line=func.line,
                     indent=func.col,
                     contract=Category.SAFE,
@@ -178,12 +201,34 @@ class Transformer(NamedTuple):
                 )
         contract_args = [self._exc_as_str(marker) for marker in declared]
         contract_args.extend(sorted(markers))
-        yield Insert(
+        yield InsertContract(
             line=func.line,
             indent=func.col,
             contract=Category.HAS,
             args=[f'{self.quote}{arg}{self.quote}' for arg in contract_args],
         )
+
+    def _mutations_import(self, tree: astroid.Module) -> Iterator[Mutation]:
+        """Add `import deal` if needed.
+        """
+        if TransformationType.IMPORT not in self.types:
+            return
+        if not self.mutations:
+            return
+        # check if already imported
+        for stmt in tree.body:
+            if not isinstance(stmt, astroid.Import):
+                continue
+            for name, _ in stmt.names:
+                if name == 'deal':
+                    return
+        line = 1
+        skip = (astroid.ImportFrom, astroid.Import, astroid.Const)
+        for stmt in tree.body:  # pragma: no cover
+            if not isinstance(stmt, skip):
+                break
+            line = stmt.lineno + 1
+        yield InsertText(line=line, text='import deal')
 
     def _apply_mutations(self, content: str) -> str:
         if not self.mutations:

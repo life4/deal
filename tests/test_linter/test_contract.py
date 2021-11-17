@@ -5,7 +5,6 @@ import astroid
 import pytest
 
 from deal.linter._contract import Category, Contract
-from deal.linter._extractors.contracts import SUPPORTED_CONTRACTS, SUPPORTED_MARKERS
 from deal.linter._func import Func
 
 
@@ -17,16 +16,6 @@ import deal
 def f(x):
     return x
 """
-
-
-@pytest.mark.parametrize('marker', SUPPORTED_MARKERS)
-def test_all_markers_are_contracts(marker):
-    assert marker in SUPPORTED_CONTRACTS
-
-
-def test_supported_contracts_match_categories(marker):
-    cats = {c.value for c in Category}
-    assert cats == SUPPORTED_CONTRACTS
 
 
 def test_exceptions():

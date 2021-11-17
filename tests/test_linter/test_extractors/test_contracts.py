@@ -4,11 +4,18 @@ from textwrap import dedent
 import astroid
 import pytest
 
+from deal.linter._contract import Category
 from deal.linter._extractors import get_contracts
+from deal.linter._extractors.contracts import SUPPORTED_CONTRACTS, SUPPORTED_MARKERS
+
+
+def test_supported_contracts_match_categories():
+    cats = {f'deal.{c.value}' for c in Category}
+    assert cats == SUPPORTED_CONTRACTS | SUPPORTED_MARKERS
 
 
 def get_cats(target) -> tuple:
-    return tuple(cat for cat, _ in get_contracts(target))
+    return tuple(contract.name for contract in get_contracts(target))
 
 
 @pytest.mark.parametrize('text, expected', [

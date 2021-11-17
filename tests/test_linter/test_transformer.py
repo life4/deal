@@ -345,3 +345,84 @@ def test_transformer_has(content: str, tmp_path: Path) -> None:
     )
     actual = tr.transform()
     assert actual == expected
+
+
+@pytest.mark.parametrize('content', [
+    # add import if needed
+    """
+        def f():
+            return 1
+        ---
+        import deal
+
+        @deal.has()
+        def f():
+            return 1
+    """,
+    # skip imports
+    """
+        import re
+
+        def f():
+            return 1
+        ---
+        import re
+        import deal
+
+        @deal.has()
+        def f():
+            return 1
+    """,
+    # skip import-from, do not skip consts
+    """
+        import re
+        from textwrap import dedent
+
+        HI = 1
+
+        def f():
+            return 1
+        ---
+        import re
+        from textwrap import dedent
+        import deal
+
+        HI = 1
+
+        @deal.has()
+        def f():
+            return 1
+    """,
+    # do nothing if there are no mutations
+    """
+        @deal.has()
+        def f():
+            return 1
+        ---
+        @deal.has()
+        def f():
+            return 1
+    """,
+    # do not duplicate existing imports
+    """
+        import deal
+        def f():
+            return 1
+        ---
+        import deal
+        @deal.has()
+        def f():
+            return 1
+    """,
+])
+def test_transformer_import(content: str, tmp_path: Path) -> None:
+    given, expected = content.split('---')
+    given = dedent(given)
+    expected = dedent(expected)
+    tr = Transformer(
+        content=given,
+        path=tmp_path / "example.py",
+        types={TransformationType.HAS, TransformationType.IMPORT},
+    )
+    actual = tr.transform()
+    assert actual.strip() == expected.strip()
