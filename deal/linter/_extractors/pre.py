@@ -34,12 +34,11 @@ def handle_call(expr: astroid.Call, context: Dict[str, ast.stmt] = None) -> Iter
             continue
         code = f'def f({func.args.as_string()}):0'
         func_args = ast.parse(code).body[0].args  # type: ignore
-        for category, contract_args in get_contracts(func):
-            if category != 'pre':
+        for cinfo in get_contracts(func):
+            if cinfo.name != 'pre':
                 continue
-
             contract = Contract(
-                args=contract_args,
+                args=cinfo.args,
                 category=Category.PRE,
                 func_args=func_args,
                 context=context,

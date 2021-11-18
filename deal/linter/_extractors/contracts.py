@@ -25,10 +25,6 @@ class ContractInfo(NamedTuple):
     args: List[Union[ast.expr, astroid.Expr]]
     line: int
 
-    def __iter__(self) -> Iterator:
-        yield self.name
-        yield self.args
-
 
 def get_contracts(func) -> Iterator[ContractInfo]:
     if isinstance(func, ast.FunctionDef):
