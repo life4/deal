@@ -273,10 +273,10 @@ def _markers_from_func(expr: astroid.NodeNG, inferred: tuple) -> Iterator[Token]
             )
 
         # get explicitly specified markers from `@deal.has`
-        for category, args in get_contracts(value):
-            if category != 'has':
+        for contract in get_contracts(value):
+            if contract.name != 'has':
                 continue
-            for arg in args:
+            for arg in contract.args:
                 value = get_value(arg)
                 if type(value) is not str:
                     continue

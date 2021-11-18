@@ -36,12 +36,13 @@ class Func(NamedTuple):
             if not isinstance(expr, ast.FunctionDef):
                 continue
             contracts = []
-            for category, args in get_contracts(expr):
+            for cinfo in get_contracts(expr):
                 contract = Contract(
-                    args=args,
+                    args=cinfo.args,
                     func_args=expr.args,
-                    category=Category(category),
+                    category=Category(cinfo.name),
                     context=definitions,
+                    line=cinfo.line,
                 )
                 contracts.append(contract)
             funcs.append(cls(
@@ -68,12 +69,13 @@ class Func(NamedTuple):
 
             # collect contracts
             contracts = []
-            for category, args in get_contracts(expr):
+            for cinfo in get_contracts(expr):
                 contract = Contract(
-                    args=args,
+                    args=cinfo.args,
                     func_args=func_args,
-                    category=Category(category),
+                    category=Category(cinfo.name),
                     context=definitions,
+                    line=cinfo.line,
                 )
                 contracts.append(contract)
             funcs.append(cls(
@@ -85,6 +87,12 @@ class Func(NamedTuple):
                 col=expr.col_offset,
             ))
         return funcs
+
+    def has_contract(self, *categories: Category) -> bool:
+        for contract in self.contracts:
+            if contract.category in categories:
+                return True
+        return False
 
     def __repr__(self) -> str:
         cats = ', '.join(contract.category.value for contract in self.contracts)

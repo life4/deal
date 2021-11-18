@@ -3,7 +3,7 @@ import builtins
 import enum
 from copy import copy
 from pathlib import Path
-from typing import Dict, FrozenSet, Iterable, List
+from typing import Dict, FrozenSet, Iterable, List, Type, Union
 
 import astroid
 
@@ -24,6 +24,11 @@ class Category(enum.Enum):
     PURE = 'pure'
     RAISES = 'raises'
     SAFE = 'safe'
+    INHERIT = 'inherit'
+
+    @property
+    def brackets_optional(self) -> bool:
+        return self in {Category.SAFE, Category.PURE}
 
 
 class Contract:
@@ -31,6 +36,7 @@ class Contract:
     category: Category
     func_args: ast.arguments
     context: Dict[str, ast.stmt]
+    line: int
 
     def __init__(
         self,
@@ -38,11 +44,13 @@ class Contract:
         category: Category,
         func_args: ast.arguments,
         context: Dict[str, ast.stmt] = None,
+        line: int = 0,
     ):
         self.args = tuple(args)
         self.category = category
         self.func_args = func_args
         self.context = context or dict()
+        self.line = line
 
     @cached_property
     def body(self) -> ast.AST:
@@ -110,7 +118,7 @@ class Contract:
         return contract  # pragma: no cover
 
     @cached_property
-    def exceptions(self) -> list:
+    def exceptions(self) -> List[Union[str, Type[Exception]]]:
         from ._extractors import get_name
 
         excs = []

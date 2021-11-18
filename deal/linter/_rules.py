@@ -1,7 +1,7 @@
 import ast
 from itertools import chain
 from types import MappingProxyType
-from typing import Iterator, List, Optional, Type, TypeVar
+from typing import Iterator, List, Optional, Set, Type, TypeVar, Union
 
 import astroid
 
@@ -17,6 +17,7 @@ from ._stub import StubsManager
 
 
 T = TypeVar('T', bound=Type['Rule'])
+Exceptions = List[Union[str, Type[Exception]]]
 rules: List['Rule'] = []
 
 
@@ -239,20 +240,29 @@ class CheckRaises(FuncRule):
 
     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         cats = {Category.RAISES, Category.SAFE, Category.PURE}
+        declared: Exceptions = []
+        check = False
         for contract in func.contracts:
             if contract.category not in cats:
                 continue
-            yield from self._check(func=func, contract=contract, stubs=stubs)
+            declared.extend(contract.exceptions)
+            check = True
+        if check:
+            yield from self.get_undeclared(func, declared, stubs)
 
-    def _check(self, func: Func, contract: Contract, stubs: StubsManager = None) -> Iterator[Error]:
-        allowed = contract.exceptions
-        allowed_types = tuple(exc for exc in allowed if type(exc) is not str)
+    def get_undeclared(
+        self,
+        func: Func,
+        declared: Exceptions,
+        stubs: Optional[StubsManager] = None,
+    ) -> Iterator[Error]:
+        declared_types = tuple(exc for exc in declared if not isinstance(exc, str))
         for token in get_exceptions(body=func.body, stubs=stubs):
-            if token.value in allowed:
+            if token.value in declared:
                 continue
             exc = token.value
             if isinstance(exc, type):
-                if issubclass(exc, allowed_types):
+                if issubclass(exc, declared_types):
                     continue
                 exc = exc.__name__
             yield Error(
@@ -309,18 +319,18 @@ class CheckMarkers(FuncRule):
 
     def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
         for contract in func.contracts:
-            markers = None
+            markers: Optional[Set[str]] = None
             if contract.category == Category.HAS:
-                markers = [get_value(arg) for arg in contract.args]
+                markers = {get_value(arg) for arg in contract.args}
             elif contract.category == Category.PURE:
-                markers = []
+                markers = set()
             if markers is None:
                 continue
-            yield from self._check(func=func, markers=markers)
+            yield from self.get_undeclared(func=func, markers=markers)
             return
 
     @classmethod
-    def _check(cls, func: Func, markers: List[str]) -> Iterator[Error]:
+    def get_undeclared(cls, func: Func, markers: Set[str]) -> Iterator[Error]:
         has = HasPatcher(markers)
         # function without IO must return something
         if not has.has_io and not has_returns(body=func.body):

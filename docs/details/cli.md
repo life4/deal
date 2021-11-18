@@ -6,10 +6,10 @@
 .. autofunction:: deal._cli._lint.LintCommand
 ```
 
-## stub
+## decorate
 
 ```{eval-rst}
-.. autofunction:: deal._cli._stub.StubCommand
+.. autofunction:: deal._cli._decorate.DecorateCommand
 ```
 
 ## test
@@ -22,6 +22,12 @@
 
 ```{eval-rst}
 .. autofunction:: deal._cli._memtest.MemtestCommand
+```
+
+## stub
+
+```{eval-rst}
+.. autofunction:: deal._cli._stub.StubCommand
 ```
 
 ## prove

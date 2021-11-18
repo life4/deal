@@ -52,13 +52,14 @@ This page provides a quick navigation by the documentation in case if you're loo
 
 ## CLI commands
 
-| command   | reference                  | documentation |
-| --------- | -------------------------- | ------------- |
-| `lint`    | {ref}`details/cli:lint`    | {doc}`/basic/linter` / {ref}`basic/linter:built-in cli command` |
-| `memtest` | {ref}`details/cli:memtest` | {doc}`/details/tests` / {ref}`details/tests:finding memory leaks` |
-| `prove`   | {ref}`details/cli:prove`   | {doc}`/basic/verification` |
-| `stub`    | {ref}`details/cli:stub`    | {doc}`/details/stubs` |
-| `test`    | {ref}`details/cli:test`    | {doc}`/basic/tests` / {ref}`basic/tests:cli` |
+| command    | reference                   | documentation |
+| ---------- | --------------------------- | ------------- |
+| `decorate` | {ref}`details/cli:decorate` | {doc}`/details/contracts` / {ref}`details/contracts:generating contracts` |
+| `lint`     | {ref}`details/cli:lint`     | {doc}`/basic/linter` / {ref}`basic/linter:built-in cli command` |
+| `memtest`  | {ref}`details/cli:memtest`  | {doc}`/details/tests` / {ref}`details/tests:finding memory leaks` |
+| `prove`    | {ref}`details/cli:prove`    | {doc}`/basic/verification` |
+| `stub`     | {ref}`details/cli:stub`     | {doc}`/details/stubs` |
+| `test`     | {ref}`details/cli:test`     | {doc}`/basic/tests` / {ref}`basic/tests:cli` |
 
 ## Integrations
 

@@ -19,8 +19,11 @@ TEMPLATE_CON = '    {color}{p.conclusion.value}{end} {p}'
 class DealTheorem(Theorem):
     @staticmethod
     def get_contracts(func: astroid.FunctionDef) -> Iterator[Contract]:
-        for name, args in get_contracts(func):
-            yield Contract(name=name, args=args)
+        for contract in get_contracts(func):
+            yield Contract(
+                name=contract.name,
+                args=contract.args,  # type: ignore[arg-type]
+            )
 
 
 def run_solver(

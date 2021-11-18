@@ -5,7 +5,7 @@ from textwrap import dedent
 import pytest
 
 import deal
-from deal._cli._main import COMMANDS
+from deal._cli._main import get_commands
 from deal.linter._rules import CheckMarkers, rules
 
 
@@ -51,7 +51,7 @@ def test_all_marker_codes_listed():
 def test_cli_included():
     path = root / 'details' / 'cli.md'
     content = path.read_text()
-    for name, cmd in COMMANDS.items():
+    for name, cmd in get_commands().items():
         # has header
         tmpl = '## {n}\n\n'
         line = tmpl.format(n=name)
@@ -106,7 +106,7 @@ def test_all_public_listed_in_refs():
 def test_all_cli_commands_listed_in_refs():
     path = root / 'basic' / 'refs.md'
     content = path.read_text()
-    for name, cmd in COMMANDS.items():
+    for name, cmd in get_commands().items():
         assert f'`{name}`' in content
         assert f'`details/cli:{name}`' in content
 

@@ -1,5 +1,5 @@
 import ast
-from typing import Iterator, List, Optional, Tuple, Union
+from typing import Iterator, List, NamedTuple, Optional, Union
 
 import astroid
 
@@ -20,7 +20,13 @@ SUPPORTED_MARKERS = frozenset({'deal.pure', 'deal.safe', 'deal.inherit'})
 Attr = Union[ast.Attribute, astroid.Attribute]
 
 
-def get_contracts(func) -> Iterator[Tuple[str, list]]:
+class ContractInfo(NamedTuple):
+    name: str
+    args: List[Union[ast.expr, astroid.Expr]]
+    line: int
+
+
+def get_contracts(func) -> Iterator[ContractInfo]:
     if isinstance(func, ast.FunctionDef):
         yield from _get_contracts(func.decorator_list)
         return
@@ -32,13 +38,17 @@ def get_contracts(func) -> Iterator[Tuple[str, list]]:
     yield from _get_contracts(func.decorators.nodes)
 
 
-def _get_contracts(decorators: list) -> Iterator[Tuple[str, list]]:
+def _get_contracts(decorators: list) -> Iterator[ContractInfo]:
     for contract in decorators:
         if isinstance(contract, TOKENS.ATTR):
             name = get_name(contract)
             if name not in SUPPORTED_MARKERS:
                 continue
-            yield name.split('.')[-1], []
+            yield ContractInfo(
+                name=name.split('.')[-1],
+                args=[],
+                line=contract.lineno,
+            )
             if name == 'deal.inherit':
                 yield from _resolve_inherit(contract)
 
@@ -50,7 +60,11 @@ def _get_contracts(decorators: list) -> Iterator[Tuple[str, list]]:
                 yield from _get_contracts(contract.args)
             if name not in SUPPORTED_CONTRACTS:
                 continue
-            yield name.split('.')[-1], contract.args
+            yield ContractInfo(
+                name=name.split('.')[-1],
+                args=contract.args,
+                line=contract.lineno,
+            )
 
         # infer assigned value
         if isinstance(contract, astroid.Name):
@@ -68,7 +82,7 @@ def _get_contracts(decorators: list) -> Iterator[Tuple[str, list]]:
             yield from _get_contracts([expr.value])
 
 
-def _resolve_inherit(contract: Attr) -> Iterator[Tuple[str, List[astroid.Expr]]]:
+def _resolve_inherit(contract: Attr) -> Iterator[ContractInfo]:
     if not isinstance(contract, astroid.Attribute):
         return
     cls = _get_parent_class(contract)
