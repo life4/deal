@@ -18,6 +18,7 @@ from deal._cli import main
         """,
         """
             import deal
+
             @deal.has('stdout')
             @deal.raises(ZeroDivisionError)
             @deal.post(lambda x: x > 0)

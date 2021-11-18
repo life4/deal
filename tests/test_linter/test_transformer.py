@@ -366,8 +366,8 @@ def test_transformer_has(content: str, tmp_path: Path) -> None:
             return 1
         ---
         import re
-
         import deal
+
         @deal.has()
         def f():
             return 1
@@ -383,9 +383,9 @@ def test_transformer_has(content: str, tmp_path: Path) -> None:
             return 1
         ---
         import re
+        import deal
         from textwrap import dedent
 
-        import deal
         HI = 1
 
         @deal.has()
@@ -418,14 +418,36 @@ def test_transformer_has(content: str, tmp_path: Path) -> None:
         from textwrap import (
             dedent,
         )
-
         def f():
             return 1
         ---
+        import deal
         from textwrap import (
             dedent,
         )
-
+        @deal.has()
+        def f():
+            return 1
+    """,
+    # skip __future__ imports
+    """
+        from __future__ import annotations
+        def f():
+            return 1
+        ---
+        from __future__ import annotations
+        import deal
+        @deal.has()
+        def f():
+            return 1
+    """,
+    # skip from imports before module imports
+    """
+        from __future__ import annotations
+        def f():
+            return 1
+        ---
+        from __future__ import annotations
         import deal
         @deal.has()
         def f():
@@ -434,7 +456,7 @@ def test_transformer_has(content: str, tmp_path: Path) -> None:
 ])
 def test_transformer_import(content: str, tmp_path: Path) -> None:
     given, expected = content.split('---')
-    given = dedent(given)
+    given = dedent(given).lstrip('\n')
     expected = dedent(expected)
     tr = Transformer(
         content=given,

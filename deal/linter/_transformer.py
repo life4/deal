@@ -222,13 +222,16 @@ class Transformer(NamedTuple):
             for name, _ in stmt.names:
                 if name == 'deal':
                     return
+
+        # We insert the import after `__future__` imports and module imports.
+        # We don't skip `from` imports, though, because they can be multiline.
         line = 1
-        skip = (astroid.ImportFrom, astroid.Import, astroid.Const)
-        for stmt in tree.body:  # pragma: no cover
-            if isinstance(stmt, skip):
-                continue
-            line = getattr(stmt, 'lineno', line)
-            break
+        for stmt in tree.body:
+            if isinstance(stmt, astroid.Import):
+                line = stmt.lineno + 1
+            if isinstance(stmt, astroid.ImportFrom):
+                if stmt.modname == '__future__':
+                    line = stmt.lineno + 1
         yield InsertText(line=line, text='import deal')
 
     def _apply_mutations(self, content: str) -> str:
