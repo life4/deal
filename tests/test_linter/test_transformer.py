@@ -191,7 +191,7 @@ def test_transformer_raises(content: str, tmp_path: Path) -> None:
     expected = dedent(expected)
     tr = Transformer(
         content=given,
-        path=tmp_path / "example.py",
+        path=tmp_path / 'example.py',
         types={TransformationType.RAISES, TransformationType.SAFE},
     )
     actual = tr.transform()
@@ -340,7 +340,7 @@ def test_transformer_has(content: str, tmp_path: Path) -> None:
     expected = dedent(expected)
     tr = Transformer(
         content=given,
-        path=tmp_path / "example.py",
+        path=tmp_path / 'example.py',
         types={TransformationType.HAS},
     )
     actual = tr.transform()
@@ -460,7 +460,7 @@ def test_transformer_import(content: str, tmp_path: Path) -> None:
     expected = dedent(expected)
     tr = Transformer(
         content=given,
-        path=tmp_path / "example.py",
+        path=tmp_path / 'example.py',
         types={TransformationType.HAS, TransformationType.IMPORT},
     )
     actual = tr.transform()

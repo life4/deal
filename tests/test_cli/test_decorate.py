@@ -25,7 +25,7 @@ from deal._cli import main
             def f(x):
                 print(1/0)
                 return -1
-        """
+        """,
     ),
     (
         ['--types', 'raises', 'safe'],
@@ -43,7 +43,7 @@ from deal._cli import main
             def f(x):
                 print(1/0)
                 return -1
-        """
+        """,
     ),
     (
         ['--types', 'has', '--double-quotes'],
@@ -61,7 +61,7 @@ from deal._cli import main
             def f(x):
                 print(1/0)
                 return -1
-        """
+        """,
     ),
     (
         [],
@@ -76,7 +76,7 @@ from deal._cli import main
             @deal.pure
             def f(x):
                 return x
-        """
+        """,
     ),
 ])
 def test_decorate_command(flags: list, given: str, expected: str, tmp_path: Path):

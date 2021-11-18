@@ -47,7 +47,7 @@ def _get_contracts(decorators: list) -> Iterator[ContractInfo]:
             yield ContractInfo(
                 name=name.split('.')[-1],
                 args=[],
-                line=contract.lineno
+                line=contract.lineno,
             )
             if name == 'deal.inherit':
                 yield from _resolve_inherit(contract)
