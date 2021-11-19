@@ -244,8 +244,11 @@ class Transformer(NamedTuple):
             # some Python versions point to the first decorator, some to `def`
             if decorator.lineno < func.line:
                 return func.line  # pragma: no cover
-            if isinstance(decorator, astroid.Name):
-                line = decorator.lineno + 1
+            if not isinstance(decorator, astroid.Name):
+                continue
+            if decorator.name in {'staticmethod', 'classmethod'}:
+                continue
+            line = decorator.lineno + 1
         return line
 
     def _apply_mutations(self, content: str) -> str:

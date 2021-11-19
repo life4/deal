@@ -197,16 +197,16 @@ from deal.linter import TransformationType, Transformer
             def f(self):
                 1/0
     """,
-    # insert after unknown decorators
+    # insert before staticmethod
     """
         class A:
-            @unknown
+            @staticmethod
             def f(self):
                 1/0
         ---
         class A:
-            @unknown
             @deal.raises(ZeroDivisionError)
+            @staticmethod
             def f(self):
                 1/0
     """,
