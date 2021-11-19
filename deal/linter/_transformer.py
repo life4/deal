@@ -46,7 +46,7 @@ class InsertContract(NamedTuple):
 
     @property
     def key(self) -> Tuple[int, Priority]:
-        return (self.line, 1)
+        return (self.line, 2)
 
     def __str__(self) -> str:
         args = ', '.join(self.args)
@@ -65,7 +65,7 @@ class Remove(NamedTuple):
 
     @property
     def key(self) -> Tuple[int, Priority]:
-        return (self.line, 2)
+        return (self.line, 3)
 
 
 Mutation = Union[InsertText, InsertContract, Remove]
