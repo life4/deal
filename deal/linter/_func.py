@@ -1,6 +1,6 @@
 import ast
 from pathlib import Path
-from typing import Iterator, List, NamedTuple
+from typing import Iterator, List, NamedTuple, Union
 
 import astroid
 
@@ -10,12 +10,17 @@ from ._extractors import get_contracts, get_definitions
 
 class Func(NamedTuple):
     name: str
-    args: ast.arguments
     body: list
     contracts: List[Contract]
+    node: Union[ast.FunctionDef, astroid.FunctionDef]
 
-    line: int
-    col: int
+    @property
+    def line(self) -> int:
+        return self.node.lineno
+
+    @property
+    def col(self) -> int:
+        return self.node.col_offset
 
     @classmethod
     def from_path(cls, path: Path) -> List['Func']:
@@ -45,11 +50,9 @@ class Func(NamedTuple):
                 contracts.append(contract)
             funcs.append(cls(
                 name=expr.name,
-                args=expr.args,
                 body=expr.body,
                 contracts=contracts,
-                line=expr.lineno,
-                col=expr.col_offset,
+                node=expr,
             ))
         return funcs
 
@@ -88,11 +91,9 @@ class Func(NamedTuple):
             assert expr.lineno is not None
             funcs.append(cls(
                 name=expr.name,
-                args=func_args,
                 body=expr.body,
                 contracts=contracts,
-                line=expr.lineno,
-                col=expr.col_offset,
+                node=expr,
             ))
         return funcs
 
