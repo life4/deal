@@ -119,7 +119,7 @@ class Transformer(NamedTuple):
             if func.has_contract(Category.PURE, Category.SAFE):
                 return
             yield InsertContract(
-                line=func.line,
+                line=self._get_insert_line(func),
                 indent=func.col,
                 contract=Category.SAFE,
                 args=[],
@@ -135,7 +135,7 @@ class Transformer(NamedTuple):
             yield Remove(contract.line)
             if contract.category == Category.PURE:
                 yield InsertContract(
-                    line=func.line,
+                    line=self._get_insert_line(func),
                     indent=func.col,
                     contract=Category.HAS,
                     args=[],
@@ -143,7 +143,7 @@ class Transformer(NamedTuple):
         contract_args = [self._exc_as_str(exc) for exc in declared]
         contract_args.extend(sorted(excs))
         yield InsertContract(
-            line=func.line,
+            line=self._get_insert_line(func),
             indent=func.col,
             contract=Category.RAISES,
             args=contract_args,
@@ -180,7 +180,7 @@ class Transformer(NamedTuple):
             if func.has_contract(Category.PURE, Category.HAS):
                 return
             yield InsertContract(
-                line=func.line,
+                line=self._get_insert_line(func),
                 indent=func.col,
                 contract=Category.HAS,
                 args=[],
@@ -194,7 +194,7 @@ class Transformer(NamedTuple):
             yield Remove(contract.line)
             if contract.category == Category.PURE:
                 yield InsertContract(
-                    line=func.line,
+                    line=self._get_insert_line(func),
                     indent=func.col,
                     contract=Category.SAFE,
                     args=[],
@@ -202,7 +202,7 @@ class Transformer(NamedTuple):
         contract_args = [self._exc_as_str(marker) for marker in declared]
         contract_args.extend(sorted(markers))
         yield InsertContract(
-            line=func.line,
+            line=self._get_insert_line(func),
             indent=func.col,
             contract=Category.HAS,
             args=[f'{self.quote}{arg}{self.quote}' for arg in contract_args],
@@ -233,6 +233,20 @@ class Transformer(NamedTuple):
                 if stmt.modname == '__future__':
                     line = stmt.lineno + 1
         yield InsertText(line=line, text='import deal')
+
+    def _get_insert_line(self, func: Func) -> int:
+        assert isinstance(func.node, astroid.FunctionDef)
+        line = func.line
+        if func.node.decorators is None:
+            return line
+        assert isinstance(func.node.decorators, astroid.Decorators)
+        for decorator in func.node.decorators.nodes:
+            # some Python versions point to the first decorator, some to `def`
+            if decorator.lineno < func.line:
+                return func.line  # pragma: no cover
+            if isinstance(decorator, astroid.Name):
+                line = decorator.lineno + 1
+        return line
 
     def _apply_mutations(self, content: str) -> str:
         if not self.mutations:

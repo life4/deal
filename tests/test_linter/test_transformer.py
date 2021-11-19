@@ -173,17 +173,60 @@ from deal.linter import TransformationType, Transformer
         def f():
             1/0
     """,
-    # # support methods
-    # """
-    #     class A:
-    #         def f(self):
-    #             1/0
-    #     ---
-    #     class A:
-    #         @deal.raises(ZeroDivisionError)
-    #         def f(self):
-    #             1/0
-    # """,
+    # support methods
+    """
+        class A:
+            def f(self):
+                1/0
+        ---
+        class A:
+            @deal.raises(ZeroDivisionError)
+            def f(self):
+                1/0
+    """,
+    # insert after @property
+    """
+        class A:
+            @property
+            def f(self):
+                1/0
+        ---
+        class A:
+            @property
+            @deal.raises(ZeroDivisionError)
+            def f(self):
+                1/0
+    """,
+    # insert after unknown decorators
+    """
+        class A:
+            @unknown
+            def f(self):
+                1/0
+        ---
+        class A:
+            @unknown
+            @deal.raises(ZeroDivisionError)
+            def f(self):
+                1/0
+    """,
+    # insert before multiline decorators
+    """
+        class A:
+            @unknown(
+                hi,
+            )
+            def f(self):
+                1/0
+        ---
+        class A:
+            @deal.raises(ZeroDivisionError)
+            @unknown(
+                hi,
+            )
+            def f(self):
+                1/0
+    """,
 ])
 def test_transformer_raises(content: str, tmp_path: Path) -> None:
     given, expected = content.split('---')
