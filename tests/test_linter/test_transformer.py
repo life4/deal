@@ -192,10 +192,24 @@ from deal.linter import TransformationType, Transformer
                 1/0
         ---
         class A:
-            @property
+            @property  # type: ignore[misc]
             @deal.raises(ZeroDivisionError)
             def f(self):
                 1/0
+    """,
+    # do not touch @property if no mutations
+    """
+        class A:
+            @property
+            @deal.safe
+            def f(self):
+                pass
+        ---
+        class A:
+            @property
+            @deal.safe
+            def f(self):
+                pass
     """,
     # insert before staticmethod
     """

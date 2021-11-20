@@ -20,12 +20,15 @@ class TransformationType(Enum):
     IMPORT = 'import'
 
 
-class InsertText(NamedTuple):
+class AppendText(NamedTuple):
     line: int
     text: str
 
     def apply(self, lines: List[str]) -> None:
-        lines.insert(self.line - 1, f'{self}\n')
+        content = lines[self.line - 1]
+        content = content.rstrip('\n')
+        content += f'{self.text}\n'
+        lines[self.line - 1] = content
 
     @property
     def key(self) -> Tuple[int, Priority]:
@@ -33,6 +36,18 @@ class InsertText(NamedTuple):
 
     def __str__(self) -> str:
         return self.text
+
+
+class InsertText(NamedTuple):
+    line: int
+    text: str
+
+    def apply(self, lines: List[str]) -> None:
+        lines.insert(self.line - 1, f'{self.text}\n')
+
+    @property
+    def key(self) -> Tuple[int, Priority]:
+        return (self.line, 2)
 
 
 class InsertContract(NamedTuple):
@@ -46,7 +61,7 @@ class InsertContract(NamedTuple):
 
     @property
     def key(self) -> Tuple[int, Priority]:
-        return (self.line, 2)
+        return (self.line, 3)
 
     def __str__(self) -> str:
         args = ', '.join(self.args)
@@ -65,10 +80,10 @@ class Remove(NamedTuple):
 
     @property
     def key(self) -> Tuple[int, Priority]:
-        return (self.line, 3)
+        return (self.line, 4)
 
 
-Mutation = Union[InsertText, InsertContract, Remove]
+Mutation = Union[AppendText, InsertText, InsertContract, Remove]
 
 
 class Transformer(NamedTuple):
@@ -91,6 +106,7 @@ class Transformer(NamedTuple):
     def _collect_mutations(self, func: Func) -> None:
         self.mutations.extend(self._mutations_excs(func))
         self.mutations.extend(self._mutations_markers(func))
+        self.mutations.extend(self._mutations_property(func))
 
     def _mutations_excs(self, func: Func) -> Iterator[Mutation]:
         """Add @deal.raises or @deal.safe if needed.
@@ -207,6 +223,23 @@ class Transformer(NamedTuple):
             contract=Category.HAS,
             args=[f'{self.quote}{arg}{self.quote}' for arg in contract_args],
         )
+
+    def _mutations_property(self, func: Func) -> Iterator[Mutation]:
+        assert isinstance(func.node, astroid.FunctionDef)
+        if func.node.decorators is None:
+            return
+        assert isinstance(func.node.decorators, astroid.Decorators)
+        for decorator in func.node.decorators.nodes:
+            if not isinstance(decorator, astroid.Name):
+                continue
+            if decorator.name not in {'property', 'cached_property'}:
+                continue
+            if not self._has_mutation_on_line(decorator.lineno + 1):
+                continue
+            yield AppendText(decorator.lineno, '  # type: ignore[misc]')
+
+    def _has_mutation_on_line(self, line: int) -> bool:
+        return any(mutation.line == line for mutation in self.mutations)
 
     def _mutations_import(self, tree: astroid.Module) -> Iterator[Mutation]:
         """Add `import deal` if needed.
