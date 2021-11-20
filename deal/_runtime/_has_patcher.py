@@ -8,28 +8,34 @@ from .._types import ExceptionType
 
 
 KNOWN_MARKERS = frozenset({
-    'global',
-    'import',
-    'input',
+    # io markers
     'io',
     'network',
-    'nonlocal',
-    'print',
-    'random',
     'read',
-    'socket',
     'stderr',
     'stdin',
     'stdout',
     'syscall',
-    'time',
     'write',
+
+    # non-io markers
+    'global',
+    'import',
+    'random',
+    'time',
+
+    # aliases
+    'input',     # stdin
+    'nonlocal',  # global
+    'print',     # stdout
+    'socket',    # network
 })
 NON_IO_MARKERS = frozenset({
     'global',
     'nonlocal',
     'import',
     'random',
+    'time',
 })
 
 
