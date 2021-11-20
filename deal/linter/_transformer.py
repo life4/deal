@@ -34,9 +34,6 @@ class AppendText(NamedTuple):
     def key(self) -> Tuple[int, Priority]:
         return (self.line, 1)
 
-    def __str__(self) -> str:
-        return self.text
-
 
 class InsertText(NamedTuple):
     line: int

@@ -7,8 +7,34 @@ from .._exceptions import MarkerError, OfflineContractError, SilentContractError
 from .._types import ExceptionType
 
 
+KNOWN_MARKERS = frozenset({
+    'global',
+    'import',
+    'input',
+    'io',
+    'network',
+    'nonlocal',
+    'print',
+    'random',
+    'read',
+    'socket',
+    'stderr',
+    'stdin',
+    'stdout',
+    'syscall',
+    'time',
+    'write',
+})
+NON_IO_MARKERS = frozenset({
+    'global',
+    'nonlocal',
+    'import',
+    'random',
+})
+
+
 class PatchedStringIO(StringIO):
-    __slots__ = ('exception')
+    __slots__ = ('exception',)
 
     def __init__(self, exception: ExceptionType):
         self.exception = exception
@@ -18,7 +44,7 @@ class PatchedStringIO(StringIO):
 
 
 class PatchedSocket:
-    __slots__ = ('exception')
+    __slots__ = ('exception',)
 
     def __init__(self, exception: ExceptionType):
         self.exception = exception
@@ -63,19 +89,7 @@ class HasPatcher:
 
     @property
     def has_io(self) -> bool:
-        if self.has_read:
-            return True
-        if self.has_write:
-            return True
-        if self.has_stdout:
-            return True
-        if self.has_stderr:
-            return True
-        if self.has_stdin:
-            return True
-        if self.has_network:
-            return True
-        return False
+        return bool(self.markers - NON_IO_MARKERS)
 
     @property
     def has_stdout(self) -> bool:
