@@ -4,7 +4,7 @@
 [![PyPI version](https://img.shields.io/pypi/v/deal.svg)](https://pypi.python.org/pypi/deal)
 [![Development Status](https://img.shields.io/pypi/status/deal.svg)](https://pypi.python.org/pypi/deal)
 
-A Python library for [design by contract](https://en.wikipedia.org/wiki/Design_by_contract) (DbC) and checking values, exceptions, and side-effects. In a nutshell, deal empowers you to write bug-free code. By addidng in your code a few deocrators, you get for free tests, static analysis, formal verification, and much more. Read [intro](https://deal.readthedocs.io/basic/intro.html) to get started.
+A Python library for [design by contract](https://en.wikipedia.org/wiki/Design_by_contract) (DbC) and checking values, exceptions, and side-effects. In a nutshell, deal empowers you to write bug-free code. By adding a few decorators to your code, you get for free tests, static analysis, formal verification, and much more. Read [intro](https://deal.readthedocs.io/basic/intro.html) to get started.
 
 ## Features
 
