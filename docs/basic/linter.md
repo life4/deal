@@ -4,7 +4,7 @@ Deal can do static checks for functions with contracts to catch trivial mistakes
 
 ## flake8
 
-Most probably, you already use [flake8](http://flake8.pycqa.org), so this option should suit best for you. Deal has built-in flake8 plugin which will be autimatically discovered if you install flake8 and deal in the same environment.
+Most probably, you already use [flake8](http://flake8.pycqa.org), so this option should suit best for you. Deal has built-in flake8 plugin which will be automatically discovered if you install flake8 and deal in the same environment.
 
 ```bash
 python3 -m pip install --user flake8 deal
