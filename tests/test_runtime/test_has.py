@@ -54,6 +54,8 @@ def test_has_stdin(markers: list, expected: bool):
     (['read'], True),
     (['import'], False),
     (['global'], False),
+    (['custom'], True),
+    ([], False),
 ])
 def test_has_io(markers: list, expected: bool):
     assert make_has(markers).has_io is expected

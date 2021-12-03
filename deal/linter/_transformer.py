@@ -20,19 +20,31 @@ class TransformationType(Enum):
     IMPORT = 'import'
 
 
-class InsertText(NamedTuple):
+class AppendText(NamedTuple):
     line: int
     text: str
 
     def apply(self, lines: List[str]) -> None:
-        lines.insert(self.line - 1, f'{self}\n')
+        content = lines[self.line - 1]
+        content = content.rstrip('\n')
+        content += f'{self.text}\n'
+        lines[self.line - 1] = content
 
     @property
     def key(self) -> Tuple[int, Priority]:
         return (self.line, 1)
 
-    def __str__(self) -> str:
-        return self.text
+
+class InsertText(NamedTuple):
+    line: int
+    text: str
+
+    def apply(self, lines: List[str]) -> None:
+        lines.insert(self.line - 1, f'{self.text}\n')
+
+    @property
+    def key(self) -> Tuple[int, Priority]:
+        return (self.line, 2)
 
 
 class InsertContract(NamedTuple):
@@ -46,7 +58,7 @@ class InsertContract(NamedTuple):
 
     @property
     def key(self) -> Tuple[int, Priority]:
-        return (self.line, 1)
+        return (self.line, 3)
 
     def __str__(self) -> str:
         args = ', '.join(self.args)
@@ -65,10 +77,10 @@ class Remove(NamedTuple):
 
     @property
     def key(self) -> Tuple[int, Priority]:
-        return (self.line, 2)
+        return (self.line, 4)
 
 
-Mutation = Union[InsertText, InsertContract, Remove]
+Mutation = Union[AppendText, InsertText, InsertContract, Remove]
 
 
 class Transformer(NamedTuple):
@@ -91,6 +103,7 @@ class Transformer(NamedTuple):
     def _collect_mutations(self, func: Func) -> None:
         self.mutations.extend(self._mutations_excs(func))
         self.mutations.extend(self._mutations_markers(func))
+        self.mutations.extend(self._mutations_property(func))
 
     def _mutations_excs(self, func: Func) -> Iterator[Mutation]:
         """Add @deal.raises or @deal.safe if needed.
@@ -119,7 +132,7 @@ class Transformer(NamedTuple):
             if func.has_contract(Category.PURE, Category.SAFE):
                 return
             yield InsertContract(
-                line=func.line,
+                line=self._get_insert_line(func),
                 indent=func.col,
                 contract=Category.SAFE,
                 args=[],
@@ -135,7 +148,7 @@ class Transformer(NamedTuple):
             yield Remove(contract.line)
             if contract.category == Category.PURE:
                 yield InsertContract(
-                    line=func.line,
+                    line=self._get_insert_line(func),
                     indent=func.col,
                     contract=Category.HAS,
                     args=[],
@@ -143,7 +156,7 @@ class Transformer(NamedTuple):
         contract_args = [self._exc_as_str(exc) for exc in declared]
         contract_args.extend(sorted(excs))
         yield InsertContract(
-            line=func.line,
+            line=self._get_insert_line(func),
             indent=func.col,
             contract=Category.RAISES,
             args=contract_args,
@@ -180,7 +193,7 @@ class Transformer(NamedTuple):
             if func.has_contract(Category.PURE, Category.HAS):
                 return
             yield InsertContract(
-                line=func.line,
+                line=self._get_insert_line(func),
                 indent=func.col,
                 contract=Category.HAS,
                 args=[],
@@ -194,7 +207,7 @@ class Transformer(NamedTuple):
             yield Remove(contract.line)
             if contract.category == Category.PURE:
                 yield InsertContract(
-                    line=func.line,
+                    line=self._get_insert_line(func),
                     indent=func.col,
                     contract=Category.SAFE,
                     args=[],
@@ -202,11 +215,28 @@ class Transformer(NamedTuple):
         contract_args = [self._exc_as_str(marker) for marker in declared]
         contract_args.extend(sorted(markers))
         yield InsertContract(
-            line=func.line,
+            line=self._get_insert_line(func),
             indent=func.col,
             contract=Category.HAS,
             args=[f'{self.quote}{arg}{self.quote}' for arg in contract_args],
         )
+
+    def _mutations_property(self, func: Func) -> Iterator[Mutation]:
+        assert isinstance(func.node, astroid.FunctionDef)
+        if func.node.decorators is None:
+            return
+        assert isinstance(func.node.decorators, astroid.Decorators)
+        for decorator in func.node.decorators.nodes:
+            if not isinstance(decorator, astroid.Name):
+                continue
+            if decorator.name not in {'property', 'cached_property'}:
+                continue
+            if not self._has_mutation_on_line(decorator.lineno + 1):
+                continue
+            yield AppendText(decorator.lineno, '  # type: ignore[misc]')
+
+    def _has_mutation_on_line(self, line: int) -> bool:
+        return any(mutation.line == line for mutation in self.mutations)
 
     def _mutations_import(self, tree: astroid.Module) -> Iterator[Mutation]:
         """Add `import deal` if needed.
@@ -233,6 +263,23 @@ class Transformer(NamedTuple):
                 if stmt.modname == '__future__':
                     line = stmt.lineno + 1
         yield InsertText(line=line, text='import deal')
+
+    def _get_insert_line(self, func: Func) -> int:
+        assert isinstance(func.node, astroid.FunctionDef)
+        line = func.line
+        if func.node.decorators is None:
+            return line
+        assert isinstance(func.node.decorators, astroid.Decorators)
+        for decorator in func.node.decorators.nodes:
+            # some Python versions point to the first decorator, some to `def`
+            if decorator.lineno < func.line:
+                return func.line  # pragma: no cover
+            if not isinstance(decorator, astroid.Name):
+                continue
+            if decorator.name in {'staticmethod', 'classmethod'}:
+                continue
+            line = decorator.lineno + 1
+        return line
 
     def _apply_mutations(self, content: str) -> str:
         if not self.mutations:
