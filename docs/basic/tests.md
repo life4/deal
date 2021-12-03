@@ -4,7 +4,7 @@ Deal can automatically test your functions. First of all, your function has to b
 
 1. All function arguments are type-annotated.
 1. All exceptions that function can raise are specified in {py:func}`deal.raises`.
-1. All pre-conditions are specified with {py:func}`deal.pre`.
+1. All preconditions are specified with {py:func}`deal.pre`.
 
 ```python run
 @deal.raises(ZeroDivisionError)

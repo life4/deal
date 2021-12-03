@@ -17,7 +17,7 @@ Prerequisites for code to be verified:
 + It is a function or `@staticmethod`.
 + It is written on pure Python and calls only pure Python code.
 + Every argument is type annotated.
-+ Even if everything above is satisfied, the functon still can be skipped because a feature it uses is not supported yet.
++ Even if everything above is satisfied, the function still can be skipped because a feature it uses is not supported yet.
 
 Below, we use the following terms:
 
