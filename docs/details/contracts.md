@@ -162,11 +162,11 @@ See [vaa](https://github.com/life4/vaa) documentation for details.
 
 Deal tries to be as performant as possible, with the following goals in mind:
 
-+ If something can be done only once (in other words, cached) with benefit for performance, must be done only once.
-+ Heavy operations must not be performed when decorator is just applied, otherwise it negatively affects the import time for the project that uses deal.
++ If something can be done only once (in other words, cached) with a benefit to performance, it must be done only once.
++ Heavy operations must not be performed when decorator is just applied. Otherwise, it negatively affects the import time for the project that uses deal.
 + Simplicity must not be sacrificed for performance.
 
-As the outcome, deal has some heavy operations. Namely, introspection of the wrapped function and the validator. THese operations are performed only once, when the function is called in the first time. The idea is similar to how Just-In-Time compilation works in [Julia](https://julialang.org/): compile it only when you need it.
+The outcome of this is that deal has some heavy operations. Namely, introspection of the wrapped function and the validator. These operations are performed only once, when the function is called for the first time. The idea is similar to how Just-In-Time compilation works in [Julia](https://julialang.org/): compile it only when you need it.
 
 So, if you benchmark a function decorated with deal, you can either:
 
