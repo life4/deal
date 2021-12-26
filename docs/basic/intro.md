@@ -43,7 +43,7 @@ It's not "advanced usage", there is nothing advanced or difficult. It's about wr
 
 1. {doc}`/details/contracts` gives you additional tools to reuse and simplify contracts.
 1. {doc}`/details/module_load` allow you to control what happens at the module load (import) time.
-1. {doc}`/details/dispatch` is a way to combine multiple implementations for a function into one based on pre-conditions.
+1. {doc}`/details/dispatch` is a way to combine multiple implementations for a function into one based on preconditions.
 1. {doc}`/details/docs` provides information on generating documentation for functions with contracts (using Sphinx).
 1. {doc}`/details/stubs` is a way to store some contracts in a JSON file instead of the source code. It can be helpful for third-party libraries. Some stubs already inside Deal.
 1. {doc}`/details/tests` provides information on finding memory leaks and tweaking tests generation.

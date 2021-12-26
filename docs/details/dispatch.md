@@ -25,7 +25,7 @@ age2stage(10)  # 'kid'
 age2stage(14)  # 'teen'
 ```
 
-If the given arguments passed pre-conditions for none of the implementations, `NoMatchError` is raised:
+If the given arguments passed preconditions for none of the implementations, `NoMatchError` is raised:
 
 ```python
 age2stage(20)
@@ -48,7 +48,7 @@ Since dispatch requires contracts to be enabled, when you call a dispatched func
 
 ## Motivation
 
-The decorator was introduced as a way to do the same as [functools.singledispatch] but using pre-conditions instead of types. It gives you much more flexibility, allowing you to implement anything you could do in some other languages with the combination of [pattern matching], [guards], and [function overloading]. A classic example is recursively calculating factorial.
+The decorator was introduced as a way to do the same as [functools.singledispatch] but using preconditions instead of types. It gives you much more flexibility, allowing you to implement anything you could do in some other languages with the combination of [pattern matching], [guards], and [function overloading]. A classic example is recursively calculating factorial.
 
 In Elixir:
 
