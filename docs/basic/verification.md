@@ -4,7 +4,7 @@
 This feature is **experimental** and always will be. The API is stable and verification is reliable but it always will work only for some simple cases.
 ```
 
-Deal has a built-in formal verifier. That means, deal turns your code into a formal theorem and then proves that it is formally correct (or finds a counter-example when it is not). Turning wild Python code into mathematical expressions is hard, so application of the verifier is limited. Still, you should try it. It will work for only 1% of your code but when it does work, it finds actual bugs.
+Deal has a built-in formal verifier. That means deal turns your code into a formal theorem and then proves that it is formally correct (or finds a counter-example when it is not). Turning wild Python code into mathematical expressions is hard, so application of the verifier is limited. Still, you should try it. It will work for only 1% of your code but when it does work, it finds actual bugs.
 
 ```bash
 python3 -m deal prove project/
@@ -55,8 +55,8 @@ Since Python is a dynamically typed interpreted language and is not designed for
 + `set` cannot be converted into `list` because sets are infinite in Z3.
 + Some formulas (like `a ** x` where x is a variable) take unreasonable amount of time to prove. To avoid freezing to death, deal-solvers sets a timeout for every proof.
 + In general, resolving OOP magic statically is hard. At the moment, deal-solver supports only built-in types and validates only functions and static methods.
-+ Big chunk of standard library is written on C. So, to support the whole standard library, we have to manually rewrite every function implementation as a Z3 formula (because deal-solver can interpret only Python, not C).
-+ Verification of loops requires [loop invariants](https://en.wikipedia.org/wiki/Loop_invariant). However, deal currently doesn't have such thing because it's not so helpful for other components of the project.
++ A big chunk of the standard library is written in C. So, to support the whole standard library, we have to manually rewrite every function implementation as a Z3 formula (because deal-solver can interpret only Python, not C).
++ Verification of loops requires [loop invariants](https://en.wikipedia.org/wiki/Loop_invariant). However, deal currently doesn't have anything like this because it's not so helpful for other components of the project.
 
 So, deal-solver is more proof-of-concept rather than something that will be a part of your day-to-day tooling.
 
