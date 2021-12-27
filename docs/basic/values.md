@@ -2,7 +2,7 @@
 
 ## deal.pre
 
-[Precondition](https://en.wikipedia.org/wiki/Precondition) -- condition that must be true before function is executed.
+[Precondition](https://en.wikipedia.org/wiki/Precondition) -- condition that must be true before the function is executed.
 
 ```python
 @deal.pre(lambda *args: all(arg > 0 for arg in args))
@@ -18,7 +18,7 @@ sum_positive(1, 2, -3, 4)
 
 ## deal.post
 
-[Postcondition](https://en.wikipedia.org/wiki/Postcondition) -- condition that must be true after function executed. Raises `PostContractError` otherwise.
+[Postcondition](https://en.wikipedia.org/wiki/Postcondition) -- condition that must be true after the function was executed. Raises `PostContractError` otherwise.
 
 ```python
 @deal.post(lambda x: x > 0)
@@ -32,7 +32,7 @@ always_positive_sum(2, -3, -4)
 # PostContractError:
 ```
 
-Post-condition allows to make additional constraints about function result. Use type annotations to limit types of result and post-conditions to limit possible values inside given types.
+Post-condition allows you to make additional constraints about a function result. Use type annotations to limit types of results and post-conditions to limit possible values inside given types.
 
 ## deal.ensure
 
@@ -111,7 +111,7 @@ change_role('superuser')
 # LookupError:
 ```
 
-However, thumb-up rule is to avoid catching exceptions from contracts. Contracts aren't part of business logic but it's validation. Hence contract error means business logic violation and execution should be stopped to avoid doing something not predicted and even dangerous.
+However, thumb-up rule is to avoid catching exceptions from contracts. Contracts aren't part of business logic, but are validation. Hence, a contract error means a business logic violation has occurred and execution should be stopped to avoid doing something not predicted and even dangerous.
 
 ## Chaining contracts
 
@@ -133,11 +133,11 @@ f(12)
 # PreContractError: expected x < 10 (where x=12)
 ```
 
-`@deal.post` and `@deal.ensure` contracts are resolved from bottom to top. All other contracts are resolved from top to bottom. This is because of how wrapping works: before calling function we go down by contracts list, after calling the function we go back, up by call stack.
+`@deal.post` and `@deal.ensure` contracts are resolved from bottom to top. All other contracts are resolved from top to bottom. This is because of how wrapping works: before calling function we go down the contracts list, and after calling the function we go back up the call stack.
 
 ## Generators and async functions
 
-Contracts mostly support generators (`yield`) ans async functions:
+Contracts mostly support generators (`yield`) and async functions:
 
 ```{eval-rst}
 +----------+----------------------------------+------------------------------+
