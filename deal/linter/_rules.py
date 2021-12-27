@@ -118,6 +118,8 @@ class CheckEnsureArgs(FuncRule):
                 assert isinstance(arg, astroid.AssignName)
                 if arg.name == 'result':
                     return True
+                if arg.name == '_' and '_.result' in validator.body.as_string():
+                    return True
             return False
         return True
 
