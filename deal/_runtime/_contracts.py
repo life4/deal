@@ -1,7 +1,7 @@
 from asyncio import iscoroutinefunction
 from functools import update_wrapper
 from inspect import isgeneratorfunction
-from typing import TYPE_CHECKING, Callable, Dict, Generic, List, Optional, Tuple, TypeVar
+from typing import TYPE_CHECKING, Callable, Dict, Generic, List, Optional, Tuple, Type, TypeVar
 
 from .._exceptions import ContractError
 from .._state import state
@@ -63,11 +63,13 @@ class Contracts(Generic[F]):
         return contracts.wrapped
 
     @classmethod
-    def _ensure_wrapped(cls, func: F) -> 'Contracts[F]':
-        contracts = getattr(func, ATTR, None)
+    def _ensure_wrapped(cls: Type['Contracts'], func: F) -> 'Contracts[F]':
+        contracts: Contracts
+        contracts = getattr(func, ATTR, None)  # type: ignore[assignment]
         if contracts is not None:
             return contracts
         contracts = cls(func)
+        assert contracts is not None
 
         if iscoroutinefunction(func):
             async def wrapper(*args, **kwargs):
@@ -81,7 +83,7 @@ class Contracts(Generic[F]):
 
         update_wrapper(wrapper=wrapper, wrapped=func)
         setattr(wrapper, ATTR, contracts)
-        contracts.wrapped = wrapper  # type: ignore[assignment]
+        contracts.wrapped = wrapper
         return contracts
 
     def wrap(self, func: F) -> F:
@@ -101,7 +103,7 @@ class Contracts(Generic[F]):
                 contracts.patcher = self.patcher
         return contracts.wrapped
 
-    def _run_sync(self, args: Tuple[object], kwargs: Dict[str, object]):
+    def _run_sync(self, args: Tuple[object, ...], kwargs: Dict[str, object]):
         if not state.debug:
             return self.func(*args, **kwargs)
 
@@ -144,7 +146,7 @@ class Contracts(Generic[F]):
 
         return result
 
-    async def _run_async(self, args: Tuple[object], kwargs: Dict[str, object]):
+    async def _run_async(self, args: Tuple[object, ...], kwargs: Dict[str, object]):
         if not state.debug:
             return await self.func(*args, **kwargs)
 
@@ -187,7 +189,7 @@ class Contracts(Generic[F]):
 
         return result
 
-    def _run_iter(self, args: Tuple[object], kwargs: Dict[str, object]):
+    def _run_iter(self, args: Tuple[object, ...], kwargs: Dict[str, object]):
         if not state.debug:
             yield from self.func(*args, **kwargs)
             return
