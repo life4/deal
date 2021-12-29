@@ -107,6 +107,13 @@ class CheckEnsureArgs(FuncRule):
             for arg in args:
                 if arg.arg == 'result':
                     return True
+                if arg.arg == '_':
+                    if any(
+                        hasattr(node, 'attr')
+                        and node.attr == 'result'
+                        for node in ast.walk(validator)
+                    ):
+                        return True
             return False
         if isinstance(validator, astroid.Lambda):
             assert isinstance(validator.args, astroid.Arguments)
