@@ -492,10 +492,15 @@ def test_check_example_ensure():
     ('lambda a, *, result: 0', True),
     ('lambda *a, result: 0', True),
     ('lambda *a, result=None: 0', True),
+    ('lambda _: _.result', True),
+    ('lambda _: len(_.result) == _.length', True),
 
     ('unknown', True),
     ('sum', True),
 
+    ('lambda _: 0', False),
+    ('lambda _: _', False),
+    ('lambda _: _.other', False),
     ('lambda a: 0', False),
     ('lambda a, res: 0', False),
     ('lambda a, *, res: 0', False),
