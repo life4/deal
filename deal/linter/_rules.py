@@ -110,7 +110,7 @@ class CheckEnsureArgs(FuncRule):
                 if arg.arg == '_':
                     if any(
                         hasattr(node, 'attr')
-                        and node.attr == 'result'
+                        and node.attr == 'result'  # type: ignore[attr-defined]
                         for node in ast.walk(validator)
                     ):
                         return True
