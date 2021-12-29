@@ -8,7 +8,7 @@ The best way to get started with deal is to automatically generate some contract
 python3 -m deal decorate my_project/
 ```
 
-It will run {doc}`/basic/linter` on your code and add some of the missed contracts. The rest of contacts is still on you, though. Also, you should carefully check the generated code for correctness, deal may miss something.
+It will run {doc}`/basic/linter` on your code and add some of the missed contracts. The rest of the contracts are still on you, though. Also, you should carefully check the generated code for correctness, because deal may miss something.
 
 The following contracts are supported by the command and will be added to your code:
 
@@ -18,7 +18,7 @@ The following contracts are supported by the command and will be added to your c
 
 ## Simplified signature
 
-The main problem with contracts is that they have to duplicate the original function's signature, including default arguments. While it's not a problem for small examples, things become more complicated when the signature grows. In this case, you can specify a function that accepts only one `_` argument, and deal will pass there a container with arguments of the function call, including default ones:
+The main problem with contracts is that they have to duplicate the original function's signature, including default arguments. While it's not a problem for small examples, things become more complicated when the signature grows. In this case, you can specify a function that accepts only one `_` argument, and deal will pass a container with arguments of the function call to it, including default ones:
 
 ```python
 @deal.pre(lambda _: _.a + _.b > 0)
@@ -34,7 +34,7 @@ f(-2)
 
 ## deal.chain
 
-The {py:func}`deal.chain` decorator allows to merge a few contracts together into one decorator. It can be used to store contracts separately from the function:
+The {py:func}`deal.chain` decorator allows you to merge a few contracts together into one decorator. It can be used to store contracts separately from the function:
 
 ```python run
 contract_for_min = deal.chain(
@@ -47,7 +47,7 @@ def min(items):
     ...
 ```
 
-This allows to reuse contracts among multiple functions. Also, it keeps the function signature more clean, multiple decorators may make it a bit noisy.
+This allows you to reuse contracts among multiple functions. Also, it keeps the function signature cleaner, as multiple decorators may make it a bit noisy.
 
 ## deal.inherit
 
@@ -102,7 +102,7 @@ Keep in mind that `pyproject.toml` is supported by mypy only starting from versi
 
 ## Providing an error
 
-You can provide `message` argument for a contract, and this message will be used as the error message (and in [documentation](./docs)):
+You can provide the `message` argument for a contract, and this message will be used as the error message (and in [documentation](./docs)):
 
 ```python
 @deal.pre(lambda x: x > 0, message='x must be positive')
@@ -113,7 +113,7 @@ f(-2)
 # PreContractError: x must be positive (where x=-2)
 ```
 
-If a single contract includes multiple checks, it can return an error message instead of `False`, so different failures can be distinguished:
+If a single contract includes multiple checks, it can return an error message instead of `False`, so that different failures can be distinguished:
 
 ```python
 def contract(x):
@@ -162,11 +162,11 @@ See [vaa](https://github.com/life4/vaa) documentation for details.
 
 Deal tries to be as performant as possible, with the following goals in mind:
 
-+ If something can be done only once (in other words, cached) with benefit for performance, must be done only once.
-+ Heavy operations must not be performed when decorator is just applied, otherwise it negatively affects the import time for the project that uses deal.
++ If something can be done only once (in other words, cached) with a benefit to performance, it must be done only once.
++ Heavy operations must not be performed when decorator is just applied. Otherwise, it negatively affects the import time for the project that uses deal.
 + Simplicity must not be sacrificed for performance.
 
-As the outcome, deal has some heavy operations. Namely, introspection of the wrapped function and the validator. THese operations are performed only once, when the function is called in the first time. The idea is similar to how Just-In-Time compilation works in [Julia](https://julialang.org/): compile it only when you need it.
+The outcome of this is that deal has some heavy operations. Namely, introspection of the wrapped function and the validator. These operations are performed only once, when the function is called for the first time. The idea is similar to how Just-In-Time compilation works in [Julia](https://julialang.org/): compile it only when you need it.
 
 So, if you benchmark a function decorated with deal, you can either:
 
