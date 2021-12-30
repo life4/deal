@@ -9,8 +9,7 @@ from ._contract import Category, Contract
 from ._error import Error
 from ._extractors import (
     UNKNOWN, get_asserts, get_example, get_exceptions, get_imports,
-    get_markers, get_pre, get_returns, get_value, has_returns,
-    uses_result,
+    get_markers, get_pre, get_returns, get_value, has_returns, uses_result,
 )
 from ._func import Func
 from ._stub import StubsManager

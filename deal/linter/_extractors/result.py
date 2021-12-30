@@ -1,8 +1,10 @@
-from itertools import chain
 import ast
+from itertools import chain
 from typing import List
+
 import astroid
-from .common import traverse, get_name
+
+from .common import get_name, traverse
 
 
 def uses_result(validator) -> bool:
@@ -50,7 +52,7 @@ def _is_simple_validator(validator) -> bool:
     arg_names: List[str]
     if isinstance(validator, ast.Lambda):
         arg_names = [arg.arg for arg in validator.args.args]
-    elif isinstance(validator, astroid.Lambda):
+    if isinstance(validator, astroid.Lambda):
         assert isinstance(validator.args, astroid.Arguments)
         arg_names = [arg.name for arg in validator.args.args]
     return arg_names == ['_']

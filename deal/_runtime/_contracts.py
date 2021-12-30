@@ -1,7 +1,9 @@
 from asyncio import iscoroutinefunction
 from functools import update_wrapper
 from inspect import isgeneratorfunction
-from typing import TYPE_CHECKING, Callable, Dict, Generic, List, Optional, Tuple, Type, TypeVar
+from typing import (
+    TYPE_CHECKING, Callable, Dict, Generic, List, Optional, Tuple, Type, TypeVar,
+)
 
 from .._exceptions import ContractError
 from .._state import state
