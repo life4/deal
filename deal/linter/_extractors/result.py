@@ -1,5 +1,6 @@
 from itertools import chain
 import ast
+from typing import List
 import astroid
 from .common import traverse, get_name
 
@@ -46,20 +47,13 @@ def _has_result_arg(validator) -> bool:
 
 
 def _is_simple_validator(validator) -> bool:
+    arg_names: List[str]
     if isinstance(validator, ast.Lambda):
-        if len(validator.args.args) != 1:
-            return False
-        if validator.args.args[0].arg != '_':
-            return False
-        return True
-    if isinstance(validator, astroid.Lambda):
+        arg_names = [arg.arg for arg in validator.args.args]
+    elif isinstance(validator, astroid.Lambda):
         assert isinstance(validator.args, astroid.Arguments)
-        if len(validator.args.args) != 1:
-            return False
-        if validator.args.args[0].name != '_':
-            return False
-        return True
-    raise RuntimeError('unreachable')
+        arg_names = [arg.name for arg in validator.args.args]
+    return arg_names == ['_']
 
 
 def _simple_uses_result(validator) -> bool:
