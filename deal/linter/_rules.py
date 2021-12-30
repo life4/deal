@@ -1,5 +1,4 @@
 import ast
-from itertools import chain
 from types import MappingProxyType
 from typing import Iterator, List, Optional, Set, Type, TypeVar, Union
 
@@ -11,6 +10,7 @@ from ._error import Error
 from ._extractors import (
     UNKNOWN, get_asserts, get_example, get_exceptions, get_imports,
     get_markers, get_pre, get_returns, get_value, has_returns,
+    uses_result,
 )
 from ._func import Func
 from ._stub import StubsManager
@@ -90,44 +90,13 @@ class CheckEnsureArgs(FuncRule):
 
     def _check(self, contract: Contract) -> Iterator[Error]:
         validator = contract.args[0]
-        if not self._result_found(validator):
+        if not uses_result(validator):
             yield Error(
                 code=self.code,
                 text=self.message,
                 row=validator.lineno,
                 col=validator.col_offset,
             )
-
-    def _result_found(self, validator) -> bool:
-        if isinstance(validator, ast.Lambda):
-            args = chain(
-                validator.args.args,
-                validator.args.kwonlyargs,
-            )
-            for arg in args:
-                if arg.arg == 'result':
-                    return True
-                if arg.arg == '_' and any(
-                    hasattr(node, 'attr')
-                    and node.attr == 'result'  # type: ignore[attr-defined]
-                    for node in ast.walk(validator)
-                ):
-                    return True
-            return False
-        if isinstance(validator, astroid.Lambda):
-            assert isinstance(validator.args, astroid.Arguments)
-            args = chain(
-                validator.args.args,
-                validator.args.kwonlyargs,
-            )
-            for arg in args:
-                assert isinstance(arg, astroid.AssignName)
-                if arg.name == 'result':
-                    return True
-                if arg.name == '_' and '_.result' in validator.body.as_string():
-                    return True
-            return False
-        return True
 
 
 @register
