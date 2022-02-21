@@ -32,9 +32,13 @@ class TOKENS:
     YIELD: N[ast.Yield] = (ast.Yield, astroid.Yield)
 
 
+DEFAULT_LINE = 0
+DEFAULT_COL = 1
+
+
 class Token(NamedTuple):
-    line: int = 0
-    col: int = 1
+    line: int = DEFAULT_LINE
+    col: int = DEFAULT_COL
     value: Optional[object] = None
     marker: Optional[str] = None  # marker name or error message
 
@@ -190,8 +194,8 @@ class Extractor:
 
     @staticmethod
     def _ensure_node_info(token: Token, expr: Union[ast.AST, astroid.NodeNG]) -> Token:
-        if token.line == 0:
+        if token.line == DEFAULT_LINE:
             token = token._replace(line=expr.lineno)
-        if token.col == 1:
+        if token.col == DEFAULT_COL:
             token = token._replace(col=expr.col_offset)
         return token

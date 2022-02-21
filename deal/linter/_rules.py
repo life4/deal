@@ -216,7 +216,7 @@ class CheckRaises(FuncRule):
 
     def __call__(self, func: Func, stubs: Optional[StubsManager] = None) -> Iterator[Error]:
         cats = {Category.RAISES, Category.SAFE, Category.PURE}
-        declared: Exceptions = []
+        declared: Exceptions = [AssertionError]
         check = False
         for contract in func.contracts:
             if contract.category not in cats:

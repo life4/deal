@@ -116,6 +116,21 @@ def test_check_raises():
         assert actual == expected
 
 
+def test_check_raises__skip_asserts():
+    checker = CheckRaises()
+    text = """
+    @deal.pure
+    def test(a):
+        assert False
+        raise AssertionError
+    """
+    text = dedent(text).strip()
+    funcs1 = Func.from_ast(ast.parse(text))
+    funcs2 = Func.from_astroid(astroid.parse(text))
+    for func in (funcs1[0], funcs2[0]):
+        assert list(checker(func)) == []
+
+
 def test_check_raises_safe():
     checker = CheckRaises()
     text = """
