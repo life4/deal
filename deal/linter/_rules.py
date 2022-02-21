@@ -297,10 +297,14 @@ class CheckMarkers(FuncRule):
         for contract in func.contracts:
             markers: Optional[Set[str]] = None
             if contract.category == Category.HAS:
-                markers = {get_value(arg) for arg in contract.args}
+                markers = set()
+                for arg in contract.args:
+                    value = get_value(arg)
+                    if isinstance(value, str):
+                        markers.add(value)
             elif contract.category == Category.PURE:
                 markers = set()
-            if markers is None:
+            if markers is None:  # this is needed to fix coverage quirks
                 continue
             yield from self.get_undeclared(func=func, markers=markers)
             return

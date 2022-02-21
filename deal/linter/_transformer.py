@@ -180,7 +180,10 @@ class Transformer(NamedTuple):
         for contract in func.contracts:
             if contract.category not in cats:
                 continue
-            declared.extend(get_value(arg) for arg in contract.args)
+            for arg in contract.args:
+                value = get_value(arg)
+                if isinstance(value, str):
+                    declared.append(value)
 
         # collect undeclared markers
         markers: Set[str] = set()

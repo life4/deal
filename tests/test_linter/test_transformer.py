@@ -312,6 +312,18 @@ def test_transformer_raises(content: str, tmp_path: Path) -> None:
             print("hi")
             return 1
     """,
+    # drop invalid markers
+    """
+        @deal.has(13, None, 'random', [])
+        def f():
+            print("hi")
+            return 1
+        ---
+        @deal.has('random', 'stdout')
+        def f():
+            print("hi")
+            return 1
+    """,
     # replace deal.pure
     """
         @deal.pure

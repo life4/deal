@@ -253,7 +253,7 @@ def test_check_has_io():
     checker = CheckMarkers()
     text = """
     @deal.pre(lambda a: len(a) > 2)
-    @deal.has('io')
+    @deal.has('io', 13)
     @deal.post(lambda result: result is not None)
     def test(a):
         import sys
