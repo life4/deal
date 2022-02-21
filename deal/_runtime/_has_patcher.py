@@ -1,8 +1,7 @@
-from typing import Optional
 import socket
 import sys
 from io import StringIO
-from typing import FrozenSet, Type
+from typing import FrozenSet, Optional, Type
 
 from .._exceptions import MarkerError, OfflineContractError, SilentContractError
 from .._types import ExceptionType

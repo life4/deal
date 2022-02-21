@@ -3,7 +3,9 @@ from collections import deque
 from contextlib import suppress
 from functools import partial
 from pathlib import Path
-from typing import Callable, Dict, Iterator, List, NamedTuple, Optional, Tuple, Type, TypeVar, Union
+from typing import (
+    Callable, Dict, Iterator, List, NamedTuple, Optional, Tuple, Type, TypeVar, Union,
+)
 
 import astroid
 

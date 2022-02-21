@@ -1,6 +1,5 @@
-from typing import Optional
 import ast
-from typing import Any, Dict, Iterator, Sequence
+from typing import Any, Dict, Iterator, Optional, Sequence
 
 import astroid
 

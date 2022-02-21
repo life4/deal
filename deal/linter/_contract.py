@@ -1,10 +1,9 @@
-from typing import Optional
 import ast
 import builtins
 import enum
 from copy import copy
 from pathlib import Path
-from typing import Dict, FrozenSet, Iterable, List, Type, Union
+from typing import Dict, FrozenSet, Iterable, List, Optional, Type, Union
 
 import astroid
 

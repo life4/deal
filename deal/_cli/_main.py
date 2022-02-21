@@ -1,8 +1,7 @@
-from typing import Optional
 import sys
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Mapping, Sequence, TextIO, Type
+from typing import Mapping, Optional, Sequence, TextIO, Type
 
 from ._base import Command
 

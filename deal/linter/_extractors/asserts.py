@@ -1,6 +1,7 @@
 import ast
-import astroid
 from typing import Optional, Union
+
+import astroid
 
 from .common import TOKENS, Extractor, Token
 from .value import UNKNOWN, get_value
