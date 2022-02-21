@@ -158,7 +158,7 @@ def test_format_coverage_100(cov_l, all_l, exp):
 
 
 def test_run_cases_ok():
-    def func():
+    def func() -> int:
         return 123
 
     case = TestCase(

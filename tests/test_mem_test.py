@@ -2,7 +2,7 @@ from deal._mem_test import MemoryTracker
 
 
 def test_mem_dump_no_diff():
-    def f():
+    def f() -> int:
         return 123
 
     tracker = MemoryTracker()
@@ -26,7 +26,7 @@ def test_mem_dump_ignore_locals():
 def test_mem_dump_side_effect():
     a = []
 
-    def f():
+    def f() -> int:
         a.append({12})
         return 123
 

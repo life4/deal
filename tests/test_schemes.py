@@ -12,7 +12,7 @@ class MarshMallowScheme(marshmallow.Schema):
 
 
 class CustomScheme(deal.Scheme):
-    def is_valid(self):
+    def is_valid(self) -> bool:
         if not isinstance(self.data['name'], str):
             self.errors = vaa.Error.parse({'name': ['Not a valid string.']})
             return False

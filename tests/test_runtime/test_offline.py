@@ -46,7 +46,7 @@ def test_allow_network():
 
 def test_decorating_async_function():
     @deal.has()
-    async def func(do):
+    async def func(do) -> int:
         if not do:
             return 1
         http = urllib3.PoolManager()

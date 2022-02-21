@@ -350,7 +350,7 @@ class cases:  # noqa: N
     @staticmethod
     def _impersonate(wrapper: F, wrapped: F) -> F:
         if not hasattr(wrapped, '__code__'):
-            def wrapped(case):
+            def wrapped(case) -> None:
                 pass
         wrapper = proxies(wrapped)(wrapper)
         if wrapper.__name__ == '<lambda>':

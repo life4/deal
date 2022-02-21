@@ -132,7 +132,7 @@ def _get_funcs(*, path: Path) -> Iterator[PseudoFunc]:
         yield from _get_funcs_from_expr(expr=expr)
 
 
-def _get_funcs_from_expr(expr, prefix='') -> Iterator[PseudoFunc]:
+def _get_funcs_from_expr(expr, prefix: str = '') -> Iterator[PseudoFunc]:
     name = getattr(expr, 'name', '')
     if prefix:
         name = prefix + '.' + name

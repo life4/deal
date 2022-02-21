@@ -9,7 +9,7 @@ from .helpers import run_sync
 def test_example_is_not_triggered_in_runtime():
     @deal.example(lambda: False)
     @deal.example(lambda: 1 / 0 == 0)
-    def f1():
+    def f1() -> bool:
         return True
 
     assert f1() is True
@@ -29,7 +29,7 @@ def test_example_does_not_break_iterator():
 def test_example_does_not_break_async():
     @deal.example(lambda: False)
     @deal.example(lambda: 1 / 0 == 0)
-    async def f1():
+    async def f1() -> bool:
         return True
 
     assert iscoroutinefunction(f1) is True
