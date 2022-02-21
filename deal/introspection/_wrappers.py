@@ -12,7 +12,7 @@ class Contract:
     __slots__ = ('_wrapped',)
     _wrapped: Validator
 
-    def __init__(self, wrapped):
+    def __init__(self, wrapped) -> None:
         self._wrapped = wrapped
 
     @property
@@ -116,7 +116,7 @@ class Has(Contract):
     __slots__ = ('_patcher',)
     _patcher: HasPatcher
 
-    def __init__(self, wrapped):
+    def __init__(self, wrapped) -> None:
         self._patcher = wrapped
 
     @property

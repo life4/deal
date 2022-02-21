@@ -58,7 +58,7 @@ def test_propagate_pre_contract_error():
     f.register(double3)
 
     @deal.pre(lambda: False)
-    def bad_func():
+    def bad_func() -> int:
         return 0
 
     @f.register
@@ -77,7 +77,7 @@ def test_propagate_pre_contract_error_from_default():
     f.register(double3)
 
     @deal.pre(lambda: False)
-    def bad_func():
+    def bad_func() -> int:
         return 0
 
     @f.register

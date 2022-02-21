@@ -3,7 +3,9 @@ from collections import deque
 from contextlib import suppress
 from functools import partial
 from pathlib import Path
-from typing import Callable, Iterator, List, NamedTuple, Optional, Tuple, Type, TypeVar
+from typing import (
+    Callable, Dict, Iterator, List, NamedTuple, Optional, Tuple, Type, TypeVar, Union,
+)
 
 import astroid
 
@@ -12,6 +14,9 @@ from .._stub import EXTENSION, StubFile, StubsManager
 
 T = TypeVar('T', bound=Type)
 N = Tuple[Type[T], Type[T]]
+Handler = Callable[..., Union[Optional['Token'], Iterator['Token']]]
+Node = Union[ast.AST, astroid.NodeNG]
+NodeWithName = Union[astroid.Module, astroid.FunctionDef, astroid.UnboundMethod, astroid.ClassDef]
 
 
 class TOKENS:
@@ -27,14 +32,18 @@ class TOKENS:
     YIELD: N[ast.Yield] = (ast.Yield, astroid.Yield)
 
 
+DEFAULT_LINE = 0
+DEFAULT_COL = 1
+
+
 class Token(NamedTuple):
-    line: int
-    col: int
+    line: int = DEFAULT_LINE
+    col: int = DEFAULT_COL
     value: Optional[object] = None
     marker: Optional[str] = None  # marker name or error message
 
 
-def traverse(body: List) -> Iterator:
+def traverse(body: List[Node]) -> Iterator[Node]:
     for expr in body:
         if isinstance(expr, ast.AST):
             yield from _traverse_ast(expr)
@@ -69,7 +78,7 @@ def _traverse_astroid(node: astroid.NodeNG) -> Iterator[astroid.NodeNG]:
             yield node
 
 
-def get_name(expr) -> Optional[str]:
+def get_name(expr: Node) -> Optional[str]:
     if isinstance(expr, ast.Name):
         return expr.id
     if isinstance(expr, astroid.Name):
@@ -89,18 +98,18 @@ def get_name(expr) -> Optional[str]:
     return None
 
 
-def get_full_name(expr: astroid.NodeNG) -> Tuple[str, str]:
+def get_full_name(expr: NodeWithName) -> Tuple[str, str]:
     if expr.parent is None:
         return '', expr.name
 
-    if type(expr.parent) is astroid.Module:
+    if isinstance(expr.parent, astroid.Module):
         return expr.parent.qname(), expr.name
 
-    if type(expr.parent) in (astroid.FunctionDef, astroid.UnboundMethod):
+    if isinstance(expr.parent, (astroid.FunctionDef, astroid.UnboundMethod)):
         module_name, func_name = get_full_name(expr=expr.parent)
         return module_name, func_name + '.' + expr.name
 
-    if type(expr.parent) is astroid.ClassDef:
+    if isinstance(expr.parent, astroid.ClassDef):
         module_name, class_name = get_full_name(expr=expr.parent)
         return module_name, class_name + '.' + expr.name
 
@@ -108,10 +117,10 @@ def get_full_name(expr: astroid.NodeNG) -> Tuple[str, str]:
     return path, func_name
 
 
-def infer(expr) -> Tuple[astroid.NodeNG, ...]:
+def infer(expr: Node) -> Tuple[astroid.NodeNG, ...]:
     if not isinstance(expr, astroid.NodeNG):
         return tuple()
-    with suppress(astroid.exceptions.InferenceError, RecursionError):
+    with suppress(astroid.InferenceError, RecursionError):
         guesses = expr.infer()
         if guesses is astroid.Uninferable:  # pragma: no cover
             return tuple()
@@ -149,11 +158,15 @@ def _get_module(expr: astroid.NodeNG) -> Optional[astroid.Module]:
 
 class Extractor:
     __slots__ = ('handlers', )
+    handlers: Dict[type, Handler]
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.handlers = dict()
 
-    def _register(self, types: Tuple[type], handler: Callable) -> Callable:
+    def register(self, *types: type) -> Callable[[Handler], Handler]:
+        return partial(self._register, types)
+
+    def _register(self, types: Tuple[type], handler: Handler) -> Handler:
         for tp in types:
             # it's here to have `getattr` to get nodes from `ast` module
             # that are available only in some Python versions.
@@ -162,21 +175,27 @@ class Extractor:
             self.handlers[tp] = handler
         return handler
 
-    def register(self, *types):
-        return partial(self._register, types)
+    def __call__(self, body: List, **kwargs) -> Iterator[Token]:
+        for expr in traverse(body=body):
+            for token in self._handle(expr=expr, **kwargs):
+                yield self._ensure_node_info(expr=expr, token=token)
 
-    def handle(self, expr, **kwargs):
+    def _handle(self, expr: Node, **kwargs) -> Iterator[Token]:
         handler = self.handlers.get(type(expr))
         if handler is None:
             return
         token = handler(expr=expr, **kwargs)
         if token is None:
             return
-        if type(token) is Token:
+        if isinstance(token, Token):
             yield token
             return
         yield from token
 
-    def __call__(self, body: List, **kwargs) -> Iterator[Token]:
-        for expr in traverse(body=body):
-            yield from self.handle(expr=expr, **kwargs)
+    @staticmethod
+    def _ensure_node_info(token: Token, expr: Union[ast.AST, astroid.NodeNG]) -> Token:
+        if token.line == DEFAULT_LINE:
+            token = token._replace(line=expr.lineno)
+        if token.col == DEFAULT_COL:
+            token = token._replace(col=expr.col_offset)
+        return token

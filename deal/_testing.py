@@ -92,7 +92,7 @@ class cases:  # noqa: N
         self,
         func: typing.Callable, *,
         count: int = 50,
-        kwargs: typing.Dict[str, typing.Any] = None,
+        kwargs: typing.Optional[typing.Dict[str, typing.Any]] = None,
         check_types: bool = True,
         settings: typing.Optional[hypothesis.settings] = None,
         seed: typing.Optional[int] = None,
@@ -350,7 +350,7 @@ class cases:  # noqa: N
     @staticmethod
     def _impersonate(wrapper: F, wrapped: F) -> F:
         if not hasattr(wrapped, '__code__'):
-            def wrapped(case):
+            def wrapped(case) -> None:
                 pass
         wrapper = proxies(wrapped)(wrapper)
         if wrapper.__name__ == '<lambda>':

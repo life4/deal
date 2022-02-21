@@ -7,7 +7,14 @@ ERROR_FORMAT = 'DEAL{code:03d}'
 class Error:
     __slots__ = ('row', 'col', 'code', 'text', 'value')
 
-    def __init__(self, *, row: int, col: int, code: int, text: str, value: str = None):
+    def __init__(
+        self, *,
+        row: int,
+        col: int,
+        code: int,
+        text: str,
+        value: typing.Optional[str] = None,
+    ) -> None:
         self.row = row
         self.col = col
         self.code = code
@@ -37,5 +44,5 @@ class Error:
         name = type(self).__name__
         return f'{name}(row={self.row}, col={self.col}, code={self.code})'
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash((self.row, self.col, self.code))

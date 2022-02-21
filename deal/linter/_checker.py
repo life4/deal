@@ -17,7 +17,7 @@ class Checker:
     version = __version__
     _rules = rules
 
-    def __init__(self, tree: ast.Module, file_tokens=None, filename: str = 'stdin'):
+    def __init__(self, tree: ast.Module, file_tokens=None, filename: str = 'stdin') -> None:
         self._tree = tree
         self._filename = filename
 

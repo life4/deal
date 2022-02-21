@@ -33,7 +33,7 @@ class DealFinder(PathFinder):
 class DealLoader:
     __slots__ = ('_loader', )
 
-    def __init__(self, loader):
+    def __init__(self, loader) -> None:
         self._loader = loader
 
     def __getattr__(self, name: str):

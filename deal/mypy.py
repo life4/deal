@@ -24,7 +24,7 @@ perf: DefaultDict[str, List[float]] = defaultdict(list)
 TRACK_PERF = os.getenv('DEAL_TRACK_PERF')
 
 
-def show_perf():
+def show_perf() -> None:
     overall = .0
     for name, times in sorted(perf.items()):
         total = sum(times)

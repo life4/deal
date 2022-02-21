@@ -53,7 +53,7 @@ class ContractError(AssertionError):
         message: str = '',
         errors=None,
         validator=None,
-        params: Dict[str, Any] = None,
+        params: Optional[Dict[str, Any]] = None,
         origin: Optional[object] = None,
     ) -> None:
         self.message = message

@@ -4,11 +4,11 @@ import deal
 from deal._trace import Only, _get_func_body_statements, format_lines, trace
 
 
-def just_return():
+def just_return() -> int:
     return 123
 
 
-def cond_return(cond=False):
+def cond_return(cond=False) -> int:
     if cond:
         return 123
     return 456
@@ -16,7 +16,7 @@ def cond_return(cond=False):
 
 @deal.safe
 @deal.has()
-def cond_return_dec(cond=False):
+def cond_return_dec(cond=False) -> int:
     if cond:
         return 123
     return 456
@@ -27,7 +27,7 @@ def call_another():
     return cond_return(cond=cond)
 
 
-def something_else():
+def something_else() -> bool:
     return False
 
 

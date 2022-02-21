@@ -3,7 +3,7 @@ import builtins
 import enum
 from copy import copy
 from pathlib import Path
-from typing import Dict, FrozenSet, Iterable, List, Type, Union
+from typing import Dict, FrozenSet, Iterable, List, Optional, Type, Union
 
 import astroid
 
@@ -43,9 +43,9 @@ class Contract:
         args: Iterable,
         category: Category,
         func_args: ast.arguments,
-        context: Dict[str, ast.stmt] = None,
+        context: Optional[Dict[str, ast.stmt]] = None,
         line: int = 0,
-    ):
+    ) -> None:
         self.args = tuple(args)
         self.category = category
         self.func_args = func_args

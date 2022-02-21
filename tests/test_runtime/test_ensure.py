@@ -7,7 +7,7 @@ from .helpers import run_sync
 
 def test_parameters_and_result_fulfill_constact():
     @deal.ensure(lambda a, b, result: a > 0 and b > 0 and result != 'same number')
-    def func(a, b):
+    def func(a, b) -> str:
         if a == b:
             return 'same number'
         else:
@@ -24,7 +24,7 @@ def test_parameters_and_result_fulfill_constact():
 
 def test_simple_signature():
     @deal.ensure(lambda _: _.a > 0 and _.b > 0 and _.result != 'same number')
-    def func(a, b):
+    def func(a, b) -> str:
         if a == b:
             return 'same number'
         else:
@@ -41,7 +41,7 @@ def test_simple_signature():
 
 def test_decorating_async_function():
     @deal.ensure(lambda a, b, result: a > 0 and b > 0 and result != 'same number')
-    async def func(a, b):
+    async def func(a, b) -> str:
         if a == b:
             return 'same number'
         else:

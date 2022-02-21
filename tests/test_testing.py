@@ -81,7 +81,7 @@ def test_no_bad_examples():
 
 
 def test_return_type_checks():
-    def div(a: int, b: int):
+    def div(a: int, b: int) -> int:
         return 1
 
     for case in deal.cases(div, count=20):
