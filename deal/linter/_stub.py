@@ -55,14 +55,14 @@ class StubsManager:
 
     default_paths = (ROOT, CPYTHON_ROOT)
 
-    def __init__(self, paths: Sequence[Path] = None) -> None:
+    def __init__(self, paths: Optional[Sequence[Path]] = None) -> None:
         self._modules = dict()
         if paths is None:
             self.paths = self.default_paths
         else:
             self.paths = tuple(paths)
 
-    def read(self, *, path: Path, module_name: str = None) -> StubFile:
+    def read(self, *, path: Path, module_name: Optional[str] = None) -> StubFile:
         if path.suffix == '.py':
             path = path.with_suffix(EXTENSION)
         if path.suffix != EXTENSION:
@@ -149,7 +149,7 @@ def _get_funcs_from_expr(expr, prefix: str = '') -> Iterator[PseudoFunc]:
             yield from _get_funcs_from_expr(expr=subexpr, prefix=name)
 
 
-def generate_stub(*, path: Path, stubs: StubsManager = None) -> Path:
+def generate_stub(*, path: Path, stubs: Optional[StubsManager] = None) -> Path:
     from ._extractors import get_exceptions, get_markers
 
     if path.suffix != '.py':

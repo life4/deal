@@ -1,3 +1,4 @@
+from typing import Optional
 import ast
 from typing import Any, Dict, Iterator, Sequence
 
@@ -12,7 +13,7 @@ get_pre = Extractor()
 
 
 @get_pre.register(astroid.Call)
-def handle_call(expr: astroid.Call, context: Dict[str, ast.stmt] = None) -> Iterator[Token]:
+def handle_call(expr: astroid.Call, context: Optional[Dict[str, ast.stmt]] = None) -> Iterator[Token]:
     from .._contract import Category, Contract
 
     args = []

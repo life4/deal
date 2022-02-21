@@ -1,3 +1,4 @@
+from typing import Optional
 import ast
 import builtins
 import enum
@@ -43,7 +44,7 @@ class Contract:
         args: Iterable,
         category: Category,
         func_args: ast.arguments,
-        context: Dict[str, ast.stmt] = None,
+        context: Optional[Dict[str, ast.stmt]] = None,
         line: int = 0,
     ) -> None:
         self.args = tuple(args)

@@ -1,3 +1,4 @@
+from typing import Optional
 import socket
 import sys
 from io import StringIO
@@ -70,7 +71,7 @@ class HasPatcher:
     )
     markers: FrozenSet[str]
 
-    def __init__(self, markers, message: str = None, exception: ExceptionType = None) -> None:
+    def __init__(self, markers, message: Optional[str] = None, exception: Optional[ExceptionType] = None) -> None:
         self.markers = frozenset(markers)
         self.message = message
         self.exception = exception or MarkerError

@@ -64,7 +64,7 @@ class Validator:
     def __init__(
         self,
         validator, *,
-        message: str = None,
+        message: Optional[str] = None,
         exception: ExceptionType,
     ) -> None:
         self.validate = self._init
@@ -96,7 +96,7 @@ class Validator:
 
         return validator
 
-    def _exception(self, *, message: str = None, errors=None, params=None) -> Exception:
+    def _exception(self, *, message: Optional[str] = None, errors=None, params=None) -> Exception:
         exception = self.exception
         if isinstance(exception, Exception):
             if not message and exception.args:

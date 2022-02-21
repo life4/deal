@@ -115,7 +115,7 @@ def handle_astroid_import_from(expr: astroid.ImportFrom, **kwargs) -> Optional[T
 
 
 @get_markers.register(*TOKENS.CALL)
-def handle_call(expr, dive: bool = True, stubs: StubsManager = None) -> Iterator[Token]:
+def handle_call(expr, dive: bool = True, stubs: Optional[StubsManager] = None) -> Iterator[Token]:
     token_info = dict(line=expr.lineno, col=expr.col_offset)
     name = get_name(expr.func)
     if name is None:
@@ -167,7 +167,7 @@ def handle_call(expr, dive: bool = True, stubs: StubsManager = None) -> Iterator
     yield from _infer_markers(expr=expr, dive=dive, stubs=stubs)
 
 
-def _infer_markers(expr, dive: bool, stubs: StubsManager = None) -> Iterator[Token]:
+def _infer_markers(expr, dive: bool, stubs: Optional[StubsManager] = None) -> Iterator[Token]:
     inferred = infer(expr=expr.func)
     stubs_found = False
     if type(expr) is astroid.Call and stubs is not None:

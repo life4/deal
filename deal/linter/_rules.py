@@ -53,7 +53,7 @@ class ModuleRule(Rule):
 class FuncRule(Rule):
     __slots__ = ()
 
-    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: Optional[StubsManager] = None) -> Iterator[Error]:
         raise NotImplementedError
 
 
@@ -81,7 +81,7 @@ class CheckEnsureArgs(FuncRule):
     code = 2
     message = 'ensure contract must have `result` arg'
 
-    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: Optional[StubsManager] = None) -> Iterator[Error]:
         for contract in func.contracts:
             if contract.category != Category.ENSURE:
                 continue
@@ -104,7 +104,7 @@ class CheckPre(FuncRule):
     code = 11
     message = 'pre contract error'
 
-    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: Optional[StubsManager] = None) -> Iterator[Error]:
         # We test only contracted functions because of poor performance.
         # Inferring every called function in the whole project
         # is a really expensive operation.
@@ -127,7 +127,7 @@ class CheckReturns(FuncRule):
     code = 12
     message = 'post contract error'
 
-    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: Optional[StubsManager] = None) -> Iterator[Error]:
         for contract in func.contracts:
             if contract.category != Category.POST:
                 continue
@@ -153,7 +153,7 @@ class CheckExamples(FuncRule):
     code = 13
     message = 'example violates contract'
 
-    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: Optional[StubsManager] = None) -> Iterator[Error]:
         for contract in func.contracts:
             if contract.category != Category.EXAMPLE:
                 continue
@@ -214,7 +214,7 @@ class CheckRaises(FuncRule):
     code = 21
     message = 'raises contract error'
 
-    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: Optional[StubsManager] = None) -> Iterator[Error]:
         cats = {Category.RAISES, Category.SAFE, Category.PURE}
         declared: Exceptions = []
         check = False
@@ -256,7 +256,7 @@ class CheckAsserts(FuncRule):
     code = 31
     message = 'assert error'
 
-    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: Optional[StubsManager] = None) -> Iterator[Error]:
         # do not validate asserts in tests
         if func.name.startswith('test_'):
             return
@@ -293,7 +293,7 @@ class CheckMarkers(FuncRule):
         'time': 56,
     })
 
-    def __call__(self, func: Func, stubs: StubsManager = None) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: Optional[StubsManager] = None) -> Iterator[Error]:
         for contract in func.contracts:
             markers: Optional[Set[str]] = None
             if contract.category == Category.HAS:

@@ -92,7 +92,7 @@ class cases:  # noqa: N
         self,
         func: typing.Callable, *,
         count: int = 50,
-        kwargs: typing.Dict[str, typing.Any] = None,
+        kwargs: typing.Optional[typing.Dict[str, typing.Any]] = None,
         check_types: bool = True,
         settings: typing.Optional[hypothesis.settings] = None,
         seed: typing.Optional[int] = None,

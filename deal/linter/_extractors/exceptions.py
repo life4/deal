@@ -59,7 +59,7 @@ def handle_bin_op(expr: Union[ast.BinOp, astroid.BinOp], **kwargs) -> Optional[T
 def handle_call(
     expr: Union[ast.Call, astroid.Call],
     dive: bool = True,
-    stubs: StubsManager = None,
+    stubs: Optional[StubsManager] = None,
 ) -> Iterator[Token]:
     token_info: Dict[str, Any] = dict(line=expr.lineno, col=expr.col_offset)
     # exit()

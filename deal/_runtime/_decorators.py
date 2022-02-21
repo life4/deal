@@ -20,8 +20,8 @@ TF = TypeVar('TF', bound=Union[Callable, type])
 def pre(
     validator,
     *,
-    message: str = None,
-    exception: ExceptionType = None,
+    message: Optional[str] = None,
+    exception: Optional[ExceptionType] = None,
 ) -> Callable[[C], C]:
     """Decorator implementing precondition [value] contract.
 
@@ -65,8 +65,8 @@ def pre(
 def post(
     validator,
     *,
-    message: str = None,
-    exception: ExceptionType = None,
+    message: Optional[str] = None,
+    exception: Optional[ExceptionType] = None,
 ) -> Callable[[C], C]:
     """Decorator implementing postcondition [value] contract.
 
@@ -110,8 +110,8 @@ def post(
 def ensure(
     validator,
     *,
-    message: str = None,
-    exception: ExceptionType = None,
+    message: Optional[str] = None,
+    exception: Optional[ExceptionType] = None,
 ) -> Callable[[C], C]:
     """Decorator implementing postcondition [value] contract.
 
@@ -157,8 +157,8 @@ def ensure(
 
 def raises(
     *exceptions: Type[Exception],
-    message: str = None,
-    exception: ExceptionType = None,
+    message: Optional[str] = None,
+    exception: Optional[ExceptionType] = None,
 ) -> Callable[[C], C]:
     """Decorator listing the exceptions which the function can raise.
 
@@ -206,8 +206,8 @@ def raises(
 
 def has(
     *markers: str,
-    message: str = None,
-    exception: ExceptionType = None,
+    message: Optional[str] = None,
+    exception: Optional[ExceptionType] = None,
 ) -> Callable[[C], C]:
     """Decorator controlling [side-effects] of the function.
 
@@ -252,8 +252,8 @@ def reason(
     event: Type[Exception],
     validator,
     *,
-    message: str = None,
-    exception: ExceptionType = None,
+    message: Optional[str] = None,
+    exception: Optional[ExceptionType] = None,
 ) -> Callable[[C], C]:
     """
     Decorator implementing [exception] contract.
@@ -306,8 +306,8 @@ def reason(
 def inv(
     validator,
     *,
-    message: str = None,
-    exception: ExceptionType = None,
+    message: Optional[str] = None,
+    exception: Optional[ExceptionType] = None,
 ) -> Callable[[T], T]:
     """
     Decorator implementing invariant [value] contract.
@@ -397,8 +397,8 @@ def example(validator: Callable[[], bool]) -> Callable[[C], C]:
 @overload
 def safe(
     *,
-    message: str = None,
-    exception: ExceptionType = None,
+    message: Optional[str] = None,
+    exception: Optional[ExceptionType] = None,
 ) -> Callable[[C], C]:
     pass
 
