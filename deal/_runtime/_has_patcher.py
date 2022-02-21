@@ -1,7 +1,7 @@
 import socket
 import sys
 from io import StringIO
-from typing import FrozenSet, Optional, Type
+from typing import FrozenSet, Iterable, Optional, Type
 
 from .._exceptions import MarkerError, OfflineContractError, SilentContractError
 from .._types import ExceptionType
@@ -70,7 +70,12 @@ class HasPatcher:
     )
     markers: FrozenSet[str]
 
-    def __init__(self, markers, message: Optional[str] = None, exception: Optional[ExceptionType] = None) -> None:
+    def __init__(
+        self,
+        markers: Iterable[str],
+        message: Optional[str] = None,
+        exception: Optional[ExceptionType] = None,
+    ) -> None:
         self.markers = frozenset(markers)
         self.message = message
         self.exception = exception or MarkerError
