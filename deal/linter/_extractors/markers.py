@@ -116,7 +116,6 @@ def handle_astroid_import_from(expr: astroid.ImportFrom, **kwargs) -> Optional[T
 
 @get_markers.register(*TOKENS.CALL)
 def handle_call(expr, dive: bool = True, stubs: Optional[StubsManager] = None) -> Iterator[Token]:
-    token_info = dict(line=expr.lineno, col=expr.col_offset)
     name = get_name(expr.func)
     if name is None:
         return
@@ -127,41 +126,41 @@ def handle_call(expr, dive: bool = True, stubs: Optional[StubsManager] = None) -
         yield token
         return
     if name.startswith('sys.stdout'):
-        yield Token(marker='stdout', value='sys.stdout.', **token_info)
+        yield Token(marker='stdout', value='sys.stdout.')
         return
     if name.startswith('sys.stderr'):
-        yield Token(marker='stderr', value='sys.stderr.', **token_info)
+        yield Token(marker='stderr', value='sys.stderr.')
         return
     if name.startswith('sys.stdin'):
-        yield Token(marker='stdin', value='sys.stdin.', **token_info)
+        yield Token(marker='stdin', value='sys.stdin.')
         return
     if name == 'input':
-        yield Token(marker='stdin', value='input', **token_info)
+        yield Token(marker='stdin', value='input')
         return
 
     # random, import,
     if name == '__import__':
-        yield Token(marker='import', **token_info)
+        yield Token(marker='import')
         return
     if _is_random(expr=expr, name=name):
-        yield Token(marker='random', value=name, **token_info)
+        yield Token(marker='random', value=name)
         return
     if _is_syscall(expr=expr, name=name):
-        yield Token(marker='syscall', value=name, **token_info)
+        yield Token(marker='syscall', value=name)
         return
     if _is_time(expr=expr, name=name):
-        yield Token(marker='time', value=name, **token_info)
+        yield Token(marker='time', value=name)
         return
 
     # read and write
     if name == 'open':
         if _is_open_to_write(expr):
-            yield Token(marker='write', value='open', **token_info)
+            yield Token(marker='write', value='open')
         else:
-            yield Token(marker='read', value='open', **token_info)
+            yield Token(marker='read', value='open')
         return
     if _is_pathlib_write(expr):
-        yield Token(marker='write', value='Path.open', **token_info)
+        yield Token(marker='write', value='Path.open')
         return
 
     yield from _infer_markers(expr=expr, dive=dive, stubs=stubs)

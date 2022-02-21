@@ -33,8 +33,8 @@ class TOKENS:
 
 
 class Token(NamedTuple):
-    line: int
-    col: int
+    line: int = 0
+    col: int = 1
     value: Optional[object] = None
     marker: Optional[str] = None  # marker name or error message
 
@@ -159,6 +159,9 @@ class Extractor:
     def __init__(self) -> None:
         self.handlers = dict()
 
+    def register(self, *types: type) -> Callable[[Handler], Handler]:
+        return partial(self._register, types)
+
     def _register(self, types: Tuple[type], handler: Handler) -> Handler:
         for tp in types:
             # it's here to have `getattr` to get nodes from `ast` module
@@ -168,10 +171,12 @@ class Extractor:
             self.handlers[tp] = handler
         return handler
 
-    def register(self, *types: type) -> Callable[[Handler], Handler]:
-        return partial(self._register, types)
+    def __call__(self, body: List, **kwargs) -> Iterator[Token]:
+        for expr in traverse(body=body):
+            for token in self._handle(expr=expr, **kwargs):
+                yield self._ensure_node_info(expr=expr, token=token)
 
-    def handle(self, expr: Node, **kwargs) -> Iterator[Token]:
+    def _handle(self, expr: Node, **kwargs) -> Iterator[Token]:
         handler = self.handlers.get(type(expr))
         if handler is None:
             return
@@ -183,6 +188,10 @@ class Extractor:
             return
         yield from token
 
-    def __call__(self, body: List, **kwargs) -> Iterator[Token]:
-        for expr in traverse(body=body):
-            yield from self.handle(expr=expr, **kwargs)
+    @staticmethod
+    def _ensure_node_info(token: Token, expr: Union[ast.AST, astroid.NodeNG]) -> Token:
+        if token.line == 0:
+            token = token._replace(line=expr.lineno)
+        if token.col == 1:
+            token = token._replace(col=expr.col_offset)
+        return token
