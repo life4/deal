@@ -42,7 +42,7 @@ NON_IO_MARKERS = frozenset({
 class PatchedStringIO(StringIO):
     __slots__ = ('exception',)
 
-    def __init__(self, exception: ExceptionType):
+    def __init__(self, exception: ExceptionType) -> None:
         self.exception = exception
 
     def write(self, *args, **kwargs):
@@ -52,7 +52,7 @@ class PatchedStringIO(StringIO):
 class PatchedSocket:
     __slots__ = ('exception',)
 
-    def __init__(self, exception: ExceptionType):
+    def __init__(self, exception: ExceptionType) -> None:
         self.exception = exception
 
     def __call__(self, *args, **kwargs):
@@ -70,7 +70,7 @@ class HasPatcher:
     )
     markers: FrozenSet[str]
 
-    def __init__(self, markers, message: str = None, exception: ExceptionType = None):
+    def __init__(self, markers, message: str = None, exception: ExceptionType = None) -> None:
         self.markers = frozenset(markers)
         self.message = message
         self.exception = exception or MarkerError

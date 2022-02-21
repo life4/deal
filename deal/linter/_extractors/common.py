@@ -154,7 +154,7 @@ class Extractor:
     __slots__ = ('handlers', )
     handlers: Dict[type, Handler]
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.handlers = dict()
 
     def _register(self, types: Tuple[type], handler: Handler) -> Handler:

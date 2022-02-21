@@ -66,7 +66,7 @@ class Validator:
         validator, *,
         message: str = None,
         exception: ExceptionType,
-    ):
+    ) -> None:
         self.validate = self._init
         self.raw_validator = validator
         self.message = message
@@ -201,7 +201,7 @@ class RaisesValidator(Validator):
     __slots__ = ('exceptions', )
     exceptions: Tuple[Type[Exception]]
 
-    def __init__(self, exceptions, exception, message):
+    def __init__(self, exceptions, exception, message) -> None:
         self.exceptions = exceptions
         self.validator = None
         super().__init__(validator=None, message=message, exception=exception)
@@ -226,7 +226,7 @@ class ReasonValidator(Validator):
     __slots__ = ('event', )
     event: Type[Exception]
 
-    def __init__(self, event, **kwargs):
+    def __init__(self, event, **kwargs) -> None:
         self.event = event
         super().__init__(**kwargs)
 

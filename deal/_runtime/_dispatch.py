@@ -17,7 +17,7 @@ class Dispatch(Generic[F]):
     _functions: List[F]
     __call__: F
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._functions = []
 
     @classmethod

@@ -41,7 +41,7 @@ class Contracts(Generic[F]):
     reasons: List['ReasonValidator']
     patcher: Optional['HasPatcher']
 
-    def __init__(self, func: F):
+    def __init__(self, func: F) -> None:
         self.func = func
         self.pres = []
         self.posts = []

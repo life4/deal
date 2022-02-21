@@ -45,7 +45,7 @@ class Contract:
         func_args: ast.arguments,
         context: Dict[str, ast.stmt] = None,
         line: int = 0,
-    ):
+    ) -> None:
         self.args = tuple(args)
         self.category = category
         self.func_args = func_args

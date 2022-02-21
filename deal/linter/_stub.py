@@ -55,7 +55,7 @@ class StubsManager:
 
     default_paths = (ROOT, CPYTHON_ROOT)
 
-    def __init__(self, paths: Sequence[Path] = None):
+    def __init__(self, paths: Sequence[Path] = None) -> None:
         self._modules = dict()
         if paths is None:
             self.paths = self.default_paths
