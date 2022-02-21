@@ -1,6 +1,6 @@
 import ast
 import builtins
-from typing import Iterator, Optional
+from typing import Any, Dict, Iterator, Optional, Union
 
 import astroid
 
@@ -39,10 +39,10 @@ def handle_raise(expr, **kwargs) -> Optional[Token]:
 
 # division by zero
 @get_exceptions.register(*TOKENS.BIN_OP)
-def handle_bin_op(expr, **kwargs) -> Optional[Token]:
-    token_info = dict(line=expr.lineno, col=expr.col_offset)
+def handle_bin_op(expr: Union[ast.BinOp, astroid.BinOp], **kwargs) -> Optional[Token]:
+    token_info: Dict[str, Any] = dict(line=expr.lineno, col=expr.col_offset)
     if isinstance(expr.op, ast.Div) or expr.op == '/':
-        if isinstance(expr.right, astroid.node_classes.NodeNG):
+        if isinstance(expr.right, astroid.NodeNG):
             guesses = infer(expr=expr.right)
             token_info['col'] = expr.right.col_offset
             for guess in guesses:
@@ -56,8 +56,12 @@ def handle_bin_op(expr, **kwargs) -> Optional[Token]:
 
 
 @get_exceptions.register(*TOKENS.CALL)
-def handle_call(expr, dive: bool = True, stubs: StubsManager = None) -> Iterator[Token]:
-    token_info = dict(line=expr.lineno, col=expr.col_offset)
+def handle_call(
+    expr: Union[ast.Call, astroid.Call],
+    dive: bool = True,
+    stubs: StubsManager = None,
+) -> Iterator[Token]:
+    token_info: Dict[str, Any] = dict(line=expr.lineno, col=expr.col_offset)
     # exit()
     name = get_name(expr.func)
     if name and name == 'exit':
@@ -94,7 +98,7 @@ def _exceptions_from_stubs(expr: astroid.Call, stubs: StubsManager) -> Iterator[
             yield Token(value=name, line=expr.lineno, col=expr.col_offset)
 
 
-def _exceptions_from_func(expr) -> Iterator[Token]:
+def _exceptions_from_func(expr: Union[ast.Call, astroid.Call]) -> Iterator[Token]:
     for value in infer(expr.func):
         if type(value) is not astroid.FunctionDef:
             continue

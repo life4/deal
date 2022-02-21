@@ -111,7 +111,7 @@ def get_full_name(expr: astroid.NodeNG) -> Tuple[str, str]:
 def infer(expr) -> Tuple[astroid.NodeNG, ...]:
     if not isinstance(expr, astroid.NodeNG):
         return tuple()
-    with suppress(astroid.exceptions.InferenceError, RecursionError):
+    with suppress(astroid.InferenceError, RecursionError):
         guesses = expr.infer()
         if guesses is astroid.Uninferable:  # pragma: no cover
             return tuple()
@@ -165,7 +165,7 @@ class Extractor:
     def register(self, *types):
         return partial(self._register, types)
 
-    def handle(self, expr, **kwargs):
+    def handle(self, expr, **kwargs) -> Iterator[Token]:
         handler = self.handlers.get(type(expr))
         if handler is None:
             return
