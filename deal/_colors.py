@@ -3,6 +3,7 @@ from typing import Dict
 
 from ._state import state
 
+
 try:
     import pygments
 except ImportError:

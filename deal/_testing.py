@@ -5,6 +5,7 @@ from inspect import signature
 from . import introspection
 from ._cached_property import cached_property
 
+
 try:
     import typeguard
 except ImportError:

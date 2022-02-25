@@ -18,6 +18,7 @@ from ..linter._func import Func
 from ._base import Command
 from ._common import get_paths
 
+
 try:
     import pygments
 except ImportError:

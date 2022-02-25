@@ -1,6 +1,6 @@
+import sys
 from argparse import ArgumentParser
 from pathlib import Path
-import sys
 from typing import TYPE_CHECKING, Dict, Iterator, TextIO
 
 from .._colors import get_colors
@@ -16,7 +16,6 @@ except ImportError:
 
 if TYPE_CHECKING:
     import astroid
-    from deal_solver import Contract
 
 
 TEMPLATE_MOD = '{blue}{name}{end}'
@@ -26,7 +25,7 @@ TEMPLATE_CON = '    {color}{p.conclusion.value}{end} {p}'
 
 class DealTheorem(deal_solver.Theorem):
     @staticmethod
-    def get_contracts(func: 'astroid.FunctionDef') -> Iterator['Contract']:
+    def get_contracts(func: 'astroid.FunctionDef') -> Iterator['deal_solver.Contract']:
         for contract in get_contracts(func):
             yield deal_solver.Contract(
                 name=contract.name,
