@@ -1,11 +1,15 @@
 
 from typing import Dict
 
-import pygments
-from pygments.formatters import TerminalFormatter
-from pygments.lexers import PythonLexer
-
 from ._state import state
+
+try:
+    import pygments
+except ImportError:  # pragma: no cover
+    pygments = None
+else:
+    from pygments.formatters import TerminalFormatter
+    from pygments.lexers import PythonLexer
 
 
 COLORS = dict(
@@ -27,6 +31,8 @@ NOCOLORS = dict(
 
 
 def highlight(source: str) -> str:
+    if pygments is None:  # pragma: no cover
+        return source
     source = pygments.highlight(
         code=source,
         lexer=PythonLexer(),

@@ -26,13 +26,13 @@ classifiers=[
 requires = [
     "astroid",
     "hypothesis",
-    "pygments",
     "vaa>=0.2.1",
 ]
 
 [tool.flit.metadata.requires-extra]
 all = [
     "deal-solver",
+    "pygments",
     "typeguard",
 ]
 test = [
@@ -40,6 +40,7 @@ test = [
     "deal-solver",
     "isort",
     "marshmallow",
+    "pygments",
     "pytest-cov",
     "pytest",
     "sphinx",

@@ -9,10 +9,6 @@ from pathlib import Path
 from textwrap import indent
 from typing import Dict, Iterable, Iterator, TextIO, TypeVar
 
-import pygments
-from pygments.formatters import TerminalFormatter
-from pygments.lexers import PythonTracebackLexer
-
 from .._colors import COLORS
 from .._testing import TestCase, cases
 from .._trace import TraceResult, format_lines, trace
@@ -21,6 +17,14 @@ from ..linter._extractors.pre import format_call_args
 from ..linter._func import Func
 from ._base import Command
 from ._common import get_paths
+
+try:
+    import pygments
+except ImportError:  # pragma: no cover
+    pygments = None
+else:
+    from pygments.formatters import TerminalFormatter
+    from pygments.lexers import PythonTracebackLexer
 
 
 T = TypeVar('T')
@@ -56,6 +60,8 @@ def get_func_names(path: Path) -> Iterator[str]:
 
 def color_exception(text: str) -> str:
     text = rex_exception.sub(r'\1', text)
+    if pygments is None:  # pragma: no cover
+        return text
     return pygments.highlight(
         code=text,
         lexer=PythonTracebackLexer(),
