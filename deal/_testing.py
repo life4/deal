@@ -9,11 +9,11 @@ from ._cached_property import cached_property
 try:
     import typeguard
 except ImportError:
-    typeguard = None  # type: ignore
+    typeguard = None
 try:
     import hypothesis
 except ImportError:
-    hypothesis = None  # type: ignore
+    hypothesis = None
 else:
     import hypothesis.strategies
     from hypothesis.internal.reflection import proxies
