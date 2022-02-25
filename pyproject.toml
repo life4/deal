@@ -25,7 +25,6 @@ classifiers=[
 
 requires = [
     "astroid",
-    "deal-solver",
     "hypothesis",
     "pygments",
     "typeguard",
@@ -33,8 +32,12 @@ requires = [
 ]
 
 [tool.flit.metadata.requires-extra]
+all = [
+    "deal-solver",
+]
 test = [
     "coverage[toml]",
+    "deal-solver",
     "pytest-cov",
     "isort",
     "marshmallow",

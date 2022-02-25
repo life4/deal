@@ -1,9 +1,9 @@
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Dict, Iterator, TextIO
+import sys
+from typing import TYPE_CHECKING, Dict, Iterator, TextIO
 
 import astroid
-from deal_solver import Conclusion, Contract, Theorem
 
 from .._colors import get_colors
 from ..linter._extractors import get_contracts
@@ -11,16 +11,25 @@ from ._base import Command
 from ._common import get_paths
 
 
+try:
+    import deal_solver
+except ImportError:
+    deal_solver = None  # type: ignore
+
+if TYPE_CHECKING:
+    from deal_solver import Contract
+
+
 TEMPLATE_MOD = '{blue}{name}{end}'
 TEMPLATE_FUN = '  {magenta}{name}{end}'
 TEMPLATE_CON = '    {color}{p.conclusion.value}{end} {p}'
 
 
-class DealTheorem(Theorem):
+class DealTheorem(deal_solver.Theorem):
     @staticmethod
-    def get_contracts(func: astroid.FunctionDef) -> Iterator[Contract]:
+    def get_contracts(func: astroid.FunctionDef) -> Iterator['Contract']:
         for contract in get_contracts(func):
-            yield Contract(
+            yield deal_solver.Contract(
                 name=contract.name,
                 args=contract.args,  # type: ignore[arg-type]
             )
@@ -42,7 +51,7 @@ def run_solver(
 
         proof = theorem.prove()
         assert proof.conclusion is not None
-        if proof.conclusion == Conclusion.SKIP and not show_skipped:
+        if proof.conclusion == deal_solver.Conclusion.SKIP and not show_skipped:
             continue
 
         if not file_name_shown:
@@ -54,7 +63,7 @@ def run_solver(
         print(line, file=stream)
         line = TEMPLATE_CON.format(p=proof, color=colors[proof.color], **colors)
         print(line, file=stream)
-        failed_count += proof.conclusion == Conclusion.FAIL
+        failed_count += proof.conclusion == deal_solver.Conclusion.FAIL
     return failed_count
 
 
@@ -83,8 +92,11 @@ class ProveCommand(Command):
         parser.add_argument('paths', nargs='+')
 
     def __call__(self, args) -> int:
+        if deal_solver is None:  # pragma: no cover
+            self.print('deal-solver is required but not installed')
+            self.print(f'{sys.executable} -m pip install deal-solver')
+            return 1
         colors = get_colors(args)
-
         failed = 0
         for arg in args.paths:
             for path in get_paths(Path(arg)):
