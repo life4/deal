@@ -5,7 +5,7 @@ from ._state import state
 
 try:
     import pygments
-except ImportError:  # pragma: no cover
+except ImportError:
     pygments = None
 else:
     from pygments.formatters import TerminalFormatter

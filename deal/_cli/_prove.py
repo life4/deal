@@ -13,7 +13,7 @@ from ._common import get_paths
 
 try:
     import deal_solver
-except ImportError:  # pragma: no cover
+except ImportError:
     deal_solver = None  # type: ignore
 
 if TYPE_CHECKING:

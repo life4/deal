@@ -4,12 +4,15 @@ from inspect import signature
 
 import hypothesis
 import hypothesis.strategies
-import typeguard
 from hypothesis.internal.reflection import proxies
 
 from . import introspection
 from ._cached_property import cached_property
 
+try:
+    import typeguard
+except ImportError:
+    typeguard = None  # type: ignore
 
 F = typing.Callable[..., None]
 FuzzInputType = typing.Union[bytes, bytearray, memoryview, typing.BinaryIO]
