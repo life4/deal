@@ -27,23 +27,24 @@ requires = [
     "astroid",
     "hypothesis",
     "pygments",
-    "typeguard",
     "vaa>=0.2.1",
 ]
 
 [tool.flit.metadata.requires-extra]
 all = [
     "deal-solver",
+    "typeguard",
 ]
 test = [
     "coverage[toml]",
     "deal-solver",
-    "pytest-cov",
     "isort",
     "marshmallow",
+    "pytest-cov",
     "pytest",
-    "urllib3",
     "sphinx",
+    "typeguard",
+    "urllib3",
 ]
 lint = [
     "flake8",

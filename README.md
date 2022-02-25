@@ -62,7 +62,7 @@ Read more in the [documentation](https://deal.readthedocs.io/).
 ## Installation
 
 ```bash
-python3 -m pip install --user deal
+python3 -m pip install --user 'deal[all]'
 ```
 
 ## Contributing

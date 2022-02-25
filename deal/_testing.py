@@ -93,7 +93,7 @@ class cases:  # noqa: N
         func: typing.Callable, *,
         count: int = 50,
         kwargs: typing.Optional[typing.Dict[str, typing.Any]] = None,
-        check_types: bool = True,
+        check_types: typing.Optional[bool] = None,
         settings: typing.Optional[hypothesis.settings] = None,
         seed: typing.Optional[int] = None,
     ) -> None:
@@ -111,6 +111,11 @@ class cases:  # noqa: N
         ```
 
         """
+        if check_types is True and typeguard is None:  # pragma: no cover
+            raise ImportError('typeguard is not installed')
+        if check_types is None:
+            check_types = True
+
         self.func = func  # type: ignore
         self.count = count
         self.kwargs = kwargs or {}
