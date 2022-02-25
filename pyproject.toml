@@ -25,13 +25,13 @@ classifiers=[
 
 requires = [
     "astroid",
-    "hypothesis",
     "vaa>=0.2.1",
 ]
 
 [tool.flit.metadata.requires-extra]
 all = [
     "deal-solver",
+    "hypothesis",
     "pygments",
     "typeguard",
 ]
@@ -46,6 +46,7 @@ test = [
 
     # copy-pasted "all" extra
     "deal-solver",
+    "hypothesis",
     "pygments",
     "typeguard",
 ]
