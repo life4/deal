@@ -90,7 +90,7 @@ def _exceptions_from_stubs(expr: astroid.Call, stubs: StubsManager) -> Iterator[
         names = stub.get(func=func_name, contract=Category.RAISES)
         for name in names:
             name = getattr(builtins, name, name)
-            yield Token(value=name, line=expr.lineno, col=expr.col_offset)
+            yield Token(value=name)
 
 
 def _exceptions_from_func(expr: Union[ast.Call, astroid.Call]) -> Iterator[Token]:
@@ -100,9 +100,10 @@ def _exceptions_from_func(expr: Union[ast.Call, astroid.Call]) -> Iterator[Token
 
         # recursively infer exceptions from the function body
         for error in get_exceptions(body=value.body, dive=False):
-            yield Token(value=error.value, line=expr.lineno, col=expr.col_offset)
+            yield Token(value=error.value)
 
         # get explicitly specified exceptions from `@deal.raises`
+        name: Optional[str]
         for contract in get_contracts(value):
             if contract.name != 'raises':
                 continue
@@ -110,5 +111,21 @@ def _exceptions_from_func(expr: Union[ast.Call, astroid.Call]) -> Iterator[Token
                 name = get_name(arg)
                 if name is None:
                     continue
-                yield Token(value=name, line=expr.lineno, col=expr.col_offset)
+                name = getattr(builtins, name, name)
+                yield Token(value=name)
+
+        # get exceptions from the docstring
+        name: str
+        for name in _excs_from_doc(value.doc):
+            name = getattr(builtins, name, name)
+            yield Token(value=name)
     return None
+
+
+def _excs_from_doc(doc: Optional[str]) -> Iterator[str]:
+    if doc is None:
+        return
+    for line in doc.splitlines():
+        words = line.split()
+        if len(words) >= 2 and words[0] == ':raises':
+            yield words[1].rstrip(':')

@@ -132,8 +132,9 @@ def test_resolve_doesnt_fail_for_simple_ast():
     """
     tree = ast.parse(dedent(text))
     print(ast.dump(tree))
-    func_tree = tree.body[-1].body
-    tuple(get_exceptions(body=func_tree))
+    func = tree.body[-1]
+    assert isinstance(func, ast.FunctionDef)
+    tuple(get_exceptions(body=func.body))
 
 
 def test_inference_subcontracts():
@@ -170,3 +171,26 @@ def test_inference_doesnt_have_exceptions():
     func_tree = tree.body[-1].body
     returns = tuple(r.value for r in get_exceptions(body=func_tree))
     assert returns == ()
+
+
+def test_extract_from_docstring():
+    text = """
+        def subf():
+            '''
+            Does not raises RuntimeError.
+
+            :raises ValueError: some junk
+            :raises KeyError: some junk
+            '''
+            something()
+            return 1
+
+        @deal.raises(KeyError)
+        def f():
+            b = subf()
+    """
+    tree = astroid.parse(dedent(text))
+    print(tree.repr_tree())
+    func_tree = tree.body[-1].body
+    returns = tuple(r.value for r in get_exceptions(body=func_tree))
+    assert returns == (ValueError, KeyError)
