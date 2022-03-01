@@ -2,13 +2,21 @@ import typing
 from functools import update_wrapper
 from inspect import signature
 
-import hypothesis
-import hypothesis.strategies
-import typeguard
-from hypothesis.internal.reflection import proxies
-
 from . import introspection
 from ._cached_property import cached_property
+
+
+try:
+    import typeguard
+except ImportError:
+    typeguard = None
+try:
+    import hypothesis
+except ImportError:
+    hypothesis = None
+else:
+    import hypothesis.strategies
+    from hypothesis.internal.reflection import proxies
 
 
 F = typing.Callable[..., None]
@@ -82,7 +90,7 @@ class cases:  # noqa: N
     check_types: bool
     """check that the result matches return type of the function. Enabled by default."""
 
-    settings: hypothesis.settings
+    settings: 'hypothesis.settings'
     """Hypothesis settings to use instead of default ones."""
 
     seed: typing.Optional[int]
@@ -93,8 +101,8 @@ class cases:  # noqa: N
         func: typing.Callable, *,
         count: int = 50,
         kwargs: typing.Optional[typing.Dict[str, typing.Any]] = None,
-        check_types: bool = True,
-        settings: typing.Optional[hypothesis.settings] = None,
+        check_types: typing.Optional[bool] = None,
+        settings: typing.Optional['hypothesis.settings'] = None,
         seed: typing.Optional[int] = None,
     ) -> None:
         """
@@ -111,6 +119,13 @@ class cases:  # noqa: N
         ```
 
         """
+        if hypothesis is None:  # pragma: no cover
+            raise ImportError('hypothesis is not installed')
+        if check_types is True and typeguard is None:  # pragma: no cover
+            raise ImportError('typeguard is not installed')
+        if check_types is None:
+            check_types = True
+
         self.func = func  # type: ignore
         self.count = count
         self.kwargs = kwargs or {}
@@ -196,7 +211,7 @@ class cases:  # noqa: N
         return tuple(exceptions)
 
     @cached_property
-    def strategy(self) -> hypothesis.strategies.SearchStrategy:
+    def strategy(self) -> 'hypothesis.strategies.SearchStrategy':
         """Hypothesis strategy that is used to generate test cases.
         """
         kwargs = self.kwargs.copy()
@@ -213,7 +228,7 @@ class cases:  # noqa: N
         return hypothesis.strategies.builds(pass_along_variables, **kwargs)
 
     @property
-    def _default_settings(self) -> hypothesis.settings:
+    def _default_settings(self) -> 'hypothesis.settings':
         return hypothesis.settings(
             database=None,
             max_examples=self.count,
