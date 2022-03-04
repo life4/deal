@@ -31,7 +31,7 @@ def main(stream=sys.stdout):
     ...
     user = get_user(id=id)
     hello = make_hello(user=user)
-    print(make_hello, file=stream)
+    print(hello, file=stream)
 ```
 
 ## Built-in markers
