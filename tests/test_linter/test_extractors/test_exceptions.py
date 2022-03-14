@@ -173,15 +173,50 @@ def test_inference_doesnt_have_exceptions():
     assert returns == ()
 
 
-def test_extract_from_docstring():
+@pytest.mark.parametrize('docstring', [
+    # sphinx
+    """Does not raise RuntimeError.
+
+    :raises ValueError:
+    :raises KeyError: some junk
+    :returns RuntimeError
+    """,
+    # epydoc
+    """Does not raise RuntimeError.
+
+    @raise ValueError:
+    @raise KeyError: some junk
+    @raise: something
+    @meta RuntimeError
+    """,
+    # google
+    """Does not raise RuntimeError.
+
+    Raises:
+        ValueError:
+            some junk
+        KeyError: some junk
+    Returns:
+        RuntimeError
+    """,
+    # numpy
+    """Does not raise RuntimeError.
+
+    Raises:
+    -------
+    ValueError
+            some junk
+    KeyError
+
+    Returns:
+    --------
+    RuntimeError
+    """,
+])
+def test_extract_from_docstring(docstring):
     text = """
         def subf():
-            '''
-            Does not raises RuntimeError.
-
-            :raises ValueError: some junk
-            :raises KeyError: some junk
-            '''
+            '''{docstring}'''
             something()
             return 1
 
@@ -189,7 +224,8 @@ def test_extract_from_docstring():
         def f():
             b = subf()
     """
-    tree = astroid.parse(dedent(text))
+    text = dedent(text).format(docstring=docstring)
+    tree = astroid.parse(text)
     print(tree.repr_tree())
     func_tree = tree.body[-1].body
     returns = tuple(r.value for r in get_exceptions(body=func_tree))

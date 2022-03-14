@@ -1,5 +1,7 @@
 import ast
 import builtins
+import re
+from inspect import cleandoc
 from typing import Iterator, Optional, Union
 
 import astroid
@@ -11,6 +13,7 @@ from .contracts import get_contracts
 
 
 get_exceptions = Extractor()
+REX_GOOGLE_SECTION = re.compile(r'[A-Z][a-z]+:\s*')
 
 
 @get_exceptions.register(*TOKENS.ASSERT)
@@ -125,7 +128,31 @@ def _exceptions_from_func(expr: Union[ast.Call, astroid.Call]) -> Iterator[Token
 def _excs_from_doc(doc: Optional[str]) -> Iterator[str]:
     if doc is None:
         return
-    for line in doc.splitlines():
+    section = ''
+    prev_line = ''
+    for line in cleandoc(doc).splitlines():
         words = line.split()
-        if len(words) >= 2 and words[0] == ':raises':
+        if not words:
+            continue
+
+        # sphinx and epydoc docstring
+        if len(words) >= 2 and words[0] in (':raises', '@raise'):
             yield words[1].rstrip(':')
+            continue
+
+        # google docstring
+        if REX_GOOGLE_SECTION.fullmatch(line):
+            section = line.strip().rstrip(':').lower()
+            continue
+        indent = len(line) - len(line.lstrip())
+        if section == 'raises' and indent == 4:
+            yield words[0].rstrip(':')
+            continue
+
+        # numpy docstring
+        stripped_line = line.strip()
+        if len(set(stripped_line)) == 1 and stripped_line[0] in '-+':
+            section = prev_line
+        prev_line = stripped_line
+        if section == 'raises' and line == line.lstrip():
+            yield line.rstrip()
