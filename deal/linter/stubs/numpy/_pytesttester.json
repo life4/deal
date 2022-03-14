@@ -1,0 +1,19 @@
+{
+  "PytestTester.__call__": {
+    "has": [
+      "import",
+      "stdout"
+    ],
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_show_numpy_info": {
+    "has": [
+      "import",
+      "stdout"
+    ]
+  }
+}

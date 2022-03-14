@@ -1,0 +1,11 @@
+{
+  "configuration": {
+    "has": [
+      "import",
+      "stdout"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

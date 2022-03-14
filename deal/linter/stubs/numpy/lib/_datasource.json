@@ -1,0 +1,123 @@
+{
+  "DataSource.__del__": {
+    "has": [
+      "import"
+    ]
+  },
+  "DataSource.__init__": {
+    "has": [
+      "global",
+      "import"
+    ],
+    "raises": [
+      "FileExistsError",
+      "TypeError"
+    ]
+  },
+  "DataSource._cache": {
+    "has": [
+      "global",
+      "import",
+      "read"
+    ],
+    "raises": [
+      "FileNotFoundError",
+      "RuntimeError",
+      "SameFileError",
+      "SpecialFileError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "DataSource._findfile": {
+    "has": [
+      "import"
+    ]
+  },
+  "DataSource._isurl": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "DataSource._iszip": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "DataSource._sanitize_relative_path": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "DataSource._splitzipext": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "DataSource.abspath": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "DataSource.exists": {
+    "has": [
+      "import"
+    ]
+  },
+  "DataSource.open": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "FileNotFoundError",
+      "ValueError"
+    ]
+  },
+  "Repository.__del__": {
+    "has": [
+      "import"
+    ]
+  },
+  "Repository.__init__": {
+    "has": [
+      "import"
+    ]
+  },
+  "Repository._fullpath": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Repository.abspath": {
+    "has": [
+      "import"
+    ]
+  },
+  "Repository.exists": {
+    "has": [
+      "import"
+    ]
+  },
+  "Repository.listdir": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "_check_mode": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

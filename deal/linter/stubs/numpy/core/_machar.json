@@ -1,0 +1,15 @@
+{
+  "MachAr.__init__": {
+    "has": [
+      "import"
+    ]
+  },
+  "MachAr._do_init": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError"
+    ]
+  }
+}

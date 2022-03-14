@@ -1,0 +1,17 @@
+{
+  "register_func": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "restore_all": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "restore_func": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

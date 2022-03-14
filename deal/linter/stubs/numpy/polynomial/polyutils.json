@@ -1,0 +1,80 @@
+{
+  "_add": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_deprecate_as_int": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_div": {
+    "raises": [
+      "ValueError",
+      "ZeroDivisionError"
+    ]
+  },
+  "_fit": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "_fromroots": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_pow": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_sub": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_valnd": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_vander_nd": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_vander_nd_flat": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "as_series": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "getdomain": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "trimcoef": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

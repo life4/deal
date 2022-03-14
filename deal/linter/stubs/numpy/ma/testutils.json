@@ -1,0 +1,60 @@
+{
+  "_assert_equal_on_sequences": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "assert_almost_equal": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "assert_array_almost_equal": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "assert_array_approx_equal": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "assert_array_compare": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "assert_array_equal": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "assert_array_less": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "assert_equal": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "assert_equal_records": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "fail_if_array_equal": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "fail_if_equal": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

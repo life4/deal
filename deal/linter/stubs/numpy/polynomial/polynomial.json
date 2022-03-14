@@ -1,0 +1,37 @@
+{
+  "polycompanion": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "polyder": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "polydiv": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "polyint": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "polyroots": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "polyvalfromroots": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "polyvander": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

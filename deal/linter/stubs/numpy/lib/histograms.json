@@ -1,0 +1,78 @@
+{
+  "_get_bin_edges": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_get_outer_edges": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_hist_bin_auto": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "_hist_bin_fd": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "_hist_bin_rice": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "_hist_bin_scott": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "_hist_bin_stone": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_ravel_and_check_weights": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "histogram": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "histogram_bin_edges": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "histogramdd": {
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}

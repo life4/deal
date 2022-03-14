@@ -1,0 +1,7 @@
+{
+  "container._scalarfunc": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

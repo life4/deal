@@ -1,0 +1,45 @@
+{
+  "append_fields": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "apply_along_fields": {
+    "raises": [
+      "NotImplementedError",
+      "ValueError"
+    ]
+  },
+  "join_by": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "rec_append_fields": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "rec_join": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "stack_arrays": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "structured_to_unstructured": {
+    "raises": [
+      "NotImplementedError",
+      "ValueError"
+    ]
+  },
+  "unstructured_to_structured": {
+    "raises": [
+      "NotImplementedError",
+      "ValueError"
+    ]
+  }
+}

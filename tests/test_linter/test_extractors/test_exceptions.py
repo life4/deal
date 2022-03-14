@@ -202,14 +202,14 @@ def test_inference_doesnt_have_exceptions():
     # numpy
     """Does not raise RuntimeError.
 
-    Raises:
-    -------
+    Raises
+    ------
     ValueError
             some junk
     KeyError
 
-    Returns:
-    --------
+    Returns
+    -------
     RuntimeError
     """,
 ])

@@ -1,0 +1,40 @@
+{
+  "diag": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "fliplr": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "flipud": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "histogram2d": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "tril_indices_from": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "triu_indices_from": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "vander": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

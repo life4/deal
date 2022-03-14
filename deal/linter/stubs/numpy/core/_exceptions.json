@@ -1,0 +1,12 @@
+{
+  "_UFuncBinaryResolutionError.__init__": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_display_as_base": {
+    "raises": [
+      "AssertionError"
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "NumpyVersion.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "NumpyVersion._compare": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

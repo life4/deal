@@ -1,0 +1,38 @@
+{
+  "herme2poly": {
+    "has": [
+      "import"
+    ]
+  },
+  "hermecompanion": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "hermeder": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "hermegauss": {
+    "raises": [
+      "ValueError",
+      "ZeroDivisionError"
+    ]
+  },
+  "hermeint": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "hermeroots": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "hermevander": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

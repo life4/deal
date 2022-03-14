@@ -1,0 +1,12 @@
+{
+  "_ndptr.from_param": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "ndpointer": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

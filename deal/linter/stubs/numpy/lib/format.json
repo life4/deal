@@ -1,0 +1,114 @@
+{
+  "_check_version": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_filter_header": {
+    "has": [
+      "import"
+    ]
+  },
+  "_read_array_header": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_read_bytes": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_wrap_header": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "_wrap_header_guess_version": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError",
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "_write_array_header": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "dtype_to_descr": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "magic": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "open_memmap": {
+    "has": [
+      "import",
+      "read"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_array": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "UnicodeError",
+      "ValueError"
+    ]
+  },
+  "read_array_header_1_0": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_array_header_2_0": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "read_magic": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "write_array": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

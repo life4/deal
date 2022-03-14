@@ -1,0 +1,38 @@
+{
+  "NameValidator.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "StringConverter.__init__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "StringConverter._do_upgrade": {
+    "raises": [
+      "ConverterError",
+      "ConverterLockError"
+    ]
+  },
+  "StringConverter._find_map_entry": {
+    "raises": [
+      "LookupError"
+    ]
+  },
+  "StringConverter._strict_call": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "StringConverter.update": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "str2bool": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

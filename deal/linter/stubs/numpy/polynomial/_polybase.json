@@ -1,0 +1,47 @@
+{
+  "ABCPolyBase.__format__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ABCPolyBase.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ABCPolyBase.__truediv__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "ABCPolyBase._get_coefficients": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "ABCPolyBase._repr_latex_term": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "ABCPolyBase._str_term_ascii": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "ABCPolyBase._str_term_unicode": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "ABCPolyBase.basis": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ABCPolyBase.truncate": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "Chebyshev.interpolate": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_cseries_to_zseries": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "cheb2poly": {
+    "has": [
+      "import"
+    ]
+  },
+  "chebcompanion": {
+    "raises": [
+      "ValueError",
+      "ZeroDivisionError"
+    ]
+  },
+  "chebder": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "chebdiv": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "chebgauss": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "chebint": {
+    "raises": [
+      "ValueError",
+      "ZeroDivisionError"
+    ]
+  },
+  "chebinterpolate": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "chebmul": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "chebmulx": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "chebpow": {
+    "raises": [
+      "ValueError",
+      "ZeroDivisionError"
+    ]
+  },
+  "chebpts1": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "chebpts2": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "chebroots": {
+    "raises": [
+      "ValueError",
+      "ZeroDivisionError"
+    ]
+  },
+  "chebvander": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "poly2cheb": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  }
+}

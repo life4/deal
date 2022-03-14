@@ -1,0 +1,22 @@
+{
+  "put": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "resize": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "sum": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  }
+}

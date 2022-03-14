@@ -1,0 +1,38 @@
+{
+  "_from_ctypes_array": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "NotImplementedError",
+      "TypeError"
+    ]
+  },
+  "_from_ctypes_structure": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "NotImplementedError",
+      "TypeError"
+    ]
+  },
+  "_from_ctypes_union": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "NotImplementedError",
+      "TypeError"
+    ]
+  },
+  "dtype_from_ctypes_type": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "NotImplementedError",
+      "TypeError"
+    ]
+  }
+}

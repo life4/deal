@@ -1,0 +1,22 @@
+{
+  "_getmaxmin": {
+    "has": [
+      "import"
+    ]
+  },
+  "common_type": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "nan_to_num": {
+    "has": [
+      "import"
+    ]
+  },
+  "real_if_close": {
+    "has": [
+      "import"
+    ]
+  }
+}

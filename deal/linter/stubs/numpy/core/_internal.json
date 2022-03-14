@@ -1,0 +1,107 @@
+{
+  "__dtype_from_pep3118": {
+    "raises": [
+      "NotImplementedError",
+      "RuntimeError",
+      "ValueError"
+    ]
+  },
+  "_array_descr": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_commastring": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "_ctypes.get_as_parameter": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_ctypes.get_data": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_ctypes.get_shape": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_ctypes.get_strides": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_ctypes.shape": {
+    "has": [
+      "import"
+    ]
+  },
+  "_ctypes.strides": {
+    "has": [
+      "import"
+    ]
+  },
+  "_dtype_from_pep3118": {
+    "raises": [
+      "NotImplementedError",
+      "RuntimeError",
+      "ValueError"
+    ]
+  },
+  "_getfield_is_safe": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_getintp_ctype": {
+    "has": [
+      "import"
+    ]
+  },
+  "_makenames_list": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_newnames": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_usefields": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_view_is_safe": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

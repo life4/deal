@@ -1,0 +1,55 @@
+{
+  "_make_along_axis_idx": {
+    "raises": [
+      "IndexError",
+      "ValueError"
+    ]
+  },
+  "apply_along_axis": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "apply_over_axes": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "array_split": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "dsplit": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "hsplit": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "put_along_axis": {
+    "raises": [
+      "IndexError",
+      "ValueError"
+    ]
+  },
+  "split": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "take_along_axis": {
+    "raises": [
+      "IndexError",
+      "ValueError"
+    ]
+  },
+  "vsplit": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

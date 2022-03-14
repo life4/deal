@@ -1,0 +1,12 @@
+{
+  "array_function_dispatch": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "verify_matching_signatures": {
+    "raises": [
+      "RuntimeError"
+    ]
+  }
+}

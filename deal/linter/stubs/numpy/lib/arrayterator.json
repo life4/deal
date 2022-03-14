@@ -1,0 +1,7 @@
+{
+  "Arrayterator.__iter__": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

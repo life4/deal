@@ -1,0 +1,41 @@
+{
+  "check_api_version": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "check_for_right_shift_internal_compiler_error": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "check_long_double_representation": {
+    "has": [
+      "read"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "get_api_versions": {
+    "has": [
+      "import"
+    ]
+  },
+  "long_double_representation": {
+    "raises": [
+      "Error",
+      "ValueError"
+    ]
+  },
+  "pyod": {
+    "has": [
+      "read"
+    ]
+  }
+}

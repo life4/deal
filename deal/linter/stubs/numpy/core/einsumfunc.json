@@ -1,0 +1,22 @@
+{
+  "_parse_einsum_input": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "einsum": {
+    "raises": [
+      "KeyError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "einsum_path": {
+    "raises": [
+      "KeyError",
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}

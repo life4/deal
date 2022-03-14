@@ -1,0 +1,274 @@
+{
+  "abs": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "acos": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "acosh": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "add": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "asin": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "asinh": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "atan": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "atan2": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "atanh": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "bitwise_and": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "bitwise_invert": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "bitwise_left_shift": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "bitwise_or": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "bitwise_right_shift": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "bitwise_xor": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "ceil": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "cos": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "cosh": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "divide": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "exp": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "expm1": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "floor": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "floor_divide": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "greater": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "greater_equal": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "isfinite": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "isinf": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "isnan": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "less": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "less_equal": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "log": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "log10": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "log1p": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "log2": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "logaddexp": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "logical_and": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "logical_not": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "logical_or": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "logical_xor": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "multiply": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "negative": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "positive": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "pow": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "remainder": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "round": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "sign": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "sin": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "sinh": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "sqrt": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "square": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "subtract": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "tan": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "tanh": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "trunc": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

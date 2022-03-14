@@ -1,0 +1,84 @@
+{
+  "_deprecate_shape_0_as_None": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "array": {
+    "has": [
+      "read"
+    ],
+    "raises": [
+      "OSError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "format_parser._parseFormats": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "format_parser._setfieldnames": {
+    "raises": [
+      "NameError",
+      "ValueError"
+    ]
+  },
+  "fromarrays": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "fromfile": {
+    "has": [
+      "read"
+    ],
+    "raises": [
+      "OSError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "fromrecords": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "fromstring": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "recarray.__getattribute__": {
+    "raises": [
+      "AttributeError"
+    ]
+  },
+  "recarray.__setattr__": {
+    "raises": [
+      "AttributeError"
+    ]
+  },
+  "record.__getattribute__": {
+    "raises": [
+      "AttributeError"
+    ]
+  },
+  "record.__setattr__": {
+    "raises": [
+      "AttributeError"
+    ]
+  }
+}

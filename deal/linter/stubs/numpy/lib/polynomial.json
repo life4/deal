@@ -1,0 +1,74 @@
+{
+  "poly": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "poly1d.__init__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "poly1d.__pow__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "poly1d.__setitem__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "poly1d.coeffs": {
+    "raises": [
+      "AttributeError"
+    ]
+  },
+  "poly1d.deriv": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "poly1d.integ": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "poly1d.roots": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "polyder": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "polyfit": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "polyint": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "roots": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

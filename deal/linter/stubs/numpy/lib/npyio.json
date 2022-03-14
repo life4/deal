@@ -1,0 +1,159 @@
+{
+  "BagObj.__getattribute__": {
+    "raises": [
+      "AttributeError"
+    ]
+  },
+  "NpzFile.__getitem__": {
+    "raises": [
+      "KeyError"
+    ]
+  },
+  "NpzFile.__init__": {
+    "has": [
+      "import"
+    ]
+  },
+  "NpzFile.iteritems": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "NpzFile.iterkeys": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_check_nonneg_int": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_ensure_ndmin_ndarray_check_param": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_read": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "_savez": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "fromregex": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "genfromtxt": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "ConverterError",
+      "NotImplementedError",
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "load": {
+    "has": [
+      "read"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "loadtxt": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "recfromcsv": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "ConverterError",
+      "NotImplementedError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "recfromtxt": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "ConverterError",
+      "NotImplementedError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "save": {
+    "has": [
+      "read"
+    ]
+  },
+  "savetxt": {
+    "has": [
+      "read"
+    ],
+    "raises": [
+      "AttributeError",
+      "TypeError",
+      "ValueError",
+      "error"
+    ]
+  },
+  "savez": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "savez_compressed": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "zipfile_factory": {
+    "has": [
+      "import"
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "max": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "mean": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "min": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "prod": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "std": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "sum": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "var": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

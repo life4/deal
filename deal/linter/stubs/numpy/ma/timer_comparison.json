@@ -1,0 +1,56 @@
+{
+  "ModuleTester.assert_array_compare": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ModuleTester.test_0": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "ModuleTester.test_1": {
+    "raises": [
+      "AssertionError",
+      "TypeError",
+      "ZeroDivisionError"
+    ]
+  },
+  "ModuleTester.test_2": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "ModuleTester.test_3": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "ModuleTester.test_4": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "ModuleTester.test_5": {
+    "raises": [
+      "AssertionError",
+      "ZeroDivisionError"
+    ]
+  },
+  "ModuleTester.test_6": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "ModuleTester.test_7": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "ModuleTester.test_99": {
+    "raises": [
+      "AssertionError",
+      "ZeroDivisionError"
+    ]
+  }
+}

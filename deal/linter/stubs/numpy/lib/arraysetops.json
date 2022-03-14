@@ -1,0 +1,32 @@
+{
+  "ediff1d": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "intersect1d": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "setdiff1d": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "setxor1d": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "union1d": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "unique": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "_construction_repr": {
+    "raises": [
+      "RuntimeError",
+      "ZeroDivisionError"
+    ]
+  },
+  "_kind_name": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_name_get": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_scalar_str": {
+    "raises": [
+      "RuntimeError",
+      "ZeroDivisionError"
+    ]
+  }
+}

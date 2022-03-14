@@ -1,0 +1,32 @@
+{
+  "AxisConcatenator.__getitem__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "diag_indices_from": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "fill_diagonal": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ix_": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "ndindex.ndincr": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  }
+}
