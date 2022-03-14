@@ -94,6 +94,16 @@
       "ValueError"
     ]
   },
+  "MaskedArray.argmax": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "MaskedArray.argmin": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "MaskedArray.argpartition": {
     "has": [
       "import"
@@ -102,6 +112,11 @@
       "RuntimeError",
       "TypeError",
       "message"
+    ]
+  },
+  "MaskedArray.argsort": {
+    "raises": [
+      "TypeError"
     ]
   },
   "MaskedArray.fill_value": {
@@ -123,7 +138,8 @@
   },
   "MaskedArray.max": {
     "raises": [
-      "MaskError"
+      "MaskError",
+      "TypeError"
     ]
   },
   "MaskedArray.mean": {
@@ -133,7 +149,8 @@
   },
   "MaskedArray.min": {
     "raises": [
-      "MaskError"
+      "MaskError",
+      "TypeError"
     ]
   },
   "MaskedArray.mini": {

@@ -32,6 +32,7 @@
   },
   "moveaxis": {
     "raises": [
+      "AxisError",
       "ValueError"
     ]
   },
@@ -42,6 +43,7 @@
   },
   "roll": {
     "raises": [
+      "AxisError",
       "ValueError"
     ]
   },

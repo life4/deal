@@ -2,6 +2,7 @@ import ast
 import builtins
 import re
 from inspect import cleandoc
+from itertools import zip_longest
 from typing import Iterator, Optional, Union
 
 import astroid
@@ -128,9 +129,10 @@ def _exceptions_from_func(expr: Union[ast.Call, astroid.Call]) -> Iterator[Token
 def _excs_from_doc(doc: Optional[str]) -> Iterator[str]:
     if doc is None:
         return
-    section = ''
-    prev_line = ''
-    for line in cleandoc(doc).splitlines():
+    google_section = ''
+    numpy_section = ''
+    lines = cleandoc(doc).splitlines()
+    for line, next_line in zip_longest(lines, lines[1:]):
         words = line.split()
         if not words:
             continue
@@ -142,17 +144,25 @@ def _excs_from_doc(doc: Optional[str]) -> Iterator[str]:
 
         # google docstring
         if REX_GOOGLE_SECTION.fullmatch(line):
-            section = line.strip().rstrip(':').lower()
+            google_section = line.strip().rstrip(':').lower()
             continue
         indent = len(line) - len(line.lstrip())
-        if section == 'raises' and indent == 4:
+        if google_section == 'raises' and indent == 4:
             yield words[0].rstrip(':')
             continue
 
         # numpy docstring
-        stripped_line = line.strip()
-        if len(set(stripped_line)) == 1 and stripped_line[0] in '-+':
-            section = prev_line
-        prev_line = stripped_line
-        if section == 'raises' and line == line.lstrip():
+        if next_line is not None:
+            next_line = next_line.strip()
+            if _is_header_highlight(next_line):
+                numpy_section = line.strip().rstrip(':').lower()
+                continue
+        if _is_header_highlight(line):
+            continue
+        if numpy_section == 'raises' and line == line.lstrip() and indent == 0:
             yield line.rstrip()
+
+
+def _is_header_highlight(line: str) -> bool:
+    line = line.strip()
+    return len(set(line)) == 1 and line[0] in '-+'

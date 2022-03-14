@@ -1,4 +1,9 @@
 {
+  "_broadcast_shape": {
+    "raises": [
+      "ValueError"
+    ]
+  },
   "_broadcast_to": {
     "raises": [
       "ValueError"

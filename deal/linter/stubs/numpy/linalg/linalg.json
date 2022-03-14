@@ -37,6 +37,9 @@
   "_multi_svd_norm": {
     "has": [
       "import"
+    ],
+    "raises": [
+      "LinAlgError"
     ]
   },
   "_raise_linalgerror_eigenvalues_nonconvergence": {
@@ -145,6 +148,9 @@
   "matrix_rank": {
     "has": [
       "import"
+    ],
+    "raises": [
+      "LinAlgError"
     ]
   },
   "multi_dot": {
@@ -164,6 +170,9 @@
   "pinv": {
     "has": [
       "import"
+    ],
+    "raises": [
+      "LinAlgError"
     ]
   },
   "qr": {
@@ -202,6 +211,7 @@
   },
   "tensorinv": {
     "raises": [
+      "LinAlgError",
       "ValueError"
     ]
   },

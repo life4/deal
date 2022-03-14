@@ -9,6 +9,16 @@
       "NotImplementedError"
     ]
   },
+  "_array_repr_implementation": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_array_str_implementation": {
+    "raises": [
+      "TypeError"
+    ]
+  },
   "_make_options_dict": {
     "has": [
       "import"
