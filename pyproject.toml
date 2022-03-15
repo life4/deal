@@ -31,6 +31,7 @@ requires = [
 [tool.flit.metadata.requires-extra]
 all = [
     "deal-solver",
+    "docstring-parser",
     "hypothesis",
     "pygments",
     "typeguard",
@@ -46,6 +47,7 @@ test = [
 
     # copy-pasted "all" extra
     "deal-solver",
+    "docstring-parser",
     "hypothesis",
     "pygments",
     "typeguard",

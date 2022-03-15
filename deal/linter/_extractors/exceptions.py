@@ -12,6 +12,11 @@ from .._stub import StubsManager
 from .common import TOKENS, Extractor, Token, get_full_name, get_name, get_stub, infer
 from .contracts import get_contracts
 
+try:
+    import docstring_parser
+except ImportError:
+    docstring_parser = None  # type: ignore[assignment]
+
 
 get_exceptions = Extractor()
 REX_GOOGLE_SECTION = re.compile(r'[A-Z][a-z]+:\s*')
@@ -126,9 +131,18 @@ def _exceptions_from_func(expr: Union[ast.Call, astroid.Call]) -> Iterator[Token
     return None
 
 
+# TODO: use it on the target function docstring too
 def _excs_from_doc(doc: Optional[str]) -> Iterator[str]:
     if doc is None:
         return
+
+    if docstring_parser is not None:
+        parsed = docstring_parser.parse(doc)
+        for exc_info in parsed.raises:
+            if exc_info.type_name:
+                yield exc_info.type_name
+        return
+
     google_section = ''
     numpy_section = ''
     lines = cleandoc(doc).splitlines()

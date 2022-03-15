@@ -1,5 +1,7 @@
 import ast
+import sys
 from textwrap import dedent
+from typing import Dict
 
 import astroid
 import pytest
@@ -173,47 +175,83 @@ def test_inference_doesnt_have_exceptions():
     assert returns == ()
 
 
+@pytest.fixture
+def remove_import():
+    old_imports: Dict[str, Dict[str, object]] = dict()
+
+    def _remove_import(what: str):
+        old_imports[what] = dict()
+        for mod_name, module in sys.modules.items():
+            if not mod_name.startswith('deal.'):
+                continue
+            if not hasattr(module, what):
+                continue
+            old_imports[what][mod_name] = getattr(module, what)
+            setattr(module, what, None)
+    yield _remove_import
+
+    for what, imports in old_imports.items():
+        for mod_name, old_import in imports.items():
+            module = sys.modules[mod_name]
+            setattr(module, what, old_import)
+
+
 @pytest.mark.parametrize('docstring', [
     # sphinx
-    """Does not raise RuntimeError.
+    pytest.param(
+        """Does not raise RuntimeError.
 
-    :raises ValueError:
-    :raises KeyError: some junk
-    :returns RuntimeError
-    """,
+        :raises ValueError:
+        :raises KeyError: some junk
+        :returns: RuntimeError
+        """,
+        id="sphinx",
+    ),
     # epydoc
-    """Does not raise RuntimeError.
+    pytest.param(
+        """Does not raise RuntimeError.
 
-    @raise ValueError:
-    @raise KeyError: some junk
-    @raise: something
-    @meta RuntimeError
-    """,
+        @raise ValueError:
+        @raise KeyError: some junk
+        @raise: something
+        @return: RuntimeError
+        """,
+        id="epydoc",
+    ),
     # google
-    """Does not raise RuntimeError.
+    pytest.param(
+        """Does not raise RuntimeError.
 
-    Raises:
-        ValueError:
-            some junk
-        KeyError: some junk
-    Returns:
-        RuntimeError
-    """,
+        Raises:
+            ValueError:
+                some junk
+            KeyError: some junk
+        Returns:
+            RuntimeError
+        """,
+        id="google",
+    ),
     # numpy
-    """Does not raise RuntimeError.
+    pytest.param(
+        """Does not raise RuntimeError.
 
-    Raises
-    ------
-    ValueError
-            some junk
-    KeyError
+        Raises
+        ------
+        ValueError
+                some junk
+        KeyError
 
-    Returns
-    -------
-    RuntimeError
-    """,
+        Returns
+        -------
+        RuntimeError
+        """,
+        id="numpy",
+    ),
 ])
-def test_extract_from_docstring(docstring):
+@pytest.mark.parametrize('patch_third_party', [True, False])
+def test_extract_from_docstring(docstring, patch_third_party, remove_import):
+    if patch_third_party:
+        remove_import('docstring_parser')
     text = """
         def subf():
             '''{docstring}'''
