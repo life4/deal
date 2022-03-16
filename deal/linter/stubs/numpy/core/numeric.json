@@ -1,0 +1,60 @@
+{
+  "base_repr": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "binary_repr": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "convolve": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "cross": {
+    "raises": [
+      "AssertionError",
+      "ValueError"
+    ]
+  },
+  "identity": {
+    "has": [
+      "import"
+    ]
+  },
+  "moveaxis": {
+    "raises": [
+      "AxisError",
+      "ValueError"
+    ]
+  },
+  "normalize_axis_tuple": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "roll": {
+    "raises": [
+      "AxisError",
+      "ValueError"
+    ]
+  },
+  "rollaxis": {
+    "raises": [
+      "AxisError"
+    ]
+  },
+  "tensordot": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

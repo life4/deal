@@ -1,0 +1,7 @@
+{
+  "_CopyMode.__bool__": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

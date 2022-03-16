@@ -1,0 +1,110 @@
+{
+  "Array.T": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Array.__abs__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Array.__array_namespace__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Array.__bool__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "Array.__float__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "Array.__getitem__": {
+    "raises": [
+      "IndexError"
+    ]
+  },
+  "Array.__imatmul__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "Array.__int__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "Array.__invert__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Array.__neg__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Array.__new__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Array.__pos__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Array.__pow__": {
+    "has": [
+      "import"
+    ]
+  },
+  "Array.__rpow__": {
+    "has": [
+      "import"
+    ]
+  },
+  "Array.__setitem__": {
+    "raises": [
+      "IndexError"
+    ]
+  },
+  "Array._check_allowed_dtypes": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Array._new": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Array._promote_scalar": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "Array._validate_index": {
+    "raises": [
+      "IndexError"
+    ]
+  },
+  "Array.mT": {
+    "has": [
+      "import"
+    ]
+  },
+  "Array.to_device": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

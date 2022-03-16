@@ -1,0 +1,63 @@
+{
+  "MachArLike.smallest_subnormal": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_get_machar": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "_register_known_types": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "finfo.__new__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "finfo._init": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "finfo.machar": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "finfo.smallest_normal": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "iinfo.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

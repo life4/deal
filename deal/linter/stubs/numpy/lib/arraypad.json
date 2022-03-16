@@ -1,0 +1,18 @@
+{
+  "_as_pairs": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_get_stats": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "pad": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}

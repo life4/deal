@@ -1,0 +1,47 @@
+{
+  "chararray.__array_finalize__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "chararray.__mul__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "chararray.__new__": {
+    "has": [
+      "global"
+    ]
+  },
+  "chararray.__rmul__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "chararray.isdecimal": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "chararray.isnumeric": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "isdecimal": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "isnumeric": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "multiply": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

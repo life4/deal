@@ -1,0 +1,87 @@
+{
+  "_nanmedian_small": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_remove_nan_1d": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "nanargmax": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "nanargmin": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "nanmax": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "nanmean": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "nanmin": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "nanpercentile": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "nanquantile": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "nanstd": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "nanvar": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  }
+}

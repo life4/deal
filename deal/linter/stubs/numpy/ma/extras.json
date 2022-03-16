@@ -1,0 +1,84 @@
+{
+  "MAxisConcatenator.__getitem__": {
+    "raises": [
+      "MAError"
+    ]
+  },
+  "_covhelper": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "apply_over_axes": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "average": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "compress_cols": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "compress_rowcols": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "compress_rows": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "corrcoef": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "cov": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "mask_cols": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "mask_rows": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "notmasked_contiguous": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "polyfit": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

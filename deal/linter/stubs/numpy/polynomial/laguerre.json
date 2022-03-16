@@ -1,0 +1,37 @@
+{
+  "lag2poly": {
+    "has": [
+      "import"
+    ]
+  },
+  "lagcompanion": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "lagder": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "laggauss": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "lagint": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "lagroots": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "lagvander": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

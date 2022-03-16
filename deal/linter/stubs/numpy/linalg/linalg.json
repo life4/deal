@@ -1,0 +1,223 @@
+{
+  "_assert_2d": {
+    "raises": [
+      "LinAlgError"
+    ]
+  },
+  "_assert_finite": {
+    "raises": [
+      "LinAlgError"
+    ]
+  },
+  "_assert_stacked_2d": {
+    "raises": [
+      "LinAlgError"
+    ]
+  },
+  "_assert_stacked_square": {
+    "raises": [
+      "LinAlgError"
+    ]
+  },
+  "_commonType": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_convertarray": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_multi_dot": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "_multi_svd_norm": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "LinAlgError"
+    ]
+  },
+  "_raise_linalgerror_eigenvalues_nonconvergence": {
+    "raises": [
+      "LinAlgError"
+    ]
+  },
+  "_raise_linalgerror_lstsq": {
+    "raises": [
+      "LinAlgError"
+    ]
+  },
+  "_raise_linalgerror_nonposdef": {
+    "raises": [
+      "LinAlgError"
+    ]
+  },
+  "_raise_linalgerror_qr": {
+    "raises": [
+      "LinAlgError"
+    ]
+  },
+  "_raise_linalgerror_singular": {
+    "raises": [
+      "LinAlgError"
+    ]
+  },
+  "_raise_linalgerror_svd_nonconvergence": {
+    "raises": [
+      "LinAlgError"
+    ]
+  },
+  "cholesky": {
+    "raises": [
+      "LinAlgError",
+      "TypeError"
+    ]
+  },
+  "cond": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "LinAlgError",
+      "TypeError",
+      "ValueError",
+      "ZeroDivisionError"
+    ]
+  },
+  "det": {
+    "raises": [
+      "LinAlgError",
+      "TypeError"
+    ]
+  },
+  "eig": {
+    "raises": [
+      "LinAlgError",
+      "TypeError"
+    ]
+  },
+  "eigh": {
+    "raises": [
+      "LinAlgError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "eigvals": {
+    "raises": [
+      "LinAlgError",
+      "TypeError"
+    ]
+  },
+  "eigvalsh": {
+    "raises": [
+      "LinAlgError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "inv": {
+    "raises": [
+      "LinAlgError",
+      "TypeError"
+    ]
+  },
+  "lstsq": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "LinAlgError",
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "matrix_power": {
+    "raises": [
+      "LinAlgError",
+      "NotImplementedError",
+      "TypeError"
+    ]
+  },
+  "matrix_rank": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "LinAlgError"
+    ]
+  },
+  "multi_dot": {
+    "raises": [
+      "AssertionError",
+      "LinAlgError",
+      "ValueError"
+    ]
+  },
+  "norm": {
+    "raises": [
+      "TypeError",
+      "ValueError",
+      "ZeroDivisionError"
+    ]
+  },
+  "pinv": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "LinAlgError"
+    ]
+  },
+  "qr": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "LinAlgError",
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "slogdet": {
+    "raises": [
+      "LinAlgError",
+      "TypeError"
+    ]
+  },
+  "solve": {
+    "raises": [
+      "LinAlgError",
+      "TypeError"
+    ]
+  },
+  "svd": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "LinAlgError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "tensorinv": {
+    "raises": [
+      "LinAlgError",
+      "ValueError"
+    ]
+  },
+  "tensorsolve": {
+    "raises": [
+      "LinAlgError"
+    ]
+  }
+}

@@ -83,6 +83,18 @@ You can use any logic inside the validator. However, thumb up rule is to keep co
 
 The `message` argument should tell what is expected behavior without assuming that the user violated it. This is because the users can encounter it not only when a `ContractError` is raised but also when they just read the source code or [generated documentation](./docs). For example, if your contract checks that `b >= 0`, don't say "b is negative" (what is violated), say "b must be non-negative" (what is expected).
 
+## Markers are not only side-effects
+
+The `@deal.has` decorator is used to track markers. Some of the markers describing side-effects (like `stdout`) are predefined and detected by linter and in runtime. However, markers can be also used to track anything else you'd like to track in your code. A few examples:
+
++ Functions that are usually slow.
++ Functions that can be called only for a user with admin access.
++ Functions that access the database.
++ Functions that access the patient data.
++ Functions that can only work with some additional dependencies installed.
++ Deprecated functions.
++ Functions that need refactoring.
+
 ## Permissive license
 
 Deal is distributed under [MIT License](https://en.wikipedia.org/wiki/MIT_License) which is a permissive license with high [license compatibility](https://en.wikipedia.org/wiki/License_compatibility). However, Deal has [astroid](https://github.com/PyCQA/astroid) in the dependencies which is licensed under [LGPL](https://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License). While this license allows to be used in non-LGPL proprietary software too, it still can be not enough for some companies. So, if the legal department in your company forbids using LGPL libraries in transitive dependencies, you can freely remove `astroid` from the project dependencies before shipping it on the production. All CLI commands won't work anymore but runtime checks will.

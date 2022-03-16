@@ -1,0 +1,39 @@
+{
+  "leg2poly": {
+    "has": [
+      "import"
+    ]
+  },
+  "legcompanion": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "legder": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "leggauss": {
+    "raises": [
+      "ValueError",
+      "ZeroDivisionError"
+    ]
+  },
+  "legint": {
+    "raises": [
+      "ValueError",
+      "ZeroDivisionError"
+    ]
+  },
+  "legroots": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "legvander": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

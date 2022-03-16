@@ -1,0 +1,41 @@
+{
+  "git_pieces_from_vcs": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "AssertionError",
+      "NotThisMethod"
+    ]
+  },
+  "git_versions_from_keywords": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "NotThisMethod"
+    ]
+  },
+  "render": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "run_command": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "versions_from_parentdir": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "NotThisMethod",
+      "TypeError"
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "CallOnceOnly.check_complex": {
+    "raises": [
+      "AssertionError",
+      "Error",
+      "TypeError"
+    ]
+  },
+  "CallOnceOnly.check_ieee_macros": {
+    "raises": [
+      "AssertionError",
+      "Error",
+      "TypeError"
+    ]
+  },
+  "CallOnceOnly.check_types": {
+    "raises": [
+      "AssertionError",
+      "Error",
+      "RuntimeError",
+      "SystemError",
+      "TypeError"
+    ]
+  },
+  "check_math_capabilities": {
+    "raises": [
+      "SystemError"
+    ]
+  },
+  "check_mathlib": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "check_svml_submodule": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "check_types": {
+    "raises": [
+      "RuntimeError",
+      "SystemError"
+    ]
+  },
+  "configuration": {
+    "has": [
+      "import",
+      "read",
+      "stdout",
+      "write"
+    ],
+    "raises": [
+      "AssertionError",
+      "DistutilsFileError",
+      "RuntimeError",
+      "SystemError",
+      "TypeError"
+    ]
+  },
+  "pythonlib_dir": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "win32_checks": {
+    "has": [
+      "import",
+      "stdout"
+    ]
+  }
+}

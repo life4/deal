@@ -1,0 +1,386 @@
+{
+  "MaskedArray.__array_finalize__": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "MaskedArray.__array_wrap__": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "MaskedArray.__deepcopy__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "Error"
+    ]
+  },
+  "MaskedArray.__float__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "MaskedArray.__getitem__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "MaskedArray.__idiv__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "MaskedArray.__ifloordiv__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "MaskedArray.__int__": {
+    "raises": [
+      "MaskError",
+      "TypeError"
+    ]
+  },
+  "MaskedArray.__ipow__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "MaskedArray.__itruediv__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "MaskedArray.__new__": {
+    "raises": [
+      "MaskError",
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "MaskedArray.__pow__": {
+    "raises": [
+      "MaskError"
+    ]
+  },
+  "MaskedArray.__rpow__": {
+    "raises": [
+      "MaskError"
+    ]
+  },
+  "MaskedArray.__setitem__": {
+    "raises": [
+      "MaskError",
+      "NotImplementedError",
+      "ValueError"
+    ]
+  },
+  "MaskedArray._comparison": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "MaskedArray.argmax": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "MaskedArray.argmin": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "MaskedArray.argpartition": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "MaskedArray.argsort": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "MaskedArray.fill_value": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "MaskedArray.filled": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "MaskedArray.max": {
+    "raises": [
+      "MaskError",
+      "TypeError"
+    ]
+  },
+  "MaskedArray.mean": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "MaskedArray.min": {
+    "raises": [
+      "MaskError",
+      "TypeError"
+    ]
+  },
+  "MaskedArray.mini": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "MaskedArray.partition": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "MaskedArray.recordmask": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "MaskedArray.resize": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "MaskedArray.tofile": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "MaskedArray.tostring": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "MaskedArray.var": {
+    "raises": [
+      "MaskError",
+      "ValueError"
+    ]
+  },
+  "MaskedConstant.__format__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "MaskedConstant.__setattr__": {
+    "raises": [
+      "AttributeError"
+    ]
+  },
+  "_check_fill_value": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_convert2ma._replace_return_type": {
+    "raises": [
+      "RuntimeError"
+    ]
+  },
+  "_deprecate_argsort_axis": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_extrema_operation.__call__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "_extrema_operation.reduce": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_extremum_fill_value": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_pickle_warn": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "allclose": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "allequal": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "choose": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "dot": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "fromfile": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "mask_or": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "mask_rowcols": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "masked_equal": {
+    "raises": [
+      "IndexError"
+    ]
+  },
+  "masked_greater": {
+    "raises": [
+      "IndexError"
+    ]
+  },
+  "masked_greater_equal": {
+    "raises": [
+      "IndexError"
+    ]
+  },
+  "masked_inside": {
+    "raises": [
+      "IndexError"
+    ]
+  },
+  "masked_less": {
+    "raises": [
+      "IndexError"
+    ]
+  },
+  "masked_less_equal": {
+    "raises": [
+      "IndexError"
+    ]
+  },
+  "masked_not_equal": {
+    "raises": [
+      "IndexError"
+    ]
+  },
+  "masked_object": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "masked_outside": {
+    "raises": [
+      "IndexError"
+    ]
+  },
+  "masked_where": {
+    "raises": [
+      "IndexError",
+      "ValueError"
+    ]
+  },
+  "maximum_fill_value": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "minimum_fill_value": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "power": {
+    "raises": [
+      "MaskError",
+      "ValueError"
+    ]
+  },
+  "where": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

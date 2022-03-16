@@ -1,0 +1,107 @@
+{
+  "_solve": {
+    "has": [
+      "import"
+    ]
+  },
+  "cholesky": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "cross": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "det": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "eigh": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "eigvalsh": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "inv": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "matmul": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "matrix_norm": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "matrix_power": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "matrix_transpose": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "outer": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "pinv": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "qr": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "slogdet": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "solve": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "svd": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "tensordot": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "vecdot": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "vector_norm": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

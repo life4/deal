@@ -1,0 +1,7 @@
+{
+  "require": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

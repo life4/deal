@@ -1,0 +1,10 @@
+{
+  "set_default_printstyle": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

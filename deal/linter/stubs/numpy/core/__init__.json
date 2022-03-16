@@ -1,0 +1,18 @@
+{
+  "__getattr__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AttributeError",
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_ufunc_reconstruct": {
+    "has": [
+      "import"
+    ]
+  }
+}

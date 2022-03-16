@@ -1,0 +1,27 @@
+{
+  "_deprecate_out_named_y": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_fix_and_maybe_deprecate_out_named_y": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "isneginf": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "isposinf": {
+    "raises": [
+      "TypeError"
+    ]
+  }
+}

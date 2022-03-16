@@ -1,0 +1,195 @@
+{
+  "_check_interpolation_as_method": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_i0_1": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "_parse_gufunc_signature": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_parse_input_dimensions": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_quantile": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_quantile_ureduce_func": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_update_dim_sizes": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "asarray_chkfinite": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "average": {
+    "raises": [
+      "TypeError",
+      "ValueError",
+      "ZeroDivisionError"
+    ]
+  },
+  "corrcoef": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "cov": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "ZeroDivisionError",
+      "message"
+    ]
+  },
+  "delete": {
+    "raises": [
+      "IndexError",
+      "ValueError"
+    ]
+  },
+  "diff": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "digitize": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "gradient": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "i0": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "insert": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "IndexError",
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "interp": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "kaiser": {
+    "raises": [
+      "TypeError",
+      "ZeroDivisionError"
+    ]
+  },
+  "meshgrid": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "percentile": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "piecewise": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "place": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "quantile": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "rot90": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "select": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "trapz": {
+    "raises": [
+      "ValueError",
+      "ZeroDivisionError"
+    ]
+  },
+  "unwrap": {
+    "raises": [
+      "ValueError",
+      "ZeroDivisionError"
+    ]
+  },
+  "vectorize.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "vectorize._get_ufunc_and_otypes": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "vectorize._vectorize_call_with_signature": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}

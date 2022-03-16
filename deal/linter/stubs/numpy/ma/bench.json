@@ -1,0 +1,34 @@
+{
+  "compare_functions_1v": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "compare_functions_2v": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "compare_methods": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "timer": {
+    "has": [
+      "stdout"
+    ],
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  }
+}

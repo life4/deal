@@ -1,0 +1,22 @@
+{
+  "errstate.__enter__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "errstate.__exit__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "setbufsize": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "seterrcall": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

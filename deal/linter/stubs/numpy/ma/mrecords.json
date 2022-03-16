@@ -1,0 +1,47 @@
+{
+  "MaskedRecords.__getattribute__": {
+    "raises": [
+      "AttributeError",
+      "NotImplementedError"
+    ]
+  },
+  "MaskedRecords.__new__": {
+    "raises": [
+      "MAError"
+    ]
+  },
+  "MaskedRecords.__setattr__": {
+    "raises": [
+      "AttributeError"
+    ]
+  },
+  "_checknames": {
+    "raises": [
+      "NameError"
+    ]
+  },
+  "_guessvartypes": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "fromtextfile": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "FileNotFoundError",
+      "NotImplementedError",
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "openfile": {
+    "raises": [
+      "FileNotFoundError",
+      "NotImplementedError"
+    ]
+  }
+}

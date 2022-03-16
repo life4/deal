@@ -1,0 +1,23 @@
+{
+  "broadcast_arrays": {
+    "has": [
+      "import"
+    ]
+  },
+  "broadcast_to": {
+    "has": [
+      "import"
+    ]
+  },
+  "can_cast": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "result_type": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}

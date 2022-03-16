@@ -1,0 +1,58 @@
+{
+  "_clip": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "_clip_dep_invoke_with_casting": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_clip_dep_is_scalar_nan": {
+    "has": [
+      "import"
+    ]
+  },
+  "_count_reduce_items": {
+    "has": [
+      "import"
+    ]
+  },
+  "_dump": {
+    "has": [
+      "read"
+    ]
+  },
+  "_mean": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_var": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  }
+}

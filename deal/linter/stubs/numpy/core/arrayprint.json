@@ -1,0 +1,65 @@
+{
+  "FloatingFormat.__init__": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_TimelikeFormat._format_non_nat": {
+    "raises": [
+      "NotImplementedError"
+    ]
+  },
+  "_array_repr_implementation": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_array_str_implementation": {
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_make_options_dict": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "_none_or_positive_arg": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "array2string": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "ValueError",
+      "message"
+    ]
+  },
+  "format_float_positional": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "format_float_scientific": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "set_printoptions": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}

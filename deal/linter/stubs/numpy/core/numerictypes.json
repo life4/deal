@@ -1,0 +1,8 @@
+{
+  "sctype2char": {
+    "raises": [
+      "KeyError",
+      "ValueError"
+    ]
+  }
+}

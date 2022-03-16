@@ -1,0 +1,12 @@
+{
+  "memmap.__new__": {
+    "has": [
+      "import",
+      "read"
+    ],
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  }
+}

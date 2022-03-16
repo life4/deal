@@ -1,0 +1,27 @@
+{
+  "_broadcast_shape": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "_broadcast_to": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "broadcast_arrays": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "broadcast_to": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "sliding_window_view": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

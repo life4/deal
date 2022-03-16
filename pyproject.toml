@@ -37,6 +37,7 @@ all = [
 ]
 test = [
     "coverage[toml]",
+    "docstring-parser",
     "isort",
     "marshmallow",
     "pytest-cov",

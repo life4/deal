@@ -1,0 +1,12 @@
+{
+  "check_fpu_mode": {
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "pytest_itemcollected": {
+    "has": [
+      "global"
+    ]
+  }
+}

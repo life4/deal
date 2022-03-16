@@ -1,0 +1,59 @@
+{
+  "herm2poly": {
+    "has": [
+      "import"
+    ]
+  },
+  "hermcompanion": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "hermder": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "hermgauss": {
+    "raises": [
+      "ValueError",
+      "ZeroDivisionError"
+    ]
+  },
+  "hermint": {
+    "raises": [
+      "ValueError",
+      "ZeroDivisionError"
+    ]
+  },
+  "hermline": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "hermmul": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "hermmulx": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  },
+  "hermroots": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "hermvander": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "poly2herm": {
+    "raises": [
+      "ZeroDivisionError"
+    ]
+  }
+}

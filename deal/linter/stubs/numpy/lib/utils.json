@@ -1,0 +1,77 @@
+{
+  "_Deprecate.__call__": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_getmembers": {
+    "has": [
+      "import"
+    ]
+  },
+  "_lookfor_generate_cache": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "_makenamedict": {
+    "has": [
+      "import"
+    ]
+  },
+  "_opt_info": {
+    "has": [
+      "import"
+    ]
+  },
+  "get_include": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "TypeError"
+    ]
+  },
+  "info": {
+    "has": [
+      "global",
+      "import"
+    ]
+  },
+  "lookfor": {
+    "has": [
+      "import",
+      "stdout"
+    ],
+    "raises": [
+      "FileExistsError",
+      "ZeroDivisionError"
+    ]
+  },
+  "safe_eval": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "AssertionError"
+    ]
+  },
+  "source": {
+    "has": [
+      "import"
+    ]
+  },
+  "who": {
+    "has": [
+      "stdout"
+    ]
+  }
+}

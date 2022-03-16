@@ -1,0 +1,32 @@
+{
+  "_add_docstring": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "add_newdoc": {
+    "has": [
+      "import"
+    ]
+  },
+  "geomspace": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "linspace": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "logspace": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

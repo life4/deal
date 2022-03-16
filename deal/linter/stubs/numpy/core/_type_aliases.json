@@ -1,0 +1,12 @@
+{
+  "_bits_of": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "bitname": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}

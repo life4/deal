@@ -1,0 +1,45 @@
+{
+  "_arrays_for_stack_dispatcher": {
+    "has": [
+      "import"
+    ],
+    "raises": [
+      "RuntimeError",
+      "TypeError",
+      "message"
+    ]
+  },
+  "_block_check_depths_match": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_block_info_recursion": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_block_setup": {
+    "raises": [
+      "TypeError",
+      "ValueError"
+    ]
+  },
+  "_concatenate_shapes": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "block": {
+    "raises": [
+      "ValueError"
+    ]
+  },
+  "stack": {
+    "raises": [
+      "ValueError"
+    ]
+  }
+}
