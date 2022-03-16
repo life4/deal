@@ -208,7 +208,7 @@ def remove_import():
         :raises KeyError: some junk
         :returns: RuntimeError
         """,
-        id="sphinx",
+        id='sphinx',
     ),
     # epydoc
     pytest.param(
@@ -219,7 +219,7 @@ def remove_import():
         @raise: something
         @return: RuntimeError
         """,
-        id="epydoc",
+        id='epydoc',
     ),
     # google
     pytest.param(
@@ -232,7 +232,7 @@ def remove_import():
         Returns:
             RuntimeError
         """,
-        id="google",
+        id='google',
     ),
     # numpy
     pytest.param(
@@ -248,7 +248,7 @@ def remove_import():
         -------
         RuntimeError
         """,
-        id="numpy",
+        id='numpy',
     ),
 ])
 @pytest.mark.parametrize('patch_third_party', [True, False])
