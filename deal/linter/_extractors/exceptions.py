@@ -2,7 +2,6 @@ import ast
 import builtins
 import re
 from inspect import cleandoc
-from itertools import zip_longest
 from typing import Iterator, Optional, Union
 
 import astroid
@@ -145,11 +144,15 @@ def _excs_from_doc(doc: Optional[str]) -> Iterator[str]:
 
     google_section = ''
     numpy_section = ''
-    lines = cleandoc(doc).splitlines()
-    for line, next_line in zip_longest(lines, lines[1:]):
+    google_section_indent = 4
+    numpy_section_indent = 0
+    lines = cleandoc(doc).splitlines() + ['']
+    for line, next_line in zip(lines, lines[1:]):
         words = line.split()
         if not words:
             continue
+        indent = _get_indent(line)
+        is_numpy_header = _is_header_highlight(next_line)
 
         # sphinx and epydoc docstring
         if len(words) >= 2 and words[0] in (':raises', '@raise'):
@@ -157,24 +160,28 @@ def _excs_from_doc(doc: Optional[str]) -> Iterator[str]:
             continue
 
         # google docstring
-        if REX_GOOGLE_SECTION.fullmatch(line):
+        if REX_GOOGLE_SECTION.fullmatch(line) and not is_numpy_header:
             google_section = line.strip().rstrip(':').lower()
+            google_section_indent = _get_indent(next_line)
             continue
-        indent = len(line) - len(line.lstrip())
-        if google_section == 'raises' and indent == 4:
+        if google_section == 'raises' and indent == google_section_indent:
             yield words[0].rstrip(':')
             continue
 
         # numpy docstring
-        if next_line is not None:
-            next_line = next_line.strip()
-            if _is_header_highlight(next_line):
-                numpy_section = line.strip().rstrip(':').lower()
-                continue
-        if _is_header_highlight(line):
+        next_line = next_line.strip()
+        if is_numpy_header:
+            numpy_section = line.strip().rstrip(':').lower()
             continue
-        if numpy_section == 'raises' and line == line.lstrip() and indent == 0:
+        if _is_header_highlight(line):
+            numpy_section_indent = _get_indent(next_line)
+            continue
+        if numpy_section == 'raises' and indent == numpy_section_indent:
             yield line.rstrip()
+
+
+def _get_indent(line: str) -> int:
+    return len(line) - len(line.lstrip())
 
 
 def _is_header_highlight(line: str) -> bool:
