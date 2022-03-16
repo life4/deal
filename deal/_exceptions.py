@@ -187,6 +187,12 @@ class NoMatchError(Exception):
         return '; '.join(str(e) for e in self.exceptions)
 
 
+class SolverImportError(ImportError):
+    """The error raised by deal._prove when deal_solver is required but cannot
+    be imported.
+    """
+
+
 # Patch module name to show in repr `deal` instead of `deal._exceptions`
 for cls in ContractError.__subclasses__():
     cls.__module__ = 'deal'
