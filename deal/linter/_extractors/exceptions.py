@@ -14,7 +14,7 @@ from .contracts import get_contracts
 try:
     import docstring_parser
 except ImportError:
-    docstring_parser = None  # type: ignore[assignment]
+    docstring_parser = None
 
 
 get_exceptions = Extractor()
