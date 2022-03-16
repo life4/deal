@@ -31,13 +31,13 @@ requires = [
 [tool.flit.metadata.requires-extra]
 all = [
     "deal-solver",
-    "docstring-parser",
     "hypothesis",
     "pygments",
     "typeguard",
 ]
 test = [
     "coverage[toml]",
+    "docstring-parser",
     "isort",
     "marshmallow",
     "pytest-cov",
@@ -47,7 +47,6 @@ test = [
 
     # copy-pasted "all" extra
     "deal-solver",
-    "docstring-parser",
     "hypothesis",
     "pygments",
     "typeguard",
