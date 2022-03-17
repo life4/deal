@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Dict, Iterator, TextIO
 
 from .._colors import get_colors
-from .._exceptions import SolverImportError
 from ..linter._extractors import get_contracts
 from ._base import Command
 from ._common import get_paths
@@ -13,8 +12,7 @@ from ._common import get_paths
 try:
     import deal_solver
 except ImportError:
-    raise SolverImportError
-
+    deal_solver = None
 
 if TYPE_CHECKING:
     import astroid

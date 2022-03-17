@@ -13,12 +13,9 @@ def get_commands() -> CommandsType:
     from ._decorate import DecorateCommand
     from ._lint import LintCommand
     from ._memtest import MemtestCommand
+    from ._prove import ProveCommand
     from ._stub import StubCommand
     from ._test import TestCommand
-    try:
-        from ._prove import ProveCommand
-    except SolverImportError:
-        ProveCommand = Command()
 
     return dict(
         decorate=DecorateCommand,
