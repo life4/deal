@@ -11,8 +11,9 @@ from ._common import get_paths
 
 try:
     import deal_solver
+    from deal_solver import Theorem
 except ImportError:
-    deal_solver = None
+    Theorem = object
 
 if TYPE_CHECKING:
     import astroid
@@ -23,7 +24,7 @@ TEMPLATE_FUN = '  {magenta}{name}{end}'
 TEMPLATE_CON = '    {color}{p.conclusion.value}{end} {p}'
 
 
-class DealTheorem(deal_solver.Theorem):
+class DealTheorem(Theorem):
     @staticmethod
     def get_contracts(func: 'astroid.FunctionDef') -> Iterator['deal_solver.Contract']:
         for contract in get_contracts(func):
