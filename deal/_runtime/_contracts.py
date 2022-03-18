@@ -53,6 +53,8 @@ class Contracts(Generic[F]):
 
     @classmethod
     def attach(cls, contract_type: str, validator: 'Validator', func: F) -> F:
+        if state.removed:
+            return func
         contracts = cls._ensure_wrapped(func)
         validator.function = func
         getattr(contracts, contract_type).append(validator)
@@ -60,6 +62,8 @@ class Contracts(Generic[F]):
 
     @classmethod
     def attach_has(cls, patcher: 'HasPatcher', func: F) -> F:
+        if state.removed:
+            return func
         contracts = cls._ensure_wrapped(func)
         contracts.patcher = patcher
         return contracts.wrapped
