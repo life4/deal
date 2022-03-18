@@ -11,9 +11,12 @@ from ._common import get_paths
 
 try:
     import deal_solver
+except ImportError:
+    deal_solver = None  # type: ignore[assignment]
+try:
     from deal_solver import Theorem
 except ImportError:
-    Theorem = object
+    Theorem = object  # type: ignore[misc,assignment]
 
 if TYPE_CHECKING:
     import astroid
@@ -30,7 +33,7 @@ class DealTheorem(Theorem):
         for contract in get_contracts(func):
             yield deal_solver.Contract(
                 name=contract.name,
-                args=contract.args,
+                args=contract.args,  # type: ignore[arg-type]
             )
 
 

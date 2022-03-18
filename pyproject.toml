@@ -58,6 +58,12 @@ lint = [
     "mypy>=0.900",
     "mypy_test>=0.1.1",
     "isort",
+
+    # copy-pasted "all" extra
+    "deal-solver",
+    "hypothesis",
+    "pygments",
+    "typeguard",
 ]
 docs = [
     "m2r2",
