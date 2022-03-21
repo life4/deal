@@ -1,3 +1,4 @@
+import os
 import pytest
 
 import deal
@@ -114,3 +115,58 @@ def test_state_switch_activate(restore_state):
 
     deal.disable()
     assert not deal.activate()
+
+
+@pytest.fixture
+def set_env_vars():
+    old_vars = os.environ.copy()
+    yield os.environ.update
+    os.environ.clear()
+    os.environ.update(old_vars)
+
+
+@pytest.mark.parametrize('env_vars, expected', [
+    (dict(), None),
+    (dict(CI='true'), None),
+    (dict(GCLOUD_PROJECT='example'), 'It is GCP but deal is enabled'),
+    (dict(LAMBDA_TASK_ROOT='/home/'), 'It is AWS but deal is enabled'),
+])
+def test_enable__warnings(restore_state, env_vars, set_env_vars, expected):
+    os.environ.clear()
+    set_env_vars(env_vars)
+    ewarn = RuntimeWarning if expected else None
+    with pytest.warns(ewarn) as warns:
+        deal.enable()
+    if expected:
+        assert len(warns) == 1
+        assert str(warns[0].message) == f'{expected}. Is it intentional?'
+    else:
+        assert len(warns) == 0
+
+    with pytest.warns(None) as warns:
+        deal.enable(warn=False)
+    assert len(warns) == 0
+
+
+@pytest.mark.parametrize('env_vars, expected', [
+    (dict(), None),
+    (dict(GCLOUD_PROJECT='example'), None),
+    (dict(LAMBDA_TASK_ROOT='/home/'), None),
+    (dict(CI='true'), 'It is CI but deal is disabled'),
+    (dict(PYTEST_CURRENT_TEST='test_example'), 'It is pytest but deal is disabled'),
+])
+def test_disable__warnings(restore_state, env_vars, set_env_vars, expected):
+    os.environ.clear()
+    set_env_vars(env_vars)
+    ewarn = RuntimeWarning if expected else None
+    with pytest.warns(ewarn) as warns:
+        deal.disable()
+    if expected:
+        assert len(warns) == 1
+        assert str(warns[0].message) == f'{expected}. Is it intentional?'
+    else:
+        assert len(warns) == 0
+
+    with pytest.warns(None) as warns:
+        deal.disable(warn=False)
+    assert len(warns) == 0
