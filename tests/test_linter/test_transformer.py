@@ -417,11 +417,37 @@ def test_transformer_has(content: str, tmp_path: Path) -> None:
 
 
 @pytest.mark.parametrize('content', [
-    # add deal.pure
+    # add @deal.pure
     """
         def f():
             return 1
         ---
+        @deal.pure
+        def f():
+            return 1
+    """,
+    # if not merged into @deal.pure, remove @deal.safe
+    """
+        def f():
+            print("hi")
+        ---
+        def f():
+            print("hi")
+    """,
+    # if not merged into @deal.pure, remove @deal.has()
+    """
+        def f():
+            return 1/0
+        ---
+        def f():
+            return 1/0
+    """,
+    """
+        @property
+        def f():
+            return 1
+        ---
+        @property  # type: ignore[misc]
         @deal.pure
         def f():
             return 1
@@ -434,7 +460,7 @@ def test_transformer_pure(content: str, tmp_path: Path) -> None:
     tr = Transformer(
         content=given,
         path=tmp_path / 'example.py',
-        types={TransformationType.PURE, TransformationType.HAS, TransformationType.SAFE},
+        types={TransformationType.PURE},
     )
     actual = tr.transform()
     assert actual == expected

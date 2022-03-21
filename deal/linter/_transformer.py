@@ -129,7 +129,7 @@ class Transformer(NamedTuple):
         if not excs:
             if declared:
                 return
-            if TransformationType.SAFE not in self.types:
+            if self._disabled(TransformationType.SAFE, TransformationType.PURE):
                 return
             if func.has_contract(Category.PURE, Category.SAFE):
                 return
@@ -142,7 +142,7 @@ class Transformer(NamedTuple):
             return
 
         # if new exceptions detected, remove old contracts and add a new deal.raises
-        if TransformationType.RAISES not in self.types:
+        if self._disabled(TransformationType.RAISES):
             return
         for contract in func.contracts:
             if contract.category not in cats:
@@ -173,7 +173,7 @@ class Transformer(NamedTuple):
     def _mutations_markers(self, func: Func) -> Iterator[Mutation]:
         """Add @deal.has if needed.
         """
-        if TransformationType.HAS not in self.types:
+        if self._disabled(TransformationType.HAS, TransformationType.PURE):
             return
         cats = {Category.HAS, Category.PURE}
 
@@ -246,7 +246,7 @@ class Transformer(NamedTuple):
     def _mutations_import(self, tree: astroid.Module) -> Iterator[Mutation]:
         """Add `import deal` if needed.
         """
-        if TransformationType.IMPORT not in self.types:
+        if self._disabled(TransformationType.IMPORT):
             return
         if not self.mutations:
             return
@@ -272,7 +272,7 @@ class Transformer(NamedTuple):
     def _mutations_pure(self) -> Iterator[Mutation]:
         """Merge `@deal.safe` and `@deal.has` into `@deal.pure` if needed.
         """
-        if TransformationType.PURE not in self.types:
+        if self._disabled(TransformationType.PURE):
             return
         if not self.mutations:
             return
@@ -283,7 +283,7 @@ class Transformer(NamedTuple):
         for mut in self.mutations:
             if not isinstance(mut, InsertContract):
                 continue
-            if mut.contract == Category.HAS:
+            if mut.contract == Category.HAS and mut.args == []:
                 lines_has.add(mut.line)
             if mut.contract == Category.SAFE:
                 lines_safe.add(mut.line)
@@ -301,6 +301,19 @@ class Transformer(NamedTuple):
             self.mutations.remove(mut)
             if mut.contract == Category.SAFE:
                 yield mut._replace(contract=Category.PURE)
+
+        # If PURE tranformation is enabled,
+        # we emit @deal.safe and @deal.has even if they are disabled, so they can be
+        # merged into @deal.pure. So, if they are disabled and were not merged,
+        # drop them here.
+        if self._disabled(TransformationType.SAFE):
+            for mut in self.mutations.copy():
+                if isinstance(mut, InsertContract) and mut.contract == Category.SAFE:
+                    self.mutations.remove(mut)
+        if self._disabled(TransformationType.HAS):
+            for mut in self.mutations.copy():
+                if isinstance(mut, InsertContract) and mut.contract == Category.HAS:
+                    self.mutations.remove(mut)
 
     @staticmethod
     def _get_insert_line(func: Func) -> int:
@@ -328,3 +341,8 @@ class Transformer(NamedTuple):
         for mutation in self.mutations:
             mutation.apply(lines)
         return ''.join(lines)
+
+    def _disabled(self, *expected: TransformationType) -> bool:
+        """Check if all of the given types are disabled.
+        """
+        return not bool(self.types & set(expected))
