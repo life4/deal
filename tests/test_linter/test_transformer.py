@@ -417,6 +417,30 @@ def test_transformer_has(content: str, tmp_path: Path) -> None:
 
 
 @pytest.mark.parametrize('content', [
+    # add deal.pure
+    """
+        def f():
+            return 1
+        ---
+        @deal.pure
+        def f():
+            return 1
+    """,
+])
+def test_transformer_pure(content: str, tmp_path: Path) -> None:
+    given, expected = content.split('---')
+    given = dedent(given)
+    expected = dedent(expected)
+    tr = Transformer(
+        content=given,
+        path=tmp_path / 'example.py',
+        types={TransformationType.PURE, TransformationType.HAS, TransformationType.SAFE},
+    )
+    actual = tr.transform()
+    assert actual == expected
+
+
+@pytest.mark.parametrize('content', [
     # add import if needed
     """
         def f():

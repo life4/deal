@@ -29,7 +29,7 @@ class DecorateCommand(Command):
             '--types',
             nargs='*',
             choices=[tt.value for tt in TransformationType],
-            default=['has', 'raises', 'safe', 'import'],
+            default=['has', 'raises', 'safe', 'import', 'pure'],
             help='types of decorators to apply',
         )
         parser.add_argument(

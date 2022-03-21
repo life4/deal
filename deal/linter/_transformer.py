@@ -17,6 +17,7 @@ class TransformationType(Enum):
     RAISES = 'raises'
     HAS = 'has'
     SAFE = 'safe'
+    PURE = 'pure'
     IMPORT = 'import'
 
 
@@ -97,6 +98,7 @@ class Transformer(NamedTuple):
         tree = astroid.parse(self.content, path=self.path)
         for func in Func.from_astroid(tree):
             self._collect_mutations(func)
+        self.mutations.extend(self._mutations_pure())
         self.mutations.extend(self._mutations_import(tree))
         return self._apply_mutations(self.content)
 
@@ -267,7 +269,41 @@ class Transformer(NamedTuple):
                     line = stmt.lineno + 1
         yield InsertText(line=line, text='import deal')
 
-    def _get_insert_line(self, func: Func) -> int:
+    def _mutations_pure(self) -> Iterator[Mutation]:
+        """Merge `@deal.safe` and `@deal.has` into `@deal.pure` if needed.
+        """
+        if TransformationType.PURE not in self.types:
+            return
+        if not self.mutations:
+            return
+
+        # find lines that have both @deal.has and @deal.safe
+        lines_has = set()
+        lines_safe = set()
+        for mut in self.mutations:
+            if not isinstance(mut, InsertContract):
+                continue
+            if mut.contract == Category.HAS:
+                lines_has.add(mut.line)
+            if mut.contract == Category.SAFE:
+                lines_safe.add(mut.line)
+        lines = lines_safe & lines_has
+
+        # remove @deal.has and @deal.safe mutations, replace by @deal.pure
+        old_cats = {Category.HAS, Category.SAFE}
+        for mut in self.mutations.copy():
+            if not isinstance(mut, InsertContract):
+                continue
+            if mut.line not in lines:
+                continue
+            if mut.contract not in old_cats:
+                continue
+            self.mutations.remove(mut)
+            if mut.contract == Category.SAFE:
+                yield mut._replace(contract=Category.PURE)
+
+    @staticmethod
+    def _get_insert_line(func: Func) -> int:
         assert isinstance(func.node, astroid.FunctionDef)
         line = func.line
         if func.node.decorators is None:
