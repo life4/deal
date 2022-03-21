@@ -30,6 +30,7 @@ class TOKENS:
     RAISE: N[ast.Raise] = (ast.Raise, astroid.Raise)
     RETURN: N[ast.Return] = (ast.Return, astroid.Return)
     YIELD: N[ast.Yield] = (ast.Yield, astroid.Yield)
+    YIELD_FROM: N[ast.YieldFrom] = (ast.YieldFrom, astroid.YieldFrom)
 
 
 DEFAULT_LINE = 0

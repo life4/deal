@@ -8,8 +8,9 @@ get_returns = Extractor()
 
 
 def has_returns(body: list) -> bool:
+    expected = TOKENS.RETURN + TOKENS.YIELD + TOKENS.YIELD_FROM + TOKENS.RAISE
     for expr in traverse(body=body):
-        if isinstance(expr, TOKENS.RETURN + TOKENS.YIELD):
+        if isinstance(expr, expected):
             return True
     return False
 
