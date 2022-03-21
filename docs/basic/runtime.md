@@ -25,6 +25,14 @@ deal.enable()
 deal.reset()
 ```
 
+## Permamently disable contracts
+
+When contracts are disabled, functions are still get wrapped in case you want to enable contracts again, after all functions already initialized. That means, even if you disable contracts, there is still a small overhead in runtime that might be critical in for some applications. To avoid it and tell deal to disable contracts permanently, call `deal.disable(permament=True)`. There is what you should know:
+
+1. If you permamently disable the contracts, you cannot enable them anymore. Trying to do so will raise `RuntimeError`.
+1. This flag is checked only when functions are decorated, so you need to call it before importing any decorated functions.
+1. Functions that were decorated before you permamently disabled contracts will behave in the same way as if you just called `deal.disable()`, with a quick check of the state in runtime on each call.
+
 ## Colors
 
 If no error message or custom exception specified for a contract, deal will show contract source code and passed parameters as the exception message. By default, deal highlights syntax for this source code. If your terminal doesn't support colors (which is possible on CI), you can specify `NO_COLOR` environment variable to disable syntax highlighting:
