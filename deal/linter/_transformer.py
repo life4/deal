@@ -205,7 +205,7 @@ class Transformer(NamedTuple):
             )
             return
 
-        # if new markers detected, remove old contracts and add a new deal.raises
+        # if new markers detected, remove old contracts and add a new deal.has
         for contract in func.contracts:
             if contract.category not in cats:
                 continue

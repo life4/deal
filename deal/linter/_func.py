@@ -22,6 +22,18 @@ class Func(NamedTuple):
     def col(self) -> int:
         return self.node.col_offset
 
+    @property
+    def has_self(self) -> bool:
+        """Check if the first function argument is `self`.
+        """
+        args = self.node.args.args
+        if not args:
+            return False
+        arg = args[0]
+        if isinstance(arg, ast.arg):
+            return arg.arg == 'self'
+        return arg.name == 'self'
+
     @classmethod
     def from_path(cls, path: Path) -> List['Func']:
         text = path.read_text()
@@ -110,6 +122,8 @@ class Func(NamedTuple):
                     yield stmt
 
     def has_contract(self, *categories: Category) -> bool:
+        """Check if the function has a contract from any of the given categories.
+        """
         for contract in self.contracts:
             if contract.category in categories:
                 return True
