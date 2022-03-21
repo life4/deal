@@ -2,8 +2,8 @@ from functools import update_wrapper
 from types import FunctionType, MethodType
 from typing import Callable, Generic, Optional, TypeVar
 
-from ._contracts import Contracts
 from .._state import state
+from ._contracts import Contracts
 
 
 F = TypeVar('F', bound=Callable)

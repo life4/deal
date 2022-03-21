@@ -1,6 +1,6 @@
 import os
-from types import MappingProxyType
 import warnings
+from types import MappingProxyType
 from typing import Callable, Mapping, TypeVar
 
 

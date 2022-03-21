@@ -1,10 +1,11 @@
 import os
+
 import pytest
 
 import deal
 import deal.introspection
-from deal._state import state
 from deal._imports import deactivate
+from deal._state import state
 
 from .test_runtime.helpers import run_sync
 
