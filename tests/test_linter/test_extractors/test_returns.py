@@ -18,6 +18,7 @@ from deal.linter._extractors import get_returns, has_returns
     ('return True', (True, )),
     ('return None', (None, )),
     ('return [1,2,3]', ([1, 2, 3], )),
+    ('return', (None, )),
 
     ('if True: return 13', (13, )),
     ('if True:\n  return 13\nelse:\n  return 16', (13, 16)),
@@ -30,6 +31,7 @@ from deal.linter._extractors import get_returns, has_returns
     ('yield -1', (-1, )),
     ('yield True', (True, )),
     ('yield a', ()),
+    ('yield', (None, )),
 ])
 def test_get_returns_simple(text, expected):
     tree = astroid.parse(text)

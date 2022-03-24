@@ -1,4 +1,6 @@
-from typing import Optional
+import ast
+import astroid
+from typing import Optional, Union
 
 from .common import TOKENS, Extractor, Token, traverse
 from .value import UNKNOWN, get_value
@@ -16,7 +18,9 @@ def has_returns(body: list) -> bool:
 
 
 @get_returns.register(*TOKENS.RETURN)
-def handle_return(expr) -> Optional[Token]:
+def handle_return(expr: Union[ast.Return, astroid.Return]) -> Optional[Token]:
+    if expr.value is None:
+        return Token(value=None, line=expr.lineno, col=expr.col_offset)
     value = get_value(expr=expr.value)
     if value is UNKNOWN:
         return None
@@ -24,7 +28,9 @@ def handle_return(expr) -> Optional[Token]:
 
 
 @get_returns.register(*TOKENS.YIELD)
-def handle_yield(expr) -> Optional[Token]:
+def handle_yield(expr: Union[ast.Yield, astroid.Yield]) -> Optional[Token]:
+    if expr.value is None:
+        return Token(value=None, line=expr.lineno, col=expr.col_offset)
     value = get_value(expr=expr.value)
     if value is UNKNOWN:
         return None
