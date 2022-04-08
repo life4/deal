@@ -63,7 +63,7 @@ class TestCase(typing.NamedTuple):
         return result
 
     def _check_result(self, result: typing.Any) -> None:
-        if not self.check_types:
+        if not self.check_types or typeguard is None:
             return
         memo = typeguard._CallMemo(
             func=self.func,
