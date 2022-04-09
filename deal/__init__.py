@@ -23,7 +23,7 @@ from ._testing import TestCase, cases
 
 
 __title__ = 'deal'
-__version__ = '4.21.1'
+__version__ = '4.21.2'
 __author__ = 'Gram (@orsinium)'
 __license__ = 'MIT'
 __all__ = [
