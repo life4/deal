@@ -2,6 +2,7 @@ from functools import update_wrapper
 from types import FunctionType, MethodType
 from typing import Callable, Generic, Optional, TypeVar
 
+from .._state import state
 from ._contracts import Contracts
 
 
@@ -22,6 +23,9 @@ class Inherit(Generic[F]):
 
     @classmethod
     def wrap(cls, target):
+        if state.removed:
+            return target
+
         # wrap function
         if not isinstance(target, type):
             return cls(target)
