@@ -124,17 +124,15 @@ def _exceptions_from_func(expr: Union[ast.Call, astroid.Call]) -> Iterator[Token
 
         # get exceptions from the docstring
         name: str
-        for name in _excs_from_doc(value.doc):
-            name = getattr(builtins, name, name)
-            yield Token(value=name)
+        if value.doc_node is not None:
+            for name in _excs_from_doc(value.doc_node.value):
+                name = getattr(builtins, name, name)
+                yield Token(value=name)
     return None
 
 
 # TODO: use it on the target function docstring too
-def _excs_from_doc(doc: Optional[str]) -> Iterator[str]:
-    if doc is None:
-        return
-
+def _excs_from_doc(doc: str) -> Iterator[str]:
     if docstring_parser is not None:
         parsed = docstring_parser.parse(doc)
         for exc_info in parsed.raises:

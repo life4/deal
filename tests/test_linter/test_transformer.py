@@ -584,3 +584,42 @@ def test_transformer_import(content: str, tmp_path: Path) -> None:
     )
     actual = tr.transform()
     assert actual.lstrip('\n') == expected.lstrip('\n')
+
+
+def test_transformer_smoke(tmp_path: Path) -> None:
+    given = dedent("""
+        @deal.pre(lambda: True)
+        def f():
+            return 1
+
+        def f():
+            return 1/0
+
+        @deal.raises(ValueError)
+        def f():
+            pass
+    """).lstrip('\n')
+    expected = dedent("""
+        import deal
+        @deal.pure
+        @deal.pre(lambda: True)
+        def f():
+            return 1
+
+        @deal.has()
+        @deal.raises(ZeroDivisionError)
+        def f():
+            return 1/0
+
+        @deal.has('io')
+        @deal.raises(ValueError)
+        def f():
+            pass
+    """)
+    tr = Transformer(
+        content=given,
+        path=tmp_path / 'example.py',
+        types=set(TransformationType),
+    )
+    actual = tr.transform()
+    assert actual.lstrip('\n') == expected.lstrip('\n')

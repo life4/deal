@@ -296,8 +296,7 @@ class Transformer(NamedTuple):
                 continue
             if mut.line not in lines:
                 continue
-            if mut.contract not in old_cats:
-                continue
+            assert mut.contract in old_cats, "unexpected contract added"
             self.mutations.remove(mut)
             if mut.contract == Category.SAFE:
                 yield mut._replace(contract=Category.PURE)
