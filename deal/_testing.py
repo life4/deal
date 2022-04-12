@@ -9,10 +9,6 @@ from ._cached_property import cached_property
 
 
 try:
-    import typeguard
-except ImportError:
-    typeguard = None    # type: ignore[assignment]
-try:
     import hypothesis
 except ImportError:
     hypothesis = None   # type: ignore[assignment]
@@ -62,7 +58,11 @@ class TestCase(NamedTuple):
         return result
 
     def _check_result(self, result: Any) -> None:
-        if not self.check_types or typeguard is None:
+        if not self.check_types:
+            return
+        try:
+            import typeguard
+        except ImportError:
             return
         memo = typeguard._CallMemo(
             func=self.func,
@@ -120,8 +120,8 @@ class cases:  # noqa: N
         """
         if hypothesis is None:  # pragma: no cover
             raise ImportError('hypothesis is not installed')
-        if check_types is True and typeguard is None:  # pragma: no cover
-            raise ImportError('typeguard is not installed')
+        if check_types is True:  # pragma: no cover
+            import typeguard  # noqa: F401
         if check_types is None:
             check_types = True
 
