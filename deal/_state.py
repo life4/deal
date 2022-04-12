@@ -52,7 +52,8 @@ class _State:
             raise PERMAMENT_ERROR
         self.debug = True
         if warn:
-            if not __debug__:
+            # coverage freaks out here on Python 3.10
+            if not __debug__:  # pragma: no cover
                 msg = 'It is production but deal is enabled. Is it intentional?'
                 warnings.warn(msg, category=RuntimeWarning)
             else:
