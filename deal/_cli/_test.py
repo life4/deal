@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import re
 import sys
 import traceback
@@ -7,7 +9,7 @@ from functools import update_wrapper
 from importlib import import_module
 from pathlib import Path
 from textwrap import indent
-from typing import Dict, Iterable, Iterator, TextIO, TypeVar
+from typing import Iterable, Iterator, TextIO, TypeVar
 
 from .._colors import COLORS
 from .._testing import TestCase, cases
@@ -100,7 +102,7 @@ def run_cases(
     cases: Iterator[TestCase],
     func_name: str,
     stream: TextIO,
-    colors: Dict[str, str],
+    colors: dict[str, str],
 ) -> bool:
     print('  {blue}running {name}{end}'.format(name=func_name, **colors), file=stream)
     for case in cases:
@@ -118,7 +120,7 @@ def run_cases(
     return True
 
 
-def format_coverage(tresult: TraceResult, colors: Dict[str, str]) -> str:
+def format_coverage(tresult: TraceResult, colors: dict[str, str]) -> str:
     cov = tresult.coverage
     if cov >= 85:
         color = colors['green']

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Callable, Iterator, TypeVar
 
 from .._runtime import Contracts, Inherit

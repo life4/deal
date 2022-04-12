@@ -1,4 +1,6 @@
-from typing import FrozenSet, Optional, Tuple, Type
+from __future__ import annotations
+
+from typing import Optional
 
 from .._cached_property import cached_property
 from .._runtime import HasPatcher, RaisesValidator, ReasonValidator, Validator
@@ -22,7 +24,7 @@ class Contract:
         return self._wrapped.exception
 
     @property
-    def exception_type(self) -> Type[Exception]:
+    def exception_type(self) -> type[Exception]:
         """The type of the exception raised if the contract is not satisfied.
         """
         return self._wrapped.exception_type
@@ -92,7 +94,7 @@ class Raises(Contract):
     _wrapped: RaisesValidator
 
     @property
-    def exceptions(self) -> Tuple[Type[Exception], ...]:
+    def exceptions(self) -> tuple[type[Exception], ...]:
         """Exceptions that the function can raise.
         """
         return self._wrapped.exceptions
@@ -104,7 +106,7 @@ class Reason(ValidatedContract):
     _wrapped: ReasonValidator
 
     @property
-    def event(self) -> Type[Exception]:
+    def event(self) -> type[Exception]:
         """The exception for which the validator is provided.
         """
         return self._wrapped.event
@@ -124,7 +126,7 @@ class Has(Contract):
         return self._patcher.exception
 
     @property
-    def exception_type(self) -> Type[Exception]:
+    def exception_type(self) -> type[Exception]:
         return self._patcher.exception_type
 
     @property
@@ -132,7 +134,7 @@ class Has(Contract):
         return self._patcher.message
 
     @property
-    def markers(self) -> FrozenSet[str]:
+    def markers(self) -> frozenset[str]:
         """Side-effects that the function may have.
         """
         return self._patcher.markers

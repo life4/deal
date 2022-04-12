@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 import ast
 from itertools import chain
-from typing import List
 
 import astroid
 
@@ -49,7 +50,7 @@ def _has_result_arg(validator) -> bool:
 
 
 def _is_simple_validator(validator) -> bool:
-    arg_names: List[str]
+    arg_names: list[str]
     if isinstance(validator, ast.Lambda):
         arg_names = [arg.arg for arg in validator.args.args]
     if isinstance(validator, astroid.Lambda):

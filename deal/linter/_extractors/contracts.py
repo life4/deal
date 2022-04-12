@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 import ast
-from typing import Iterator, List, NamedTuple, Optional, Union
+from typing import Iterator, NamedTuple, Optional, Union
 
 import astroid
 
@@ -22,7 +24,7 @@ Attr = Union[ast.Attribute, astroid.Attribute]
 
 class ContractInfo(NamedTuple):
     name: str
-    args: List[Union[ast.expr, astroid.Expr]]
+    args: list[Union[ast.expr, astroid.Expr]]
     line: int
 
 

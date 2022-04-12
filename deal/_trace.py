@@ -1,15 +1,17 @@
+from __future__ import annotations
+
 import ast
 import inspect
 import sys
 from trace import Trace
-from typing import Any, Callable, Iterator, NamedTuple, Optional, Set, Tuple
+from typing import Any, Callable, Iterator, NamedTuple, Optional
 
 
 class TraceResult(NamedTuple):
     file_name: str
     func_result: Any
-    covered_lines: Set[int]
-    all_lines: Set[int]
+    covered_lines: set[int]
+    all_lines: set[int]
 
     @property
     def coverage(self) -> int:
@@ -53,7 +55,7 @@ def _collect_trace_results(t: Trace, func, file_name: str, func_result) -> Trace
     first_line = min(all_lines)
     last_line = max(all_lines)
 
-    covered_lines: Set[int] = set()
+    covered_lines: set[int] = set()
     for fname, lineno in t.counts:  # type: ignore
         assert fname == file_name
         if lineno < first_line:
@@ -70,7 +72,7 @@ def _collect_trace_results(t: Trace, func, file_name: str, func_result) -> Trace
     )
 
 
-def _get_func_body_statements(func: Callable) -> Set[int]:
+def _get_func_body_statements(func: Callable) -> set[int]:
     func_name = func.__name__
     file_name = func.__code__.co_filename
 
@@ -82,7 +84,7 @@ def _get_func_body_statements(func: Callable) -> Set[int]:
         first_line = func.__code__.co_firstlineno
         return {first_line}
 
-    result: Set[int] = set()
+    result: set[int] = set()
     for statement in func_node.body:
         for node in ast.walk(statement):
             # skip nodes without lineno
@@ -105,7 +107,7 @@ def _get_func_node(func_name: str, tree: ast.Module) -> Optional[ast.FunctionDef
     return None
 
 
-def format_lines(statements: Set[int], lines: Set[int]) -> str:
+def format_lines(statements: set[int], lines: set[int]) -> str:
     pairs = []
     for start, end in _line_ranges(statements, lines):
         if start == end:
@@ -115,7 +117,7 @@ def format_lines(statements: Set[int], lines: Set[int]) -> str:
     return ', '.join(pairs)
 
 
-def _line_ranges(statements: Set[int], lines: Set[int]) -> Iterator[Tuple[int, int]]:
+def _line_ranges(statements: set[int], lines: set[int]) -> Iterator[tuple[int, int]]:
     statements = sorted(statements)
     lines = sorted(lines)
     start = 0

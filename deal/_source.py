@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import inspect
 import tokenize
 from textwrap import dedent
@@ -47,7 +49,7 @@ def get_validator_source(validator) -> str:
     return ' '.join(lines).replace('_.', '').lstrip()
 
 
-def _clear_lines(lines: List[str]) -> List[str]:
+def _clear_lines(lines: list[str]) -> list[str]:
     lines = [line.rstrip() for line in lines]
     lines = [line for line in lines if line]
     # drop trailing comma
@@ -56,7 +58,7 @@ def _clear_lines(lines: List[str]) -> List[str]:
     return lines
 
 
-def _get_tokens(lines: List[str]) -> List[tokenize.TokenInfo]:
+def _get_tokens(lines: list[str]) -> list[tokenize.TokenInfo]:
     tokens = tokenize.generate_tokens(iter(lines).__next__)
     exclude = {tokenize.INDENT, tokenize.DEDENT, tokenize.ENDMARKER}
     return [token for token in tokens if token.type not in exclude]

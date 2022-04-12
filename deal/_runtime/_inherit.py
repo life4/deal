@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from functools import update_wrapper
 from types import FunctionType, MethodType
 from typing import Callable, Generic, Optional, TypeVar

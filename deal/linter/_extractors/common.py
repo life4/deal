@@ -1,11 +1,11 @@
+from __future__ import annotations
+
 import ast
 from collections import deque
 from contextlib import suppress
 from functools import partial
 from pathlib import Path
-from typing import (
-    Callable, Dict, Iterator, List, NamedTuple, Optional, Tuple, Type, TypeVar, Union,
-)
+from typing import Callable, Iterator, NamedTuple, Optional, Tuple, Type, TypeVar, Union
 
 import astroid
 
@@ -44,7 +44,7 @@ class Token(NamedTuple):
     marker: Optional[str] = None  # marker name or error message
 
 
-def traverse(body: List[Node]) -> Iterator[Node]:
+def traverse(body: list[Node]) -> Iterator[Node]:
     for expr in body:
         if isinstance(expr, ast.AST):
             yield from _traverse_ast(expr)
@@ -159,7 +159,7 @@ def _get_module(expr: astroid.NodeNG) -> Optional[astroid.Module]:
 
 class Extractor:
     __slots__ = ('handlers', )
-    handlers: Dict[type, Handler]
+    handlers: dict[type, Handler]
 
     def __init__(self) -> None:
         self.handlers = dict()
@@ -176,7 +176,7 @@ class Extractor:
             self.handlers[tp] = handler
         return handler
 
-    def __call__(self, body: List, **kwargs) -> Iterator[Token]:
+    def __call__(self, body: list, **kwargs) -> Iterator[Token]:
         for expr in traverse(body=body):
             for token in self._handle(expr=expr, **kwargs):
                 yield self._ensure_node_info(expr=expr, token=token)

@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 import inspect
 from contextlib import suppress
 from functools import lru_cache
-from typing import Any, Callable, Dict, Optional, Tuple, Type
+from typing import Any, Callable, Optional
 
 import vaa
 
@@ -17,10 +19,10 @@ def _get_signature(function: Callable) -> inspect.Signature:
 def _args_to_vars(
     *,
     args,
-    kwargs: Dict[str, Any],
+    kwargs: dict[str, Any],
     signature: Optional[inspect.Signature],
     keep_result: bool = True,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Convert args and kwargs into dict of params based on the given function.
 
     For simple validators the validator is passed as function.
@@ -75,7 +77,7 @@ class Validator:
             self.exception = self.exception(message)
 
     @property
-    def exception_type(self) -> Type[Exception]:
+    def exception_type(self) -> type[Exception]:
         if isinstance(self.exception, Exception):
             return type(self.exception)
         return self.exception
@@ -199,7 +201,7 @@ class Validator:
 
 class RaisesValidator(Validator):
     __slots__ = ('exceptions', )
-    exceptions: Tuple[Type[Exception]]
+    exceptions: tuple[type[Exception]]
 
     def __init__(self, exceptions, exception, message) -> None:
         self.exceptions = exceptions
@@ -224,7 +226,7 @@ class RaisesValidator(Validator):
 
 class ReasonValidator(Validator):
     __slots__ = ('event', )
-    event: Type[Exception]
+    event: type[Exception]
 
     def __init__(self, event, **kwargs) -> None:
         self.event = event

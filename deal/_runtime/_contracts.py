@@ -1,9 +1,9 @@
+from __future__ import annotations
+
 from asyncio import iscoroutinefunction
 from functools import update_wrapper
 from inspect import isgeneratorfunction
-from typing import (
-    TYPE_CHECKING, Callable, Dict, Generic, List, Optional, Tuple, Type, TypeVar,
-)
+from typing import TYPE_CHECKING, Callable, Generic, Optional, TypeVar
 
 from .._exceptions import ContractError
 from .._state import state
@@ -33,12 +33,12 @@ class Contracts(Generic[F]):
 
     func: F
     wrapped: F
-    pres: List['Validator']
-    posts: List['Validator']
-    ensures: List['Validator']
-    examples: List['Validator']
-    raises: List['RaisesValidator']
-    reasons: List['ReasonValidator']
+    pres: list['Validator']
+    posts: list['Validator']
+    ensures: list['Validator']
+    examples: list['Validator']
+    raises: list['RaisesValidator']
+    reasons: list['ReasonValidator']
     patcher: Optional['HasPatcher']
 
     def __init__(self, func: F) -> None:
@@ -69,7 +69,7 @@ class Contracts(Generic[F]):
         return contracts.wrapped
 
     @classmethod
-    def _ensure_wrapped(cls: Type['Contracts'], func: F) -> 'Contracts[F]':
+    def _ensure_wrapped(cls: type['Contracts'], func: F) -> 'Contracts[F]':
         contracts: Contracts
         contracts = getattr(func, ATTR, None)  # type: ignore[assignment]
         if contracts is not None:
@@ -109,7 +109,7 @@ class Contracts(Generic[F]):
                 contracts.patcher = self.patcher
         return contracts.wrapped
 
-    def _run_sync(self, args: Tuple[object, ...], kwargs: Dict[str, object]):
+    def _run_sync(self, args: tuple[object, ...], kwargs: dict[str, object]):
         if not state.debug:
             return self.func(*args, **kwargs)
 
@@ -152,7 +152,7 @@ class Contracts(Generic[F]):
 
         return result
 
-    async def _run_async(self, args: Tuple[object, ...], kwargs: Dict[str, object]):
+    async def _run_async(self, args: tuple[object, ...], kwargs: dict[str, object]):
         if not state.debug:
             return await self.func(*args, **kwargs)
 
@@ -195,7 +195,7 @@ class Contracts(Generic[F]):
 
         return result
 
-    def _run_iter(self, args: Tuple[object, ...], kwargs: Dict[str, object]):
+    def _run_iter(self, args: tuple[object, ...], kwargs: dict[str, object]):
         if not state.debug:
             yield from self.func(*args, **kwargs)
             return

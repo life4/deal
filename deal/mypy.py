@@ -7,20 +7,25 @@ Activate it in mypy config (pyproject.toml):
 plugins = ["deal.mypy"]
 ```
 """
-# This file is excluded from coverage.
+from __future__ import annotations
 
 import atexit
 import os
 from collections import defaultdict
 from time import perf_counter
-from typing import DefaultDict, List, Optional, Type
+from typing import Optional
 
 from mypy import nodes, types
 from mypy.checker import TypeChecker
 from mypy.plugin import FunctionSigContext, Plugin
 
 
-perf: DefaultDict[str, List[float]] = defaultdict(list)
+# This file is excluded from coverage.
+
+
+
+
+perf: defaultdict[str, list[float]] = defaultdict(list)
 TRACK_PERF = os.getenv('DEAL_TRACK_PERF')
 
 
@@ -160,7 +165,7 @@ class DealMypyPlugin(Plugin):
 
     def _find_func(
         self,
-        defs: List[nodes.Statement],
+        defs: list[nodes.Statement],
         target: nodes.Context,
     ) -> Optional[nodes.Decorator]:
         for dfn in defs:
@@ -186,7 +191,7 @@ class DealMypyPlugin(Plugin):
 
     def _find_class(
         self,
-        defs: List[nodes.Statement],
+        defs: list[nodes.Statement],
         target: nodes.Context,
     ) -> Optional[nodes.ClassDef]:
         for dfn in defs:
@@ -207,5 +212,5 @@ class DealMypyPlugin(Plugin):
         ])
 
 
-def plugin(version: str) -> Type[Plugin]:
+def plugin(version: str) -> type[Plugin]:
     return DealMypyPlugin

@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 import socket
 import sys
 from io import StringIO
-from typing import FrozenSet, Iterable, Optional, Type
+from typing import Iterable, Optional
 
 from .._exceptions import MarkerError, OfflineContractError, SilentContractError
 from .._types import ExceptionType
@@ -68,7 +70,7 @@ class HasPatcher:
         'true_stdout',
         'true_stderr',
     )
-    markers: FrozenSet[str]
+    markers: frozenset[str]
 
     def __init__(
         self,
@@ -83,7 +85,7 @@ class HasPatcher:
             self.exception = self.exception(message)
 
     @property
-    def exception_type(self) -> Type[Exception]:
+    def exception_type(self) -> type[Exception]:
         if isinstance(self.exception, Exception):
             return type(self.exception)
         return self.exception
@@ -175,7 +177,7 @@ class HasPatcher:
         if not self.has_stderr:
             sys.stderr = self.true_stderr
 
-    def _get_exception(self, default: Type[Exception]) -> ExceptionType:
+    def _get_exception(self, default: type[Exception]) -> ExceptionType:
         if self.exception_type is MarkerError:
             if self.message is None:
                 return default

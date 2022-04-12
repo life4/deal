@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 from enum import Enum
 from pathlib import Path
-from typing import Iterator, List, NamedTuple, Set, Tuple, Union
+from typing import Iterator, NamedTuple, Union
 
 import astroid
 
@@ -25,14 +27,14 @@ class AppendText(NamedTuple):
     line: int
     text: str
 
-    def apply(self, lines: List[str]) -> None:
+    def apply(self, lines: list[str]) -> None:
         content = lines[self.line - 1]
         content = content.rstrip('\n')
         content += f'{self.text}\n'
         lines[self.line - 1] = content
 
     @property
-    def key(self) -> Tuple[int, Priority]:
+    def key(self) -> tuple[int, Priority]:
         return (self.line, 1)
 
 
@@ -40,25 +42,25 @@ class InsertText(NamedTuple):
     line: int
     text: str
 
-    def apply(self, lines: List[str]) -> None:
+    def apply(self, lines: list[str]) -> None:
         lines.insert(self.line - 1, f'{self.text}\n')
 
     @property
-    def key(self) -> Tuple[int, Priority]:
+    def key(self) -> tuple[int, Priority]:
         return (self.line, 2)
 
 
 class InsertContract(NamedTuple):
     line: int
     contract: Category
-    args: List[str]
+    args: list[str]
     indent: int
 
-    def apply(self, lines: List[str]) -> None:
+    def apply(self, lines: list[str]) -> None:
         lines.insert(self.line - 1, f'{self}\n')
 
     @property
-    def key(self) -> Tuple[int, Priority]:
+    def key(self) -> tuple[int, Priority]:
         return (self.line, 3)
 
     def __str__(self) -> str:
@@ -73,11 +75,11 @@ class InsertContract(NamedTuple):
 class Remove(NamedTuple):
     line: int
 
-    def apply(self, lines: List[str]) -> None:
+    def apply(self, lines: list[str]) -> None:
         lines.pop(self.line - 1)
 
     @property
-    def key(self) -> Tuple[int, Priority]:
+    def key(self) -> tuple[int, Priority]:
         return (self.line, 4)
 
 
@@ -89,8 +91,8 @@ class Transformer(NamedTuple):
     """
     content: str
     path: Path
-    types: Set[TransformationType]
-    mutations: List[Mutation] = []
+    types: set[TransformationType]
+    mutations: list[Mutation] = []
     quote: str = "'"
 
     def transform(self) -> str:
@@ -113,14 +115,14 @@ class Transformer(NamedTuple):
         cats = {Category.RAISES, Category.SAFE, Category.PURE}
 
         # collect declared exceptions
-        declared: List[Union[str, type]] = []
+        declared: list[Union[str, type]] = []
         for contract in func.contracts:
             if contract.category not in cats:
                 continue
             declared.extend(contract.exceptions)
 
         # collect undeclared exceptions
-        excs: Set[str] = set()
+        excs: set[str] = set()
         for error in CheckRaises().get_undeclared(func, declared):
             assert isinstance(error.value, str)
             excs.add(error.value)
@@ -178,7 +180,7 @@ class Transformer(NamedTuple):
         cats = {Category.HAS, Category.PURE}
 
         # collect declared markers
-        declared: List[str] = []
+        declared: list[str] = []
         for contract in func.contracts:
             if contract.category not in cats:
                 continue
@@ -188,7 +190,7 @@ class Transformer(NamedTuple):
                     declared.append(value)
 
         # collect undeclared markers
-        markers: Set[str] = set()
+        markers: set[str] = set()
         for error in CheckMarkers().get_undeclared(func, set(declared)):
             assert isinstance(error.value, str)
             markers.add(error.value)

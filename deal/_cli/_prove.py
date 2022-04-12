@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 import sys
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import TYPE_CHECKING, Dict, Iterator, TextIO
+from typing import TYPE_CHECKING, Iterator, TextIO
 
 from .._colors import get_colors
 from ..linter._extractors import get_contracts
@@ -41,7 +43,7 @@ def run_solver(
     path: Path,
     stream: TextIO,
     show_skipped: bool,
-    colors: Dict[str, str],
+    colors: dict[str, str],
 ) -> int:
     file_name_shown = False
     text = path.read_text()

@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 from argparse import ArgumentParser
 from contextlib import suppress
 from importlib import import_module
 from pathlib import Path
-from typing import Dict, Iterable, TextIO
+from typing import Iterable, TextIO
 
 from .._colors import COLORS
 from .._mem_test import MemoryTracker
@@ -18,7 +20,7 @@ def run_cases(
     cases: Iterable[TestCase],
     func_name: str,
     stream: TextIO,
-    colors: Dict[str, str],
+    colors: dict[str, str],
 ) -> bool:
     print('  {blue}running {name}{end}'.format(name=func_name, **colors), file=stream)
     for case in cases:

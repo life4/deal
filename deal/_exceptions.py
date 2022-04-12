@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 import sys
 from contextlib import suppress
 from pathlib import Path
-from typing import Any, Dict, Optional, Tuple, Type
+from typing import Any, Optional
 
 from ._cached_property import cached_property
 from ._colors import COLORS, NOCOLORS, highlight
@@ -12,7 +14,7 @@ from ._state import state
 root = str(Path(__file__).parent)
 
 
-def exception_hook(etype: Type[BaseException], value: BaseException, tb):
+def exception_hook(etype: type[BaseException], value: BaseException, tb):
     """Exception hook to remove deal from the traceback for ContractError.
     """
     if not issubclass(etype, ContractError):
@@ -45,7 +47,7 @@ class ContractError(AssertionError):
     message: str
     errors: Optional[Any]
     validator: Any
-    params: Dict[str, Any]
+    params: dict[str, Any]
     origin: Optional[object]
 
     def __init__(
@@ -53,7 +55,7 @@ class ContractError(AssertionError):
         message: str = '',
         errors=None,
         validator=None,
-        params: Optional[Dict[str, Any]] = None,
+        params: Optional[dict[str, Any]] = None,
         origin: Optional[object] = None,
     ) -> None:
         self.message = message
@@ -180,7 +182,7 @@ class NoMatchError(Exception):
     """
     __module__ = 'deal'
 
-    def __init__(self, exceptions: Tuple[PreContractError, ...]) -> None:
+    def __init__(self, exceptions: tuple[PreContractError, ...]) -> None:
         self.exceptions = exceptions
 
     def __str__(self) -> str:

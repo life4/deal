@@ -1,4 +1,6 @@
-from typing import TYPE_CHECKING, Dict, List
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from . import introspection
 
@@ -29,11 +31,11 @@ def _process_docstring(
     name: str,
     obj,
     options: 'Options',
-    lines: List[str],
+    lines: list[str],
 ) -> None:
-    raises: Dict[str, str] = dict()
-    contracts: List[str] = []
-    examples: List[str] = []
+    raises: dict[str, str] = dict()
+    contracts: list[str] = []
+    examples: list[str] = []
     for contract in introspection.get_contracts(obj):
         if isinstance(contract, introspection.Raises):
             for exc in contract.exceptions:

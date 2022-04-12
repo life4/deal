@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from functools import update_wrapper
-from typing import TYPE_CHECKING, Callable, Generic, List, Optional, TypeVar
+from typing import TYPE_CHECKING, Callable, Generic, Optional, TypeVar
 
 from .._exceptions import NoMatchError, PreContractError
 from .._state import state
@@ -14,7 +16,7 @@ ATTR = '__deal_contract'
 
 
 class Dispatch(Generic[F]):
-    _functions: List[F]
+    _functions: list[F]
     __call__: F
 
     def __init__(self) -> None:

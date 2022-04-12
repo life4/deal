@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 import ast
 import sys
 from types import ModuleType
-from typing import Any, Callable, List, Optional
+from typing import Any, Callable, Optional
 
 from _frozen_importlib_external import PathFinder  # pyright: reportMissingImports=false
 
@@ -66,7 +68,7 @@ class DealLoader:
         wrapped(module)
 
     @staticmethod
-    def _get_contracts(tree: ast.Module) -> List[ast.expr]:
+    def _get_contracts(tree: ast.Module) -> list[ast.expr]:
         for node in tree.body:  # type: Any
             if type(node) is not ast.Expr:
                 continue

@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 import json
 from pathlib import Path
-from typing import Any, Dict, FrozenSet, Iterator, NamedTuple, Optional, Sequence, Tuple
+from typing import Any, Iterator, NamedTuple, Optional, Sequence
 
 import astroid
 
@@ -15,7 +17,7 @@ CPYTHON_ROOT = ROOT / 'cpython'
 class StubFile:
     __slots__ = ('path', '_content')
     path: Path
-    _content: Dict[str, Dict[str, Any]]
+    _content: dict[str, dict[str, Any]]
 
     def __init__(self, path: Path) -> None:
         self.path = path
@@ -41,7 +43,7 @@ class StubFile:
         values.append(value)
         values.sort()
 
-    def get(self, func: str, contract: Category) -> FrozenSet[str]:
+    def get(self, func: str, contract: Category) -> frozenset[str]:
         if contract not in (Category.RAISES, Category.HAS):
             raise ValueError('unsupported contract')
         values = self._content.get(func, {}).get(contract.value, [])
@@ -50,8 +52,8 @@ class StubFile:
 
 class StubsManager:
     __slots__ = ('paths', '_modules')
-    _modules: Dict[str, StubFile]
-    paths: Tuple[Path, ...]
+    _modules: dict[str, StubFile]
+    paths: tuple[Path, ...]
 
     default_paths = (ROOT, CPYTHON_ROOT)
 

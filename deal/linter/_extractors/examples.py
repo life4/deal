@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 import ast
-from typing import Dict, List, NamedTuple, Optional, Union
+from typing import NamedTuple, Optional, Union
 
 import astroid
 
@@ -8,8 +10,8 @@ from .value import UNKNOWN, get_value
 
 
 class Example(NamedTuple):
-    args: List[object]
-    kwargs: Dict[str, object]
+    args: list[object]
+    kwargs: dict[str, object]
     result: object
 
 
@@ -55,7 +57,7 @@ def _get_example_from_call(expr: Union[ast.Call, astroid.Call], func_name: str) 
             return None
         args.append(val)
 
-    kwargs: Dict[str, object] = {}
+    kwargs: dict[str, object] = {}
     for keyword in (expr.keywords or ()):
         val = get_value(keyword.value)
         if val is UNKNOWN:

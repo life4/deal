@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 import ast
 from pathlib import Path
-from typing import Iterator, List, NamedTuple, Union
+from typing import Iterator, NamedTuple, Union
 
 import astroid
 
@@ -11,7 +13,7 @@ from ._extractors import get_contracts, get_definitions
 class Func(NamedTuple):
     name: str
     body: list
-    contracts: List[Contract]
+    contracts: list[Contract]
     node: Union[ast.FunctionDef, astroid.FunctionDef]
 
     @property
@@ -35,18 +37,18 @@ class Func(NamedTuple):
         return arg.name == 'self'
 
     @classmethod
-    def from_path(cls, path: Path) -> List['Func']:
+    def from_path(cls, path: Path) -> list['Func']:
         text = path.read_text()
         tree = astroid.parse(code=text, path=str(path))
         return cls.from_astroid(tree)
 
     @classmethod
-    def from_text(cls, text: str) -> List['Func']:
+    def from_text(cls, text: str) -> list['Func']:
         tree = astroid.parse(text)
         return cls.from_astroid(tree)
 
     @classmethod
-    def from_ast(cls, tree: ast.Module) -> List['Func']:
+    def from_ast(cls, tree: ast.Module) -> list['Func']:
         funcs = []
         definitions = get_definitions(tree=tree)
         for expr in cls._get_funcs_ast(tree):
@@ -81,7 +83,7 @@ class Func(NamedTuple):
                     yield stmt
 
     @classmethod
-    def from_astroid(cls, tree: astroid.Module) -> List['Func']:
+    def from_astroid(cls, tree: astroid.Module) -> list['Func']:
         funcs = []
         definitions = get_definitions(tree=tree)
         for expr in cls._get_funcs_astroid(tree):

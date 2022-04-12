@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 import ast
 from types import MappingProxyType
-from typing import Iterator, List, Optional, Set, Type, TypeVar, Union
+from typing import Iterator, Optional, Type, TypeVar, Union, List
 
 import astroid
 
@@ -17,7 +19,7 @@ from ._stub import StubsManager
 
 T = TypeVar('T', bound=Type['Rule'])
 Exceptions = List[Union[str, Type[Exception]]]
-rules: List['Rule'] = []
+rules: list['Rule'] = []
 
 
 def register(rule: T) -> T:
@@ -295,7 +297,7 @@ class CheckMarkers(FuncRule):
 
     def __call__(self, func: Func, stubs: Optional[StubsManager] = None) -> Iterator[Error]:
         for contract in func.contracts:
-            markers: Optional[Set[str]] = None
+            markers: Optional[set[str]] = None
             if contract.category == Category.HAS:
                 markers = set()
                 for arg in contract.args:
@@ -310,7 +312,7 @@ class CheckMarkers(FuncRule):
             return
 
     @classmethod
-    def get_undeclared(cls, func: Func, markers: Set[str]) -> Iterator[Error]:
+    def get_undeclared(cls, func: Func, markers: set[str]) -> Iterator[Error]:
         has = HasPatcher(markers)
         # function without IO must return something
         if not has.has_io and not func.has_self and not has_returns(body=func.body):

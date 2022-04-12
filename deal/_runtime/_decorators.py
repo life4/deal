@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from functools import partial
-from typing import Callable, Optional, Type, TypeVar, Union, overload
+from typing import Callable, Optional, TypeVar, Union, overload
 
 from .. import _exceptions
 from .._types import ExceptionType
@@ -156,7 +158,7 @@ def ensure(
 
 
 def raises(
-    *exceptions: Type[Exception],
+    *exceptions: type[Exception],
     message: Optional[str] = None,
     exception: Optional[ExceptionType] = None,
 ) -> Callable[[C], C]:
@@ -249,7 +251,7 @@ def has(
 
 
 def reason(
-    event: Type[Exception],
+    event: type[Exception],
     validator,
     *,
     message: Optional[str] = None,
@@ -537,7 +539,7 @@ def implies(test, then: T) -> Union[bool, T]:
     return not test or then
 
 
-def catch(func: Callable, *args, **kwargs) -> Optional[Type[Exception]]:
+def catch(func: Callable, *args, **kwargs) -> Optional[type[Exception]]:
     """Call the function with the given arguments, catching any exception.
 
     The catched exception is returned.
