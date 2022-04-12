@@ -2,23 +2,17 @@ from __future__ import annotations
 
 from functools import update_wrapper
 from inspect import signature
-from typing import Any, BinaryIO, Callable, Iterator, NamedTuple, NoReturn, overload
+from typing import TYPE_CHECKING, Callable, NamedTuple, NoReturn, overload
 
 from . import introspection
 from ._cached_property import cached_property
 
 
-try:
-    import typeguard
-except ImportError:
-    typeguard = None    # type: ignore[assignment]
-try:
+if TYPE_CHECKING:
+    from typing import Any, BinaryIO, Iterator
+
     import hypothesis
-except ImportError:
-    hypothesis = None   # type: ignore[assignment]
-else:
     import hypothesis.strategies
-    from hypothesis.internal.reflection import proxies
 
 
 F = Callable[..., None]
@@ -62,7 +56,11 @@ class TestCase(NamedTuple):
         return result
 
     def _check_result(self, result: Any) -> None:
-        if not self.check_types or typeguard is None:
+        if not self.check_types:
+            return
+        try:
+            import typeguard
+        except ImportError:
             return
         memo = typeguard._CallMemo(
             func=self.func,
@@ -118,10 +116,12 @@ class cases:  # noqa: N
         ```
 
         """
-        if hypothesis is None:  # pragma: no cover
-            raise ImportError('hypothesis is not installed')
-        if check_types is True and typeguard is None:  # pragma: no cover
-            raise ImportError('typeguard is not installed')
+        # Check that required dependencies are installed.
+        # If you have an ImportError here,
+        # install deal with `pip install 'deal[all]'`.
+        import hypothesis  # noqa: F401
+        if check_types is True:  # pragma: no cover
+            import typeguard  # noqa: F401
         if check_types is None:
             check_types = True
 
@@ -213,21 +213,23 @@ class cases:  # noqa: N
     def strategy(self) -> hypothesis.strategies.SearchStrategy:
         """Hypothesis strategy that is used to generate test cases.
         """
+        from hypothesis import strategies
         kwargs = self.kwargs.copy()
         for name, value in kwargs.items():
-            if isinstance(value, hypothesis.strategies.SearchStrategy):
+            if isinstance(value, strategies.SearchStrategy):
                 continue
-            kwargs[name] = hypothesis.strategies.just(value)
+            kwargs[name] = strategies.just(value)
 
         def pass_along_variables(*args, **kwargs) -> tuple[tuple, dict[str, Any]]:
             return args, kwargs
 
         pass_along_variables.__signature__ = signature(self.func)    # type: ignore
         update_wrapper(wrapper=pass_along_variables, wrapped=self.func)
-        return hypothesis.strategies.builds(pass_along_variables, **kwargs)
+        return strategies.builds(pass_along_variables, **kwargs)
 
     @property
     def _default_settings(self) -> hypothesis.settings:
+        import hypothesis
         return hypothesis.settings(
             database=None,
             max_examples=self.count,
@@ -327,6 +329,8 @@ class cases:  # noqa: N
         return self._wrap(lambda case: case())
 
     def _wrap(self, test_func: F) -> F:
+        import hypothesis
+
         # precache all contracts, so hypothesis won't explode
         # because of inconsistent execution time.
         introspection.init_all(test_func)
@@ -366,6 +370,7 @@ class cases:  # noqa: N
         if not hasattr(wrapped, '__code__'):
             def wrapped(case) -> None:
                 pass
+        from hypothesis.internal.reflection import proxies
         wrapper = proxies(wrapped)(wrapper)
         if wrapper.__name__ == '<lambda>':
             wrapper.__name__ = 'test_func'
