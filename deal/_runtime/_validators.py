@@ -3,7 +3,7 @@ from __future__ import annotations
 import inspect
 from contextlib import suppress
 from functools import lru_cache
-from typing import Any, Callable, Optional
+from typing import Any, Callable
 
 import vaa
 
@@ -20,7 +20,7 @@ def _args_to_vars(
     *,
     args,
     kwargs: dict[str, Any],
-    signature: Optional[inspect.Signature],
+    signature: inspect.Signature | None,
     keep_result: bool = True,
 ) -> dict[str, Any]:
     """Convert args and kwargs into dict of params based on the given function.
@@ -56,17 +56,17 @@ class Validator:
     )
 
     exception: ExceptionType
-    signature: Optional[inspect.Signature]
+    signature: inspect.Signature | None
     validate: Any
     validator: Any
     raw_validator: Any
-    message: Optional[str]
+    message: str | None
     function: Any
 
     def __init__(
         self,
         validator, *,
-        message: Optional[str] = None,
+        message: str | None = None,
         exception: ExceptionType,
     ) -> None:
         self.validate = self._init
@@ -98,7 +98,7 @@ class Validator:
 
         return validator
 
-    def _exception(self, *, message: Optional[str] = None, errors=None, params=None) -> Exception:
+    def _exception(self, *, message: str | None = None, errors=None, params=None) -> Exception:
         exception = self.exception
         if isinstance(exception, Exception):
             if not message and exception.args:

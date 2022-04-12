@@ -13,7 +13,6 @@ import atexit
 import os
 from collections import defaultdict
 from time import perf_counter
-from typing import Optional
 
 from mypy import nodes, types
 from mypy.checker import TypeChecker
@@ -21,8 +20,6 @@ from mypy.plugin import FunctionSigContext, Plugin
 
 
 # This file is excluded from coverage.
-
-
 
 
 perf: defaultdict[str, list[float]] = defaultdict(list)
@@ -158,7 +155,7 @@ class DealMypyPlugin(Plugin):
         arg_types[position] = ftype
         return ctx.default_signature.copy_modified(arg_types=arg_types)
 
-    def _get_parent_func(self, ctx: FunctionSigContext) -> Optional[nodes.Decorator]:
+    def _get_parent_func(self, ctx: FunctionSigContext) -> nodes.Decorator | None:
         checker = ctx.api
         assert isinstance(checker, TypeChecker)
         return self._find_func(defs=checker.tree.defs, target=ctx.context)
@@ -167,7 +164,7 @@ class DealMypyPlugin(Plugin):
         self,
         defs: list[nodes.Statement],
         target: nodes.Context,
-    ) -> Optional[nodes.Decorator]:
+    ) -> nodes.Decorator | None:
         for dfn in defs:
             if isinstance(dfn, nodes.Decorator):
                 for dec in dfn.decorators:
@@ -184,7 +181,7 @@ class DealMypyPlugin(Plugin):
                     return result
         return None
 
-    def _get_parent_class(self, ctx: FunctionSigContext) -> Optional[nodes.ClassDef]:
+    def _get_parent_class(self, ctx: FunctionSigContext) -> nodes.ClassDef | None:
         checker = ctx.api
         assert isinstance(checker, TypeChecker)
         return self._find_class(defs=checker.tree.defs, target=ctx.context)
@@ -193,7 +190,7 @@ class DealMypyPlugin(Plugin):
         self,
         defs: list[nodes.Statement],
         target: nodes.Context,
-    ) -> Optional[nodes.ClassDef]:
+    ) -> nodes.ClassDef | None:
         for dfn in defs:
             if isinstance(dfn, nodes.ClassDef):
                 for dec in dfn.decorators:

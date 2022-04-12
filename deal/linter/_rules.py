@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import ast
 from types import MappingProxyType
-from typing import Iterator, Optional, Type, TypeVar, Union, List
+from typing import Iterator, Type, TypeVar
 
 import astroid
 
@@ -18,7 +18,6 @@ from ._stub import StubsManager
 
 
 T = TypeVar('T', bound=Type['Rule'])
-Exceptions = List[Union[str, Type[Exception]]]
 rules: list['Rule'] = []
 
 
@@ -32,7 +31,7 @@ class Rule:
     code: int
     message: str
 
-    def _validate(self, contract: Contract, args, kwargs, **error_info) -> Optional[Error]:
+    def _validate(self, contract: Contract, args, kwargs, **error_info) -> Error | None:
         try:
             result = contract.run(*args, **kwargs)
         except NameError:
@@ -55,7 +54,7 @@ class ModuleRule(Rule):
 class FuncRule(Rule):
     __slots__ = ()
 
-    def __call__(self, func: Func, stubs: Optional[StubsManager] = None) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: StubsManager | None = None) -> Iterator[Error]:
         raise NotImplementedError
 
 
@@ -83,7 +82,7 @@ class CheckEnsureArgs(FuncRule):
     code = 2
     message = 'ensure contract must have `result` arg'
 
-    def __call__(self, func: Func, stubs: Optional[StubsManager] = None) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: StubsManager | None = None) -> Iterator[Error]:
         for contract in func.contracts:
             if contract.category != Category.ENSURE:
                 continue
@@ -106,7 +105,7 @@ class CheckPre(FuncRule):
     code = 11
     message = 'pre contract error'
 
-    def __call__(self, func: Func, stubs: Optional[StubsManager] = None) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: StubsManager | None = None) -> Iterator[Error]:
         # We test only contracted functions because of poor performance.
         # Inferring every called function in the whole project
         # is a really expensive operation.
@@ -129,7 +128,7 @@ class CheckReturns(FuncRule):
     code = 12
     message = 'post contract error'
 
-    def __call__(self, func: Func, stubs: Optional[StubsManager] = None) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: StubsManager | None = None) -> Iterator[Error]:
         for contract in func.contracts:
             if contract.category != Category.POST:
                 continue
@@ -155,7 +154,7 @@ class CheckExamples(FuncRule):
     code = 13
     message = 'example violates contract'
 
-    def __call__(self, func: Func, stubs: Optional[StubsManager] = None) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: StubsManager | None = None) -> Iterator[Error]:
         for contract in func.contracts:
             if contract.category != Category.EXAMPLE:
                 continue
@@ -216,9 +215,9 @@ class CheckRaises(FuncRule):
     code = 21
     message = 'raises contract error'
 
-    def __call__(self, func: Func, stubs: Optional[StubsManager] = None) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: StubsManager | None = None) -> Iterator[Error]:
         cats = {Category.RAISES, Category.SAFE, Category.PURE}
-        declared: Exceptions = [AssertionError]
+        declared: list[str | type[Exception]] = [AssertionError]
         check = False
         for contract in func.contracts:
             if contract.category not in cats:
@@ -231,8 +230,8 @@ class CheckRaises(FuncRule):
     def get_undeclared(
         self,
         func: Func,
-        declared: Exceptions,
-        stubs: Optional[StubsManager] = None,
+        declared: list[str | type[Exception]],
+        stubs: StubsManager | None = None,
     ) -> Iterator[Error]:
         declared_types = tuple(exc for exc in declared if not isinstance(exc, str))
         for token in get_exceptions(body=func.body, stubs=stubs):
@@ -258,7 +257,7 @@ class CheckAsserts(FuncRule):
     code = 31
     message = 'assert error'
 
-    def __call__(self, func: Func, stubs: Optional[StubsManager] = None) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: StubsManager | None = None) -> Iterator[Error]:
         # do not validate asserts in tests
         if func.name.startswith('test_'):
             return
@@ -295,9 +294,9 @@ class CheckMarkers(FuncRule):
         'time': 56,
     })
 
-    def __call__(self, func: Func, stubs: Optional[StubsManager] = None) -> Iterator[Error]:
+    def __call__(self, func: Func, stubs: StubsManager | None = None) -> Iterator[Error]:
         for contract in func.contracts:
-            markers: Optional[set[str]] = None
+            markers: set[str] | None = None
             if contract.category == Category.HAS:
                 markers = set()
                 for arg in contract.args:

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from functools import update_wrapper
-from typing import TYPE_CHECKING, Callable, Generic, Optional, TypeVar
+from typing import TYPE_CHECKING, Callable, Generic, TypeVar
 
 from .._exceptions import NoMatchError, PreContractError
 from .._state import state
@@ -34,7 +34,7 @@ class Dispatch(Generic[F]):
 
     def __call__(self, *args, **kwargs):  # type: ignore[no-redef]
         exceptions = []
-        contracts: 'Optional[Contracts]'
+        contracts: Contracts | None
         old_state = state.debug
         state.debug = True
         try:

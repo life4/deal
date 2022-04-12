@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Optional
-
 from .._cached_property import cached_property
 from .._runtime import HasPatcher, RaisesValidator, ReasonValidator, Validator
 from .._source import get_validator_source
@@ -30,7 +28,7 @@ class Contract:
         return self._wrapped.exception_type
 
     @property
-    def message(self) -> Optional[str]:
+    def message(self) -> str | None:
         """The message (contract description) provided by user.
         """
         return self._wrapped.message
@@ -130,7 +128,7 @@ class Has(Contract):
         return self._patcher.exception_type
 
     @property
-    def message(self) -> Optional[str]:
+    def message(self) -> str | None:
         return self._patcher.message
 
     @property

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import typing
+from typing import Iterator
 
 
 ERROR_FORMAT = 'DEAL{code:03d}'
@@ -15,7 +15,7 @@ class Error:
         col: int,
         code: int,
         text: str,
-        value: typing.Optional[str] = None,
+        value: str | None = None,
     ) -> None:
         self.row = row
         self.col = col
@@ -34,7 +34,7 @@ class Error:
             msg += f' ({self.value})'
         return msg
 
-    def __iter__(self) -> typing.Iterator[typing.Union[int, str]]:
+    def __iter__(self) -> Iterator[int | str]:
         yield self.row
         yield self.col
         yield self.message

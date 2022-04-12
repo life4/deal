@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import ast
-from typing import NamedTuple, Optional, Union
+from typing import NamedTuple
 
 import astroid
 
@@ -15,7 +15,7 @@ class Example(NamedTuple):
     result: object
 
 
-def get_example(expr, func_name: str) -> Optional[Example]:
+def get_example(expr, func_name: str) -> Example | None:
     if not isinstance(expr, TOKENS.COMPARE):
         return None
     if not isinstance(expr.left, TOKENS.CALL):
@@ -46,7 +46,7 @@ def _get_right_value(expr) -> object:
     raise RuntimeError('unreachable')
 
 
-def _get_example_from_call(expr: Union[ast.Call, astroid.Call], func_name: str) -> Optional[Example]:
+def _get_example_from_call(expr: ast.Call | astroid.Call, func_name: str) -> Example | None:
     if get_name(expr.func) != func_name:
         return None
 

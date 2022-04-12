@@ -3,7 +3,7 @@ from __future__ import annotations
 import sys
 from contextlib import suppress
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 from ._cached_property import cached_property
 from ._colors import COLORS, NOCOLORS, highlight
@@ -45,18 +45,18 @@ class ContractError(AssertionError):
     """The base class for all errors raised by deal contracts.
     """
     message: str
-    errors: Optional[Any]
+    errors: Any | None
     validator: Any
     params: dict[str, Any]
-    origin: Optional[object]
+    origin: object | None
 
     def __init__(
         self,
         message: str = '',
         errors=None,
         validator=None,
-        params: Optional[dict[str, Any]] = None,
-        origin: Optional[object] = None,
+        params: dict[str, Any] | None = None,
+        origin: object | None = None,
     ) -> None:
         self.message = message
         self.errors = errors

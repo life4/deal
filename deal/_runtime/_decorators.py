@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from functools import partial
-from typing import Callable, Optional, TypeVar, Union, overload
+from typing import Callable, TypeVar, Union, overload
 
 from .. import _exceptions
 from .._types import ExceptionType
@@ -22,8 +22,8 @@ TF = TypeVar('TF', bound=Union[Callable, type])
 def pre(
     validator,
     *,
-    message: Optional[str] = None,
-    exception: Optional[ExceptionType] = None,
+    message: str | None = None,
+    exception: ExceptionType | None = None,
 ) -> Callable[[C], C]:
     """Decorator implementing precondition [value] contract.
 
@@ -67,8 +67,8 @@ def pre(
 def post(
     validator,
     *,
-    message: Optional[str] = None,
-    exception: Optional[ExceptionType] = None,
+    message: str | None = None,
+    exception: ExceptionType | None = None,
 ) -> Callable[[C], C]:
     """Decorator implementing postcondition [value] contract.
 
@@ -112,8 +112,8 @@ def post(
 def ensure(
     validator,
     *,
-    message: Optional[str] = None,
-    exception: Optional[ExceptionType] = None,
+    message: str | None = None,
+    exception: ExceptionType | None = None,
 ) -> Callable[[C], C]:
     """Decorator implementing postcondition [value] contract.
 
@@ -159,8 +159,8 @@ def ensure(
 
 def raises(
     *exceptions: type[Exception],
-    message: Optional[str] = None,
-    exception: Optional[ExceptionType] = None,
+    message: str | None = None,
+    exception: ExceptionType | None = None,
 ) -> Callable[[C], C]:
     """Decorator listing the exceptions which the function can raise.
 
@@ -208,8 +208,8 @@ def raises(
 
 def has(
     *markers: str,
-    message: Optional[str] = None,
-    exception: Optional[ExceptionType] = None,
+    message: str | None = None,
+    exception: ExceptionType | None = None,
 ) -> Callable[[C], C]:
     """Decorator controlling [side-effects] of the function.
 
@@ -254,8 +254,8 @@ def reason(
     event: type[Exception],
     validator,
     *,
-    message: Optional[str] = None,
-    exception: Optional[ExceptionType] = None,
+    message: str | None = None,
+    exception: ExceptionType | None = None,
 ) -> Callable[[C], C]:
     """
     Decorator implementing [exception] contract.
@@ -308,8 +308,8 @@ def reason(
 def inv(
     validator,
     *,
-    message: Optional[str] = None,
-    exception: Optional[ExceptionType] = None,
+    message: str | None = None,
+    exception: ExceptionType | None = None,
 ) -> Callable[[T], T]:
     """
     Decorator implementing invariant [value] contract.
@@ -399,8 +399,8 @@ def example(validator: Callable[[], bool]) -> Callable[[C], C]:
 @overload
 def safe(
     *,
-    message: Optional[str] = None,
-    exception: Optional[ExceptionType] = None,
+    message: str | None = None,
+    exception: ExceptionType | None = None,
 ) -> Callable[[C], C]:
     pass
 
@@ -539,7 +539,7 @@ def implies(test, then: T) -> Union[bool, T]:
     return not test or then
 
 
-def catch(func: Callable, *args, **kwargs) -> Optional[type[Exception]]:
+def catch(func: Callable, *args, **kwargs) -> type[Exception] | None:
     """Call the function with the given arguments, catching any exception.
 
     The catched exception is returned.

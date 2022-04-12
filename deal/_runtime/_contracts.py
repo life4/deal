@@ -3,7 +3,7 @@ from __future__ import annotations
 from asyncio import iscoroutinefunction
 from functools import update_wrapper
 from inspect import isgeneratorfunction
-from typing import TYPE_CHECKING, Callable, Generic, Optional, TypeVar
+from typing import TYPE_CHECKING, Callable, Generic, TypeVar
 
 from .._exceptions import ContractError
 from .._state import state
@@ -33,13 +33,13 @@ class Contracts(Generic[F]):
 
     func: F
     wrapped: F
-    pres: list['Validator']
-    posts: list['Validator']
-    ensures: list['Validator']
-    examples: list['Validator']
-    raises: list['RaisesValidator']
-    reasons: list['ReasonValidator']
-    patcher: Optional['HasPatcher']
+    pres: list[Validator]
+    posts: list[Validator]
+    ensures: list[Validator]
+    examples: list[Validator]
+    raises: list[RaisesValidator]
+    reasons: list[ReasonValidator]
+    patcher: HasPatcher | None
 
     def __init__(self, func: F) -> None:
         self.func = func

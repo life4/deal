@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any, Iterator, NamedTuple, Optional, Sequence
+from typing import Any, Iterator, NamedTuple, Sequence
 
 import astroid
 
@@ -57,14 +57,14 @@ class StubsManager:
 
     default_paths = (ROOT, CPYTHON_ROOT)
 
-    def __init__(self, paths: Optional[Sequence[Path]] = None) -> None:
+    def __init__(self, paths: Sequence[Path] | None = None) -> None:
         self._modules = dict()
         if paths is None:
             self.paths = self.default_paths
         else:
             self.paths = tuple(paths)
 
-    def read(self, *, path: Path, module_name: Optional[str] = None) -> StubFile:
+    def read(self, *, path: Path, module_name: str | None = None) -> StubFile:
         if path.suffix == '.py':
             path = path.with_suffix(EXTENSION)
         if path.suffix != EXTENSION:
@@ -89,7 +89,7 @@ class StubsManager:
                 return '.'.join(parts)
         raise RuntimeError('unreachable: __init__.py files up to root?')  # pragma: no cover
 
-    def get(self, module_name: str) -> Optional[StubFile]:
+    def get(self, module_name: str) -> StubFile | None:
         # cached
         stub = self._modules.get(module_name)
         if stub is not None:
@@ -151,7 +151,7 @@ def _get_funcs_from_expr(expr, prefix: str = '') -> Iterator[PseudoFunc]:
             yield from _get_funcs_from_expr(expr=subexpr, prefix=name)
 
 
-def generate_stub(*, path: Path, stubs: Optional[StubsManager] = None) -> Path:
+def generate_stub(*, path: Path, stubs: StubsManager | None = None) -> Path:
     from ._extractors import get_exceptions, get_markers
 
     if path.suffix != '.py':

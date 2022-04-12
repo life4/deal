@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import ast
-from typing import Any, Iterator, Optional, Sequence
+from typing import Any, Iterator, Sequence
 
 import astroid
 
@@ -14,7 +14,7 @@ get_pre = Extractor()
 
 
 @get_pre.register(astroid.Call)
-def handle_call(expr: astroid.Call, context: Optional[dict[str, ast.stmt]] = None) -> Iterator[Token]:
+def handle_call(expr: astroid.Call, context: dict[str, ast.stmt] | None = None) -> Iterator[Token]:
     from .._contract import Category, Contract
 
     args = []

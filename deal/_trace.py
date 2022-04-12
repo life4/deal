@@ -4,7 +4,7 @@ import ast
 import inspect
 import sys
 from trace import Trace
-from typing import Any, Callable, Iterator, NamedTuple, Optional
+from typing import Any, Callable, Iterator, NamedTuple
 
 
 class TraceResult(NamedTuple):
@@ -97,7 +97,7 @@ def _get_func_body_statements(func: Callable) -> set[int]:
     return result
 
 
-def _get_func_node(func_name: str, tree: ast.Module) -> Optional[ast.FunctionDef]:
+def _get_func_node(func_name: str, tree: ast.Module) -> ast.FunctionDef | None:
     for node in tree.body:
         if not isinstance(node, ast.FunctionDef):
             continue

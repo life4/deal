@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import ast
-from typing import Iterator, NamedTuple, Optional, Union
+from typing import Iterator, NamedTuple, Union
 
 import astroid
 
@@ -100,7 +100,7 @@ def _resolve_inherit(contract: Attr) -> Iterator[ContractInfo]:
             yield from get_contracts(method)
 
 
-def _get_parent_class(node) -> Optional[astroid.ClassDef]:
+def _get_parent_class(node) -> astroid.ClassDef | None:
     if isinstance(node, astroid.ClassDef):
         return node
     if isinstance(node, (astroid.Attribute, astroid.FunctionDef, astroid.Decorators)):

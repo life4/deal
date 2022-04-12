@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import ast
-from typing import Iterator, Optional
+from typing import Iterator
 
 import astroid
 
@@ -87,37 +87,37 @@ NETWORK_FUNCS = frozenset({
 
 
 @get_markers.register(*TOKENS.GLOBAL)
-def handle_global(expr, **kwargs) -> Optional[Token]:
+def handle_global(expr, **kwargs) -> Token | None:
     return Token(marker='global', line=expr.lineno, col=expr.col_offset)
 
 
 @get_markers.register(*TOKENS.NONLOCAL)
-def handle_nonlocal(expr, **kwargs) -> Optional[Token]:
+def handle_nonlocal(expr, **kwargs) -> Token | None:
     return Token(marker='global', line=expr.lineno, col=expr.col_offset)
 
 
 @get_markers.register(ast.Import)
-def handle_ast_import(expr: ast.Import, **kwargs) -> Optional[Token]:
+def handle_ast_import(expr: ast.Import, **kwargs) -> Token | None:
     return Token(marker='import', line=expr.lineno, col=expr.col_offset)
 
 
 @get_markers.register(astroid.Import)
-def handle_astroid_import(expr: astroid.Import, **kwargs) -> Optional[Token]:
+def handle_astroid_import(expr: astroid.Import, **kwargs) -> Token | None:
     return Token(marker='import', line=expr.lineno, col=expr.col_offset)
 
 
 @get_markers.register(ast.ImportFrom)
-def handle_ast_import_from(expr: ast.ImportFrom, **kwargs) -> Optional[Token]:
+def handle_ast_import_from(expr: ast.ImportFrom, **kwargs) -> Token | None:
     return Token(marker='import', line=expr.lineno, col=expr.col_offset)
 
 
 @get_markers.register(astroid.ImportFrom)
-def handle_astroid_import_from(expr: astroid.ImportFrom, **kwargs) -> Optional[Token]:
+def handle_astroid_import_from(expr: astroid.ImportFrom, **kwargs) -> Token | None:
     return Token(marker='import', line=expr.lineno, col=expr.col_offset)
 
 
 @get_markers.register(*TOKENS.CALL)
-def handle_call(expr, dive: bool = True, stubs: Optional[StubsManager] = None) -> Iterator[Token]:
+def handle_call(expr, dive: bool = True, stubs: StubsManager | None = None) -> Iterator[Token]:
     name = get_name(expr.func)
     if name is None:
         return
@@ -168,7 +168,7 @@ def handle_call(expr, dive: bool = True, stubs: Optional[StubsManager] = None) -
     yield from _infer_markers(expr=expr, dive=dive, stubs=stubs)
 
 
-def _infer_markers(expr, dive: bool, stubs: Optional[StubsManager] = None) -> Iterator[Token]:
+def _infer_markers(expr, dive: bool, stubs: StubsManager | None = None) -> Iterator[Token]:
     inferred = infer(expr=expr.func)
     stubs_found = False
     if type(expr) is astroid.Call and stubs is not None:
@@ -285,7 +285,7 @@ def _markers_from_func(expr: astroid.NodeNG, inferred: tuple) -> Iterator[Token]
     return None
 
 
-def _check_print(expr, name: str) -> Optional[Token]:
+def _check_print(expr, name: str) -> Token | None:
     """Return token if expr is `print` function call.
 
     Marker type depends on `file=` keyword argument.

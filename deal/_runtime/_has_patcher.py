@@ -3,7 +3,7 @@ from __future__ import annotations
 import socket
 import sys
 from io import StringIO
-from typing import Iterable, Optional
+from typing import Iterable
 
 from .._exceptions import MarkerError, OfflineContractError, SilentContractError
 from .._types import ExceptionType
@@ -75,8 +75,8 @@ class HasPatcher:
     def __init__(
         self,
         markers: Iterable[str],
-        message: Optional[str] = None,
-        exception: Optional[ExceptionType] = None,
+        message: str | None = None,
+        exception: ExceptionType | None = None,
     ) -> None:
         self.markers = frozenset(markers)
         self.message = message

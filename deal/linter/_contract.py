@@ -5,7 +5,7 @@ import builtins
 import enum
 from copy import copy
 from pathlib import Path
-from typing import Iterable, Optional, Union
+from typing import Iterable, Union
 
 import astroid
 
@@ -45,7 +45,7 @@ class Contract:
         args: Iterable,
         category: Category,
         func_args: ast.arguments,
-        context: Optional[dict[str, ast.stmt]] = None,
+        context: dict[str, ast.stmt] | None = None,
         line: int = 0,
     ) -> None:
         self.args = tuple(args)
