@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-from asyncio import iscoroutinefunction
 from functools import update_wrapper
-from inspect import isgeneratorfunction
+from inspect import iscoroutinefunction, isgeneratorfunction
 from typing import TYPE_CHECKING, Callable, Generic, TypeVar
 
 from .._exceptions import ContractError
