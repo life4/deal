@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 import ast
-from typing import Any, Dict, Iterator, Optional, Sequence
+from typing import Any, Iterator, Sequence
 
 import astroid
 
@@ -12,7 +14,7 @@ get_pre = Extractor()
 
 
 @get_pre.register(astroid.Call)
-def handle_call(expr: astroid.Call, context: Optional[Dict[str, ast.stmt]] = None) -> Iterator[Token]:
+def handle_call(expr: astroid.Call, context: dict[str, ast.stmt] | None = None) -> Iterator[Token]:
     from .._contract import Category, Contract
 
     args = []
@@ -22,7 +24,7 @@ def handle_call(expr: astroid.Call, context: Optional[Dict[str, ast.stmt]] = Non
             return
         args.append(value)
 
-    kwargs: Dict[str, Any] = {}
+    kwargs: dict[str, Any] = {}
     for subnode in (expr.keywords or ()):
         value = get_value(expr=subnode.value)
         if value is UNKNOWN:
@@ -56,7 +58,7 @@ def handle_call(expr: astroid.Call, context: Optional[Dict[str, ast.stmt]] = Non
                 )
 
 
-def format_call_args(args: Sequence, kwargs: Dict[str, Any]) -> str:
+def format_call_args(args: Sequence, kwargs: dict[str, Any]) -> str:
     sep = ', '
     args_s = sep.join(map(repr, args))
     items = sorted(kwargs.items())

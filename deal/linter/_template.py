@@ -1,5 +1,4 @@
 # This file is excluded from coverage.
-
 from importlib import import_module
 
 import deal

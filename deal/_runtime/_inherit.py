@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 from functools import update_wrapper
 from types import FunctionType, MethodType
-from typing import Callable, Generic, Optional, TypeVar
+from typing import Callable, Generic, TypeVar
 
 from .._state import state
 from ._contracts import Contracts
@@ -13,7 +15,7 @@ ATTR = '__deal_contract'
 class Inherit(Generic[F]):
     _func: F
     _func_name: str
-    _cls: Optional[type] = None
+    _cls: type | None = None
     __call__: F
 
     def __init__(self, func: F) -> None:
@@ -49,7 +51,7 @@ class Inherit(Generic[F]):
             return self._func
 
         patched = self._func
-        contracts: Optional[Contracts]
+        contracts: Contracts | None
         for base in self._cls.mro()[1:]:
             other = getattr(base, self._func.__name__, None)
             if other is None:

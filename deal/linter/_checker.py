@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 import ast
-import typing
 from pathlib import Path
+from typing import Iterator
 
 from astroid import AstroidSyntaxError
 
@@ -26,11 +28,11 @@ class Checker:
             paths.append(Path(filename).absolute().parent)
         self._stubs = StubsManager(paths=paths)
 
-    def run(self) -> typing.Iterator[tuple]:
+    def run(self) -> Iterator[tuple]:
         for error in self.get_errors():
             yield tuple(error) + (type(self),)
 
-    def get_funcs(self) -> typing.List['Func']:
+    def get_funcs(self) -> list[Func]:
         if self._filename == 'stdin':
             return Func.from_ast(tree=self._tree)
         try:
@@ -38,7 +40,7 @@ class Checker:
         except AstroidSyntaxError:
             return Func.from_ast(tree=self._tree)
 
-    def get_errors(self) -> typing.Iterator[Error]:
+    def get_errors(self) -> Iterator[Error]:
         reported = set()
         for func in self.get_funcs():
             for rule in self._rules:

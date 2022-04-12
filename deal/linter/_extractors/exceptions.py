@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 import ast
 import builtins
 import re
 from inspect import cleandoc
-from typing import Iterator, Optional, Union
+from typing import Iterator
 
 import astroid
 
@@ -23,13 +25,13 @@ REX_GOOGLE_SECTION = re.compile(r'[A-Z][a-z]+:\s*')
 
 
 @get_exceptions.register(*TOKENS.ASSERT)
-def handle_assert(expr, **kwargs) -> Optional[Token]:
+def handle_assert(expr, **kwargs) -> Token | None:
     return Token(value=AssertionError)
 
 
 # explicit raise
 @get_exceptions.register(*TOKENS.RAISE)
-def handle_raise(expr: ast.Raise, **kwargs) -> Optional[Token]:
+def handle_raise(expr: ast.Raise, **kwargs) -> Token | None:
     if expr.exc is None:
         return None
     name = get_name(expr.exc)
@@ -47,7 +49,7 @@ def handle_raise(expr: ast.Raise, **kwargs) -> Optional[Token]:
 
 # division by zero
 @get_exceptions.register(*TOKENS.BIN_OP)
-def handle_bin_op(expr: Union[ast.BinOp, astroid.BinOp], **kwargs) -> Optional[Token]:
+def handle_bin_op(expr: ast.BinOp | astroid.BinOp, **kwargs) -> Token | None:
     if isinstance(expr.op, ast.Div) or expr.op == '/':
         if isinstance(expr.right, astroid.NodeNG):
             guesses = infer(expr=expr.right)
@@ -62,9 +64,9 @@ def handle_bin_op(expr: Union[ast.BinOp, astroid.BinOp], **kwargs) -> Optional[T
 
 @get_exceptions.register(*TOKENS.CALL)
 def handle_call(
-    expr: Union[ast.Call, astroid.Call],
+    expr: ast.Call | astroid.Call,
     dive: bool = True,
-    stubs: Optional[StubsManager] = None,
+    stubs: StubsManager | None = None,
 ) -> Iterator[Token]:
     # exit()
     name = get_name(expr.func)
@@ -102,7 +104,7 @@ def _exceptions_from_stubs(expr: astroid.Call, stubs: StubsManager) -> Iterator[
             yield Token(value=name)
 
 
-def _exceptions_from_func(expr: Union[ast.Call, astroid.Call]) -> Iterator[Token]:
+def _exceptions_from_func(expr: ast.Call | astroid.Call) -> Iterator[Token]:
     for value in infer(expr.func):
         if type(value) is not astroid.FunctionDef:
             continue
@@ -112,7 +114,7 @@ def _exceptions_from_func(expr: Union[ast.Call, astroid.Call]) -> Iterator[Token
             yield Token(value=error.value)
 
         # get explicitly specified exceptions from `@deal.raises`
-        name: Optional[str]
+        name: str | None
         for contract in get_contracts(value):
             if contract.name != 'raises':
                 continue

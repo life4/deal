@@ -1,4 +1,6 @@
-from typing import Any, Callable, Generic, Optional, TypeVar, overload
+from __future__ import annotations
+
+from typing import Any, Callable, Generic, TypeVar, overload
 
 
 T = TypeVar('T')
@@ -9,11 +11,11 @@ class cached_property(Generic[T]):  # noqa: N801
         self.func = func
 
     @overload
-    def __get__(self, instance: None, owner: Optional[type] = ...) -> 'cached_property[T]':
+    def __get__(self, instance: None, owner: type | None = ...) -> cached_property[T]:
         pass
 
     @overload
-    def __get__(self, instance, owner: Optional[type] = ...) -> T:
+    def __get__(self, instance, owner: type | None = ...) -> T:
         pass
 
     def __get__(self, obj, cls):

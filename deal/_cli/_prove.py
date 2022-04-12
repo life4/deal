@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 import sys
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import TYPE_CHECKING, Dict, Iterator, TextIO
+from typing import TYPE_CHECKING, Iterator, TextIO
 
 from .._colors import get_colors
 from ..linter._extractors import get_contracts
@@ -29,7 +31,7 @@ TEMPLATE_CON = '    {color}{p.conclusion.value}{end} {p}'
 
 class DealTheorem(Theorem):
     @staticmethod
-    def get_contracts(func: 'astroid.FunctionDef') -> Iterator['deal_solver.Contract']:
+    def get_contracts(func: astroid.FunctionDef) -> Iterator[deal_solver.Contract]:
         for contract in get_contracts(func):
             yield deal_solver.Contract(
                 name=contract.name,
@@ -41,7 +43,7 @@ def run_solver(
     path: Path,
     stream: TextIO,
     show_skipped: bool,
-    colors: Dict[str, str],
+    colors: dict[str, str],
 ) -> int:
     file_name_shown = False
     text = path.read_text()

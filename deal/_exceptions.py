@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 import sys
 from contextlib import suppress
 from pathlib import Path
-from typing import Any, Dict, Optional, Tuple, Type
+from typing import Any
 
 from ._cached_property import cached_property
 from ._colors import COLORS, NOCOLORS, highlight
@@ -12,7 +14,7 @@ from ._state import state
 root = str(Path(__file__).parent)
 
 
-def exception_hook(etype: Type[BaseException], value: BaseException, tb):
+def exception_hook(etype: type[BaseException], value: BaseException, tb):
     """Exception hook to remove deal from the traceback for ContractError.
     """
     if not issubclass(etype, ContractError):
@@ -43,18 +45,18 @@ class ContractError(AssertionError):
     """The base class for all errors raised by deal contracts.
     """
     message: str
-    errors: Optional[Any]
+    errors: Any | None
     validator: Any
-    params: Dict[str, Any]
-    origin: Optional[object]
+    params: dict[str, Any]
+    origin: object | None
 
     def __init__(
         self,
         message: str = '',
         errors=None,
         validator=None,
-        params: Optional[Dict[str, Any]] = None,
-        origin: Optional[object] = None,
+        params: dict[str, Any] | None = None,
+        origin: object | None = None,
     ) -> None:
         self.message = message
         self.errors = errors
@@ -180,7 +182,7 @@ class NoMatchError(Exception):
     """
     __module__ = 'deal'
 
-    def __init__(self, exceptions: Tuple[PreContractError, ...]) -> None:
+    def __init__(self, exceptions: tuple[PreContractError, ...]) -> None:
         self.exceptions = exceptions
 
     def __str__(self) -> str:

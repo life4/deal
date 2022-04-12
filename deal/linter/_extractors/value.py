@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import ast
 from contextlib import suppress
 from typing import Union

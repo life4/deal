@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import List
 
 from ..linter import StubsManager, generate_stub
 from ._base import Command
@@ -31,7 +32,7 @@ class StubCommand(Command):
         parser.add_argument('paths', nargs='+')
 
     def __call__(self, args) -> int:
-        paths: List[Path] = []
+        paths: list[Path] = []
         for arg in args.paths:
             for path in get_paths(Path(arg)):
                 paths.append(path)

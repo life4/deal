@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 from functools import partial, update_wrapper
 from types import MethodType
-from typing import Callable, List, TypeVar
+from typing import Callable, TypeVar
 
 from ._validators import InvariantValidator
 
@@ -15,7 +17,7 @@ DEAL_ATTRS = frozenset({
 
 
 class InvariantedClass:
-    _deal_invariants: List['InvariantValidator']
+    _deal_invariants: list[InvariantValidator]
 
     def _deal_validate(self) -> None:
         for validator in self._deal_invariants:

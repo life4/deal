@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 import ast
 import sys
 from types import ModuleType
-from typing import Any, Callable, List, Optional
+from typing import Any, Callable
 
 from _frozen_importlib_external import PathFinder  # pyright: reportMissingImports=false
 
@@ -10,7 +12,7 @@ import deal
 from ._state import state
 
 
-def get_name(expr) -> Optional[str]:
+def get_name(expr) -> str | None:
     if isinstance(expr, ast.Name):
         return expr.id
     if isinstance(expr, ast.Attribute):
@@ -66,7 +68,7 @@ class DealLoader:
         wrapped(module)
 
     @staticmethod
-    def _get_contracts(tree: ast.Module) -> List[ast.expr]:
+    def _get_contracts(tree: ast.Module) -> list[ast.expr]:
         for node in tree.body:  # type: Any
             if type(node) is not ast.Expr:
                 continue
@@ -78,7 +80,7 @@ class DealLoader:
         return []
 
     @classmethod
-    def _exec_contract(cls, node: ast.AST) -> Optional[Callable]:
+    def _exec_contract(cls, node: ast.AST) -> Callable | None:
         """Get AST node and return a contract function
         """
         if isinstance(node, ast.Call) and not node.keywords:

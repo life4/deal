@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 import sys
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Mapping, Optional, Sequence, TextIO, Type
+from typing import Mapping, Sequence, TextIO, Type
 
 from ._base import Command
 
@@ -29,8 +31,8 @@ def get_commands() -> CommandsType:
 
 def main(
     argv: Sequence[str], *,
-    commands: Optional[CommandsType] = None,
-    root: Optional[Path] = None,
+    commands: CommandsType | None = None,
+    root: Path | None = None,
     stream: TextIO = sys.stdout,
 ) -> int:
     if commands is None:

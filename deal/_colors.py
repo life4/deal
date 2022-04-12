@@ -1,5 +1,4 @@
-
-from typing import Dict
+from __future__ import annotations
 
 from ._state import state
 
@@ -42,7 +41,7 @@ def highlight(source: str) -> str:
     return source.rstrip()
 
 
-def get_colors(args) -> Dict[str, str]:
+def get_colors(args) -> dict[str, str]:
     if not state.color:
         return NOCOLORS
     if args.nocolor:

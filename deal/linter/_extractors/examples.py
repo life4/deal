@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 import ast
-from typing import Dict, List, NamedTuple, Optional, Union
+from typing import NamedTuple
 
 import astroid
 
@@ -8,12 +10,12 @@ from .value import UNKNOWN, get_value
 
 
 class Example(NamedTuple):
-    args: List[object]
-    kwargs: Dict[str, object]
+    args: list[object]
+    kwargs: dict[str, object]
     result: object
 
 
-def get_example(expr, func_name: str) -> Optional[Example]:
+def get_example(expr, func_name: str) -> Example | None:
     if not isinstance(expr, TOKENS.COMPARE):
         return None
     if not isinstance(expr.left, TOKENS.CALL):
@@ -44,7 +46,7 @@ def _get_right_value(expr) -> object:
     raise RuntimeError('unreachable')
 
 
-def _get_example_from_call(expr: Union[ast.Call, astroid.Call], func_name: str) -> Optional[Example]:
+def _get_example_from_call(expr: ast.Call | astroid.Call, func_name: str) -> Example | None:
     if get_name(expr.func) != func_name:
         return None
 
@@ -55,7 +57,7 @@ def _get_example_from_call(expr: Union[ast.Call, astroid.Call], func_name: str) 
             return None
         args.append(val)
 
-    kwargs: Dict[str, object] = {}
+    kwargs: dict[str, object] = {}
     for keyword in (expr.keywords or ()):
         val = get_value(keyword.value)
         if val is UNKNOWN:

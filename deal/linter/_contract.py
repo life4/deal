@@ -1,9 +1,11 @@
+from __future__ import annotations
+
 import ast
 import builtins
 import enum
 from copy import copy
 from pathlib import Path
-from typing import Dict, FrozenSet, Iterable, List, Optional, Type, Union
+from typing import Iterable, Union
 
 import astroid
 
@@ -35,7 +37,7 @@ class Contract:
     args: tuple
     category: Category
     func_args: ast.arguments
-    context: Dict[str, ast.stmt]
+    context: dict[str, ast.stmt]
     line: int
 
     def __init__(
@@ -43,7 +45,7 @@ class Contract:
         args: Iterable,
         category: Category,
         func_args: ast.arguments,
-        context: Optional[Dict[str, ast.stmt]] = None,
+        context: dict[str, ast.stmt] | None = None,
         line: int = 0,
     ) -> None:
         self.args = tuple(args)
@@ -62,7 +64,7 @@ class Contract:
         return contract
 
     @cached_property
-    def arguments(self) -> FrozenSet[str]:
+    def arguments(self) -> frozenset[str]:
         """Contract function arguments names.
 
         Useful for resolving external dependencies.
@@ -85,7 +87,7 @@ class Contract:
         return frozenset(result)
 
     @cached_property
-    def dependencies(self) -> FrozenSet[str]:
+    def dependencies(self) -> frozenset[str]:
         """Names that are defined outside of the contract body.
 
         1. Excludes built-in objects.
@@ -118,7 +120,7 @@ class Contract:
         return contract  # pragma: no cover
 
     @cached_property
-    def exceptions(self) -> List[Union[str, Type[Exception]]]:
+    def exceptions(self) -> list[Union[str, type[Exception]]]:
         from ._extractors import get_name
 
         excs = []
@@ -150,7 +152,7 @@ class Contract:
         module.body[FUNC_INDEX].value = func  # type: ignore
 
         # collect definitions for contract external deps
-        deps: List[ast.stmt] = []
+        deps: list[ast.stmt] = []
         for dep in self.dependencies:
             definition = self.context.get(dep)
             if not definition:

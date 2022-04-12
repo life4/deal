@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 import ast
-from typing import Optional, Union
+from typing import Union
 
 import astroid
 
@@ -19,7 +21,7 @@ def has_returns(body: list) -> bool:
 
 
 @get_returns.register(*TOKENS.RETURN)
-def handle_return(expr: Union[ast.Return, astroid.Return]) -> Optional[Token]:
+def handle_return(expr: Union[ast.Return, astroid.Return]) -> Token | None:
     if expr.value is None:
         return Token(value=None, line=expr.lineno, col=expr.col_offset)
     value = get_value(expr=expr.value)
@@ -29,7 +31,7 @@ def handle_return(expr: Union[ast.Return, astroid.Return]) -> Optional[Token]:
 
 
 @get_returns.register(*TOKENS.YIELD)
-def handle_yield(expr: Union[ast.Yield, astroid.Yield]) -> Optional[Token]:
+def handle_yield(expr: Union[ast.Yield, astroid.Yield]) -> Token | None:
     if expr.value is None:
         return Token(value=None, line=expr.lineno, col=expr.col_offset)
     value = get_value(expr=expr.value)

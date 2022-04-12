@@ -1,6 +1,8 @@
-import typing
+from __future__ import annotations
+
 from functools import update_wrapper
 from inspect import signature
+from typing import Any, BinaryIO, Callable, Iterator, NamedTuple, NoReturn, overload
 
 from . import introspection
 from ._cached_property import cached_property
@@ -19,30 +21,27 @@ else:
     from hypothesis.internal.reflection import proxies
 
 
-F = typing.Callable[..., None]
-FuzzInputType = typing.Union[bytes, bytearray, memoryview, typing.BinaryIO]
-FuzzType = typing.Callable[[FuzzInputType], typing.Optional[bytes]]
-ArgsKwargsType = typing.Tuple[tuple, typing.Dict[str, typing.Any]]
+F = Callable[..., None]
 EXAMPLE = object()
 
 
-class TestCase(typing.NamedTuple):
+class TestCase(NamedTuple):
     """A callable object, wrapper around a function that must be tested.
 
     When called, calls the wrapped function, suppresses expected exceptions,
     checks the type of the result, and returns it.
     """
 
-    args: typing.Tuple[typing.Any, ...]
+    args: tuple[Any, ...]
     """Positional arguments to be passed in the function"""
 
-    kwargs: typing.Dict[str, typing.Any]
+    kwargs: dict[str, Any]
     """Keyword arguments to be passed in the function"""
 
-    func: typing.Callable
+    func: Callable
     """The function which will be called when the test case is called"""
 
-    exceptions: typing.Tuple[typing.Type[Exception], ...]
+    exceptions: tuple[type[Exception], ...]
     """Exceptions that must be suppressed.
     """
 
@@ -50,7 +49,7 @@ class TestCase(typing.NamedTuple):
     """Check that the result matches return type of the function.
     """
 
-    def __call__(self) -> typing.Any:
+    def __call__(self) -> Any:
         """Calls the given test case returning the called functions result on success or
         Raising an exception on error
         """
@@ -58,11 +57,11 @@ class TestCase(typing.NamedTuple):
         try:
             result = self.func(*self.args, **self.kwargs)
         except self.exceptions:
-            return typing.NoReturn
+            return NoReturn
         self._check_result(result)
         return result
 
-    def _check_result(self, result: typing.Any) -> None:
+    def _check_result(self, result: Any) -> None:
         if not self.check_types or typeguard is None:
             return
         memo = typeguard._CallMemo(
@@ -78,32 +77,32 @@ class cases:  # noqa: N
     """Generate test cases for the given function.
     """
 
-    func: typing.Callable
+    func: Callable
     """the function to test. Should be type annotated."""
 
     count: int
     """how many test cases to generate, defaults to 50."""
 
-    kwargs: typing.Dict[str, typing.Any]
+    kwargs: dict[str, Any]
     """keyword arguments to pass into the function."""
 
     check_types: bool
     """check that the result matches return type of the function. Enabled by default."""
 
-    settings: 'hypothesis.settings'
+    settings: hypothesis.settings
     """Hypothesis settings to use instead of default ones."""
 
-    seed: typing.Optional[int]
+    seed: int | None
     """Random seed to use when generating test cases. Use it to make tests deterministic."""
 
     def __init__(
         self,
-        func: typing.Callable, *,
+        func: Callable, *,
         count: int = 50,
-        kwargs: typing.Optional[typing.Dict[str, typing.Any]] = None,
-        check_types: typing.Optional[bool] = None,
-        settings: typing.Optional['hypothesis.settings'] = None,
-        seed: typing.Optional[int] = None,
+        kwargs: dict[str, Any] | None = None,
+        check_types: bool | None = None,
+        settings: hypothesis.settings | None = None,
+        seed: int | None = None,
     ) -> None:
         """
         Create test cases generator.
@@ -133,7 +132,7 @@ class cases:  # noqa: N
         self.settings = settings or self._default_settings
         self.seed = seed
 
-    def __iter__(self) -> typing.Iterator[TestCase]:
+    def __iter__(self) -> Iterator[TestCase]:
         """Emits test cases.
 
         It can be helpful when you want to see what test cases are generated.
@@ -154,7 +153,7 @@ class cases:  # noqa: N
         ```
 
         """
-        cases: typing.List[TestCase] = []
+        cases: list[TestCase] = []
         test = self(cases.append)
         test()
         yield from cases
@@ -182,11 +181,11 @@ class cases:  # noqa: N
         )
 
     @cached_property
-    def _contracts(self) -> typing.Tuple[introspection.Contract, ...]:
+    def _contracts(self) -> tuple[introspection.Contract, ...]:
         return tuple(introspection.get_contracts(self.func))
 
     @cached_property
-    def _pres(self) -> typing.Tuple[introspection.Pre, ...]:
+    def _pres(self) -> tuple[introspection.Pre, ...]:
         """Returns pre-condition validators.
 
         It is used in the process of generating hypothesis strategies
@@ -199,7 +198,7 @@ class cases:  # noqa: N
         return tuple(validators)
 
     @cached_property
-    def exceptions(self) -> typing.Tuple[typing.Type[Exception], ...]:
+    def exceptions(self) -> tuple[type[Exception], ...]:
         """
         Returns exceptions that will be suppressed by individual test cases.
         The exceptions are extracted from `@deal.raises` of the tested function.
@@ -211,7 +210,7 @@ class cases:  # noqa: N
         return tuple(exceptions)
 
     @cached_property
-    def strategy(self) -> 'hypothesis.strategies.SearchStrategy':
+    def strategy(self) -> hypothesis.strategies.SearchStrategy:
         """Hypothesis strategy that is used to generate test cases.
         """
         kwargs = self.kwargs.copy()
@@ -220,7 +219,7 @@ class cases:  # noqa: N
                 continue
             kwargs[name] = hypothesis.strategies.just(value)
 
-        def pass_along_variables(*args, **kwargs) -> ArgsKwargsType:
+        def pass_along_variables(*args, **kwargs) -> tuple[tuple, dict[str, Any]]:
             return args, kwargs
 
         pass_along_variables.__signature__ = signature(self.func)    # type: ignore
@@ -228,7 +227,7 @@ class cases:  # noqa: N
         return hypothesis.strategies.builds(pass_along_variables, **kwargs)
 
     @property
-    def _default_settings(self) -> 'hypothesis.settings':
+    def _default_settings(self) -> hypothesis.settings:
         return hypothesis.settings(
             database=None,
             max_examples=self.count,
@@ -242,7 +241,7 @@ class cases:  # noqa: N
             suppress_health_check=[hypothesis.HealthCheck.filter_too_much],
         )
 
-    @typing.overload
+    @overload
     def __call__(self, test_func: F) -> F:
         """Wrap a function to turn it into a proper Hypothesis test.
 
@@ -266,7 +265,7 @@ class cases:  # noqa: N
 
         """
 
-    @typing.overload
+    @overload
     def __call__(self) -> None:
         """Generate and run tests for a function.
 
@@ -284,8 +283,8 @@ class cases:  # noqa: N
 
         """
 
-    @typing.overload
-    def __call__(self, buffer: FuzzInputType) -> typing.Optional[bytes]:
+    @overload
+    def __call__(self, buffer: bytes | bytearray | memoryview | BinaryIO) -> bytes | None:
         """Use a function as a fuzzing target.
 
         This is a way to provide a random buffer for Hypothesis.
@@ -340,7 +339,7 @@ class cases:  # noqa: N
                 case = case._replace(func=contract.validate)
                 test_func(case, *args, **kwargs)
 
-        def wrapper(case: ArgsKwargsType, *args, **kwargs) -> None:
+        def wrapper(case: tuple[tuple, dict[str, Any]], *args, **kwargs) -> None:
             __tracebackhide__ = True
             ex = case
             if ex is EXAMPLE:

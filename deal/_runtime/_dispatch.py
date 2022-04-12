@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from functools import update_wrapper
-from typing import TYPE_CHECKING, Callable, Generic, List, Optional, TypeVar
+from typing import TYPE_CHECKING, Callable, Generic, TypeVar
 
 from .._exceptions import NoMatchError, PreContractError
 from .._state import state
@@ -14,14 +16,14 @@ ATTR = '__deal_contract'
 
 
 class Dispatch(Generic[F]):
-    _functions: List[F]
+    _functions: list[F]
     __call__: F
 
     def __init__(self) -> None:
         self._functions = []
 
     @classmethod
-    def wrap(cls, func: F) -> 'Dispatch[F]':
+    def wrap(cls, func: F) -> Dispatch[F]:
         self = cls()
         update_wrapper(wrapper=self, wrapped=func)
         return self
@@ -32,7 +34,7 @@ class Dispatch(Generic[F]):
 
     def __call__(self, *args, **kwargs):  # type: ignore[no-redef]
         exceptions = []
-        contracts: 'Optional[Contracts]'
+        contracts: Contracts | None
         old_state = state.debug
         state.debug = True
         try:
