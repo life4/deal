@@ -417,6 +417,56 @@ def test_transformer_has(content: str, tmp_path: Path) -> None:
 
 
 @pytest.mark.parametrize('content', [
+    # add @deal.pure
+    """
+        def f():
+            return 1
+        ---
+        @deal.pure
+        def f():
+            return 1
+    """,
+    # if not merged into @deal.pure, remove @deal.safe
+    """
+        def f():
+            print("hi")
+        ---
+        def f():
+            print("hi")
+    """,
+    # if not merged into @deal.pure, remove @deal.has()
+    """
+        def f():
+            return 1/0
+        ---
+        def f():
+            return 1/0
+    """,
+    """
+        @property
+        def f():
+            return 1
+        ---
+        @property  # type: ignore[misc]
+        @deal.pure
+        def f():
+            return 1
+    """,
+])
+def test_transformer_pure(content: str, tmp_path: Path) -> None:
+    given, expected = content.split('---')
+    given = dedent(given)
+    expected = dedent(expected)
+    tr = Transformer(
+        content=given,
+        path=tmp_path / 'example.py',
+        types={TransformationType.PURE},
+    )
+    actual = tr.transform()
+    assert actual == expected
+
+
+@pytest.mark.parametrize('content', [
     # add import if needed
     """
         def f():
@@ -531,6 +581,45 @@ def test_transformer_import(content: str, tmp_path: Path) -> None:
         content=given,
         path=tmp_path / 'example.py',
         types={TransformationType.HAS, TransformationType.IMPORT},
+    )
+    actual = tr.transform()
+    assert actual.lstrip('\n') == expected.lstrip('\n')
+
+
+def test_transformer_smoke(tmp_path: Path) -> None:
+    given = dedent("""
+        @deal.pre(lambda: True)
+        def f():
+            return 1
+
+        def f():
+            return 1/0
+
+        @deal.raises(ValueError)
+        def f():
+            pass
+    """).lstrip('\n')
+    expected = dedent("""
+        import deal
+        @deal.pure
+        @deal.pre(lambda: True)
+        def f():
+            return 1
+
+        @deal.has()
+        @deal.raises(ZeroDivisionError)
+        def f():
+            return 1/0
+
+        @deal.has('io')
+        @deal.raises(ValueError)
+        def f():
+            pass
+    """)
+    tr = Transformer(
+        content=given,
+        path=tmp_path / 'example.py',
+        types=set(TransformationType),
     )
     actual = tr.transform()
     assert actual.lstrip('\n') == expected.lstrip('\n')

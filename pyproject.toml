@@ -24,7 +24,7 @@ classifiers=[
 ]
 
 requires = [
-    "astroid",
+    "astroid>=2.11.0",
     "vaa>=0.2.1",
 ]
 

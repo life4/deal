@@ -1,4 +1,7 @@
-from typing import Optional
+import ast
+from typing import Optional, Union
+
+import astroid
 
 from .common import TOKENS, Extractor, Token, traverse
 from .value import UNKNOWN, get_value
@@ -8,14 +11,17 @@ get_returns = Extractor()
 
 
 def has_returns(body: list) -> bool:
+    expected = TOKENS.RETURN + TOKENS.YIELD + TOKENS.YIELD_FROM + TOKENS.RAISE
     for expr in traverse(body=body):
-        if isinstance(expr, TOKENS.RETURN + TOKENS.YIELD):
+        if isinstance(expr, expected):
             return True
     return False
 
 
 @get_returns.register(*TOKENS.RETURN)
-def handle_return(expr) -> Optional[Token]:
+def handle_return(expr: Union[ast.Return, astroid.Return]) -> Optional[Token]:
+    if expr.value is None:
+        return Token(value=None, line=expr.lineno, col=expr.col_offset)
     value = get_value(expr=expr.value)
     if value is UNKNOWN:
         return None
@@ -23,7 +29,9 @@ def handle_return(expr) -> Optional[Token]:
 
 
 @get_returns.register(*TOKENS.YIELD)
-def handle_yield(expr) -> Optional[Token]:
+def handle_yield(expr: Union[ast.Yield, astroid.Yield]) -> Optional[Token]:
+    if expr.value is None:
+        return Token(value=None, line=expr.lineno, col=expr.col_offset)
     value = get_value(expr=expr.value)
     if value is UNKNOWN:
         return None

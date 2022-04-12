@@ -313,7 +313,7 @@ class CheckMarkers(FuncRule):
     def get_undeclared(cls, func: Func, markers: Set[str]) -> Iterator[Error]:
         has = HasPatcher(markers)
         # function without IO must return something
-        if not has.has_io and not has_returns(body=func.body):
+        if not has.has_io and not func.has_self and not has_returns(body=func.body):
             yield Error(
                 code=cls.codes['io'],
                 text=cls.message,
@@ -330,7 +330,7 @@ class CheckMarkers(FuncRule):
             if has_marker:
                 continue
             yield Error(
-                code=cls.codes.get(token.marker, 40),
+                code=cls.codes.get(token.marker, cls.code),
                 text=cls.message,
                 value=token.marker,
                 row=token.line,
