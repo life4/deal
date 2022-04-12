@@ -11,7 +11,7 @@ class cached_property(Generic[T]):  # noqa: N801
         self.func = func
 
     @overload
-    def __get__(self, instance: None, owner: type | None = ...) -> 'cached_property[T]':
+    def __get__(self, instance: None, owner: type | None = ...) -> cached_property[T]:
         pass
 
     @overload

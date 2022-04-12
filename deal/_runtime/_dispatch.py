@@ -23,7 +23,7 @@ class Dispatch(Generic[F]):
         self._functions = []
 
     @classmethod
-    def wrap(cls, func: F) -> 'Dispatch[F]':
+    def wrap(cls, func: F) -> Dispatch[F]:
         self = cls()
         update_wrapper(wrapper=self, wrapped=func)
         return self

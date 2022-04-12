@@ -52,7 +52,7 @@ class Contracts(Generic[F]):
         self.patcher = None
 
     @classmethod
-    def attach(cls, contract_type: str, validator: 'Validator', func: F) -> F:
+    def attach(cls, contract_type: str, validator: Validator, func: F) -> F:
         if state.removed:
             return func
         contracts = cls._ensure_wrapped(func)
@@ -61,7 +61,7 @@ class Contracts(Generic[F]):
         return contracts.wrapped
 
     @classmethod
-    def attach_has(cls, patcher: 'HasPatcher', func: F) -> F:
+    def attach_has(cls, patcher: HasPatcher, func: F) -> F:
         if state.removed:
             return func
         contracts = cls._ensure_wrapped(func)
@@ -69,7 +69,7 @@ class Contracts(Generic[F]):
         return contracts.wrapped
 
     @classmethod
-    def _ensure_wrapped(cls: type['Contracts'], func: F) -> 'Contracts[F]':
+    def _ensure_wrapped(cls: type[Contracts], func: F) -> Contracts[F]:
         contracts: Contracts
         contracts = getattr(func, ATTR, None)  # type: ignore[assignment]
         if contracts is not None:

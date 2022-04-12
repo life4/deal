@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import Any, Callable, BinaryIO, NamedTuple, NoReturn, Iterator, overload
 from functools import update_wrapper
 from inspect import signature
+from typing import Any, BinaryIO, Callable, Iterator, NamedTuple, NoReturn, overload
 
 from . import introspection
 from ._cached_property import cached_property
@@ -89,7 +89,7 @@ class cases:  # noqa: N
     check_types: bool
     """check that the result matches return type of the function. Enabled by default."""
 
-    settings: 'hypothesis.settings'
+    settings: hypothesis.settings
     """Hypothesis settings to use instead of default ones."""
 
     seed: int | None
@@ -210,7 +210,7 @@ class cases:  # noqa: N
         return tuple(exceptions)
 
     @cached_property
-    def strategy(self) -> 'hypothesis.strategies.SearchStrategy':
+    def strategy(self) -> hypothesis.strategies.SearchStrategy:
         """Hypothesis strategy that is used to generate test cases.
         """
         kwargs = self.kwargs.copy()
@@ -227,7 +227,7 @@ class cases:  # noqa: N
         return hypothesis.strategies.builds(pass_along_variables, **kwargs)
 
     @property
-    def _default_settings(self) -> 'hypothesis.settings':
+    def _default_settings(self) -> hypothesis.settings:
         return hypothesis.settings(
             database=None,
             max_examples=self.count,

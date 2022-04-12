@@ -17,7 +17,7 @@ DEAL_ATTRS = frozenset({
 
 
 class InvariantedClass:
-    _deal_invariants: list['InvariantValidator']
+    _deal_invariants: list[InvariantValidator]
 
     def _deal_validate(self) -> None:
         for validator in self._deal_invariants:

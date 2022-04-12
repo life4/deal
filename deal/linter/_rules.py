@@ -18,7 +18,7 @@ from ._stub import StubsManager
 
 
 T = TypeVar('T', bound=Type['Rule'])
-rules: list['Rule'] = []
+rules: list[Rule] = []
 
 
 def register(rule: T) -> T:
