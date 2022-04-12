@@ -26,19 +26,7 @@ def test_extract_defs(source: str, names) -> None:
     defs = get_definitions(tree)
     assert set(defs) == names
 
-    module = ast.parse('hello')
-    for name, stmt in defs.items():
-        module.body[0] = stmt
-        print(name, '|>', ast.dump(module))
-        compile(module, filename='<ast>', mode='exec')
-
     tree = astroid.parse(source)
     print(tree.repr_tree())
     defs = get_definitions(tree)
     assert set(defs) == names
-
-    module = ast.parse('hello')
-    for name, stmt in defs.items():
-        module.body[0] = stmt
-        print(name, '|>', ast.dump(module))
-        compile(module, filename='<ast>', mode='exec')
