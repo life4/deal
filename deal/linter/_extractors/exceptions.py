@@ -11,6 +11,7 @@ from .._stub import StubsManager
 from .common import TOKENS, Extractor, Token, get_full_name, get_name, get_stub, infer
 from .contracts import get_contracts
 
+
 try:
     import docstring_parser
 except ImportError:

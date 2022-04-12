@@ -1,6 +1,6 @@
 import ast
-from pathlib import Path
 import sys
+from pathlib import Path
 from textwrap import dedent
 from typing import Dict
 
