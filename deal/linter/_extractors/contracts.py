@@ -24,7 +24,8 @@ Attr = Union[ast.Attribute, astroid.Attribute]
 
 class ContractInfo(NamedTuple):
     name: str
-    args: list[Union[ast.expr, astroid.Expr]]
+    args: list[ast.expr | astroid.NodeNG]
+    kwargs: list[ast.keyword | astroid.Keyword]
     line: int
 
 
@@ -49,6 +50,7 @@ def _get_contracts(decorators: list) -> Iterator[ContractInfo]:
             yield ContractInfo(
                 name=name.split('.')[-1],
                 args=[],
+                kwargs=[],
                 line=contract.lineno,
             )
             if name == 'deal.inherit':
@@ -65,6 +67,7 @@ def _get_contracts(decorators: list) -> Iterator[ContractInfo]:
             yield ContractInfo(
                 name=name.split('.')[-1],
                 args=contract.args,
+                kwargs=contract.keywords,
                 line=contract.lineno,
             )
 

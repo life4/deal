@@ -41,6 +41,7 @@ def handle_call(expr: astroid.Call, context: dict[str, ast.stmt] | None = None) 
                 continue
             contract = Contract(
                 args=cinfo.args,
+                kwargs=cinfo.kwargs,
                 category=Category.PRE,
                 func_args=func_args,
                 context=context,

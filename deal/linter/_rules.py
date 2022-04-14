@@ -161,7 +161,7 @@ class CheckExamples(FuncRule):
             yield from self._check(func=func, contract=contract)
 
     def _check(self, func: Func, contract: Contract) -> Iterator[Error]:
-        token = contract.args[0]
+        token = contract.raw_validator
         if not isinstance(token, (ast.Lambda, astroid.Lambda)):
             return
         example = get_example(token.body, func_name=func.name)

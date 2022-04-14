@@ -56,6 +56,7 @@ class Func(NamedTuple):
             for cinfo in get_contracts(expr):
                 contract = Contract(
                     args=cinfo.args,
+                    kwargs=cinfo.kwargs,
                     func_args=expr.args,
                     category=Category(cinfo.name),
                     context=definitions,
@@ -96,6 +97,7 @@ class Func(NamedTuple):
             for cinfo in get_contracts(expr):
                 contract = Contract(
                     args=cinfo.args,
+                    kwargs=cinfo.kwargs,
                     func_args=func_args,
                     category=Category(cinfo.name),
                     context=definitions,

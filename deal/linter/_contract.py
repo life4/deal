@@ -34,7 +34,8 @@ class Category(enum.Enum):
 
 
 class Contract:
-    args: tuple
+    args: tuple[ast.expr | astroid.NodeNG, ...]
+    kwargs: tuple[ast.keyword | astroid.Keyword, ...]
     category: Category
     func_args: ast.arguments
     context: dict[str, ast.stmt]
@@ -43,25 +44,35 @@ class Contract:
     def __init__(
         self,
         args: Iterable,
+        kwargs: Iterable,
         category: Category,
         func_args: ast.arguments,
         context: dict[str, ast.stmt] | None = None,
         line: int = 0,
     ) -> None:
         self.args = tuple(args)
+        self.kwargs = tuple(kwargs)
         self.category = category
         self.func_args = func_args
         self.context = context or dict()
         self.line = line
 
     @cached_property
-    def body(self) -> ast.AST:
-        contract = self.args[0]
+    def validator(self) -> ast.AST:
+        """The validator converted into ast.
+        """
+        contract = self.raw_validator
+        if isinstance(contract, ast.AST):
+            return contract
         # convert astroid node to ast node
-        if hasattr(contract, 'as_string'):
-            contract = self._resolve_name(contract)
-            contract = ast.parse(contract.as_string()).body[0]
-        return contract
+        contract = self._resolve_name(contract)
+        return ast.parse(contract.as_string()).body[0]
+
+    @cached_property
+    def raw_validator(self) -> ast.expr | astroid.NodeNG:
+        if self.args:
+            return self.args[0]
+        raise LookupError('cannot find validator for contract')
 
     @cached_property
     def arguments(self) -> frozenset[str]:
@@ -69,7 +80,7 @@ class Contract:
 
         Useful for resolving external dependencies.
         """
-        func = self.body
+        func = self.validator
         if isinstance(func, ast.Expr):
             func = func.value
         if not isinstance(func, (ast.FunctionDef, ast.Lambda)):
@@ -94,7 +105,7 @@ class Contract:
         1. Excludes contract function arguments.
         """
         deps = set()
-        for node in ast.walk(self.body):
+        for node in ast.walk(self.validator):
             if not isinstance(node, ast.Name):
                 continue
             if hasattr(builtins, node.id):
@@ -160,7 +171,7 @@ class Contract:
             deps.append(definition)
 
         # inject contract if contract is a function
-        contract = copy(self.body)
+        contract = copy(self.validator)
         if isinstance(contract, ast.FunctionDef):
             contract.body = deps + contract.body
             # if contract is function, add it's definition and assign it's name

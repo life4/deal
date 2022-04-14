@@ -33,6 +33,7 @@ def test_repr():
     c = Contract(
         category=Category.RAISES,
         args=[],
+        kwargs=[],
         func_args=None,  # type: ignore[arg-type]
     )
     assert repr(c) == 'Contract(raises)'
