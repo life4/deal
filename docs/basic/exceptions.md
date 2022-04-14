@@ -23,6 +23,10 @@ divide()
 
 `@deal.raises()` without exceptions specified means that function raises no exception.
 
+## deal.safe
+
+`@deal.safe` is an alias for `@deal.raises()`. Wraps a function that never raises an exception.
+
 ## deal.reason
 
 Checks condition if exception was raised.

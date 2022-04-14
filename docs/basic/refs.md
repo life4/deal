@@ -18,7 +18,7 @@ This page provides a quick navigation by the documentation in case if you're loo
 | `@deal.pure`     | {py:func}`deal.pure`     | -- |
 | `@deal.raises`   | {py:func}`deal.raises`   | {doc}`/basic/exceptions` / {ref}`basic/exceptions:deal.raises` |
 | `@deal.reason`   | {py:func}`deal.reason`   | {doc}`/basic/exceptions` / {ref}`basic/exceptions:deal.reason` |
-| `@deal.safe`     | {py:func}`deal.safe`     | -- |
+| `@deal.safe`     | {py:func}`deal.safe`     | {doc}`/basic/exceptions` / {ref}`basic/exceptions:deal.safe`|
 
 ## Functions
 
