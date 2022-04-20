@@ -33,6 +33,10 @@ class Category(enum.Enum):
         return self in {Category.SAFE, Category.PURE}
 
 
+class NoValidatorError(Exception):
+    pass
+
+
 class Contract:
     args: tuple[ast.expr | astroid.NodeNG, ...]
     kwargs: tuple[ast.keyword | astroid.Keyword, ...]
@@ -75,7 +79,7 @@ class Contract:
         for kwarg in self.kwargs:
             if kwarg.arg == 'validator':
                 return kwarg.value
-        raise LookupError('cannot find validator for contract')
+        raise NoValidatorError('cannot find validator for contract')
 
     @cached_property
     def arguments(self) -> frozenset[str]:

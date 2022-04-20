@@ -7,7 +7,7 @@ from typing import Iterator, Type, TypeVar
 import astroid
 
 from .._runtime import HasPatcher
-from ._contract import Category, Contract
+from ._contract import Category, Contract, NoValidatorError
 from ._error import Error
 from ._extractors import (
     UNKNOWN, get_asserts, get_example, get_exceptions, get_imports,
@@ -34,8 +34,8 @@ class Rule:
     def _validate(self, contract: Contract, args, kwargs, **error_info) -> Error | None:
         try:
             result = contract.run(*args, **kwargs)
-        except NameError:
-            # cannot resolve contract dependencies
+        except (NameError, NoValidatorError):
+            # cannot resolve contract dependencies or cannot find validator
             return None
         if isinstance(result, str):
             return Error(text=result, code=self.code, **error_info)

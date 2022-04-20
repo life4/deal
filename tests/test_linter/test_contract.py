@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 import ast
 from textwrap import dedent
 from typing import Iterator, TypeVar
@@ -6,7 +7,7 @@ from typing import Iterator, TypeVar
 import astroid
 import pytest
 
-from deal.linter._contract import Category, Contract
+from deal.linter._contract import Category, Contract, NoValidatorError
 from deal.linter._func import Func
 
 
@@ -273,5 +274,5 @@ def test_no_validator():
     """
     func = first(funcs_from_ast(text))
     c = first(func.contracts)
-    with pytest.raises(LookupError, match='cannot find validator for contract'):
+    with pytest.raises(NoValidatorError, match='cannot find validator for contract'):
         c.run(1)
