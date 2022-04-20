@@ -72,6 +72,9 @@ class Contract:
     def raw_validator(self) -> ast.expr | astroid.NodeNG:
         if self.args:
             return self.args[0]
+        for kwarg in self.kwargs:
+            if kwarg.arg == 'validator':
+                return kwarg.value
         raise LookupError('cannot find validator for contract')
 
     @cached_property

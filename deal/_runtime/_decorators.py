@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from functools import partial
-from typing import Callable, TypeVar, Union, overload
+from typing import TYPE_CHECKING, Callable, TypeVar, overload
 
 from .. import _exceptions
 from .._types import ExceptionType
@@ -13,10 +13,11 @@ from ._invariant import invariant
 from ._validators import InvariantValidator, RaisesValidator, ReasonValidator, Validator
 
 
-C = TypeVar('C', bound=Callable)
-F = TypeVar('F', bound=Callable)
-T = TypeVar('T')
-TF = TypeVar('TF', bound=Union[Callable, type])
+if TYPE_CHECKING:
+    C = TypeVar('C', bound=Callable)
+    F = TypeVar('F', bound=Callable)
+    T = TypeVar('T')
+    TF = TypeVar('TF', bound="Callable | type")
 
 
 def pre(
@@ -515,7 +516,7 @@ def pure(_func: C) -> C:
     return chain(has(), safe)(_func)
 
 
-def implies(test, then: T) -> Union[bool, T]:
+def implies(test, then: T) -> bool | T:
     """Check `then` only if `test` is true.
 
     A convenient helper for contracts that must be checked only for some cases.

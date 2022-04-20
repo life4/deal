@@ -230,9 +230,7 @@ def test_lazy_import_stdlib():
         return a * 2
     """
     func = first(funcs_from_ast(text))
-    assert len(func.contracts) == 1
-    c = func.contracts[0]
-
+    c = first(func.contracts)
     assert c.run('bcd') is False
     assert c.run('abc') is True
 
@@ -246,8 +244,34 @@ def test_unresolvable():
         return a * 2
     """
     func = first(funcs_from_ast(text))
-    assert len(func.contracts) == 1
-    c = func.contracts[0]
-
+    c = first(func.contracts)
     with pytest.raises(NameError):
         c.run('bcd')
+
+
+def test_kwarg_validator():
+    text = """
+    import deal
+
+    @deal.post(message="oh no", validator=lambda a: a > 0)
+    def f(a):
+        return a * 2
+    """
+    func = first(funcs_from_ast(text))
+    c = first(func.contracts)
+    assert c.run(1) is True
+    assert c.run(-2) is False
+
+
+def test_no_validator():
+    text = """
+    import deal
+
+    @deal.post(message="oh no")
+    def f(a):
+        return a * 2
+    """
+    func = first(funcs_from_ast(text))
+    c = first(func.contracts)
+    with pytest.raises(LookupError, match='cannot find validator for contract'):
+        c.run(1)
