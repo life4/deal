@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     C = TypeVar('C', bound=Callable)
     F = TypeVar('F', bound=Callable)
     T = TypeVar('T')
-    TF = TypeVar('TF', bound="Callable | type")
+    TF = TypeVar('TF', bound='Callable | type')
 
 
 def pre(
