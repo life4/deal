@@ -159,7 +159,7 @@ def ensure(
 
 
 def raises(
-    *exceptions: type[Exception],
+    *exceptions: type[BaseException],
     message: str | None = None,
     exception: ExceptionType | None = None,
 ) -> Callable[[C], C]:
