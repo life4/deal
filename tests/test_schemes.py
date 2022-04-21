@@ -1,3 +1,4 @@
+from __future__ import annotations
 import marshmallow
 import pytest
 import vaa
@@ -59,7 +60,7 @@ def test_method_chain_decorator_with_scheme_is_fulfilled(scheme):
 def test_scheme_contract_is_satisfied_when_setting_arg(scheme):
     @deal.inv(scheme)
     class User:
-        name = ''
+        name: str | int = ''
 
     user = User()
 
@@ -80,7 +81,7 @@ def test_scheme_contract_is_satisfied_within_chain(scheme):
     @deal.inv(scheme)
     @deal.inv(lambda user: user.name != 'Chris')
     class User:
-        name = ''
+        name: str | int = ''
 
     user = User()
     user.name = 'Gram'
@@ -101,24 +102,23 @@ def test_scheme_contract_is_satisfied_within_chain(scheme):
 @pytest.mark.parametrize('scheme', SCHEMES)
 def test_scheme_contract_is_satisfied_when_passing_args(scheme):
     @deal.pre(scheme)
-    def func(name):
+    def func1(name):
         return name * 2
 
-    assert func('Chris') == 'ChrisChris'
-
-    assert func(name='Chris') == 'ChrisChris'
+    assert func1('Chris') == 'ChrisChris'
+    assert func1(name='Chris') == 'ChrisChris'
 
     @deal.pre(scheme)
-    def func(**kwargs):
+    def func2(**kwargs):
         return kwargs['name'] * 3
 
-    assert func(name='Chris') == 'ChrisChrisChris'
+    assert func2(name='Chris') == 'ChrisChrisChris'
 
     @deal.pre(scheme)
-    def func(name='Max'):
+    def func3(name='Max'):
         return name * 2
 
-    assert func() == 'MaxMax'
+    assert func3() == 'MaxMax'
 
 
 @pytest.mark.parametrize('scheme', SCHEMES)
@@ -159,3 +159,20 @@ def test_underscore_validator_default_message():
     with pytest.raises(deal.PreContractError) as exc_info:
         func(1)
     assert exc_info.value.args == tuple()
+
+
+def test_default_error():
+    """
+    If no error provided by the validator, return the default one.
+    """
+    class CustomScheme(deal.Scheme):
+        def is_valid(self) -> bool:
+            return isinstance(self.data['name'], str)
+
+    @deal.pre(CustomScheme, message='oh hi mark')
+    def func(name):
+        return name * 2
+    func('hi')
+    with pytest.raises(deal.PreContractError) as exc_info:
+        func(123)
+    assert exc_info.value.message == 'oh hi mark'

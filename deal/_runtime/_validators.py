@@ -52,11 +52,11 @@ def _args_to_vars(
     return params
 
 
-class BorgDict(dict):
+class AttrDict(dict):
+    __slots__ = ()
+
     def __getattr__(self, name: str):
-        if name in self:
-            return self[name]
-        raise AttributeError(name)
+        return self[name]
 
 
 class Validator:
@@ -239,7 +239,7 @@ class Validator:
             signature=self.signature,
             keep_result=False,
         )
-        validation_result = self.validator(BorgDict(params))
+        validation_result = self.validator(AttrDict(params))
         # is invalid (validator returns error message)
         if type(validation_result) is str:
             raise self._exception(message=validation_result, params=params) from exc
