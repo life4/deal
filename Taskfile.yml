@@ -136,6 +136,8 @@ tasks:
     - task: flake8
   mypy:run:
     - task: mypy
+  mypy_test:run:
+    - task: mypy_test
   isort:run:
     - task: isort
   yamllint:run:

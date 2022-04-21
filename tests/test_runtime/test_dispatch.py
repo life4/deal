@@ -90,7 +90,7 @@ def test_propagate_pre_contract_error_from_default():
     assert exc_info.value.source == 'False'
 
 
-@pytest.mark.filterwarnings("ignore:It is pytest but deal is disabled")
+@pytest.mark.filterwarnings('ignore:It is pytest but deal is disabled')
 def test_dispatch_works_with_disabled_contracts():
     state.disable()
     try:

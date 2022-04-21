@@ -10,7 +10,7 @@ from deal._state import state
 from .test_runtime.helpers import run_sync
 
 
-pytestmark = pytest.mark.filterwarnings("ignore:It is pytest but deal is disabled")
+pytestmark = pytest.mark.filterwarnings('ignore:It is pytest but deal is disabled')
 
 
 @pytest.fixture
