@@ -35,7 +35,8 @@ def handle_call(expr: astroid.Call, context: dict[str, ast.stmt] | None = None) 
         if not isinstance(func, astroid.FunctionDef):
             continue
         code = f'def f({func.args.as_string()}):0'
-        func_args = ast.parse(code).body[0].args  # type: ignore
+        func_ast = ast.parse(code).body[0]
+        assert isinstance(func_ast, ast.FunctionDef)
         for cinfo in get_contracts(func):
             if cinfo.name != 'pre':
                 continue
@@ -43,7 +44,7 @@ def handle_call(expr: astroid.Call, context: dict[str, ast.stmt] | None = None) 
                 args=cinfo.args,
                 kwargs=cinfo.kwargs,
                 category=Category.PRE,
-                func_args=func_args,
+                func_args=func_ast.args,
                 context=context,
             )
             try:

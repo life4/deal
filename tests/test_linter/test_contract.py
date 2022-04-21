@@ -1,14 +1,13 @@
 from __future__ import annotations
 
-import ast
-from textwrap import dedent
-from typing import Iterator, TypeVar
+from typing import Iterator
 
-import astroid
 import pytest
 
 from deal.linter._contract import Category, Contract, NoValidatorError
 from deal.linter._func import Func
+
+from .helpers import first, funcs_from_ast, funcs_from_astroid
 
 
 TEXT = """
@@ -19,26 +18,6 @@ TEXT = """
     def f(x):
         return x
 """
-T = TypeVar('T')
-
-
-def first(funcs: list[T]) -> T:
-    assert len(funcs) == 1
-    return funcs[0]
-
-
-def funcs_from_ast(text: str) -> list[Func]:
-    text = dedent(text).strip()
-    tree = ast.parse(text)
-    print(ast.dump(tree))
-    return Func.from_ast(tree)
-
-
-def funcs_from_astroid(text: str) -> list[Func]:
-    text = dedent(text).strip()
-    tree = astroid.parse(text)
-    print(tree.repr_tree())
-    return Func.from_astroid(tree)
 
 
 def iter_funcs(text: str) -> Iterator[Func]:
@@ -196,10 +175,7 @@ def test_resolve_and_run_dependencies_func_astroid():
     def f(a):
         return a * 2
     """
-    text = dedent(text).strip()
-    tree = astroid.parse(text)
-    print(tree.repr_tree())
-    funcs = Func.from_astroid(tree)
+    funcs = funcs_from_astroid(text)
     assert len(funcs) == 2
     c = first(funcs[-1].contracts)
     assert c.run(12) is False

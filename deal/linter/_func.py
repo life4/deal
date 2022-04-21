@@ -28,7 +28,7 @@ class Func(NamedTuple):
     def has_self(self) -> bool:
         """Check if the first function argument is `self`.
         """
-        args = self.node.args.args
+        args = getattr(self.node.args, 'posonlyargs', None) or self.node.args.args
         if not args:
             return False
         arg = args[0]

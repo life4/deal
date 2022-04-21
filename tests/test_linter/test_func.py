@@ -1,9 +1,13 @@
 import ast
+import sys
 from textwrap import dedent
 
 import astroid
+import pytest
 
 from deal.linter._func import Func
+
+from .helpers import first, funcs_from_astroid
 
 
 TEXT = """
@@ -77,3 +81,31 @@ def test_repr():
     funcs2 = Func.from_astroid(astroid.parse(dedent(TEXT)))
     for func in (funcs1[0], funcs2[0]):
         assert repr(func) == 'Func(post, raises)'
+
+
+mark38 = pytest.mark.skipif(sys.version_info < (3, 8), reason='old python')
+
+
+@pytest.mark.parametrize('signature, expected', [
+    ('self', True),
+    ('self, a', True),
+    ('self, *a, **k', True),
+    ('self, *, a', True),
+
+    ('a', False),
+    ('a, b', False),
+    ('*self', False),
+    ('**self', False),
+
+    pytest.param('self, /, a', True, marks=mark38),
+    pytest.param('self, a, /, b', True, marks=mark38),
+    pytest.param('a, /, b', False, marks=mark38),
+])
+def test_has_self(signature, expected):
+    text = f"""
+        @deal.post(lambda x: x > 0)
+        def f({signature}):
+            return x
+    """
+    func = first(funcs_from_astroid(text))
+    assert func.has_self is expected
