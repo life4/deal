@@ -217,7 +217,7 @@ class CheckRaises(FuncRule):
 
     def __call__(self, func: Func, stubs: StubsManager | None = None) -> Iterator[Error]:
         cats = {Category.RAISES, Category.SAFE, Category.PURE}
-        declared: list[str | type[Exception]] = [AssertionError]
+        declared: list[str | type[BaseException]] = [AssertionError]
         check = False
         for contract in func.contracts:
             if contract.category not in cats:
@@ -230,7 +230,7 @@ class CheckRaises(FuncRule):
     def get_undeclared(
         self,
         func: Func,
-        declared: list[str | type[Exception]],
+        declared: list[str | type[BaseException]],
         stubs: StubsManager | None = None,
     ) -> Iterator[Error]:
         declared_types = tuple(exc for exc in declared if not isinstance(exc, str))

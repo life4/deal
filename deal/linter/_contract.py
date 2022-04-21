@@ -138,7 +138,7 @@ class Contract:
         return contract  # pragma: no cover
 
     @cached_property
-    def exceptions(self) -> list[Union[str, type[Exception]]]:
+    def exceptions(self) -> list[Union[str, type[BaseException]]]:
         from ._extractors import get_name
 
         excs = []
