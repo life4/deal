@@ -4,6 +4,7 @@ version: "3"
 vars:
   PYTHON: python3
   VENVS: .venvs
+  FLITENV: "{{.VENVS}}/base/bin/flitenv --venvs={{.VENVS}}"
 
 env:
   FLIT_ROOT_INSTALL: "1"
@@ -23,7 +24,7 @@ tasks:
       - install:base
     cmds:
       - >
-        {{.VENVS}}/base/bin/flitenv --venvs={{.VENVS}} test install
+        {{.FLITENV}} test install
   install:lint:
     sources:
       - pyproject.toml
@@ -31,7 +32,7 @@ tasks:
       - install:base
     cmds:
       - >
-        {{.VENVS}}/base/bin/flitenv --venvs={{.VENVS}} lint install
+        {{.FLITENV}} lint install
   install:docs:
     sources:
       - pyproject.toml
@@ -39,7 +40,7 @@ tasks:
       - install:base
     cmds:
       - >
-        {{.VENVS}}/base/bin/flitenv --venvs={{.VENVS}} docs install
+        {{.FLITENV}} docs install
 
   release:
     cmds:
@@ -51,79 +52,99 @@ tasks:
       - git push
       - git push --tags
 
-  pytest:run:
+  pytest:
     desc: "run Python tests"
     deps:
       - install:test
     cmds:
-      - >
-        {{.VENVS}}/base/bin/flitenv --venvs={{.VENVS}} test run
-        pytest {{.CLI_ARGS}}
-  flake8:run:
+      - "{{.FLITENV}} test run pytest {{.CLI_ARGS}}"
+  flake8:
     desc: "lint Python code"
     deps:
       - install:lint
     cmds:
-      - >
-        {{.VENVS}}/base/bin/flitenv --venvs={{.VENVS}} lint run
-        flake8 --ignore=DEAL {{.CLI_ARGS}} .
-  mypy:run:
+      - "{{.FLITENV}} lint run flake8 --ignore=DEAL {{.CLI_ARGS}} ."
+  mypy:
     desc: "check type annotations"
     deps:
       - install:lint
     cmds:
-      - >
-        {{.VENVS}}/base/bin/flitenv --venvs={{.VENVS}} lint run
-        mypy {{.CLI_ARGS}}
-  isort:run:
+      - "{{.FLITENV}} lint run mypy {{.CLI_ARGS}}"
+  unify:
+    desc: "convert double quotes to single ones"
+    deps:
+      - install:lint
+    cmds:
+      - "{{.FLITENV}} lint run unify -r -i --quote=\\' {{.CLI_ARGS}} deal tests"
+  isort:
     desc: "sort imports"
     deps:
       - install:lint
     cmds:
-      - >
-        {{.VENVS}}/base/bin/flitenv --venvs={{.VENVS}} lint run
-        isort {{.CLI_ARGS}} .
-  mypy_test:run:
+      - "{{.FLITENV}} lint run isort {{.CLI_ARGS}} ."
+  isort:check:
+    desc: "sort imports"
+    deps:
+      - install:lint
+    cmds:
+      - "{{.FLITENV}} lint run isort --check {{.CLI_ARGS}} ."
+  mypy_test:
     desc: "validate type annotations"
     deps:
       - install:lint
     cmds:
-      - >
-        {{.VENVS}}/base/bin/flitenv --venvs={{.VENVS}} lint run
-        mypy_test {{.CLI_ARGS}} ./types/
+      - "{{.FLITENV}} lint run mypy_test {{.CLI_ARGS}} ./types/"
 
-  sphinx:run:
+  sphinx:
     desc: "generate documentation"
     deps:
       - install:docs
     cmds:
       - rm -rf docs/build
-      - >
-        {{.VENVS}}/base/bin/flitenv --venvs={{.VENVS}} docs run
-        sphinx-build -W docs docs/build {{.CLI_ARGS}}
-  ci:run:
-    desc: "run all the same checks as deal runs on CI"
+      - "{{.FLITENV}} docs run sphinx-build -W docs docs/build {{.CLI_ARGS}}"
+
+  # groups
+  format:
+    desc: "run all code formatters"
     cmds:
-      - task: flake8:run
-      - task: mypy:run
-      - task: pytest:run
+      - task: isort
+      - task: unify
+  lint:
+    desc: "run all linters"
+    cmds:
+      - task: flake8
+      - task: mypy
+      - task: isort:check
+  test:
+    desc: "run all tests"
+    cmds:
+      - task: pytest
+      - task: mypy_test
+  all:
+    desc: "run all code formatters, linters, and tests"
+    cmds:
+      - task: format
+      - task: lint
+      - task: test
 
-  # solver:inject:
-  #   status:
-  #     - "test -d {{.DEAL_ENV}}/lib/python3.7/site-packages/deal_solver"
-  #   deps:
-  #     - task: flit:install
-  #       vars:
-  #         ENV: "{{.DEAL_ENV}}"
-  #   cmds:
-  #     - >
-  #       export FLIT=$(pwd)/{{.FLIT_ENV}}/bin/flit
-  #       && export PYTHON=$(pwd)/{{.DEAL_ENV}}/bin/python
-  #       && cd ../deal-solver/
-  #       && "$FLIT" install --symlink --python $PYTHON
-
-  # solver:run:
-  #   deps:
-  #     - task: solver:inject
-  #   cmds:
-  #     - "{{.DEAL_ENV}}/bin/python -m deal prove {{.CLI_ARGS}}"
+  # aliases
+  pytest:run:
+    - task: pytest
+  database:run:
+    - task: database
+  flake8:run:
+    - task: flake8
+  mypy:run:
+    - task: mypy
+  mypy_test:run:
+    - task: mypy_test
+  isort:run:
+    - task: isort
+  yamllint:run:
+    - task: yamllint
+  bandit:run:
+    - task: bandit
+  linters:run:
+    - task: lint
+  services:run:
+    - task: services

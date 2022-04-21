@@ -77,4 +77,6 @@ Contributions are welcome! A few ideas what you can contribute:
 * Made an article about deal? Great! Let's add it into the `README.md`.
 * Don't have time to code? No worries! Just tell your friends and subscribers about the project. More users -> more contributors -> more cool features.
 
+To run tests locally, all you need is [task](http://taskfile.dev/). Run `task all` to run all code formatters, linters, and tests.
+
 Thank you :heart:

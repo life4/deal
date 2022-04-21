@@ -26,7 +26,7 @@ def run_cases(
     for case in cases:
         tracker = MemoryTracker()
         debug = state.debug
-        state.disable()
+        state.disable(warn=False)
         try:
             with tracker, suppress(Exception):
                 case()

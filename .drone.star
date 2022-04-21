@@ -39,7 +39,7 @@ def step(env, python):
         ),
         commands=[
             "apt-get install curl git gcc libc-dev",
-            "./bin/task PYTHON=python3 VENVS=/opt/py{python} -f {env}:run".format(
+            "./bin/task PYTHON=python3 VENVS=/opt/py{python} -f {env}".format(
                 python=python,
                 env=env,
             ),

@@ -58,6 +58,7 @@ lint = [
     "mypy>=0.900",
     "mypy_test>=0.1.1",
     "isort",
+    "unify",
 
     # copy-pasted "all" extra
     "deal-solver",
