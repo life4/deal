@@ -1,11 +1,14 @@
 from __future__ import annotations
 
-from typing import Any
+from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING, Any
 
-import vaa
+
+if TYPE_CHECKING:
+    import vaa
 
 
-class Scheme:
+class Scheme(ABC):
     """A base class for implementing a custom validator.
 
     The custom validator should implement `is_valid` method.
@@ -18,5 +21,6 @@ class Scheme:
     def __init__(self, data: dict[str, Any]) -> None:
         self.data = data
 
+    @abstractmethod
     def is_valid(self) -> bool:
         raise NotImplementedError
