@@ -6,6 +6,7 @@ import astroid
 import pytest
 
 from deal.linter._func import Func
+
 from .helpers import first, funcs_from_astroid
 
 

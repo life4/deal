@@ -6,6 +6,7 @@ import pytest
 
 from deal.linter._contract import Category, Contract, NoValidatorError
 from deal.linter._func import Func
+
 from .helpers import first, funcs_from_ast, funcs_from_astroid
 
 

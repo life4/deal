@@ -1,10 +1,13 @@
 from __future__ import annotations
 
 import ast
-import astroid
 from textwrap import dedent
 from typing import TypeVar
+
+import astroid
+
 from deal.linter._func import Func
+
 
 T = TypeVar('T')
 
