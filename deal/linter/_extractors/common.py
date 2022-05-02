@@ -26,11 +26,12 @@ class TOKENS:
     CALL: N[ast.Call] = (ast.Call, astroid.Call)
     COMPARE: N[ast.Compare] = (ast.Compare, astroid.Compare)
     GLOBAL: N[ast.Global] = (ast.Global, astroid.Global)
+    LAMBDA: N[ast.Lambda] = (ast.Lambda, astroid.Lambda)
     NONLOCAL: N[ast.Nonlocal] = (ast.Nonlocal, astroid.Nonlocal)
     RAISE: N[ast.Raise] = (ast.Raise, astroid.Raise)
     RETURN: N[ast.Return] = (ast.Return, astroid.Return)
-    YIELD: N[ast.Yield] = (ast.Yield, astroid.Yield)
     YIELD_FROM: N[ast.YieldFrom] = (ast.YieldFrom, astroid.YieldFrom)
+    YIELD: N[ast.Yield] = (ast.Yield, astroid.Yield)
 
 
 DEFAULT_LINE = 0

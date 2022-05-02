@@ -48,6 +48,7 @@ def test_all_marker_codes_listed():
             assert False, 'missing marker {}'.format(marker)
 
 
+@pytest.mark.filterwarnings('ignore:The')
 def test_cli_included():
     path = root / 'details' / 'cli.md'
     content = path.read_text()

@@ -3,10 +3,13 @@ from __future__ import annotations
 import ast
 from typing import NamedTuple
 
-import astroid
-
 from .common import TOKENS, get_name
 from .value import UNKNOWN, get_value
+
+try:
+    import astroid
+except ImportError:
+    astroid = None
 
 
 class Example(NamedTuple):
@@ -35,7 +38,7 @@ def _get_right_value(expr) -> object:
             return UNKNOWN
         return get_value(expr.comparators[0])
 
-    if isinstance(expr, astroid.Compare):
+    if astroid is not None and isinstance(expr, astroid.Compare):
         if len(expr.ops) != 1:
             return UNKNOWN
         op, right = expr.ops[0]

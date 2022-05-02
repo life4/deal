@@ -4,13 +4,11 @@ import ast
 from types import MappingProxyType
 from typing import Iterator, Type, TypeVar
 
-import astroid
-
 from .._runtime import HasPatcher
 from ._contract import Category, Contract, NoValidatorError
 from ._error import Error
 from ._extractors import (
-    UNKNOWN, get_asserts, get_example, get_exceptions, get_imports,
+    TOKENS, UNKNOWN, get_asserts, get_example, get_exceptions, get_imports,
     get_markers, get_pre, get_returns, get_value, has_returns, uses_result,
 )
 from ._func import Func
@@ -162,7 +160,7 @@ class CheckExamples(FuncRule):
 
     def _check(self, func: Func, contract: Contract) -> Iterator[Error]:
         token = contract.raw_validator
-        if not isinstance(token, (ast.Lambda, astroid.Lambda)):
+        if not isinstance(token, TOKENS.LAMBDA):
             return
         example = get_example(token.body, func_name=func.name)
         if example is None:

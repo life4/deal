@@ -1,16 +1,18 @@
 from __future__ import annotations
 
 import ast
-from typing import Dict, Union
+from typing import Dict
 
-import astroid
+try:
+    import astroid
+except ImportError:
+    pass
 
 
-TreeType = Union[ast.Module, astroid.Module]
 DefsType = Dict[str, ast.stmt]
 
 
-def get_definitions(tree: TreeType) -> DefsType:
+def get_definitions(tree: ast.Module | astroid.Module) -> DefsType:
     if isinstance(tree, ast.Module):
         return _extract_defs_ast(tree)
     return _extract_defs_astroid(tree)

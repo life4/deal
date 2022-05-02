@@ -29,15 +29,14 @@ class ContractInfo(NamedTuple):
     line: int
 
 
-def get_contracts(func) -> Iterator[ContractInfo]:
+def get_contracts(
+    func: ast.FunctionDef | astroid.FunctionDef | astroid.UnboundMethod,
+) -> Iterator[ContractInfo]:
     if isinstance(func, ast.FunctionDef):
         yield from _get_contracts(func.decorator_list)
         return
-
-    assert isinstance(func, (astroid.FunctionDef, astroid.UnboundMethod))
     if func.decorators is None:
         return
-    assert isinstance(func.decorators, astroid.Decorators)
     yield from _get_contracts(func.decorators.nodes)
 
 

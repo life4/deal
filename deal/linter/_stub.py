@@ -4,9 +4,13 @@ import json
 from pathlib import Path
 from typing import Any, Iterator, NamedTuple, Sequence
 
-import astroid
-
 from ._contract import Category
+
+
+try:
+    import astroid
+except ImportError:
+    astroid = None
 
 
 EXTENSION = '.json'
@@ -128,13 +132,15 @@ class PseudoFunc(NamedTuple):
 
 
 def _get_funcs(*, path: Path) -> Iterator[PseudoFunc]:
+    if astroid is None:
+        raise ImportError('astroid is required for geenrating stubs')
     text = path.read_text()
     tree = astroid.parse(code=text, path=str(path))
     for expr in tree.body:
         yield from _get_funcs_from_expr(expr=expr)
 
 
-def _get_funcs_from_expr(expr, prefix: str = '') -> Iterator[PseudoFunc]:
+def _get_funcs_from_expr(expr: astroid.NodeNG, prefix: str = '') -> Iterator[PseudoFunc]:
     name = getattr(expr, 'name', '')
     if prefix:
         name = prefix + '.' + name

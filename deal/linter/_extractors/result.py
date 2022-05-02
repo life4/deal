@@ -5,7 +5,7 @@ from itertools import chain
 
 import astroid
 
-from .common import get_name, traverse
+from .common import get_name, traverse, TOKENS
 
 
 def uses_result(validator) -> bool:
@@ -14,7 +14,7 @@ def uses_result(validator) -> bool:
     It may directly list `result` as the argument,
     or it may be a simple validator and use `_.result` in the body.
     """
-    if not isinstance(validator, (ast.Lambda, astroid.Lambda)):
+    if not isinstance(validator, TOKENS.LAMBDA):
         return True
     if _has_result_arg(validator):
         return True
@@ -59,10 +59,9 @@ def _is_simple_validator(validator) -> bool:
     return arg_names == ['_']
 
 
-def _simple_uses_result(validator) -> bool:
+def _simple_uses_result(validator: ast.Lambda | astroid.Lambda) -> bool:
     """For simple validator, check if `_.result` is used in the body.
     """
-    assert isinstance(validator, (ast.Lambda, astroid.Lambda))
     for node in traverse(body=[validator.body]):
         if get_name(node) == '_.result':
             return True
