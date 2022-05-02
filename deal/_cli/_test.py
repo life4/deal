@@ -56,8 +56,9 @@ def has_pure_contract(func: Func) -> bool:
 
 
 def get_func_names(path: Path) -> Iterator[str]:
-    for func in Func.from_path(path=path):
-        if has_pure_contract(func=func):
+    text = path.read_text()
+    for func in Func.from_text(text):
+        if has_pure_contract(func):
             yield func.name
 
 
@@ -182,7 +183,7 @@ class TestCommand(Command):
         return failed
 
     def run_tests(self, path: Path, count: int) -> int:
-        names = list(get_func_names(path=path))
+        names = list(get_func_names(path))
         if not names:
             return 0
         self.print('{magenta}running {path}{end}'.format(path=path, **COLORS))

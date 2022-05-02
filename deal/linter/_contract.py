@@ -7,9 +7,13 @@ from copy import copy
 from pathlib import Path
 from typing import Iterable, Union
 
-import astroid
-
 from .._cached_property import cached_property
+
+
+try:
+    import astroid
+except ImportError:
+    pass
 
 
 TEMPLATE = (Path(__file__).parent / '_template.py').read_text()
@@ -123,7 +127,7 @@ class Contract:
         return frozenset(deps)
 
     @staticmethod
-    def _resolve_name(contract):
+    def _resolve_name(contract: astroid.NodeNG) -> astroid.NodeNG:
         if not isinstance(contract, astroid.Name):
             return contract
         definitions = contract.lookup(contract.name)[1]
