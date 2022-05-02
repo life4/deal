@@ -1,11 +1,15 @@
 from __future__ import annotations
 
-import ast
-
-import astroid
+from typing import TYPE_CHECKING
 
 from .common import TOKENS, Extractor, Token
 from .value import UNKNOWN, get_value
+
+
+if TYPE_CHECKING:
+    import ast
+
+    import astroid
 
 
 get_asserts = Extractor()

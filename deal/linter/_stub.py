@@ -140,9 +140,7 @@ def _get_funcs_from_expr(expr, prefix: str = '') -> Iterator[PseudoFunc]:
         name = prefix + '.' + name
 
     # functions
-    if type(expr) is astroid.FunctionDef:
-        yield PseudoFunc(name=name, body=expr.body)
-    if type(expr) is astroid.AsyncFunctionDef:
+    if isinstance(expr, astroid.FunctionDef):
         yield PseudoFunc(name=name, body=expr.body)
 
     # methods
