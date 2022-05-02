@@ -3,10 +3,13 @@ from __future__ import annotations
 import ast
 from contextlib import suppress
 
-import astroid
-
 from .common import infer
 
+
+try:
+    import astroid
+except ImportError:
+    astroid = None
 
 UNKNOWN = object()
 
@@ -15,6 +18,9 @@ def get_value(expr: ast.AST | astroid.NodeNG, allow_inference: bool = True) -> o
     if isinstance(expr, ast.AST):
         with suppress(ValueError, SyntaxError):
             return ast.literal_eval(expr)
+        return UNKNOWN
+    if astroid is None:
+        return UNKNOWN
 
     if isinstance(expr, astroid.NodeNG):
         # AttributeError: 'AsStringVisitor3' object has no attribute 'visit_unknown'
@@ -37,7 +43,7 @@ def get_value(expr: ast.AST | astroid.NodeNG, allow_inference: bool = True) -> o
     return UNKNOWN
 
 
-def _parse_collections(expr: ast.AST | astroid.NodeNG) -> object:
+def _parse_collections(expr: astroid.NodeNG) -> object:
     if not isinstance(expr, (astroid.List, astroid.Set, astroid.Tuple)):
         return UNKNOWN
 

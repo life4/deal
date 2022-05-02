@@ -5,33 +5,43 @@ from collections import deque
 from contextlib import suppress
 from functools import partial
 from pathlib import Path
-from typing import Callable, Iterator, NamedTuple, Tuple, Type, TypeVar, Union
-
-import astroid
+from typing import Callable, Iterator, NamedTuple, Tuple, Type, TypeVar
 
 from .._stub import EXTENSION, StubFile, StubsManager
+
+
+try:
+    import astroid
+except ImportError:
+    astroid = None
 
 
 T = TypeVar('T', bound=Type)
 N = Tuple[Type[T], Type[T]]
 Handler = Callable[..., 'Token | Iterator[Token] | None']
-Node = Union[ast.AST, astroid.NodeNG]
-NodeWithName = Union[astroid.Module, astroid.FunctionDef, astroid.UnboundMethod, astroid.ClassDef]
+
+
+def _get_type(name: str) -> tuple[type, type]:
+    ast_type = getattr(ast, name)
+    if astroid is not None:
+        astroid_type = getattr(astroid, name)
+        return (ast_type, astroid_type)
+    return (ast_type, ast_type)
 
 
 class TOKENS:
-    ASSERT: N[ast.Assert] = (ast.Assert, astroid.Assert)
-    ATTR: N[ast.Attribute] = (ast.Attribute, astroid.Attribute)
-    BIN_OP: N[ast.BinOp] = (ast.BinOp, astroid.BinOp)
-    CALL: N[ast.Call] = (ast.Call, astroid.Call)
-    COMPARE: N[ast.Compare] = (ast.Compare, astroid.Compare)
-    GLOBAL: N[ast.Global] = (ast.Global, astroid.Global)
-    LAMBDA: N[ast.Lambda] = (ast.Lambda, astroid.Lambda)
-    NONLOCAL: N[ast.Nonlocal] = (ast.Nonlocal, astroid.Nonlocal)
-    RAISE: N[ast.Raise] = (ast.Raise, astroid.Raise)
-    RETURN: N[ast.Return] = (ast.Return, astroid.Return)
-    YIELD_FROM: N[ast.YieldFrom] = (ast.YieldFrom, astroid.YieldFrom)
-    YIELD: N[ast.Yield] = (ast.Yield, astroid.Yield)
+    ASSERT: N[ast.Assert] = _get_type('Assert')
+    ATTR: N[ast.Attribute] = _get_type('Attribute')
+    BIN_OP: N[ast.BinOp] = _get_type('BinOp')
+    CALL: N[ast.Call] = _get_type('Call')
+    COMPARE: N[ast.Compare] = _get_type('Compare')
+    GLOBAL: N[ast.Global] = _get_type('Global')
+    LAMBDA: N[ast.Lambda] = _get_type('Lambda')
+    NONLOCAL: N[ast.Nonlocal] = _get_type('Nonlocal')
+    RAISE: N[ast.Raise] = _get_type('Raise')
+    RETURN: N[ast.Return] = _get_type('Return')
+    YIELD_FROM: N[ast.YieldFrom] = _get_type('YieldFrom')
+    YIELD: N[ast.Yield] = _get_type('Yield')
 
 
 DEFAULT_LINE = 0
@@ -45,7 +55,7 @@ class Token(NamedTuple):
     marker: str | None = None  # marker name or error message
 
 
-def traverse(body: list[Node]) -> Iterator[Node]:
+def traverse(body: list[ast.AST | astroid.NodeNG]) -> Iterator[ast.AST | astroid.NodeNG]:
     for expr in body:
         if isinstance(expr, ast.AST):
             yield from _traverse_ast(expr)
@@ -68,7 +78,7 @@ def _traverse_ast(node: ast.AST) -> Iterator[ast.AST]:
 
 
 def _traverse_astroid(node: astroid.NodeNG) -> Iterator[astroid.NodeNG]:
-    todo = deque([node])
+    todo: deque[astroid.NodeNG] = deque([node])
     while todo:
         node = todo.popleft()
         if isinstance(node, astroid.TryExcept):
@@ -80,13 +90,13 @@ def _traverse_astroid(node: astroid.NodeNG) -> Iterator[astroid.NodeNG]:
             yield node
 
 
-def get_name(expr: Node) -> str | None:
+def get_name(expr: ast.AST | astroid.NodeNG) -> str | None:
     if isinstance(expr, ast.Name):
         return expr.id
-    if isinstance(expr, astroid.Name):
+    if astroid is not None and isinstance(expr, astroid.Name):
         return expr.name
 
-    if isinstance(expr, astroid.Attribute):
+    if astroid is not None and isinstance(expr, astroid.Attribute):
         left = get_name(expr.expr)
         if left is None:
             return None
@@ -100,7 +110,9 @@ def get_name(expr: Node) -> str | None:
     return None
 
 
-def get_full_name(expr: NodeWithName) -> Tuple[str, str]:
+def get_full_name(
+    expr: astroid.Module | astroid.FunctionDef | astroid.UnboundMethod | astroid.ClassDef,
+) -> Tuple[str, str]:
     if expr.parent is None:
         return '', expr.name
 
@@ -119,8 +131,8 @@ def get_full_name(expr: NodeWithName) -> Tuple[str, str]:
     return path, func_name
 
 
-def infer(expr: Node) -> Tuple[astroid.NodeNG, ...]:
-    if not isinstance(expr, astroid.NodeNG):
+def infer(expr: ast.AST | astroid.NodeNG) -> Tuple[astroid.NodeNG, ...]:
+    if isinstance(expr, ast.AST):
         return tuple()
     with suppress(astroid.InferenceError, RecursionError):
         guesses = expr.infer()
@@ -151,7 +163,7 @@ def get_stub(
 
 
 def _get_module(expr: astroid.NodeNG) -> astroid.Module | None:
-    if type(expr) is astroid.Module:
+    if isinstance(expr, astroid.Module):
         return expr
     if expr.parent is None:
         return None
@@ -165,8 +177,22 @@ class Extractor:
     def __init__(self) -> None:
         self.handlers = dict()
 
-    def register(self, *types: type) -> Callable[[Handler], Handler]:
+    def register(
+        self, *types: type | Callable[[], type],
+    ) -> Callable[[Handler], Handler]:
+        types = tuple(self._eval_types(types))
         return partial(self._register, types)
+
+    @staticmethod
+    def _eval_types(types: tuple[type | Callable[[], type], ...]) -> Iterator[type]:
+        for t in types:
+            if isinstance(t, type):
+                yield t
+                continue
+            try:
+                yield t()
+            except (NameError, AttributeError):
+                pass
 
     def _register(self, types: Tuple[type], handler: Handler) -> Handler:
         for tp in types:
@@ -182,7 +208,7 @@ class Extractor:
             for token in self._handle(expr=expr, **kwargs):
                 yield self._ensure_node_info(expr=expr, token=token)
 
-    def _handle(self, expr: Node, **kwargs) -> Iterator[Token]:
+    def _handle(self, expr: ast.AST | astroid.NodeNG, **kwargs) -> Iterator[Token]:
         handler = self.handlers.get(type(expr))
         if handler is None:
             return
@@ -195,7 +221,7 @@ class Extractor:
         yield from token
 
     @staticmethod
-    def _ensure_node_info(token: Token, expr: Union[ast.AST, astroid.NodeNG]) -> Token:
+    def _ensure_node_info(token: Token, expr: ast.AST | astroid.NodeNG) -> Token:
         if token.line == DEFAULT_LINE:
             token = token._replace(line=expr.lineno)
         if token.col == DEFAULT_COL:

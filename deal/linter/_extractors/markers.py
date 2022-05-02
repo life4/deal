@@ -3,14 +3,16 @@ from __future__ import annotations
 import ast
 from typing import Iterator
 
-import astroid
-
 from .._contract import Category
 from .._stub import StubsManager
 from .common import TOKENS, Extractor, Token, get_full_name, get_name, get_stub, infer
 from .contracts import get_contracts
 from .value import get_value
 
+try:
+    import astroid
+except ImportError:
+    pass
 
 get_markers = Extractor()
 DEFINITELY_RANDOM_FUNCS = frozenset({
@@ -101,7 +103,7 @@ def handle_ast_import(expr: ast.Import, **kwargs) -> Token | None:
     return Token(marker='import', line=expr.lineno, col=expr.col_offset)
 
 
-@get_markers.register(astroid.Import)
+@get_markers.register(lambda: astroid.Import)
 def handle_astroid_import(expr: astroid.Import, **kwargs) -> Token | None:
     return Token(marker='import', line=expr.lineno, col=expr.col_offset)
 
@@ -111,7 +113,7 @@ def handle_ast_import_from(expr: ast.ImportFrom, **kwargs) -> Token | None:
     return Token(marker='import', line=expr.lineno, col=expr.col_offset)
 
 
-@get_markers.register(astroid.ImportFrom)
+@get_markers.register(lambda: astroid.ImportFrom)
 def handle_astroid_import_from(expr: astroid.ImportFrom, **kwargs) -> Token | None:
     return Token(marker='import', line=expr.lineno, col=expr.col_offset)
 
