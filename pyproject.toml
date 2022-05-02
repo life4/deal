@@ -25,7 +25,6 @@ classifiers=[
 
 requires = [
     "astroid>=2.11.0",
-    "vaa>=0.2.1",
 ]
 
 [tool.flit.metadata.requires-extra]
@@ -34,6 +33,7 @@ all = [
     "hypothesis",
     "pygments",
     "typeguard",
+    "vaa>=0.2.1",
 ]
 test = [
     "coverage[toml]",
@@ -50,6 +50,7 @@ test = [
     "hypothesis",
     "pygments",
     "typeguard",
+    "vaa>=0.2.1",
 ]
 lint = [
     "flake8",

@@ -13,8 +13,14 @@ def test_pre_contract_fulfilled(correct, incorrect):
         func(incorrect)
 
 
-@pytest.mark.parametrize('correct,incorrect_min,incorrect_max',
-                         [(1, -1, 20), (2, -2, 21), (3, -3, 22), (5, -5, 23), (7, -7, 24), (9, -11, 25)])
+@pytest.mark.parametrize('correct, incorrect_min, incorrect_max', [
+    (1, -1, 20),
+    (2, -2, 21),
+    (3, -3, 22),
+    (5, -5, 23),
+    (7, -7, 24),
+    (9, -11, 25),
+])
 def test_chain_all_contracts_fulfilled(correct, incorrect_min, incorrect_max):
     func = deal.pre(lambda x: x < 10)(lambda x: x)
     func = deal.pre(lambda x: x > 0)(func)
@@ -142,3 +148,34 @@ def test_decorating_generator():
     assert list(double(2)) == [2, 4, 8]
     with pytest.raises(deal.PreContractError):
         list(double(-2))
+
+
+@pytest.mark.parametrize('contract, expected', [
+    # boolean result
+    (deal.pre(lambda x: x > 0), ''),
+    (deal.pre(lambda _: _.x > 0), ''),
+    # explicit message
+    (deal.pre(lambda x: x > 0, message='oh hi mark'), 'oh hi mark'),
+    (deal.pre(lambda _: _.x > 0, message='oh hi mark'), 'oh hi mark'),
+    # returned message
+    (deal.pre(lambda x: x > 0 or 'oh hi mark'), 'oh hi mark'),
+    (deal.pre(lambda _: _.x > 0 or 'oh hi mark'), 'oh hi mark'),
+    # returned message overrides explicit message
+    (deal.pre(lambda x: x > 0 or 'oh hi mark', message='ignored'), 'oh hi mark'),
+    (deal.pre(lambda _: _.x > 0 or 'oh hi mark', message='ignored'), 'oh hi mark'),
+    # falsy result
+    (deal.pre(lambda x: x > 0 or []), ''),
+    (deal.pre(lambda _: _.x > 0 or []), ''),
+    # falsy result with explicit message
+    (deal.pre(lambda x: x > 0 or [], message='oh hi mark'), 'oh hi mark'),
+    (deal.pre(lambda _: _.x > 0 or [], message='oh hi mark'), 'oh hi mark'),
+])
+def test_error_message(contract, expected):
+    @contract
+    def double(x):
+        return x * 2
+
+    assert double(3) == 6
+    with pytest.raises(deal.PreContractError) as exc_info:
+        list(double(-2))
+    assert exc_info.value.message == expected

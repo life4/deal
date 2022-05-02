@@ -1,14 +1,22 @@
 from __future__ import annotations
 
 import inspect
-from contextlib import suppress
 from functools import lru_cache
-from typing import Any, Callable
-
-import vaa
+from typing import TYPE_CHECKING, Any, Callable
 
 from .._exceptions import ContractError
 from .._types import ExceptionType
+
+
+try:
+    import vaa
+except ImportError:
+    vaa = None
+
+
+if TYPE_CHECKING:
+    Args = tuple[object, ...]   # type: ignore[misc]
+    Kwargs = dict[str, object]  # type: ignore[misc]
 
 
 @lru_cache(maxsize=16)
@@ -18,11 +26,11 @@ def _get_signature(function: Callable) -> inspect.Signature:
 
 def _args_to_vars(
     *,
-    args,
-    kwargs: dict[str, Any],
+    args: Args,
+    kwargs: Kwargs,
     signature: inspect.Signature | None,
     keep_result: bool = True,
-) -> dict[str, Any]:
+) -> dict[str, object]:
     """Convert args and kwargs into dict of params based on the given function.
 
     For simple validators the validator is passed as function.
@@ -42,6 +50,13 @@ def _args_to_vars(
         params[name] = param.default
     params.update(signature.bind(*args, **kwargs).arguments)
     return params
+
+
+class AttrDict(dict):
+    __slots__ = ()
+
+    def __getattr__(self, name: str):
+        return self[name]
 
 
 class Validator:
@@ -73,6 +88,7 @@ class Validator:
         self.raw_validator = validator
         self.message = message
         self.exception = exception
+        self.function = None
         if message and isinstance(self.exception, type):
             self.exception = self.exception(message)
 
@@ -82,33 +98,17 @@ class Validator:
             return type(self.exception)
         return self.exception
 
-    def _make_validator(self) -> Callable:
-        """
-        If needed, wrap the original raw validator by vaa.
-        """
-        validator = self.raw_validator
-        # implicitly wrap in vaa all external validators
-        with suppress(TypeError):
-            return vaa.wrap(validator, simple=False)
-
-        # implicitly wrap in vaa.simple only funcs with one `_` argument.
-        params = _get_signature(validator).parameters
-        if set(params) == {'_'}:
-            return vaa.simple(validator, error=self.message)
-
-        return validator
-
-    def _exception(self, *, message: str | None = None, errors=None, params=None) -> Exception:
+    def _exception(
+        self, *,
+        message: str | None = None,
+        errors: Kwargs = None,
+        params: Kwargs = None,
+    ) -> Exception:
         exception = self.exception
         if isinstance(exception, Exception):
             if not message and exception.args:
                 message = exception.args[0]
             exception = type(exception)
-
-        # if errors provided, use it as error message
-        if errors and isinstance(errors, str):
-            message = errors
-            errors = None
 
         # raise beautiful ContractError
         if issubclass(exception, ContractError):
@@ -121,23 +121,51 @@ class Validator:
             )
 
         # raise boring custom exception
-        args = []
+        args: list[Any] = []
         if message:
             args.append(message)
         if errors:
             args.append(errors)
         return exception(*args)
 
-    def init(self) -> None:
-        self.validator = self._make_validator()
-        if hasattr(self.validator, 'is_valid'):
-            self.signature = _get_signature(self.function)
-            self.validate = self._vaa_validation
-        else:
-            self.signature = _get_signature(self.validator)
-            self.validate = self._simple_validation
+    def _wrap_vaa(self) -> Any | None:
+        if vaa is None:  # pragma: no cover
+            return None
+        try:
+            return vaa.wrap(self.raw_validator, simple=False)
+        except TypeError:
+            pass
+        if hasattr(self.raw_validator, 'is_valid'):
+            return self.raw_validator
+        return None
 
-    def _init(self, args, kwargs, exc=None) -> None:
+    def init(self) -> None:
+        # implicitly wrap in vaa.simple only funcs with one `_` argument.
+        self.signature = None
+        val_signature = _get_signature(self.raw_validator)
+
+        # validator with a short signature
+        if set(val_signature.parameters) == {'_'}:
+            self.validator = self.raw_validator
+            self.validate = self._short_validation
+            if self.function is not None:
+                self.signature = _get_signature(self.function)
+            return
+
+        vaa_validator = self._wrap_vaa()
+        if vaa_validator is None:
+            # vaa validator
+            self.validator = self.raw_validator
+            self.validate = self._explicit_validation
+            self.signature = val_signature
+        else:
+            # validator with the same signature as the function
+            self.validator = vaa_validator
+            self.validate = self._vaa_validation
+            if self.function is not None:
+                self.signature = _get_signature(self.function)
+
+    def _init(self, args: Args, kwargs: Kwargs, exc=None) -> None:
         """
         Called as `validator` when the function is called in the first time.
         Does some costly deferred initializations (involving `inspect`).
@@ -146,20 +174,17 @@ class Validator:
         self.init()
         self.validate(args, kwargs, exc)
 
-    def _vaa_validation(self, args, kwargs, exc=None) -> None:
+    def _vaa_validation(self, args: Args, kwargs: Kwargs, exc=None) -> None:
         """Validate contract using vaa wrapped validator.
         """
 
         # if it is a decorator for a function, convert positional args into named ones.
-        if hasattr(self, 'function'):
-            params = _args_to_vars(
-                args=args,
-                kwargs=kwargs,
-                signature=self.signature,
-                keep_result=False,
-            )
-        else:
-            params = kwargs
+        params = _args_to_vars(
+            args=args,
+            kwargs=kwargs,
+            signature=self.signature,
+            keep_result=False,
+        )
 
         # validate
         validator = self.validator(data=params)
@@ -171,20 +196,13 @@ class Validator:
         if not errors:
             raise self._exception(params=params) from exc
 
-        # Flatten single error without field to one simple str message.
-        # This is for better readability of simple validators.
-        if type(errors) is list:  # pragma: no cover
-            if type(errors[0]) is vaa.Error:
-                if len(errors) == 1:
-                    if errors[0].field is None:
-                        errors = errors[0].message
-
         raise self._exception(errors=errors, params=params) from exc
 
-    def _simple_validation(self, args, kwargs, exc=None) -> None:
-        """Validate contract using simple validator.
+    def _explicit_validation(self, args: Args, kwargs: Kwargs, exc=None) -> None:
+        """Validate contract using explicit validator.
 
-        Simple validator is a validator that reflects the function signature.
+        Explicit validator is a function that has the same signature
+        as the wrapped function.
         """
         validation_result = self.validator(*args, **kwargs)
         # is invalid (validator returns error message)
@@ -196,6 +214,28 @@ class Validator:
             return
         # is invalid (falsy result)
         params = _args_to_vars(args=args, kwargs=kwargs, signature=self.signature)
+        raise self._exception(params=params) from exc
+
+    def _short_validation(self, args: Args, kwargs: Kwargs, exc=None) -> None:
+        """Validate contract using short validator.
+
+        Short validator is a function that has a short signature
+        (accepts only one `_` argument).
+        """
+        params = _args_to_vars(
+            args=args,
+            kwargs=kwargs,
+            signature=self.signature,
+            keep_result=False,
+        )
+        validation_result = self.validator(AttrDict(params))
+        # is invalid (validator returns error message)
+        if type(validation_result) is str:
+            raise self._exception(message=validation_result, params=params) from exc
+        # is valid (truely result)
+        if validation_result:
+            return
+        # is invalid (falsy result)
         raise self._exception(params=params) from exc
 
 
@@ -212,15 +252,15 @@ class RaisesValidator(Validator):
         self.signature = _get_signature(self.function)
         self.validate = self._validate
 
-    def _init(self, args, kwargs, exc=None) -> None:
+    def _init(self, args: Args, kwargs: Kwargs, exc=None) -> None:
         self.init()
         self.validate(args, kwargs, exc=exc)
 
-    def _validate(self, args, kwargs, exc=None) -> None:
+    def _validate(self, args: Args, kwargs: Kwargs, exc: Exception | None = None) -> None:
+        assert exc is not None
         exc_type = type(exc)
         if exc_type in self.exceptions:
             return
-        # params = _args_to_vars(args=args, kwargs=kwargs, signature=self.signature)
         raise self._exception() from exc_type
 
 
@@ -234,13 +274,8 @@ class ReasonValidator(Validator):
 
 
 class InvariantValidator(Validator):
-    def init(self) -> None:
-        self.signature = None
-        self.validator = self._make_validator()
-        if hasattr(self.validator, 'is_valid'):
-            self.validate = self._vaa_validation
-        else:
-            self.validate = self._simple_validation
-
-    def _vaa_validation(self, args, kwargs, exc=None) -> None:
+    def _vaa_validation(self, args: Args, kwargs: Kwargs, exc=None) -> None:
         return super()._vaa_validation((), vars(args[0]), exc=exc)
+
+    def _short_validation(self, args: Args, kwargs: Kwargs, exc=None) -> None:
+        return super()._short_validation((), vars(args[0]), exc=exc)

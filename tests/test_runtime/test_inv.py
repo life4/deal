@@ -14,6 +14,17 @@ def test_setting_object_attribute_fulfills_contract():
         a.x = -2
 
 
+def test_simple_signature():
+    @deal.inv(lambda _: _.x > 0)
+    class A:
+        x = 2
+
+    a = A()
+    a.x = 4
+    with pytest.raises(deal.InvContractError):
+        a.x = -2
+
+
 def test_setting_wrong_args_by_method_raises_error():
     @deal.inv(lambda obj: obj.x > 0)
     class A:

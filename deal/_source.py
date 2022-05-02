@@ -5,8 +5,6 @@ import tokenize
 from textwrap import dedent
 from typing import Callable, List
 
-from vaa._internal import Simple
-
 
 TokensType = List[tokenize.TokenInfo]
 processors = []
@@ -19,8 +17,6 @@ def processor(func: Callable[[TokensType], TokensType]) -> Callable[[TokensType]
 
 def get_validator_source(validator) -> str:
     # get source code
-    if isinstance(validator, Simple):
-        validator = validator.validator
     if not hasattr(validator, '__code__'):
         return ''
     try:
