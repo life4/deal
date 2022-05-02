@@ -110,11 +110,6 @@ class Validator:
                 message = exception.args[0]
             exception = type(exception)
 
-        # if errors provided, use it as error message
-        if errors and isinstance(errors, str):
-            message = errors
-            errors = None
-
         # raise beautiful ContractError
         if issubclass(exception, ContractError):
             return exception(
@@ -134,7 +129,7 @@ class Validator:
         return exception(*args)
 
     def _wrap_vaa(self) -> Any | None:
-        if vaa is None:
+        if vaa is None:  # pragma: no cover
             return None
         try:
             return vaa.wrap(self.raw_validator, simple=False)
@@ -200,14 +195,6 @@ class Validator:
         errors = validator.errors
         if not errors:
             raise self._exception(params=params) from exc
-
-        # Flatten single error without field to one simple str message.
-        # This is for better readability of simple validators.
-        if type(errors) is list:  # pragma: no cover
-            if type(errors[0]) is vaa.Error:
-                if len(errors) == 1:
-                    if errors[0].field is None:
-                        errors = errors[0].message
 
         raise self._exception(errors=errors, params=params) from exc
 
@@ -289,3 +276,6 @@ class ReasonValidator(Validator):
 class InvariantValidator(Validator):
     def _vaa_validation(self, args: Args, kwargs: Kwargs, exc=None) -> None:
         return super()._vaa_validation((), vars(args[0]), exc=exc)
+
+    def _short_validation(self, args: Args, kwargs: Kwargs, exc=None) -> None:
+        return super()._short_validation((), vars(args[0]), exc=exc)
