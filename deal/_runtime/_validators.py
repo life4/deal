@@ -148,25 +148,27 @@ class Validator:
         # implicitly wrap in vaa.simple only funcs with one `_` argument.
         self.signature = None
         val_signature = _get_signature(self.raw_validator)
+
+        # validator with a short signature
         if set(val_signature.parameters) == {'_'}:
-            # validator with a short signature
             self.validator = self.raw_validator
             self.validate = self._short_validation
             if self.function is not None:
                 self.signature = _get_signature(self.function)
+            return
+
+        vaa_validator = self._wrap_vaa()
+        if vaa_validator is None:
+            # vaa validator
+            self.validator = self.raw_validator
+            self.validate = self._explicit_validation
+            self.signature = val_signature
         else:
-            vaa_validator = self._wrap_vaa()
-            if vaa_validator is None:
-                # vaa validator
-                self.validator = self.raw_validator
-                self.signature = _get_signature(self.validator)
-                self.validate = self._explicit_validation
-            else:
-                # validator with the same signature as the function
-                self.validator = vaa_validator
-                if self.function is not None:
-                    self.signature = _get_signature(self.function)
-                self.validate = self._vaa_validation
+            # validator with the same signature as the function
+            self.validator = vaa_validator
+            self.validate = self._vaa_validation
+            if self.function is not None:
+                self.signature = _get_signature(self.function)
 
     def _init(self, args: Args, kwargs: Kwargs, exc=None) -> None:
         """
