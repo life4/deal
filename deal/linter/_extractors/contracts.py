@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import ast
-from typing import Iterator, NamedTuple, Union
-
-import astroid
+from typing import Iterator, NamedTuple
 
 from .common import TOKENS, get_name
+
+try:
+    import astroid
+except ImportError:
+    astroid = None
 
 
 SUPPORTED_CONTRACTS = frozenset({
@@ -19,7 +22,6 @@ SUPPORTED_CONTRACTS = frozenset({
     'deal.safe',
 })
 SUPPORTED_MARKERS = frozenset({'deal.pure', 'deal.safe', 'deal.inherit'})
-Attr = Union[ast.Attribute, astroid.Attribute]
 
 
 class ContractInfo(NamedTuple):
@@ -71,7 +73,7 @@ def _get_contracts(decorators: list) -> Iterator[ContractInfo]:
             )
 
         # infer assigned value
-        if isinstance(contract, astroid.Name):
+        if astroid is not None and isinstance(contract, astroid.Name):
             assigments = contract.lookup(contract.name)[1]
             if not assigments:
                 continue
@@ -86,8 +88,8 @@ def _get_contracts(decorators: list) -> Iterator[ContractInfo]:
             yield from _get_contracts([expr.value])
 
 
-def _resolve_inherit(contract: Attr) -> Iterator[ContractInfo]:
-    if not isinstance(contract, astroid.Attribute):
+def _resolve_inherit(contract: ast.Attribute | astroid.Attribute) -> Iterator[ContractInfo]:
+    if astroid is None or not isinstance(contract, astroid.Attribute):
         return
     cls = _get_parent_class(contract)
     if cls is None:

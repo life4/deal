@@ -25,6 +25,14 @@ tasks:
     cmds:
       - >
         {{.FLITENV}} test install
+  install:main:
+    sources:
+      - pyproject.toml
+    deps:
+      - install:base
+    cmds:
+      - >
+        {{.FLITENV}} main install
   install:lint:
     sources:
       - pyproject.toml
@@ -52,6 +60,14 @@ tasks:
       - git push
       - git push --tags
 
+  test_import:
+    desc: "test that deal doesn't have deps at import time"
+    deps:
+      - install:main
+    cmds:
+      - "{{.FLITENV}} main run python3 -c 'import deal'"
+      - "{{.FLITENV}} main run python3 -c 'import deal._cli'"
+      - "{{.FLITENV}} main run python3 -c 'import deal.linter'"
   pytest:
     desc: "run Python tests"
     deps:
@@ -118,6 +134,7 @@ tasks:
   test:
     desc: "run all tests"
     cmds:
+      - task: test_import
       - task: pytest
       - task: mypy_test
   all:
