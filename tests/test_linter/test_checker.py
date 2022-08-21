@@ -1,5 +1,7 @@
 import ast
 from pathlib import Path
+import subprocess
+import sys
 from textwrap import dedent
 
 from deal.linter import Checker
@@ -56,11 +58,12 @@ def test_get_funcs_invalid_syntax(tmp_path: Path):
 
 
 def test_version():
-    version = Checker(tree=None, filename='stdin').version
+    version = Checker.version
+    assert len(version) >= 5
     assert not set(version) - set('0123456789.')
 
 
-def test_remove_duplicates(tmp_path):
+def test_remove_duplicates(tmp_path: Path):
     text = """
         import deal
 
@@ -77,3 +80,16 @@ def test_remove_duplicates(tmp_path):
     checker = Checker(tree=ast.parse(TEXT), filename=str(path))
     errors = list(checker.run())
     assert len(errors) == 1
+
+
+def test_flake8_integration(tmp_path: Path):
+    path = tmp_path / 'test.py'
+    path.write_text(TEXT + '\n')
+    cmd = [sys.executable, '-m', 'flake8', str(tmp_path)]
+    result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    assert result.returncode == 1
+    lines = result.stdout.decode().splitlines()
+    assert len(EXPECTED) == len(lines), result.stderr
+    for (lineno, col, error, _), line in zip(EXPECTED, lines):
+        assert error in line
+        assert f':{lineno}:{col + 1}' in line

@@ -38,6 +38,7 @@ all = [
 test = [
     "coverage[toml]",
     "docstring-parser",
+    "flake8",
     "isort",
     "marshmallow",
     "pytest-cov",
