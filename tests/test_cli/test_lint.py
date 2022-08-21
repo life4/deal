@@ -18,7 +18,7 @@ def test_get_errors(tmp_path: Path):
     (tmp_path / 'example.py').write_text(TEXT)
     errors = list(LintCommand.get_errors(paths=[str(tmp_path)]))
     assert len(errors) == 1
-    assert errors[0]['code'] == 'DEAL012'
+    assert errors[0]['code'] == 'DEA012'
     assert errors[0]['content'] == '    return -1'
 
 
@@ -43,7 +43,7 @@ def test_lint_command_no_color(tmp_path: Path):
 
     stream.seek(0)
     captured = stream.read()
-    exp = '6:11 DEAL012 post contract error (-1) return -1 ^'
+    exp = '6:11 DEA012 post contract error (-1) return -1 ^'
     assert captured.split()[1:] == exp.split()
 
 

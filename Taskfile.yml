@@ -63,7 +63,7 @@ tasks:
     deps:
       - install:lint
     cmds:
-      - "{{.FLITENV}} lint run flake8 --ignore=DEAL {{.CLI_ARGS}} ."
+      - "{{.FLITENV}} lint run flake8 --ignore=DEA {{.CLI_ARGS}} ."
   mypy:
     desc: "check type annotations"
     deps:

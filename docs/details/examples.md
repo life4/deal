@@ -59,7 +59,7 @@ Linter output:
 ```bash
 $ python3 -m deal lint examples/min.py
 examples/min.py
-  21:4 DEAL011 pre contract error ([])
+  21:4 DEA011 pre contract error ([])
     my_min([])
     ^
 ```
@@ -75,13 +75,13 @@ Linter output:
 ```bash
 $ python3 -m deal lint examples/format.py
 examples/format.py
-  32:10 DEAL011 expected 1 argument(s) but 0 found ('{:s}')
+  32:10 DEA011 expected 1 argument(s) but 0 found ('{:s}')
     print(format('{:s}'))               # not enough args
           ^
-  33:10 DEAL011 expected 1 argument(s) but 2 found ('{:s}', 'a', 'b')
+  33:10 DEA011 expected 1 argument(s) but 2 found ('{:s}', 'a', 'b')
     print(format('{:s}', 'a', 'b'))     # too many args
           ^
-  34:10 DEAL011 expected float, str given ('{:d}', 'a')
+  34:10 DEA011 expected float, str given ('{:d}', 'a')
     print(format('{:d}', 'a'))          # bad type
           ^
 ```

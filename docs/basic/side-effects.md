@@ -40,18 +40,18 @@ Deal already know about some markers and will report if they are violated:
 
 | code    | marker       | allows                           |
 | ------- | ------------ | -------------------------------- |
-| DEAL041 | `global`     | `global` and `nonlocal`          |
-| DEAL042 | `import`     | `import`                         |
-| DEAL043 | `io`         | everything below                 |
-| DEAL044 | -- `read`    | read a file                      |
-| DEAL045 | -- `write`   | write into a file                |
-| DEAL046 | -- `stdout`  | `sys.stdout` and `print`         |
-| DEAL047 | -- `stderr`  | `sys.stderr`                     |
-| DEAL048 | -- `network` | network communications, `socket` |
-| DEAL049 | -- `stdin`   | `sys.stdin`                      |
-| DEAL050 | -- `syscall` | system calls: `subprocess`, `os` |
-| DEAL055 | `random`     | functions from `random` module   |
-| DEAL056 | `time`       | accessing system time            |
+| DEA041 | `global`     | `global` and `nonlocal`          |
+| DEA042 | `import`     | `import`                         |
+| DEA043 | `io`         | everything below                 |
+| DEA044 | -- `read`    | read a file                      |
+| DEA045 | -- `write`   | write into a file                |
+| DEA046 | -- `stdout`  | `sys.stdout` and `print`         |
+| DEA047 | -- `stderr`  | `sys.stderr`                     |
+| DEA048 | -- `network` | network communications, `socket` |
+| DEA049 | -- `stdin`   | `sys.stdin`                      |
+| DEA050 | -- `syscall` | system calls: `subprocess`, `os` |
+| DEA055 | `random`     | functions from `random` module   |
+| DEA056 | `time`       | accessing system time            |
 
 ## Runtime
 
@@ -91,4 +91,4 @@ def main():
     return 0
 ```
 
-If we run [linter](linter) on the code above, it will fail with "DEAL046 missed marker (stdout)" message. `main` function calls `run_job` with `silent=True`, so `print` will not be called when calling `main`. However, `run_job` function has an implicit `stdout` marker, and `main` calls this function so it must have this marker as well.
+If we run [linter](linter) on the code above, it will fail with "DEA046 missed marker (stdout)" message. `main` function calls `run_job` with `silent=True`, so `print` will not be called when calling `main`. However, `run_job` function has an implicit `stdout` marker, and `main` calls this function so it must have this marker as well.
