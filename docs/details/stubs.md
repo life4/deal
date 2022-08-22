@@ -46,7 +46,7 @@ Use `stub` command to generate stubs for a Python file:
 python3 -m deal stub /path/to/a/file.py
 ```
 
-The command above will produce `/path/to/a/file.json` stub. On the next runs linter will use it do detect contracts.
+The command above will produce `/path/to/a/file.json` stub. If `/path/to/a/file.py` already contains deal contracts, these will be included in the generated json. On the next runs linter will use it do detect contracts.
 
 ## Built-in stubs
 
