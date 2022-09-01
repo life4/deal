@@ -25,35 +25,35 @@ General:
 
 | Code    | Message |
 | ------- | ------- |
-| DEA001 | do not use `from deal import ...`, use `import deal` instead |
-| DEA002 | ensure contract must have `result` arg |
+| DEL001  | do not use `from deal import ...`, use `import deal` instead |
+| DEL002  | ensure contract must have `result` arg |
 
 Contracts:
 
 | Code    | Message                   |
 | ------- | ------------------------- |
-| DEA011 | pre contract error        |
-| DEA012 | post contract error       |
-| DEA013 | example violates contract |
-| DEA021 | raises contract error     |
-| DEA031 | assert error              |
+| DEL011  | pre contract error        |
+| DEL012  | post contract error       |
+| DEL013  | example violates contract |
+| DEL021  | raises contract error     |
+| DEL031  | assert error              |
 
 Markers:
 
 | Code    | Message                 |
 | ------- | ----------------------- |
-| DEA041 | missed marker (global)  |
-| DEA042 | missed marker (import)  |
-| DEA043 | missed marker (io)      |
-| DEA044 | missed marker (read)    |
-| DEA045 | missed marker (write)   |
-| DEA046 | missed marker (stdout)  |
-| DEA047 | missed marker (stderr)  |
-| DEA048 | missed marker (network) |
-| DEA049 | missed marker (stdin)   |
-| DEA050 | missed marker (syscall) |
-| DEA055 | missed marker (random)  |
-| DEA056 | missed marker (time)    |
+| DEL041  | missed marker (global)  |
+| DEL042  | missed marker (import)  |
+| DEL043  | missed marker (io)      |
+| DEL044  | missed marker (read)    |
+| DEL045  | missed marker (write)   |
+| DEL046  | missed marker (stdout)  |
+| DEL047  | missed marker (stderr)  |
+| DEL048  | missed marker (network) |
+| DEL049  | missed marker (stdin)   |
+| DEL050  | missed marker (syscall) |
+| DEL055  | missed marker (random)  |
+| DEL056  | missed marker (time)    |
 
 ## Partial execution
 
@@ -72,7 +72,7 @@ Try to run linter against the code above:
 ```bash
 $ python3 -m deal lint tmp.py
 tmp.py
-  6:11 DEA012 post contract error (0)
+  6:11 DEL012  post contract error (0)
     return 0
 ```
 
