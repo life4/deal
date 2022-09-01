@@ -25,35 +25,35 @@ General:
 
 | Code    | Message |
 | ------- | ------- |
-| DEAL001 | do not use `from deal import ...`, use `import deal` instead |
-| DEAL002 | ensure contract must have `result` arg |
+| DEL001  | do not use `from deal import ...`, use `import deal` instead |
+| DEL002  | ensure contract must have `result` arg |
 
 Contracts:
 
 | Code    | Message                   |
 | ------- | ------------------------- |
-| DEAL011 | pre contract error        |
-| DEAL012 | post contract error       |
-| DEAL013 | example violates contract |
-| DEAL021 | raises contract error     |
-| DEAL031 | assert error              |
+| DEL011  | pre contract error        |
+| DEL012  | post contract error       |
+| DEL013  | example violates contract |
+| DEL021  | raises contract error     |
+| DEL031  | assert error              |
 
 Markers:
 
 | Code    | Message                 |
 | ------- | ----------------------- |
-| DEAL041 | missed marker (global)  |
-| DEAL042 | missed marker (import)  |
-| DEAL043 | missed marker (io)      |
-| DEAL044 | missed marker (read)    |
-| DEAL045 | missed marker (write)   |
-| DEAL046 | missed marker (stdout)  |
-| DEAL047 | missed marker (stderr)  |
-| DEAL048 | missed marker (network) |
-| DEAL049 | missed marker (stdin)   |
-| DEAL050 | missed marker (syscall) |
-| DEAL055 | missed marker (random)  |
-| DEAL056 | missed marker (time)    |
+| DEL041  | missed marker (global)  |
+| DEL042  | missed marker (import)  |
+| DEL043  | missed marker (io)      |
+| DEL044  | missed marker (read)    |
+| DEL045  | missed marker (write)   |
+| DEL046  | missed marker (stdout)  |
+| DEL047  | missed marker (stderr)  |
+| DEL048  | missed marker (network) |
+| DEL049  | missed marker (stdin)   |
+| DEL050  | missed marker (syscall) |
+| DEL055  | missed marker (random)  |
+| DEL056  | missed marker (time)    |
 
 ## Partial execution
 
@@ -72,7 +72,7 @@ Try to run linter against the code above:
 ```bash
 $ python3 -m deal lint tmp.py
 tmp.py
-  6:11 DEAL012 post contract error (0)
+  6:11 DEL012  post contract error (0)
     return 0
 ```
 

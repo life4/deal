@@ -42,7 +42,7 @@ def test_check_pre():
     actual: list = []
     for func in funcs:
         actual.extend(tuple(err) for err in checker(func))
-    expected = [(7, 11, 'DEAL011 pre contract error (-3)')]
+    expected = [(7, 11, 'DEL011 pre contract error (-3)')]
     assert actual == expected
 
 
@@ -61,7 +61,7 @@ def test_check_returns():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(6, 15, 'DEAL012 post contract error (-1)')]
+        expected = [(6, 15, 'DEL012 post contract error (-1)')]
         assert actual == expected
 
 
@@ -80,7 +80,7 @@ def test_check_returns_with_message():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(6, 15, 'DEAL012 oh no! (-1)')]
+        expected = [(6, 15, 'DEL012 oh no! (-1)')]
         assert actual == expected
 
 
@@ -112,7 +112,7 @@ def test_check_raises():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(4, 10, 'DEAL021 raises contract error (KeyError)')]
+        expected = [(4, 10, 'DEL021 raises contract error (KeyError)')]
         assert actual == expected
 
 
@@ -143,7 +143,7 @@ def test_check_raises_safe():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(3, 10, 'DEAL021 raises contract error (ValueError)')]
+        expected = [(3, 10, 'DEL021 raises contract error (ValueError)')]
         assert actual == expected
 
 
@@ -159,7 +159,7 @@ def test_check_raises_pure():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(3, 10, 'DEAL021 raises contract error (ValueError)')]
+        expected = [(3, 10, 'DEL021 raises contract error (ValueError)')]
         assert actual == expected
 
 
@@ -175,7 +175,7 @@ def test_check_raises_without_allowed():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(3, 10, 'DEAL021 raises contract error (ValueError)')]
+        expected = [(3, 10, 'DEL021 raises contract error (ValueError)')]
         assert actual == expected
 
 
@@ -191,7 +191,7 @@ def test_check_raises_unknown():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(3, 10, 'DEAL021 raises contract error (UnknownError)')]
+        expected = [(3, 10, 'DEL021 raises contract error (UnknownError)')]
         assert actual == expected
 
 
@@ -208,7 +208,7 @@ def test_check_raises_inherited():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(4, 10, 'DEAL021 raises contract error (ValueError)')]
+        expected = [(4, 10, 'DEL021 raises contract error (ValueError)')]
         assert actual == expected
 
 
@@ -225,7 +225,7 @@ def test_check_prints():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(3, 4, 'DEAL046 missed marker (stdout)')]
+        expected = [(3, 4, 'DEL046 missed marker (stdout)')]
         assert actual == expected
 
 
@@ -243,7 +243,7 @@ def test_check_pure():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(4, 4, 'DEAL041 missed marker (global)')]
+        expected = [(4, 4, 'DEL041 missed marker (global)')]
         assert actual == expected
 
 
@@ -260,7 +260,7 @@ def test_check_pure_no_returns():
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
         assert len(actual) == 1
-        expected = 'DEAL043 missed marker (io)'
+        expected = 'DEL043 missed marker (io)'
         assert actual[0][2] == expected
 
 
@@ -280,7 +280,7 @@ def test_check_has_io():
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
         assert len(actual) == 1
-        expected = 'DEAL042 missed marker (import)'
+        expected = 'DEL042 missed marker (import)'
         assert actual[0][2] == expected
 
 
@@ -316,7 +316,7 @@ def test_check_has_unexpected_stdin():
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
         assert len(actual) == 1
-        expected = 'DEAL049 missed marker (stdin)'
+        expected = 'DEL049 missed marker (stdin)'
         assert actual[0][2] == expected
 
 
@@ -335,7 +335,7 @@ def test_check_has_unexpected_random():
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
         assert len(actual) == 1
-        expected = 'DEAL055 missed marker (random)'
+        expected = 'DEL055 missed marker (random)'
         assert actual[0][2] == expected
 
 
@@ -354,7 +354,7 @@ def test_check_has_unexpected_syscall():
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
         assert len(actual) == 1
-        expected = 'DEAL050 missed marker (syscall)'
+        expected = 'DEL050 missed marker (syscall)'
         assert actual[0][2] == expected
 
 
@@ -376,7 +376,7 @@ def test_check_has_custom_markers():
     func = funcs[-1]
     actual = [tuple(err) for err in checker(func)]
     assert len(actual) == 1
-    expected = 'DEAL040 missed marker (database)'
+    expected = 'DEL040 missed marker (database)'
     assert actual[0][2] == expected
 
 
@@ -409,7 +409,7 @@ def test_check_asserts():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(2, 11, 'DEAL031 assert error (False)')]
+        expected = [(2, 11, 'DEL031 assert error (False)')]
         assert actual == expected
 
 
@@ -438,7 +438,7 @@ def test_check_imports():
     text = dedent(text).strip()
     for tree in (ast.parse(text), astroid.parse(text)):
         actual = [tuple(err) for err in checker(tree)]
-        expected = [(2, 0, 'DEAL001 ' + CheckImports.message)]
+        expected = [(2, 0, 'DEL001 ' + CheckImports.message)]
         assert actual == expected
 
 
@@ -459,7 +459,7 @@ def test_check_example_pre():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(2, 14, 'DEAL013 example violates contract (deal.pre)')]
+        expected = [(2, 14, 'DEL013 example violates contract (deal.pre)')]
         assert actual == expected
 
 
@@ -478,7 +478,7 @@ def test_check_example_post():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(1, 14, 'DEAL013 example violates contract (deal.post)')]
+        expected = [(1, 14, 'DEL013 example violates contract (deal.post)')]
         assert actual == expected
 
 
@@ -497,7 +497,7 @@ def test_check_example_ensure():
     funcs2 = Func.from_astroid(astroid.parse(text))
     for func in (funcs1[0], funcs2[0]):
         actual = [tuple(err) for err in checker(func)]
-        expected = [(1, 14, 'DEAL013 example violates contract (deal.ensure)')]
+        expected = [(1, 14, 'DEL013 example violates contract (deal.ensure)')]
         assert actual == expected
 
 
@@ -521,5 +521,5 @@ def test_ensure_args(expr, should_pass):
         if should_pass:
             assert actual == [], 'should pass but does not'
         else:
-            expected = [(1, 13, 'DEAL002 ensure contract must have `result` arg')]
+            expected = [(1, 13, 'DEL002 ensure contract must have `result` arg')]
             assert actual == expected, 'should not pass but does'

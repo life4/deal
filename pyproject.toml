@@ -76,7 +76,7 @@ docs = [
 ]
 
 [tool.flit.entrypoints."flake8.extension"]
-DEAL = "deal.linter:Checker"
+DEL = "deal.linter:Checker"
 
 [tool.pytest.ini_options]
 python_classes = ""
