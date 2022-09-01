@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Iterator
 
 
-ERROR_FORMAT = 'DEAL{code:03d}'
+ERROR_FORMAT = 'DEL{code:03d}'
 
 
 class Error:

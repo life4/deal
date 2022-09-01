@@ -25,11 +25,11 @@ def test_all_codes_listed():
     for checker in rules:
         if type(checker) is CheckMarkers:
             continue
-        line = '| DEAL{:03d} |'.format(checker.code)
+        line = '| DEL{:03d}  |'.format(checker.code)
         assert line in content
 
     for marker, code in CheckMarkers.codes.items():
-        line = '| DEAL{:03d} | missed marker ({})'.format(code, marker)
+        line = '| DEL{:03d}  | missed marker ({})'.format(code, marker)
         assert line in content
 
 
@@ -38,7 +38,7 @@ def test_all_marker_codes_listed():
     content = path.read_text()
     lines = content.splitlines()
     for marker, code in CheckMarkers.codes.items():
-        code_cell = '| DEAL{:03d} | '.format(code)
+        code_cell = '| DEL{:03d}  | '.format(code)
         assert code_cell in content
         for line in lines:
             if code_cell in line:

@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 import marshmallow
 import pytest
 import vaa

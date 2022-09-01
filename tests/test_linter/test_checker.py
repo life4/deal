@@ -1,5 +1,7 @@
 import ast
 from pathlib import Path
+import subprocess
+import sys
 from textwrap import dedent
 
 import pytest
@@ -24,9 +26,9 @@ def test2():
 """.strip()
 
 EXPECTED = [
-    (6, 11, 'DEAL012 post contract error (-1)', Checker),
-    (11, 8, 'DEAL021 raises contract error (ZeroDivisionError)', Checker),
-    (13, 10, 'DEAL021 raises contract error (KeyError)', Checker),
+    (6, 11, 'DEL012 post contract error (-1)', Checker),
+    (11, 8, 'DEL021 raises contract error (ZeroDivisionError)', Checker),
+    (13, 10, 'DEL021 raises contract error (KeyError)', Checker),
 ]
 
 
@@ -80,6 +82,19 @@ def test_remove_duplicates(tmp_path: Path):
     checker = Checker.from_path(path)
     errors = list(checker.run())
     assert len(errors) == 1
+
+
+def test_flake8_integration(tmp_path: Path):
+    path = tmp_path / 'test.py'
+    path.write_text(TEXT + '\n')
+    cmd = [sys.executable, '-m', 'flake8', str(tmp_path)]
+    result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    assert result.returncode == 1
+    lines = result.stdout.decode().splitlines()
+    assert len(EXPECTED) == len(lines), result.stderr
+    for (lineno, col, error, _), line in zip(EXPECTED, lines):
+        assert error in line
+        assert f':{lineno}:{col + 1}' in line
 
 
 @pytest.mark.parametrize('comment, should_fail', [
