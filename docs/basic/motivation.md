@@ -166,7 +166,7 @@ And when we run [deal linter](linter) on this code, we see contract violation er
 
 ```bash
 ❯ flake8 --show-source sin.py
-sin.py:6:5: DEAL011: post contract error
+sin.py:6:5: DEL011: post contract error
     return 2
     ^
 ```

@@ -40,18 +40,18 @@ Deal already know about some markers and will report if they are violated:
 
 | code    | marker       | allows                           |
 | ------- | ------------ | -------------------------------- |
-| DEAL041 | `global`     | `global` and `nonlocal`          |
-| DEAL042 | `import`     | `import`                         |
-| DEAL043 | `io`         | everything below                 |
-| DEAL044 | -- `read`    | read a file                      |
-| DEAL045 | -- `write`   | write into a file                |
-| DEAL046 | -- `stdout`  | `sys.stdout` and `print`         |
-| DEAL047 | -- `stderr`  | `sys.stderr`                     |
-| DEAL048 | -- `network` | network communications, `socket` |
-| DEAL049 | -- `stdin`   | `sys.stdin`                      |
-| DEAL050 | -- `syscall` | system calls: `subprocess`, `os` |
-| DEAL055 | `random`     | functions from `random` module   |
-| DEAL056 | `time`       | accessing system time            |
+| DEL041  | `global`     | `global` and `nonlocal`          |
+| DEL042  | `import`     | `import`                         |
+| DEL043  | `io`         | everything below                 |
+| DEL044  | -- `read`    | read a file                      |
+| DEL045  | -- `write`   | write into a file                |
+| DEL046  | -- `stdout`  | `sys.stdout` and `print`         |
+| DEL047  | -- `stderr`  | `sys.stderr`                     |
+| DEL048  | -- `network` | network communications, `socket` |
+| DEL049  | -- `stdin`   | `sys.stdin`                      |
+| DEL050  | -- `syscall` | system calls: `subprocess`, `os` |
+| DEL055  | `random`     | functions from `random` module   |
+| DEL056  | `time`       | accessing system time            |
 
 ## Runtime
 
@@ -91,4 +91,4 @@ def main():
     return 0
 ```
 
-If we run [linter](linter) on the code above, it will fail with "DEAL046 missed marker (stdout)" message. `main` function calls `run_job` with `silent=True`, so `print` will not be called when calling `main`. However, `run_job` function has an implicit `stdout` marker, and `main` calls this function so it must have this marker as well.
+If we run [linter](linter) on the code above, it will fail with "DEL046 missed marker (stdout)" message. `main` function calls `run_job` with `silent=True`, so `print` will not be called when calling `main`. However, `run_job` function has an implicit `stdout` marker, and `main` calls this function so it must have this marker as well.
