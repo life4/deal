@@ -6,6 +6,7 @@ from typing import NamedTuple
 from .common import TOKENS, get_name
 from .value import UNKNOWN, get_value
 
+
 try:
     import astroid
 except ImportError:

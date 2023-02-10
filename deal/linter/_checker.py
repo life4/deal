@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import ast
-from pathlib import Path
 import re
 import tokenize
+from pathlib import Path
 from typing import Iterator
 
 from .. import __version__
@@ -11,6 +11,7 @@ from ._error import Error
 from ._func import Func
 from ._rules import FuncRule, ModuleRule, rules
 from ._stub import StubsManager
+
 
 try:
     import astroid

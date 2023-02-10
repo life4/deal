@@ -7,6 +7,7 @@ from .common import Extractor, Token, infer
 from .contracts import get_contracts
 from .value import UNKNOWN, get_value
 
+
 try:
     import astroid
 except ImportError:

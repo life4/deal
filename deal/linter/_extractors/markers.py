@@ -9,6 +9,7 @@ from .common import TOKENS, Extractor, Token, get_full_name, get_name, get_stub,
 from .contracts import get_contracts
 from .value import get_value
 
+
 try:
     import astroid
 except ImportError:

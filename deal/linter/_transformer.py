@@ -9,6 +9,7 @@ from ._extractors import get_value
 from ._func import Func
 from ._rules import CheckMarkers, CheckRaises
 
+
 try:
     import astroid
 except ImportError:

@@ -3,6 +3,7 @@ from __future__ import annotations
 import ast
 from typing import Dict
 
+
 try:
     import astroid
 except ImportError:

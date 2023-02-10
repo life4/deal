@@ -4,7 +4,8 @@ import ast
 from itertools import chain
 from typing import TYPE_CHECKING
 
-from .common import get_name, traverse, TOKENS
+from .common import TOKENS, get_name, traverse
+
 
 if TYPE_CHECKING:
     import astroid

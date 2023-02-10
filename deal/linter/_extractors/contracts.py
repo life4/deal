@@ -5,6 +5,7 @@ from typing import Iterator, NamedTuple
 
 from .common import TOKENS, get_name
 
+
 try:
     import astroid
 except ImportError:
