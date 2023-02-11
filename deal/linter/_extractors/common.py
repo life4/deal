@@ -12,7 +12,7 @@ import astroid
 from .._stub import EXTENSION, StubFile, StubsManager
 
 
-T = TypeVar('T', bound=Type)
+T = TypeVar('T')
 N = Tuple[Type[T], Type[T]]
 Handler = Callable[..., 'Token | Iterator[Token] | None']
 Node = Union[ast.AST, astroid.NodeNG]

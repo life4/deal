@@ -183,8 +183,8 @@ class Contract:
             contract.body = deps + contract.body
             # if contract is function, add it's definition and assign it's name
             # to `contract` variable.
-            module.body = [contract] + module.body      # type: ignore
-            module.body[FUNC_INDEX].value = ast.Name(   # type: ignore
+            module.body = [contract] + module.body
+            module.body[FUNC_INDEX].value = ast.Name(  # type: ignore
                 id=contract.name,
                 lineno=1,
                 col_offset=1,
