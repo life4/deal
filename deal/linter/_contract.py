@@ -224,7 +224,8 @@ class Contract:
 
     @cached_property
     def bytecode(self):
-        return compile(self.module, filename='<ast>', mode='exec')
+        module = ast.fix_missing_locations(self.module)
+        return compile(module, filename='<ast>', mode='exec')
 
     def run(self, *args, **kwargs):
         globals = dict(args=args, kwargs=kwargs)
