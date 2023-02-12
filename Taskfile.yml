@@ -44,6 +44,7 @@ tasks:
 
   release:
     cmds:
+      - which gh
       - grep -F {{.CLI_ARGS}} deal/__init__.py
       - git add deal/__init__.py
       - git commit -m "bump version"
@@ -51,6 +52,8 @@ tasks:
       - flit publish
       - git push
       - git push --tags
+      - gh release create --generate-notes {{.CLI_ARGS}}
+      - gh release upload {{.CLI_ARGS}} ./dist/*
 
   pytest:
     desc: "run Python tests"
