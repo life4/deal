@@ -54,4 +54,4 @@ def get_contracts(func: Callable) -> Iterator[Contract]:
 
         if not hasattr(func, '__wrapped__'):
             return
-        func = func.__wrapped__  # type: ignore[attr-defined]
+        func = func.__wrapped__

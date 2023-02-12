@@ -3,7 +3,7 @@ from __future__ import annotations
 import ast
 import sys
 from types import ModuleType
-from typing import Any, Callable
+from typing import Callable
 
 from _frozen_importlib_external import PathFinder  # pyright: reportMissingImports=false
 
@@ -69,7 +69,7 @@ class DealLoader:
 
     @staticmethod
     def _get_contracts(tree: ast.Module) -> list[ast.expr]:
-        for node in tree.body:  # type: Any
+        for node in tree.body:
             if type(node) is not ast.Expr:
                 continue
             if type(node.value) is not ast.Call:

@@ -101,8 +101,8 @@ class Validator:
     def _exception(
         self, *,
         message: str | None = None,
-        errors: Kwargs = None,
-        params: Kwargs = None,
+        errors: Kwargs | None = None,
+        params: Kwargs | None = None,
     ) -> Exception:
         exception = self.exception
         if isinstance(exception, Exception):
