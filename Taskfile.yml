@@ -3,55 +3,80 @@ version: "3"
 
 vars:
   PYTHON: python3
-  VENVS: .venvs
-  FLITENV: "{{.VENVS}}/base/bin/flitenv --venvs={{.VENVS}}"
+  TEST_ENV: .venvs/test
+  LINT_ENV: .venvs/lint
+  DOCS_ENV: .venvs/docs
+  TEST_PYTHON: "{{.TEST_ENV}}/bin/python3"
+  LINT_PYTHON: "{{.LINT_ENV}}/bin/python3"
+  DOCS_PYTHON: "{{.DOCS_ENV}}/bin/python3"
 
 env:
   FLIT_ROOT_INSTALL: "1"
 
 tasks:
-  install:base:
+  install:flit:
     status:
-      - test -f {{.VENVS}}/base/bin/flitenv
+      - which flit
     cmds:
-      - "{{.PYTHON}} -m venv {{.VENVS}}/base"
-      - >
-        {{.VENVS}}/base/bin/python3 -m pip install flitenv
+      - python3 -m pip install flit
+  venv:test:
+    status:
+      - test -d {{.TEST_ENV}}
+    cmds:
+      - "{{.PYTHON}} -m venv {{.TEST_ENV}}"
+  venv:lint:
+    status:
+      - test -d {{.LINT_ENV}}
+    cmds:
+      - "{{.PYTHON}} -m venv {{.LINT_ENV}}"
+  venv:docs:
+    status:
+      - test -d {{.DOCS_ENV}}
+    cmds:
+      - "{{.PYTHON}} -m venv {{.DOCS_ENV}}"
   install:test:
     sources:
       - pyproject.toml
     deps:
-      - install:base
+      - install:flit
+      - venv:test
     cmds:
       - >
-        {{.FLITENV}} test install
-  install:main:
-    sources:
-      - pyproject.toml
-    deps:
-      - install:base
-    cmds:
-      - >
-        {{.FLITENV}} main install
+        flit install
+        --python {{.TEST_PYTHON}}
+        --extras=test,integrations
+        --deps=production
+        --symlink
   install:lint:
     sources:
       - pyproject.toml
     deps:
-      - install:base
+      - install:flit
+      - venv:lint
     cmds:
       - >
-        {{.FLITENV}} lint install
+        flit install
+        --python {{.LINT_PYTHON}}
+        --extras=lint,integrations
+        --deps=production
+        --symlink
   install:docs:
     sources:
       - pyproject.toml
     deps:
-      - install:base
+      - install:flit
+      - venv:docs
     cmds:
       - >
-        {{.FLITENV}} docs install
+        flit install
+        --python {{.DOCS_PYTHON}}
+        --extras=docs
+        --deps=production
+        --symlink
 
   release:
     cmds:
+      - which gh
       - grep -F {{.CLI_ARGS}} deal/__init__.py
       - git add deal/__init__.py
       - git commit -m "bump version"
@@ -59,6 +84,8 @@ tasks:
       - flit publish
       - git push
       - git push --tags
+      - gh release create --generate-notes {{.CLI_ARGS}}
+      - gh release upload {{.CLI_ARGS}} ./dist/*
 
   test_import:
     desc: "test that deal doesn't have deps at import time"
@@ -73,43 +100,43 @@ tasks:
     deps:
       - install:test
     cmds:
-      - "{{.FLITENV}} test run pytest {{.CLI_ARGS}}"
+      - "{{.TEST_PYTHON}} -m pytest {{.CLI_ARGS}}"
   flake8:
     desc: "lint Python code"
     deps:
       - install:lint
     cmds:
-      - "{{.FLITENV}} lint run flake8 --ignore=DEL {{.CLI_ARGS}} ."
+      - "{{.LINT_PYTHON}} -m flake8 --ignore=DEL {{.CLI_ARGS}} ."
   mypy:
     desc: "check type annotations"
     deps:
       - install:lint
     cmds:
-      - "{{.FLITENV}} lint run mypy {{.CLI_ARGS}}"
+      - "{{.LINT_PYTHON}} -m mypy {{.CLI_ARGS}}"
   unify:
     desc: "convert double quotes to single ones"
     deps:
       - install:lint
     cmds:
-      - "{{.FLITENV}} lint run unify -r -i --quote=\\' {{.CLI_ARGS}} deal tests"
+      - "{{.LINT_PYTHON}} -m unify -r -i --quote=\\' {{.CLI_ARGS}} deal tests"
   isort:
     desc: "sort imports"
     deps:
       - install:lint
     cmds:
-      - "{{.FLITENV}} lint run isort {{.CLI_ARGS}} ."
+      - "{{.LINT_PYTHON}} -m isort {{.CLI_ARGS}} ."
   isort:check:
     desc: "sort imports"
     deps:
       - install:lint
     cmds:
-      - "{{.FLITENV}} lint run isort --check {{.CLI_ARGS}} ."
+      - "{{.LINT_PYTHON}} -m isort --check {{.CLI_ARGS}} ."
   mypy_test:
     desc: "validate type annotations"
     deps:
       - install:lint
     cmds:
-      - "{{.FLITENV}} lint run mypy_test {{.CLI_ARGS}} ./types/"
+      - "{{.LINT_PYTHON}} -m mypy_test {{.CLI_ARGS}} ./types/"
 
   sphinx:
     desc: "generate documentation"
@@ -117,7 +144,7 @@ tasks:
       - install:docs
     cmds:
       - rm -rf docs/build
-      - "{{.FLITENV}} docs run sphinx-build -W docs docs/build {{.CLI_ARGS}}"
+      - "{{.DOCS_ENV}}/bin/sphinx-build -W docs docs/build {{.CLI_ARGS}}"
 
   # groups
   format:

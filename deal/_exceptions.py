@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import sys
-from contextlib import suppress
 from pathlib import Path
+from types import TracebackType
 from typing import Any
 
 from ._cached_property import cached_property
@@ -11,23 +11,22 @@ from ._source import get_validator_source
 from ._state import state
 
 
-root = str(Path(__file__).parent)
+ROOT = str(Path(__file__).parent)
 
 
-def exception_hook(etype: type[BaseException], value: BaseException, tb):
+def exception_hook(etype: type[BaseException], value: BaseException, tb: TracebackType | None):
     """Exception hook to remove deal from the traceback for ContractError.
     """
     if not issubclass(etype, ContractError):
         return _excepthook(etype, value, tb)
 
     # try to reduce traceback by removing `deal` part
-    prev_tb = patched_tb = tb
+    patched_tb: TracebackType | None = tb
+    prev_tb = None
     while patched_tb:
-        path: str = patched_tb.tb_frame.f_code.co_filename
-        if path.startswith(root):
-            with suppress(AttributeError):  # read-only attribute in <3.7
-                prev_tb.tb_next = None
-            break  # pragma: no cover
+        path = patched_tb.tb_frame.f_code.co_filename
+        if path.startswith(ROOT) and prev_tb is not None:
+            prev_tb.tb_next = None
         prev_tb = patched_tb
         patched_tb = patched_tb.tb_next
     else:

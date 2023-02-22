@@ -56,7 +56,7 @@ def main(
     try:
         args = parser.parse_args(argv)
     except SystemExit as exc:
-        return exc.code
+        return int(exc.code or 0)
     if args.cmd is None:
         main(['--help'], commands=commands, root=root, stream=stream)
         return 2

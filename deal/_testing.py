@@ -125,7 +125,7 @@ class cases:  # noqa: N
         if check_types is None:
             check_types = True
 
-        self.func = func  # type: ignore
+        self.func = func
         self.count = count
         self.kwargs = kwargs or {}
         self.check_types = check_types
