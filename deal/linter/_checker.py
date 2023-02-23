@@ -6,13 +6,17 @@ import tokenize
 from pathlib import Path
 from typing import Iterator
 
-from astroid import AstroidSyntaxError
-
 from .. import __version__
 from ._error import Error
 from ._func import Func
 from ._rules import FuncRule, ModuleRule, rules
 from ._stub import StubsManager
+
+
+try:
+    import astroid
+except ImportError:
+    astroid = None
 
 
 # based on regex from the source code of flake8
@@ -63,12 +67,14 @@ class Checker:
             yield tuple(error) + (type(self),)
 
     def get_funcs(self) -> list[Func]:
-        if self._filename == 'stdin':
+        if self._filename == 'stdin' or astroid is None:
             return Func.from_ast(tree=self._tree)
+        text = Path(self._filename).read_text()
         try:
-            return Func.from_path(path=Path(self._filename))
-        except AstroidSyntaxError:
+            tree = astroid.parse(text)
+        except astroid.AstroidSyntaxError:
             return Func.from_ast(tree=self._tree)
+        return Func.from_astroid(tree)
 
     def get_errors(self) -> Iterator[Error]:
         reported = set()

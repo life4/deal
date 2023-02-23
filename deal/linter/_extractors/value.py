@@ -2,21 +2,25 @@ from __future__ import annotations
 
 import ast
 from contextlib import suppress
-from typing import Union
-
-import astroid
 
 from .common import infer
 
 
+try:
+    import astroid
+except ImportError:
+    astroid = None
+
 UNKNOWN = object()
-Node = Union[ast.AST, astroid.NodeNG]
 
 
-def get_value(expr: Node, allow_inference: bool = True) -> object:
+def get_value(expr: ast.AST | astroid.NodeNG, allow_inference: bool = True) -> object:
     if isinstance(expr, ast.AST):
         with suppress(ValueError, SyntaxError):
             return ast.literal_eval(expr)
+        return UNKNOWN
+    if astroid is None:  # pragma: no-astroid
+        return UNKNOWN
 
     if isinstance(expr, astroid.NodeNG):
         # AttributeError: 'AsStringVisitor3' object has no attribute 'visit_unknown'
@@ -25,21 +29,21 @@ def get_value(expr: Node, allow_inference: bool = True) -> object:
             with suppress(ValueError, SyntaxError):
                 return ast.literal_eval(renderred)
 
-    value = _parse_collections(expr=expr)
+    value = _parse_collections(expr)
     if value is not UNKNOWN:
         return value
 
     if allow_inference:
-        for parent_expr in infer(expr=expr):
+        for parent_expr in infer(expr):
             if parent_expr == expr:  # avoid recursion
                 continue
-            value = get_value(expr=parent_expr)
+            value = get_value(parent_expr)
             if value is not UNKNOWN:
                 return value
     return UNKNOWN
 
 
-def _parse_collections(expr: Node) -> object:
+def _parse_collections(expr: astroid.NodeNG) -> object:
     if not isinstance(expr, (astroid.List, astroid.Set, astroid.Tuple)):
         return UNKNOWN
 

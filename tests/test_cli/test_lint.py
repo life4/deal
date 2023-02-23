@@ -1,9 +1,16 @@
 from io import StringIO
 from pathlib import Path
 
+import pytest
+
 from deal._cli import main
 from deal._cli._lint import LintCommand
 
+
+try:
+    import pygments
+except ImportError:
+    pygments = None
 
 TEXT = """
 import deal
@@ -22,6 +29,7 @@ def test_get_errors(tmp_path: Path):
     assert errors[0]['content'] == '    return -1'
 
 
+@pytest.mark.skipif(pygments is None, reason='pygments is not installed')
 def test_lint_command_colors(tmp_path: Path):
     (tmp_path / 'example.py').write_text(TEXT)
     stream = StringIO()

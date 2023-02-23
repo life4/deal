@@ -2,10 +2,13 @@ from __future__ import annotations
 
 import ast
 from itertools import chain
+from typing import TYPE_CHECKING
 
-import astroid
+from .common import TOKENS, get_name, traverse
 
-from .common import get_name, traverse
+
+if TYPE_CHECKING:
+    import astroid
 
 
 def uses_result(validator) -> bool:
@@ -14,7 +17,7 @@ def uses_result(validator) -> bool:
     It may directly list `result` as the argument,
     or it may be a simple validator and use `_.result` in the body.
     """
-    if not isinstance(validator, (ast.Lambda, astroid.Lambda)):
+    if not isinstance(validator, TOKENS.LAMBDA):
         return True
     if _has_result_arg(validator):
         return True
@@ -23,7 +26,7 @@ def uses_result(validator) -> bool:
     return False
 
 
-def _has_result_arg(validator) -> bool:
+def _has_result_arg(validator: ast.Lambda | astroid.Lambda) -> bool:
     """Returns True if arguments list of the function has `result` argument.
     """
     if isinstance(validator, ast.Lambda):
@@ -31,38 +34,35 @@ def _has_result_arg(validator) -> bool:
             validator.args.args,
             validator.args.kwonlyargs,
         )
-        for arg in args:
-            if arg.arg == 'result':
+        arg1: ast.arg
+        for arg1 in args:
+            if arg1.arg == 'result':
                 return True
         return False
-    if isinstance(validator, astroid.Lambda):
-        assert isinstance(validator.args, astroid.Arguments)
+    else:
         args = chain(
             validator.args.args,
             validator.args.kwonlyargs,
         )
-        for arg in args:
-            assert isinstance(arg, astroid.AssignName)
-            if arg.name == 'result':
+        arg2: astroid.AssignName
+        for arg2 in args:
+            if arg2.name == 'result':
                 return True
         return False
-    raise RuntimeError('unreachable')
 
 
-def _is_simple_validator(validator) -> bool:
+def _is_simple_validator(validator: ast.Lambda | astroid.Lambda) -> bool:
     arg_names: list[str]
     if isinstance(validator, ast.Lambda):
         arg_names = [arg.arg for arg in validator.args.args]
-    if isinstance(validator, astroid.Lambda):
-        assert isinstance(validator.args, astroid.Arguments)
+    else:
         arg_names = [arg.name for arg in validator.args.args]
     return arg_names == ['_']
 
 
-def _simple_uses_result(validator) -> bool:
+def _simple_uses_result(validator: ast.Lambda | astroid.Lambda) -> bool:
     """For simple validator, check if `_.result` is used in the body.
     """
-    assert isinstance(validator, (ast.Lambda, astroid.Lambda))
     for node in traverse(body=[validator.body]):
         if get_name(node) == '_.result':
             return True

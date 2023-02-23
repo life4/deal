@@ -1,7 +1,15 @@
 import json
 from pathlib import Path
 
+import pytest
+
 from deal._cli import main
+
+
+try:
+    import astroid
+except ImportError:
+    astroid = None
 
 
 TEXT = """
@@ -12,6 +20,7 @@ def f(x):
 """
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_stub_command(tmp_path: Path):
     path = (tmp_path / 'example.py')
     path.write_text(TEXT)

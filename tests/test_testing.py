@@ -1,11 +1,17 @@
 from typing import NoReturn, TypeVar
 
-import hypothesis
-import hypothesis.errors
-import hypothesis.strategies
 import pytest
 
 import deal
+
+
+try:
+    import hypothesis
+except ImportError:
+    hypothesis = None
+else:
+    import hypothesis.errors
+    import hypothesis.strategies
 
 
 @deal.raises(ZeroDivisionError)
@@ -25,10 +31,12 @@ def div2(a: int, b: int) -> float:
     return a / b
 
 
-test_div1_short = deal.cases(div1)
-test_div2_short = deal.cases(div2)
+if hypothesis is not None:
+    test_div1_short = deal.cases(div1)
+    test_div2_short = deal.cases(div2)
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_short_version_is_discoverable():
     from _pytest.python import PyCollector
 
@@ -38,6 +46,7 @@ def test_short_version_is_discoverable():
     assert collector.istestfunction(test, 'test_div') is True
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_count():
     for count in (1, 10, 20, 50):
         cases = deal.cases(div1, count=count)
@@ -47,6 +56,7 @@ def test_count():
         assert len(list(cases)) == count
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_params_detected():
     for case in deal.cases(div1, count=10):
         assert set(case.kwargs) == {'a', 'b'}
@@ -55,6 +65,7 @@ def test_params_detected():
         assert set(case.kwargs) == {'a', 'b'}
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_params_type():
     for case in deal.cases(div1, count=10):
         assert type(case.kwargs['a']) is int
@@ -65,6 +76,7 @@ def test_params_type():
         assert type(case.kwargs['b']) is int
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_params_ok_with_excs():
     results = []
     for case in deal.cases(div1, count=20):
@@ -74,12 +86,14 @@ def test_params_ok_with_excs():
     assert any(r is NoReturn for r in results), 'no exception occured'
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_no_bad_examples():
     for case in deal.cases(div2, count=20):
         assert case.kwargs['a'] > 0
         assert case.kwargs['b'] > 0
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_return_type_checks():
     def div(a: int, b: int) -> int:
         return 1
@@ -95,6 +109,7 @@ def test_return_type_checks():
         case()
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_explicit_kwargs():
     def div(a: int, b: int):
         assert b == 4
@@ -103,6 +118,7 @@ def test_explicit_kwargs():
         case()
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_explicit_strategy():
     def div(a: int, b: int):
         assert 0 <= b <= 4
@@ -116,6 +132,7 @@ def test_explicit_strategy():
         case()
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_disable_type_checks():
     def bad(a: int) -> str:
         return a  # type: ignore[return-value]
@@ -141,6 +158,7 @@ def test_disable_type_checks():
     case()
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_return_type():
     def identity(a) -> int:
         return a
@@ -155,6 +173,7 @@ def test_return_type():
         case()
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_type_var():
     T = TypeVar('T')  # noqa: N806
 
@@ -169,29 +188,28 @@ def test_type_var():
     case()
 
 
-@deal.cases(div1)
-def test_decorator_div1_smoke(case):
-    case()
+if hypothesis is not None:
+    @deal.cases(div1)
+    def test_decorator_div1_smoke(case):
+        case()
+
+    @deal.cases(div2)
+    def test_decorator_div2_smoke(case):
+        case()
+
+    @deal.cases(div2)
+    def test_decorator_rejects_bad(case):
+        assert case.kwargs['a'] > 0
+        assert case.kwargs['b'] > 0
+        case()
+
+    @deal.cases(div1, kwargs=dict(b=0))
+    def test_decorator_suppress_raises(case):
+        result = case()
+        assert result is NoReturn
 
 
-@deal.cases(div2)
-def test_decorator_div2_smoke(case):
-    case()
-
-
-@deal.cases(div2)
-def test_decorator_rejects_bad(case):
-    assert case.kwargs['a'] > 0
-    assert case.kwargs['b'] > 0
-    case()
-
-
-@deal.cases(div1, kwargs=dict(b=0))
-def test_decorator_suppress_raises(case):
-    result = case()
-    assert result is NoReturn
-
-
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_repr():
     def fn():
         pass
@@ -203,6 +221,7 @@ def test_repr():
     assert repr(cases) == "deal.cases(fn, count=13, seed=2, kwargs={'a': 2})"
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_seed():
     c1 = list(deal.cases(div1, seed=12, count=20))
     c2 = list(deal.cases(div1, seed=12, count=20))
@@ -212,12 +231,14 @@ def test_seed():
     assert c2 != c3
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_run_ok():
     test = deal.cases(div1)
     res = test()
     assert res is None
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_run_fail():
     @deal.safe
     def div(a: int, b: int):
@@ -228,6 +249,7 @@ def test_run_fail():
         test()
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_fuzz_propagate():
     @deal.safe
     def div(a: str):
@@ -239,6 +261,7 @@ def test_fuzz_propagate():
         cases(b'g`\xf8\xb07\xf8\xea9')
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_fuzz_bad_input():
     @deal.safe
     def div(a: str):
@@ -249,6 +272,7 @@ def test_fuzz_bad_input():
     assert res is None
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_pass_fixtures():
     @deal.safe
     def div(a: str):
@@ -266,6 +290,7 @@ def test_pass_fixtures():
         test_div1(13)
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_reproduce_failure():
     @deal.safe
     def div(a: str):
@@ -282,6 +307,7 @@ def test_reproduce_failure():
         test_div()
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_example():
     @deal.example(lambda: double1(2) == 4)
     def double1(x: int) -> int:
@@ -300,6 +326,7 @@ def test_example():
         case()
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_concat():
     from examples.concat import concat
 

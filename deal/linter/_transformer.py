@@ -4,13 +4,16 @@ from enum import Enum
 from pathlib import Path
 from typing import Iterator, NamedTuple, Union
 
-import astroid
-
 from ._contract import Category
 from ._extractors import get_value
 from ._func import Func
 from ._rules import CheckMarkers, CheckRaises
 
+
+try:
+    import astroid
+except ImportError:
+    astroid = None
 
 Priority = int
 
@@ -96,6 +99,8 @@ class Transformer(NamedTuple):
     quote: str = "'"
 
     def transform(self) -> str:
+        if astroid is None:  # pragma: no-astroid
+            raise ImportError('astroid is required for generating stubs')
         self.mutations.clear()
         tree = astroid.parse(self.content, path=self.path)
         for func in Func.from_astroid(tree):

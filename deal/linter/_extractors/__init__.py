@@ -1,5 +1,5 @@
 from .asserts import get_asserts
-from .common import get_name
+from .common import TOKENS, get_name
 from .contracts import get_contracts
 from .definitions import get_definitions
 from .examples import get_example
@@ -25,6 +25,7 @@ __all__ = [
     'get_returns',
     'get_value',
     'has_returns',
+    'TOKENS',
     'uses_result',
     'UNKNOWN',
 ]

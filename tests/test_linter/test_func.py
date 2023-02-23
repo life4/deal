@@ -2,12 +2,17 @@ import ast
 import sys
 from textwrap import dedent
 
-import astroid
 import pytest
 
 from deal.linter._func import Func
 
 from .helpers import first, funcs_from_astroid
+
+
+try:
+    import astroid
+except ImportError:
+    astroid = None
 
 
 TEXT = """
@@ -44,6 +49,7 @@ def test_from_ast():
     assert len(funcs[0].contracts) == 2
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_from_astroid():
     funcs = Func.from_astroid(astroid.parse(dedent(TEXT)))
     assert len(funcs) == 3
@@ -63,6 +69,7 @@ def test_from_ast_methods():
     assert len(funcs[0].contracts) == 1
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_from_astroid_methods():
     text = dedent("""
         class A:
@@ -78,14 +85,17 @@ def test_from_astroid_methods():
 
 def test_repr():
     funcs1 = Func.from_ast(ast.parse(dedent(TEXT)))
-    funcs2 = Func.from_astroid(astroid.parse(dedent(TEXT)))
-    for func in (funcs1[0], funcs2[0]):
-        assert repr(func) == 'Func(post, raises)'
+    assert repr(funcs1[0]) == 'Func(post, raises)'
+
+    if astroid is not None:
+        funcs2 = Func.from_astroid(astroid.parse(dedent(TEXT)))
+        assert repr(funcs2[0]) == 'Func(post, raises)'
 
 
 mark38 = pytest.mark.skipif(sys.version_info < (3, 8), reason='old python')
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 @pytest.mark.parametrize('signature, expected', [
     ('self', True),
     ('self, a', True),

@@ -2,13 +2,22 @@
 import sys
 from pathlib import Path
 
-import marshmallow
 import pytest
-import vaa
 
 import deal
 from deal._exceptions import _excepthook, exception_hook
 from deal._state import state
+
+
+try:
+    import vaa
+except ImportError:
+    vaa = None
+
+try:
+    import marshmallow
+except ImportError:
+    marshmallow = None
 
 
 def test_source_get_lambda_from_dec():
@@ -150,6 +159,8 @@ def test_variables_too_long_repr():
     state.color = True
 
 
+@pytest.mark.skipif(marshmallow is None, reason='marshmallow is not installed')
+@pytest.mark.skipif(vaa is None, reason='vaa is not installed')
 def test_source_vaa_scheme():
     class MarshMallowScheme(marshmallow.Schema):
         x = marshmallow.fields.Str()
@@ -264,6 +275,8 @@ def test_custom_exc_and_returned_message():
     assert exc_info.value.args == ('oh hi mark',)
 
 
+@pytest.mark.skipif(marshmallow is None, reason='marshmallow is not installed')
+@pytest.mark.skipif(vaa is None, reason='vaa is not installed')
 def test_vaa_scheme_and_custom_exception():
     @vaa.marshmallow
     class MarshMallowScheme(marshmallow.Schema):

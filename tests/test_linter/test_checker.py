@@ -9,6 +9,17 @@ import pytest
 from deal.linter import Checker
 
 
+try:
+    import astroid
+except ImportError:
+    astroid = None
+
+try:
+    import flake8
+except ImportError:
+    flake8 = None
+
+
 TEXT = """
 import deal
 
@@ -65,6 +76,7 @@ def test_version():
     assert not set(version) - set('0123456789.')
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_remove_duplicates(tmp_path: Path):
     text = """
         import deal
@@ -84,6 +96,8 @@ def test_remove_duplicates(tmp_path: Path):
     assert len(errors) == 1
 
 
+@pytest.mark.skipif(sys.version_info < (3, 8, 1), reason='flake8 works only on 3.8.1+')
+@pytest.mark.skipif(flake8 is None, reason='flake8 is not installed')
 def test_flake8_integration(tmp_path: Path):
     path = tmp_path / 'test.py'
     path.write_text(TEXT + '\n')

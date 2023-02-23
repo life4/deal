@@ -10,6 +10,12 @@ from deal.linter._func import Func
 from .helpers import first, funcs_from_ast, funcs_from_astroid
 
 
+try:
+    import astroid
+except ImportError:
+    astroid = None
+
+
 TEXT = """
     import deal
 
@@ -22,7 +28,8 @@ TEXT = """
 
 def iter_funcs(text: str) -> Iterator[Func]:
     yield first(funcs_from_ast(text))
-    yield first(funcs_from_astroid(text))
+    if astroid is not None:
+        yield first(funcs_from_astroid(text))
 
 
 def test_exceptions():
@@ -56,6 +63,7 @@ def test_run():
         assert c.run(-1) is False
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_resolve_func():
     text = """
         import deal
@@ -76,6 +84,7 @@ def test_resolve_func():
     assert c.run(-1) is False
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_resolve_lambda():
     text = """
         import deal
@@ -163,6 +172,7 @@ def test_dependencies(source: str, deps: set):
         assert c.dependencies == deps
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_resolve_and_run_dependencies_func_astroid():
     text = """
     import deal

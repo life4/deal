@@ -1,9 +1,14 @@
 import ast
 
-import astroid
 import pytest
 
 from deal.linter._extractors import get_definitions
+
+
+try:
+    import astroid
+except ImportError:
+    astroid = None
 
 
 @pytest.mark.parametrize('source, names', [
@@ -21,12 +26,13 @@ from deal.linter._extractors import get_definitions
     ('ab.cd = 2', set()),
 ])
 def test_extract_defs(source: str, names) -> None:
-    tree = ast.parse(source)
-    print(ast.dump(tree))
-    defs = get_definitions(tree)
-    assert set(defs) == names
+    ast_tree = ast.parse(source)
+    print(ast.dump(ast_tree))
+    ast_defs = get_definitions(ast_tree)
+    assert set(ast_defs) == names
 
-    tree = astroid.parse(source)
-    print(tree.repr_tree())
-    defs = get_definitions(tree)
-    assert set(defs) == names
+    if astroid is not None:
+        tree = astroid.parse(source)
+        print(tree.repr_tree())
+        defs = get_definitions(tree)
+        assert set(defs) == names

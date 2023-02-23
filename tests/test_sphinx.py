@@ -2,9 +2,14 @@ from pathlib import Path
 from textwrap import dedent
 
 import pytest
-from sphinx.cmd.build import build_main
 
 import deal
+
+
+try:
+    from sphinx.cmd.build import build_main
+except ImportError:
+    build_main = None
 
 
 contracts = deal.chain(
@@ -62,6 +67,7 @@ CONFIG = """
 """
 
 
+@pytest.mark.skipif(build_main is None, reason='sphinx is not installed')
 @pytest.mark.parametrize('style', ['sphinx', 'google'])
 def test_autodoc_smoke(style: str, tmp_path: Path):
     path_in = tmp_path / 'in'
@@ -107,6 +113,7 @@ def test_autodoc_smoke(style: str, tmp_path: Path):
     assert content.strip() == expected.strip()
 
 
+@pytest.mark.skipif(build_main is None, reason='sphinx is not installed')
 def test_autodoc_no_contracts(tmp_path: Path):
     path_in = tmp_path / 'in'
     path_in.mkdir()

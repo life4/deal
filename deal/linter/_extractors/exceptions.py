@@ -6,14 +6,16 @@ import re
 from inspect import cleandoc
 from typing import Iterator
 
-import astroid
-
 from .._contract import Category
 from .._stub import StubsManager
 from .common import TOKENS, Extractor, Token, get_full_name, get_name, get_stub, infer
 from .contracts import get_contracts
 
 
+try:
+    import astroid
+except ImportError:
+    astroid = None
 try:
     import docstring_parser
 except ImportError:
@@ -51,7 +53,7 @@ def handle_raise(expr: ast.Raise, **kwargs) -> Token | None:
 @get_exceptions.register(*TOKENS.BIN_OP)
 def handle_bin_op(expr: ast.BinOp | astroid.BinOp, **kwargs) -> Token | None:
     if isinstance(expr.op, ast.Div) or expr.op == '/':
-        if isinstance(expr.right, astroid.NodeNG):
+        if astroid is not None and isinstance(expr.right, astroid.NodeNG):
             guesses = infer(expr=expr.right)
             for guess in guesses:
                 if type(guess) is not astroid.Const:
@@ -79,7 +81,7 @@ def handle_call(
             yield Token(value=SystemExit)
 
     stubs_found = False
-    if type(expr) is astroid.Call and stubs is not None:
+    if astroid is not None and type(expr) is astroid.Call and stubs is not None:
         for token in _exceptions_from_stubs(expr=expr, stubs=stubs):
             stubs_found = True
             yield token
@@ -105,6 +107,8 @@ def _exceptions_from_stubs(expr: astroid.Call, stubs: StubsManager) -> Iterator[
 
 
 def _exceptions_from_func(expr: ast.Call | astroid.Call) -> Iterator[Token]:
+    if astroid is None:  # pragma: no-astroid
+        return
     for value in infer(expr.func):
         if type(value) is not astroid.FunctionDef:
             continue

@@ -1,10 +1,17 @@
 from textwrap import dedent
 
-import astroid
+import pytest
 
 from deal.linter._extractors import get_pre
 
 
+try:
+    import astroid
+except ImportError:
+    astroid = None
+
+
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_check_contract():
     text = """
     @deal.pre(lambda left, right: left > right)
@@ -23,6 +30,7 @@ def test_check_contract():
     assert messages == [(7, 4, '1, right=2', None), (8, 4, '2, 3', None)]
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_cannot_infer():
     text = """
     @deal.pre(lambda left, right: something_else > left)
@@ -42,6 +50,7 @@ def test_cannot_infer():
     assert messages == []
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_inferred_something_else():
     text = """
     something_else = 1

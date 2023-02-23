@@ -3,12 +3,19 @@ import sys
 from pathlib import Path
 from textwrap import dedent
 
-import astroid
+import pytest
 
 from deal.linter._extractors import get_exceptions
 from deal.linter._stub import StubsManager
 
 
+try:
+    import astroid
+except ImportError:
+    astroid = None
+
+
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_stubs_in_the_root(tmp_path: Path):
     root = tmp_path / 'project'
     root.mkdir()
@@ -32,6 +39,7 @@ def test_stubs_in_the_root(tmp_path: Path):
     assert returns == (ZeroDivisionError, )
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_stubs_next_to_imported_module(tmp_path: Path):
     root = tmp_path / 'project'
     root.mkdir()
@@ -59,6 +67,7 @@ def test_stubs_next_to_imported_module(tmp_path: Path):
         sys.path = sys.path[:-1]
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_built_in_stubs():
     stubs = StubsManager()
 
@@ -76,6 +85,7 @@ def test_built_in_stubs():
     assert returns == (TypeError, )
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_no_stubs_for_module():
     stubs = StubsManager()
 
@@ -93,6 +103,7 @@ def test_no_stubs_for_module():
     assert returns == ()
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_infer_junk():
     stubs = StubsManager()
 
@@ -115,6 +126,7 @@ def test_infer_junk():
     assert returns == ()
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_marhsmallow_stubs():
     stubs = StubsManager()
 

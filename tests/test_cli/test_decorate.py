@@ -7,6 +7,13 @@ import pytest
 from deal._cli import main
 
 
+try:
+    import astroid
+except ImportError:
+    astroid = None
+
+
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 @pytest.mark.parametrize('flags, given, expected', [
     (
         [],

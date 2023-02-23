@@ -1,13 +1,16 @@
 from __future__ import annotations
 
 import ast
-from pathlib import Path
 from typing import Iterator, NamedTuple
-
-import astroid
 
 from ._contract import Category, Contract
 from ._extractors import get_contracts, get_definitions
+
+
+try:
+    import astroid
+except ImportError:
+    astroid = None
 
 
 class Func(NamedTuple):
@@ -37,14 +40,15 @@ class Func(NamedTuple):
         return arg.name == 'self'
 
     @classmethod
-    def from_path(cls, path: Path) -> list[Func]:
-        text = path.read_text()
-        tree = astroid.parse(code=text, path=str(path))
-        return cls.from_astroid(tree)
-
-    @classmethod
     def from_text(cls, text: str) -> list[Func]:
-        tree = astroid.parse(text)
+        if astroid is None:   # pragma: no-astroid
+            tree = ast.parse(text)
+            return cls.from_ast(tree)
+        try:
+            tree = astroid.parse(text)
+        except astroid.AstroidSyntaxError:  # pragma: no-astroid
+            tree = ast.parse(text)
+            return cls.from_ast(tree)
         return cls.from_astroid(tree)
 
     @classmethod

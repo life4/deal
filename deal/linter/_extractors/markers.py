@@ -3,14 +3,17 @@ from __future__ import annotations
 import ast
 from typing import Iterator
 
-import astroid
-
 from .._contract import Category
 from .._stub import StubsManager
 from .common import TOKENS, Extractor, Token, get_full_name, get_name, get_stub, infer
 from .contracts import get_contracts
 from .value import get_value
 
+
+try:
+    import astroid
+except ImportError:
+    astroid = None
 
 get_markers = Extractor()
 DEFINITELY_RANDOM_FUNCS = frozenset({
@@ -101,7 +104,7 @@ def handle_ast_import(expr: ast.Import, **kwargs) -> Token | None:
     return Token(marker='import', line=expr.lineno, col=expr.col_offset)
 
 
-@get_markers.register(astroid.Import)
+@get_markers.register(lambda: astroid.Import)
 def handle_astroid_import(expr: astroid.Import, **kwargs) -> Token | None:
     return Token(marker='import', line=expr.lineno, col=expr.col_offset)
 
@@ -111,7 +114,7 @@ def handle_ast_import_from(expr: ast.ImportFrom, **kwargs) -> Token | None:
     return Token(marker='import', line=expr.lineno, col=expr.col_offset)
 
 
-@get_markers.register(astroid.ImportFrom)
+@get_markers.register(lambda: astroid.ImportFrom)
 def handle_astroid_import_from(expr: astroid.ImportFrom, **kwargs) -> Token | None:
     return Token(marker='import', line=expr.lineno, col=expr.col_offset)
 
@@ -171,10 +174,11 @@ def handle_call(expr, dive: bool = True, stubs: StubsManager | None = None) -> I
 def _infer_markers(expr, dive: bool, stubs: StubsManager | None = None) -> Iterator[Token]:
     inferred = infer(expr=expr.func)
     stubs_found = False
-    if type(expr) is astroid.Call and stubs is not None:
-        for token in _markers_from_stubs(expr=expr, inferred=inferred, stubs=stubs):
-            stubs_found = True
-            yield token
+    if astroid is not None:  # pragma: no-astroid
+        if isinstance(expr, astroid.Call) and stubs is not None:
+            for token in _markers_from_stubs(expr=expr, inferred=inferred, stubs=stubs):
+                stubs_found = True
+                yield token
 
     if not stubs_found:
         for token in _markers_from_inferred(expr=expr, inferred=inferred):
@@ -209,8 +213,9 @@ def _markers_from_inferred(expr: astroid.NodeNG, inferred: tuple) -> Iterator[To
 
 def _is_open_to_write(expr) -> bool:
     for arg in expr.args:
-        if isinstance(arg, astroid.Const) and arg.value == 'w':
-            return True
+        if astroid is not None:  # pragma: no-astroid
+            if isinstance(arg, astroid.Const) and arg.value == 'w':
+                return True
         if isinstance(arg, ast.Str) and 'w' in arg.s:
             return True
 
@@ -219,14 +224,17 @@ def _is_open_to_write(expr) -> bool:
     for arg in expr.keywords:
         if arg.arg != 'mode':
             continue
-        if isinstance(arg.value, astroid.Const) and 'w' in arg.value.value:
-            return True
+        if astroid is not None:  # pragma: no-astroid
+            if isinstance(arg.value, astroid.Const) and 'w' in arg.value.value:
+                return True
         if isinstance(arg.value, ast.Str) and 'w' in arg.value.s:
             return True
     return False
 
 
 def _is_pathlib_write(expr) -> bool:
+    if astroid is None:  # pragma: no-astroid
+        return False
     if not isinstance(expr, astroid.Call):
         return False
     if not isinstance(expr.func, astroid.Attribute):
@@ -247,6 +255,8 @@ def _is_pathlib_write(expr) -> bool:
 
 
 def _markers_from_stubs(expr: astroid.Call, inferred, stubs: StubsManager) -> Iterator[Token]:
+    if astroid is None:  # pragma: no-astroid
+        return
     for value in inferred:
         if type(value) is not astroid.FunctionDef:
             continue
@@ -260,6 +270,8 @@ def _markers_from_stubs(expr: astroid.Call, inferred, stubs: StubsManager) -> It
 
 
 def _markers_from_func(expr: astroid.NodeNG, inferred: tuple) -> Iterator[Token]:
+    if astroid is None:  # pragma: no-astroid
+        return
     for value in inferred:
         if not isinstance(value, (astroid.FunctionDef, astroid.UnboundMethod)):
             continue

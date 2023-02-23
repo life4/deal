@@ -4,8 +4,6 @@ import ast
 from textwrap import dedent
 from typing import TypeVar
 
-import astroid
-
 from deal.linter._func import Func
 
 
@@ -25,6 +23,8 @@ def funcs_from_ast(text: str) -> list[Func]:
 
 
 def funcs_from_astroid(text: str) -> list[Func]:
+    import astroid
+
     text = dedent(text).strip()
     tree = astroid.parse(text)
     print(tree.repr_tree())
