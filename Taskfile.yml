@@ -18,42 +18,42 @@ env:
   FLIT_ROOT_INSTALL: "1"
 
 tasks:
-  install:flit:
+  install-flit:
     status:
       - which flit
     cmds:
       - python3 -m pip install flit
-  venv:test:
+  venv-test:
     status:
       - test -d {{.TEST_ENV}}
     cmds:
       - "{{.PYTHON}} -m venv {{.TEST_ENV}}"
-  venv:test-nodeps:
+  venv-test-nodeps:
     status:
       - test -d {{.TEST_NODEPS_ENV}}
     cmds:
       - "{{.PYTHON}} -m venv {{.TEST_NODEPS_ENV}}"
-  venv:lint:
+  venv-lint:
     status:
       - test -d {{.LINT_ENV}}
     cmds:
       - "{{.PYTHON}} -m venv {{.LINT_ENV}}"
-  venv:docs:
+  venv-docs:
     status:
       - test -d {{.DOCS_ENV}}
     cmds:
       - "{{.PYTHON}} -m venv {{.DOCS_ENV}}"
-  venv:main:
+  venv-main:
     status:
       - test -d {{.MAIN_ENV}}
     cmds:
       - "{{.PYTHON}} -m venv {{.MAIN_ENV}}"
-  install:test:
+  install-test:
     sources:
       - pyproject.toml
     deps:
-      - install:flit
-      - venv:test
+      - install-flit
+      - venv-test
     cmds:
       - >
         flit install
@@ -61,12 +61,12 @@ tasks:
         --extras=test,integration
         --deps=production
         --symlink
-  install:test-nodeps:
+  install-test-nodeps:
     sources:
       - pyproject.toml
     deps:
-      - install:flit
-      - venv:test-nodeps
+      - install-flit
+      - venv-test-nodeps
     cmds:
       - >
         flit install
@@ -74,12 +74,12 @@ tasks:
         --extras=test
         --deps=production
         --symlink
-  install:lint:
+  install-lint:
     sources:
       - pyproject.toml
     deps:
-      - install:flit
-      - venv:lint
+      - install-flit
+      - venv-lint
     cmds:
       - >
         flit install
@@ -87,12 +87,12 @@ tasks:
         --extras=lint,integrations
         --deps=production
         --symlink
-  install:docs:
+  install-docs:
     sources:
       - pyproject.toml
     deps:
-      - install:flit
-      - venv:docs
+      - install-flit
+      - venv-docs
     cmds:
       - >
         flit install
@@ -100,12 +100,12 @@ tasks:
         --extras=docs
         --deps=production
         --symlink
-  install:main:
+  install-main:
     sources:
       - pyproject.toml
     deps:
-      - install:flit
-      - venv:main
+      - install-flit
+      - venv-main
     cmds:
       - >
         flit install
@@ -126,10 +126,10 @@ tasks:
       - gh release create --generate-notes {{.CLI_ARGS}}
       - gh release upload {{.CLI_ARGS}} ./dist/*
 
-  test_import:
+  test-import:
     desc: "test that deal doesn't have deps at import time"
     deps:
-      - install:main
+      - install-main
     cmds:
       - "{{.MAIN_PYTHON}} -c 'import deal'"
       - "{{.MAIN_PYTHON}} -c 'import deal._cli'"
@@ -137,56 +137,56 @@ tasks:
   pytest:
     desc: "run Python tests"
     deps:
-      - install:test
+      - install-test
     cmds:
       - "{{.TEST_PYTHON}} -m pytest {{.CLI_ARGS}}"
   pytest-nodeps:
     desc: "run Python tests"
     deps:
-      - install:test-nodeps
+      - install-test-nodeps
     cmds:
       - "{{.TEST_NODEPS_PYTHON}} -m pytest --cov-fail-under=68 {{.CLI_ARGS}}"
   flake8:
     desc: "lint Python code"
     deps:
-      - install:lint
+      - install-lint
     cmds:
       - "{{.LINT_PYTHON}} -m flake8 --ignore=DEL {{.CLI_ARGS}} ."
   mypy:
     desc: "check type annotations"
     deps:
-      - install:lint
+      - install-lint
     cmds:
       - "{{.LINT_PYTHON}} -m mypy {{.CLI_ARGS}}"
   unify:
     desc: "convert double quotes to single ones"
     deps:
-      - install:lint
+      - install-lint
     cmds:
       - "{{.LINT_PYTHON}} -m unify -r -i --quote=\\' {{.CLI_ARGS}} deal tests"
   isort:
     desc: "sort imports"
     deps:
-      - install:lint
+      - install-lint
     cmds:
       - "{{.LINT_PYTHON}} -m isort {{.CLI_ARGS}} ."
   isort:check:
     desc: "sort imports"
     deps:
-      - install:lint
+      - install-lint
     cmds:
       - "{{.LINT_PYTHON}} -m isort --check {{.CLI_ARGS}} ."
-  mypy_test:
+  mypy-test:
     desc: "validate type annotations"
     deps:
-      - install:lint
+      - install-lint
     cmds:
-      - "{{.LINT_PYTHON}} -m mypy_test {{.CLI_ARGS}} ./types/"
+      - "{{.LINT_PYTHON}} -m mypy-test {{.CLI_ARGS}} ./types/"
 
   sphinx:
     desc: "generate documentation"
     deps:
-      - install:docs
+      - install-docs
     cmds:
       - rm -rf docs/build
       - "{{.DOCS_ENV}}/bin/sphinx-build -W docs docs/build {{.CLI_ARGS}}"
@@ -206,35 +206,13 @@ tasks:
   test:
     desc: "run all tests"
     cmds:
-      - task: test_import
+      - task: test-import
       - task: pytest
       - task: pytest-nodeps
-      - task: mypy_test
+      - task: mypy-test
   all:
     desc: "run all code formatters, linters, and tests"
     cmds:
       - task: format
       - task: lint
       - task: test
-
-  # aliases
-  pytest:run:
-    - task: pytest
-  database:run:
-    - task: database
-  flake8:run:
-    - task: flake8
-  mypy:run:
-    - task: mypy
-  mypy_test:run:
-    - task: mypy_test
-  isort:run:
-    - task: isort
-  yamllint:run:
-    - task: yamllint
-  bandit:run:
-    - task: bandit
-  linters:run:
-    - task: lint
-  services:run:
-    - task: services

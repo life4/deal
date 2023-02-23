@@ -24,7 +24,7 @@ jobs:
           repo-token: ${{ github.token }}
       - run: task lint
 
-  test:
+  pytest:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -38,7 +38,35 @@ jobs:
       - uses: arduino/setup-task@v1
         with:
           repo-token: ${{ github.token }}
-      - run: task test
+      - run: task pytest
+
+  pytest-nodeps:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.8"
+      - uses: arduino/setup-task@v1
+        with:
+          repo-token: ${{ github.token }}
+      - run: task pytest-nodeps
+
+  mypy-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.8"
+      - uses: arduino/setup-task@v1
+        with:
+          repo-token: ${{ github.token }}
+      - run: task mypy-test
 
   markdownlint-cli:
     runs-on: ubuntu-latest
