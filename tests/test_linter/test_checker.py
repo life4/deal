@@ -9,6 +9,12 @@ import pytest
 from deal.linter import Checker
 
 
+try:
+    import astroid
+except ImportError:
+    astroid = None
+
+
 TEXT = """
 import deal
 
@@ -65,6 +71,7 @@ def test_version():
     assert not set(version) - set('0123456789.')
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_remove_duplicates(tmp_path: Path):
     text = """
         import deal

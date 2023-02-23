@@ -1,9 +1,14 @@
 import ast
 
-import astroid
 import pytest
 
 from deal.linter._extractors import get_asserts
+
+
+try:
+    import astroid
+except ImportError:
+    astroid = None
 
 
 @pytest.mark.parametrize('text, expected', [
@@ -23,12 +28,13 @@ from deal.linter._extractors import get_asserts
     ('a = object()\nassert a', ()),
 ])
 def test_get_asserts_simple(text, expected):
-    tree = astroid.parse(text)
-    print(tree.repr_tree())
-    returns = tuple(r.value for r in get_asserts(body=tree.body))
-    assert returns == expected
+    if astroid is not None:
+        tree = astroid.parse(text)
+        print(tree.repr_tree())
+        returns = tuple(r.value for r in get_asserts(body=tree.body))
+        assert returns == expected
 
-    tree = ast.parse(text)
-    print(ast.dump(tree))
-    returns = tuple(r.value for r in get_asserts(body=tree.body))
+    ast_tree = ast.parse(text)
+    print(ast.dump(ast_tree))
+    returns = tuple(r.value for r in get_asserts(body=ast_tree.body))
     assert returns == expected

@@ -1,12 +1,17 @@
 import ast
 from textwrap import dedent
 
-import astroid
 import pytest
 
 from deal.linter._contract import Category
 from deal.linter._extractors import get_contracts
 from deal.linter._extractors.contracts import SUPPORTED_CONTRACTS, SUPPORTED_MARKERS
+
+
+try:
+    import astroid
+except ImportError:
+    astroid = None
 
 
 def test_supported_contracts_match_categories():
@@ -27,13 +32,16 @@ def get_cats(target) -> tuple:
 ])
 def test_decorators(text, expected):
     text += '\ndef f(x): pass'
-    tree = astroid.parse(text)
-    assert get_cats(tree.body[-1]) == expected
-    tree = ast.parse(text)
-    print(ast.dump(tree))
-    assert get_cats(tree.body[-1]) == expected
+    if astroid is not None:
+        tree = astroid.parse(text)
+        assert get_cats(tree.body[-1]) == expected
+
+    ast_tree = ast.parse(text)
+    print(ast.dump(ast_tree))
+    assert get_cats(ast_tree.body[-1]) == expected
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_infer():
     text = """
         from io import StringIO
@@ -54,6 +62,7 @@ def test_infer():
     assert get_cats(tree.body[-2]) == ('pure', 'post')
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_infer_inherit_method():
     text = """
         import deal
@@ -88,6 +97,7 @@ def test_infer_inherit_method():
     assert get_cats(cls.body[0]) == ('inherit', 'pre', 'has', 'post')
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_inherit_no_parents():
     text = """
         import deal
@@ -110,7 +120,9 @@ def test_inherit_function():
         def f(x):
             pass
     """)
-    tree = astroid.parse(text)
-    assert get_cats(tree.body[-1]) == ('inherit', )
-    tree = ast.parse(text)
-    assert get_cats(tree.body[-1]) == ('inherit', )
+    if astroid is not None:
+        tree = astroid.parse(text)
+        assert get_cats(tree.body[-1]) == ('inherit',)
+
+    ast_tree = ast.parse(text)
+    assert get_cats(ast_tree.body[-1]) == ('inherit',)

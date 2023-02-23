@@ -4,12 +4,17 @@ from pathlib import Path
 from textwrap import dedent
 from typing import Dict
 
-import astroid
 import docstring_parser
 import pytest
 
 from deal.linter._extractors import get_exceptions
 from deal.linter._extractors.exceptions import _excs_from_doc
+
+
+try:
+    import astroid
+except ImportError:
+    astroid = None
 
 
 @pytest.mark.parametrize('text, expected', [
@@ -37,17 +42,19 @@ from deal.linter._extractors.exceptions import _excs_from_doc
     ('for i in lst: raise KeyError', (KeyError, )),
 ])
 def test_get_exceptions_simple(text, expected):
-    tree = astroid.parse(text)
-    print(tree.repr_tree())
-    returns = tuple(r.value for r in get_exceptions(body=tree.body))
+    if astroid is not None:
+        tree = astroid.parse(text)
+        print(tree.repr_tree())
+        returns = tuple(r.value for r in get_exceptions(body=tree.body))
+        assert returns == expected
+
+    ast_tree = ast.parse(text)
+    print(ast.dump(ast_tree))
+    returns = tuple(r.value for r in get_exceptions(body=ast_tree.body))
     assert returns == expected
 
-    tree = ast.parse(text)
-    print(ast.dump(tree))
-    returns = tuple(r.value for r in get_exceptions(body=tree.body))
-    assert returns == expected
 
-
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_inference_simple():
     text = """
         def subf():
@@ -75,6 +82,7 @@ def test_inference_simple():
     assert returns == (ValueError, ZeroDivisionError)
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_inference_assign():
     text = """
         def subf():
@@ -91,6 +99,7 @@ def test_inference_assign():
     assert returns == ('Unknown', )
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_inference_ok_uncalled():
     text = """
         def subf():
@@ -107,6 +116,7 @@ def test_inference_ok_uncalled():
     assert returns == ()
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_inference_subcalls():
     text = """
         def subf():
@@ -142,6 +152,7 @@ def test_resolve_doesnt_fail_for_simple_ast():
     tuple(get_exceptions(body=func.body))
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_inference_subcontracts():
     text = """
         @deal.raises(SomeError)     # actual contract
@@ -161,6 +172,7 @@ def test_inference_subcontracts():
     assert returns == ('SomeError', )
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_inference_doesnt_have_exceptions():
     text = """
         def subf():
@@ -199,6 +211,7 @@ def remove_import():
             setattr(module, what, old_import)
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 @pytest.mark.parametrize('docstring', [
     # sphinx
     pytest.param(
@@ -278,6 +291,8 @@ def get_docstring_parser_tests():
     """
     root = Path(docstring_parser.__path__[0]) / 'tests'
     tests_found = 0
+    if astroid is None:
+        return
     for path in root.iterdir():
         if path.suffix != '.py':
             continue
@@ -306,6 +321,7 @@ def get_docstring_parser_tests():
     assert tests_found > 10
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 @pytest.mark.parametrize('docstring', get_docstring_parser_tests())
 def test_compare_with_docstring_parser(docstring, remove_import):
     """

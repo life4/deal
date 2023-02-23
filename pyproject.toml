@@ -34,22 +34,14 @@ all = [
 ]
 test = [
     "coverage[toml]",
+    "coverage-conditional-plugin",
     "docstring-parser",
-    "flake8",
-    "isort",
     "marshmallow",
+    "flake8",
     "pytest-cov",
     "pytest",
     "sphinx",
     "urllib3",
-
-    # copy-pasted "all" extra
-    "astroid>=2.11.0",
-    "deal-solver",
-    "hypothesis",
-    "pygments",
-    "typeguard",
-    "vaa>=0.2.1",
 ]
 lint = [
     "flake8",

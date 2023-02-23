@@ -9,6 +9,11 @@ from deal._cli._main import get_commands
 from deal.linter._rules import CheckMarkers, rules
 
 
+try:
+    import astroid
+except ImportError:
+    astroid = None
+
 root = Path(__file__).parent.parent / 'docs'
 rex_code = re.compile(r'```python\s+run\n(.+?)\n\s*```', re.DOTALL)
 
@@ -123,11 +128,13 @@ def test_all_public_listed_in_api():
         assert f':: deal.{name}' in content
 
 
-@pytest.mark.parametrize(
-    'path',
-    [pytest.param(p, id=p.name) for p in root.glob('**/*.md')],
-)
+PATHS = [pytest.param(p, id=p.name) for p in root.glob('**/*.md')]
+
+
+@pytest.mark.parametrize('path', PATHS)
 def test_code_snippets(path: Path):
+    if path.name == 'tests.md' and astroid is None:
+        pytest.skip(reason='astroid is not installed')
     for code in get_code_blocks(path):
         exec(code, dict(
             deal=deal,

@@ -16,6 +16,13 @@ from deal._trace import TraceResult
 from deal.linter._func import Func
 
 
+try:
+    import hypothesis
+except ImportError:
+    hypothesis = None
+
+
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_safe_violation(tmp_path: Path, capsys):
     if 'example' in sys.modules:
         del sys.modules['example']
@@ -41,6 +48,7 @@ def test_safe_violation(tmp_path: Path, capsys):
     assert 'RaisesContractError' in captured
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_no_violations(tmp_path: Path):
     if 'example' in sys.modules:
         del sys.modules['example']
@@ -72,6 +80,7 @@ def test_no_violations(tmp_path: Path):
     assert 'func(' not in captured
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_no_matching_funcs(tmp_path: Path):
     if 'example' in sys.modules:
         del sys.modules['example']
@@ -96,6 +105,7 @@ def test_no_matching_funcs(tmp_path: Path):
     assert '/example.py' not in captured
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_sys_path():
     path = Path('example')
     size = len(sys.path)
@@ -117,17 +127,20 @@ def test_sys_path():
     ('@deal.has() \ndef f(): 0', True),
     # ('@deal.has\ndef f(): 0', True),
 ])
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_has_pure_contract(source: str, has: bool) -> None:
     funcs = Func.from_text(source)
     assert len(funcs) == 1
     assert has_pure_contract(funcs[0]) is has
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_fast_iterator():
     seq = [1, 2, 3, 4]
     assert list(fast_iterator(iter(seq))) == seq
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_print_exception():
     try:
         raise deal.PreContractError
@@ -145,6 +158,7 @@ def test_print_exception():
     ({2, 5}, {2, 3, 4, 5}, '    coverage <Y>50%<E> (missing 3-4)'),
     (set(), {2, 3, 4, 5}, '    coverage <R>0%<E>'),
 ])
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_format_coverage_100(cov_l, all_l, exp):
     fake_colors = dict(
         red='<R>',
@@ -157,6 +171,7 @@ def test_format_coverage_100(cov_l, all_l, exp):
     assert text == exp
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_run_cases_ok():
     def func() -> int:
         return 123
@@ -187,6 +202,7 @@ def test_run_cases_ok():
     assert captured.split('\n')[0] == '  <B>running fname<E>'
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_run_cases_bad():
     def func(a, b):
         raise ZeroDivisionError

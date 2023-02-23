@@ -1,10 +1,15 @@
 import ast
 
-import astroid
 import pytest
 
 from deal.linter._extractors import get_example
 from deal.linter._extractors.value import UNKNOWN
+
+
+try:
+    import astroid
+except ImportError:
+    astroid = None
 
 
 @pytest.mark.parametrize('text, expected', [
@@ -33,13 +38,14 @@ from deal.linter._extractors.value import UNKNOWN
     ('4 == a', None),
 ])
 def test_get_asserts_simple(text, expected):
-    node = astroid.extract_node(text)
-    print(node.repr_tree())
-    result = get_example(node, func_name='f')
-    assert result == expected
+    if astroid is not None:
+        node = astroid.extract_node(text)
+        print(node.repr_tree())
+        result = get_example(node, func_name='f')
+        assert result == expected
 
-    node = ast.parse(text).body[0]
-    assert isinstance(node, ast.Expr)
-    print(ast.dump(node))
-    result = get_example(node.value, func_name='f')
+    ast_node = ast.parse(text).body[0]
+    assert isinstance(ast_node, ast.Expr)
+    print(ast.dump(ast_node))
+    result = get_example(ast_node.value, func_name='f')
     assert result == expected

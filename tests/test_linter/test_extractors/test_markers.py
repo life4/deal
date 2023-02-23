@@ -1,11 +1,16 @@
 import ast
 from textwrap import dedent
 
-import astroid
 import pytest
 
 from deal.linter._extractors import get_markers
 from deal.linter._stub import StubsManager
+
+
+try:
+    import astroid
+except ImportError:
+    astroid = None
 
 
 @pytest.mark.parametrize('text, expected', [
@@ -58,19 +63,21 @@ from deal.linter._stub import StubsManager
     ('now()', ()),
 ])
 def test_io_hardcoded(text, expected):
-    tree = astroid.parse(text)
-    print(tree.repr_tree())
-    tokens = list(get_markers(body=tree.body))
+    if astroid is not None:
+        tree = astroid.parse(text)
+        print(tree.repr_tree())
+        tokens = list(get_markers(body=tree.body))
+        markers = tuple(t.marker for t in tokens if t.marker != 'import')
+        assert markers == expected
+
+    ast_tree = ast.parse(text)
+    print(ast.dump(ast_tree))
+    tokens = list(get_markers(body=ast_tree.body))
     markers = tuple(t.marker for t in tokens if t.marker != 'import')
     assert markers == expected
 
-    tree = ast.parse(text)
-    print(ast.dump(tree))
-    tokens = list(get_markers(body=tree.body))
-    markers = tuple(t.marker for t in tokens if t.marker != 'import')
-    assert markers == expected
 
-
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 @pytest.mark.parametrize('text, expected', [
     ('from pathlib import Path\np = Path()\np.write_text("lol")', ('write', )),
     ('from pathlib import Path\np = Path()\np.open("w")', ('write', )),
@@ -95,6 +102,7 @@ def test_io_infer(text, expected):
     assert markers == expected
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 @pytest.mark.parametrize('text, expected', [
     ('from random import choice \nchoice([1,2])', ('random', )),
     ('choice([1,2])', ()),
@@ -109,6 +117,7 @@ def test_other_infer(text, expected):
     assert markers == expected
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_socket():
     text = """
         import socket
@@ -121,6 +130,7 @@ def test_socket():
     assert markers == ('import', 'network')
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_asyncio_socket():
     text = """
         import asyncio
@@ -150,19 +160,21 @@ def test_asyncio_socket():
     ('__import__("something")', ('import', )),
 ])
 def test_get_globals_simple(text, expected):
-    tree = astroid.parse(text)
-    print(tree.repr_tree())
-    tokens = list(get_markers(body=tree.body))
+    if astroid is not None:
+        tree = astroid.parse(text)
+        print(tree.repr_tree())
+        tokens = list(get_markers(body=tree.body))
+        markers = tuple(t.marker for t in tokens)
+        assert markers == expected
+
+    ast_tree = ast.parse(text)
+    print(ast.dump(ast_tree))
+    tokens = list(get_markers(body=ast_tree.body))
     markers = tuple(t.marker for t in tokens)
     assert markers == expected
 
-    tree = ast.parse(text)
-    print(ast.dump(tree))
-    tokens = list(get_markers(body=tree.body))
-    markers = tuple(t.marker for t in tokens)
-    assert markers == expected
 
-
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_io_recursive_analize_body():
     text = """
     def inner(text):
@@ -179,6 +191,7 @@ def test_io_recursive_analize_body():
     assert markers == ('stdout', )
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_io_recursive_explicit_markers():
     text = """
     @deal.has('io', invalid)
@@ -197,6 +210,7 @@ def test_io_recursive_explicit_markers():
     assert markers == ('io', )
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_markers_from_stubs():
     text = """
     import ast

@@ -1,7 +1,7 @@
 import ast
 from textwrap import dedent
+from typing import Iterator
 
-import astroid
 import pytest
 
 from deal.linter._func import Func
@@ -9,6 +9,21 @@ from deal.linter._rules import (
     CheckAsserts, CheckEnsureArgs, CheckExamples, CheckImports,
     CheckMarkers, CheckPre, CheckRaises, CheckReturns, rules,
 )
+
+
+try:
+    import astroid
+except ImportError:
+    astroid = None
+
+
+def get_funcs(text: str) -> Iterator:
+    text = dedent(text).strip()
+    funcs_ast = Func.from_ast(ast.parse(text))
+    yield funcs_ast[0]
+    if astroid is not None:
+        funcs_astroid = Func.from_astroid(astroid.parse(text))
+        yield funcs_astroid[0]
 
 
 def test_error_codes():
@@ -21,6 +36,7 @@ def test_error_messages():
     assert len(messages) == len(set(messages))
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_check_pre():
     checker = CheckPre()
     text = """
@@ -56,10 +72,7 @@ def test_check_returns():
         else:
             return -1
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         expected = [(6, 15, 'DEL012 post contract error (-1)')]
         assert actual == expected
@@ -75,10 +88,7 @@ def test_check_returns_with_message():
         else:
             return -1
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         expected = [(6, 15, 'DEL012 oh no! (-1)')]
         assert actual == expected
@@ -91,10 +101,7 @@ def test_check_returns_ok_unresolved():
     def test(a):
         return 1
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = tuple(checker(func))
         assert not actual
 
@@ -107,10 +114,7 @@ def test_check_raises():
         raise ValueError
         raise KeyError
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         expected = [(4, 10, 'DEL021 raises contract error (KeyError)')]
         assert actual == expected
@@ -124,10 +128,7 @@ def test_check_raises__skip_asserts():
         assert False
         raise AssertionError
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         assert list(checker(func)) == []
 
 
@@ -138,10 +139,7 @@ def test_check_raises_safe():
     def test(a):
         raise ValueError
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         expected = [(3, 10, 'DEL021 raises contract error (ValueError)')]
         assert actual == expected
@@ -154,10 +152,7 @@ def test_check_raises_pure():
     def test(a):
         raise ValueError
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         expected = [(3, 10, 'DEL021 raises contract error (ValueError)')]
         assert actual == expected
@@ -170,10 +165,7 @@ def test_check_raises_without_allowed():
     def test(a):
         raise ValueError
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         expected = [(3, 10, 'DEL021 raises contract error (ValueError)')]
         assert actual == expected
@@ -186,10 +178,7 @@ def test_check_raises_unknown():
     def test(a):
         raise UnknownError
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         expected = [(3, 10, 'DEL021 raises contract error (UnknownError)')]
         assert actual == expected
@@ -203,10 +192,7 @@ def test_check_raises_inherited():
         raise KeyError
         raise ValueError
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         expected = [(4, 10, 'DEL021 raises contract error (ValueError)')]
         assert actual == expected
@@ -220,10 +206,7 @@ def test_check_prints():
         print(1)
         return 1
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         expected = [(3, 4, 'DEL046 missed marker (stdout)')]
         assert actual == expected
@@ -238,10 +221,7 @@ def test_check_pure():
         global b
         return b
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         expected = [(4, 4, 'DEL041 missed marker (global)')]
         assert actual == expected
@@ -254,10 +234,7 @@ def test_check_pure_no_returns():
     def test(a):
         a + 3
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         assert len(actual) == 1
         expected = 'DEL043 missed marker (io)'
@@ -274,10 +251,7 @@ def test_check_has_io():
         import sys
         sys.stdout.write(a)
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         assert len(actual) == 1
         expected = 'DEL042 missed marker (import)'
@@ -293,10 +267,7 @@ def test_check_has_stdin():
     def test(a):
         return sys.stdin.read(10)
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         assert len(actual) == 0
 
@@ -310,10 +281,7 @@ def test_check_has_unexpected_stdin():
     def test(a):
         return sys.stdin.read(10)
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         assert len(actual) == 1
         expected = 'DEL049 missed marker (stdin)'
@@ -329,10 +297,7 @@ def test_check_has_unexpected_random():
     def test(a):
         return random.choice(a)
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         assert len(actual) == 1
         expected = 'DEL055 missed marker (random)'
@@ -348,16 +313,14 @@ def test_check_has_unexpected_syscall():
     def test(a):
         return subprocess.run(a)
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         assert len(actual) == 1
         expected = 'DEL050 missed marker (syscall)'
         assert actual[0][2] == expected
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_check_has_custom_markers():
     checker = CheckMarkers()
     text = """
@@ -390,10 +353,7 @@ def test_check_has_no_has():
         import sys
         sys.stdout.write(a)
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         assert actual == []
 
@@ -404,10 +364,7 @@ def test_check_asserts():
     def example(a):
         assert False, "oh no!"
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         expected = [(2, 11, 'DEL031 assert error (False)')]
         assert actual == expected
@@ -419,10 +376,7 @@ def test_skip_asserts_in_tests():
     def test_example(a):
         assert False, "oh no!"
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = list(checker(func))
         assert actual == []
 
@@ -436,7 +390,10 @@ def test_check_imports():
     from .deal import pre
     """
     text = dedent(text).strip()
-    for tree in (ast.parse(text), astroid.parse(text)):
+    trees: list = [ast.parse(text)]
+    if astroid is not None:
+        trees.append(astroid.parse(text))
+    for tree in trees:
         actual = [tuple(err) for err in checker(tree)]
         expected = [(2, 0, 'DEL001 ' + CheckImports.message)]
         assert actual == expected
@@ -454,10 +411,7 @@ def test_check_example_pre():
     def double(a):
         return a * 2
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         expected = [(2, 14, 'DEL013 example violates contract (deal.pre)')]
         assert actual == expected
@@ -473,10 +427,7 @@ def test_check_example_post():
     def double(a):
         return a * 2
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         expected = [(1, 14, 'DEL013 example violates contract (deal.post)')]
         assert actual == expected
@@ -492,10 +443,7 @@ def test_check_example_ensure():
     def double(a):
         return a * 2
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         expected = [(1, 14, 'DEL013 example violates contract (deal.ensure)')]
         assert actual == expected
@@ -513,10 +461,7 @@ def test_ensure_args(expr, should_pass):
     def double(a):
         return a * 2
     """
-    text = dedent(text).strip()
-    funcs1 = Func.from_ast(ast.parse(text))
-    funcs2 = Func.from_astroid(astroid.parse(text))
-    for func in (funcs1[0], funcs2[0]):
+    for func in get_funcs(text):
         actual = [tuple(err) for err in checker(func)]
         if should_pass:
             assert actual == [], 'should pass but does not'

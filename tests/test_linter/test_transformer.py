@@ -6,6 +6,13 @@ import pytest
 from deal.linter import TransformationType, Transformer
 
 
+try:
+    import astroid
+except ImportError:
+    astroid = None
+
+
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 @pytest.mark.parametrize('content', [
     # add deal.safe
     """
@@ -256,6 +263,7 @@ def test_transformer_raises(content: str, tmp_path: Path) -> None:
     assert actual == expected
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 @pytest.mark.parametrize('content', [
     # add deal.has()
     """
@@ -416,6 +424,7 @@ def test_transformer_has(content: str, tmp_path: Path) -> None:
     assert actual == expected
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 @pytest.mark.parametrize('content', [
     # add @deal.pure
     """
@@ -466,6 +475,7 @@ def test_transformer_pure(content: str, tmp_path: Path) -> None:
     assert actual == expected
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 @pytest.mark.parametrize('content', [
     # add import if needed
     """
@@ -586,6 +596,7 @@ def test_transformer_import(content: str, tmp_path: Path) -> None:
     assert actual.lstrip('\n') == expected.lstrip('\n')
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_transformer_smoke(tmp_path: Path) -> None:
     given = dedent("""
         @deal.pre(lambda: True)

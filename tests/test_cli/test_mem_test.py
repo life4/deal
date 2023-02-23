@@ -3,9 +3,18 @@ from io import StringIO
 from pathlib import Path
 from textwrap import dedent
 
+import pytest
+
 from deal._cli import main
 
 
+try:
+    import hypothesis
+except ImportError:
+    hypothesis = None
+
+
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_has_side_effect(tmp_path: Path, capsys):
     if 'example' in sys.modules:
         del sys.modules['example']
@@ -34,6 +43,7 @@ def test_has_side_effect(tmp_path: Path, capsys):
     assert 'x1' in captured
 
 
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_no_side_effects(tmp_path: Path, capsys):
     if 'example' in sys.modules:
         del sys.modules['example']

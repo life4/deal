@@ -1,9 +1,14 @@
 import ast
 
-import astroid
 import pytest
 
 from deal.linter._extractors import get_returns, has_returns
+
+
+try:
+    import astroid
+except ImportError:
+    astroid = None
 
 
 @pytest.mark.parametrize('text, expected', [
@@ -34,10 +39,11 @@ from deal.linter._extractors import get_returns, has_returns
     ('yield', (None, )),
 ])
 def test_get_returns_simple(text, expected):
-    tree = astroid.parse(text)
-    print(tree.repr_tree())
-    returns = tuple(r.value for r in get_returns(body=tree.body))
-    assert returns == expected
+    if astroid is not None:
+        tree = astroid.parse(text)
+        print(tree.repr_tree())
+        returns = tuple(r.value for r in get_returns(body=tree.body))
+        assert returns == expected
 
     tree = ast.parse(text)
     print(ast.dump(tree))
@@ -52,6 +58,7 @@ def test_ast_uninferrable_unary():
     assert returns == ()
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 @pytest.mark.parametrize('text, expected', [
     ('return 1 + 2', (3, )),                # do a simple arithmetic
     ('return a', ()),                       # ignore uninferrable names
@@ -85,10 +92,11 @@ def test_get_returns_inference(text, expected):
     ('1 + 2', False),
 ])
 def test_has_returns(text, expected):
-    tree = ast.parse(text)
-    print(ast.dump(tree))
-    assert has_returns(body=tree.body) is expected
+    ast_tree = ast.parse(text)
+    print(ast.dump(ast_tree))
+    assert has_returns(body=ast_tree.body) is expected
 
-    tree = astroid.parse(text)
-    print(tree.repr_tree())
-    assert has_returns(body=tree.body) is expected
+    if astroid is not None:
+        tree = astroid.parse(text)
+        print(tree.repr_tree())
+        assert has_returns(body=tree.body) is expected

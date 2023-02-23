@@ -2,9 +2,18 @@ from io import StringIO
 from pathlib import Path
 from textwrap import dedent
 
+import pytest
+
 from deal._cli import main
 
 
+try:
+    import deal_solver
+except ImportError:
+    deal_solver = None
+
+
+@pytest.mark.skipif(deal_solver is None, reason='deal-solver is not installed')
 def test_incorrect(tmp_path: Path):
     text = """
         import deal
@@ -26,6 +35,7 @@ def test_incorrect(tmp_path: Path):
     assert ' failed post-condition' in captured
 
 
+@pytest.mark.skipif(deal_solver is None, reason='deal-solver is not installed')
 def test_correct(tmp_path: Path):
     text = """
         import deal
@@ -47,6 +57,7 @@ def test_correct(tmp_path: Path):
     assert ' proved! post-condition' in captured
 
 
+@pytest.mark.skipif(deal_solver is None, reason='deal-solver is not installed')
 def test_skip(tmp_path: Path):
     text = """
         import deal
@@ -60,6 +71,7 @@ def test_skip(tmp_path: Path):
     assert result == 0
 
 
+@pytest.mark.skipif(deal_solver is None, reason='deal-solver is not installed')
 def test_skip_show_skipped(tmp_path: Path):
     text = """
         import deal
@@ -81,6 +93,7 @@ def test_skip_show_skipped(tmp_path: Path):
     assert exp in captured
 
 
+@pytest.mark.skipif(deal_solver is None, reason='deal-solver is not installed')
 def test_skip_tests(tmp_path: Path):
     text = """
         import deal
@@ -94,6 +107,7 @@ def test_skip_tests(tmp_path: Path):
     assert result == 0
 
 
+@pytest.mark.skipif(deal_solver is None, reason='deal-solver is not installed')
 def test_prove_no_decorators_fail(tmp_path: Path):
     text = """
         import deal
@@ -107,6 +121,7 @@ def test_prove_no_decorators_fail(tmp_path: Path):
     assert result == 1
 
 
+@pytest.mark.skipif(deal_solver is None, reason='deal-solver is not installed')
 def test_prove_no_decorators_ok(tmp_path: Path):
     text = """
         import deal
@@ -120,6 +135,7 @@ def test_prove_no_decorators_ok(tmp_path: Path):
     assert result == 0
 
 
+@pytest.mark.skipif(deal_solver is None, reason='deal-solver is not installed')
 def test_show_filename_once(tmp_path: Path):
     text = """
         import deal

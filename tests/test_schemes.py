@@ -1,16 +1,23 @@
 from __future__ import annotations
 
-import marshmallow
 import pytest
-import vaa
 
 import deal
 
 
-@vaa.marshmallow
-class MarshMallowScheme(marshmallow.Schema):
-    name = marshmallow.fields.Str()
-    kwargs = marshmallow.fields.Dict(required=False)
+try:
+    import vaa
+except ImportError:
+    vaa = None
+
+MarshMallowScheme = None
+if vaa is not None:
+    import marshmallow
+
+    @vaa.marshmallow
+    class MarshMallowScheme(marshmallow.Schema):
+        name = marshmallow.fields.Str()
+        kwargs = marshmallow.fields.Dict(required=False)
 
 
 class CustomScheme(deal.Scheme):
@@ -21,9 +28,13 @@ class CustomScheme(deal.Scheme):
         return True
 
 
-SCHEMES = (MarshMallowScheme, CustomScheme)
+if MarshMallowScheme:
+    SCHEMES = (MarshMallowScheme, CustomScheme)
+else:
+    SCHEMES = (CustomScheme, )
 
 
+@pytest.mark.skipif(vaa is None, reason='vaa is not installed')
 @pytest.mark.parametrize('scheme', SCHEMES)
 def test_scheme_string_validation_args_correct(scheme):
     @deal.pre(scheme)
@@ -41,6 +52,7 @@ def test_scheme_string_validation_args_correct(scheme):
         assert e.args[0] == [vaa.Error(field='name', message='Not a valid string.')]
 
 
+@pytest.mark.skipif(vaa is None, reason='vaa is not installed')
 @pytest.mark.parametrize('scheme', SCHEMES)
 def test_method_chain_decorator_with_scheme_is_fulfilled(scheme):
     @deal.pre(scheme)
@@ -57,6 +69,7 @@ def test_method_chain_decorator_with_scheme_is_fulfilled(scheme):
         func('Oleg')
 
 
+@pytest.mark.skipif(vaa is None, reason='vaa is not installed')
 @pytest.mark.parametrize('scheme', SCHEMES)
 def test_scheme_contract_is_satisfied_when_setting_arg(scheme):
     @deal.inv(scheme)
@@ -76,6 +89,7 @@ def test_scheme_contract_is_satisfied_when_setting_arg(scheme):
         assert e.args[0] == [vaa.Error(field='name', message='Not a valid string.')]
 
 
+@pytest.mark.skipif(vaa is None, reason='vaa is not installed')
 @pytest.mark.parametrize('scheme', SCHEMES)
 def test_scheme_contract_is_satisfied_within_chain(scheme):
     @deal.inv(lambda user: user.name != 'Oleg')
@@ -100,6 +114,7 @@ def test_scheme_contract_is_satisfied_within_chain(scheme):
         user.name = 'Chris'
 
 
+@pytest.mark.skipif(vaa is None, reason='vaa is not installed')
 @pytest.mark.parametrize('scheme', SCHEMES)
 def test_scheme_contract_is_satisfied_when_passing_args(scheme):
     @deal.pre(scheme)
@@ -122,6 +137,7 @@ def test_scheme_contract_is_satisfied_when_passing_args(scheme):
     assert func3() == 'MaxMax'
 
 
+@pytest.mark.skipif(vaa is None, reason='vaa is not installed')
 @pytest.mark.parametrize('scheme', SCHEMES)
 def test_scheme_errors_rewrite_message(scheme):
     @deal.pre(scheme, message='old message')
@@ -162,6 +178,7 @@ def test_underscore_validator_default_message():
     assert exc_info.value.args == tuple()
 
 
+@pytest.mark.skipif(vaa is None, reason='vaa is not installed')
 def test_default_error():
     """
     If no error provided by the validator, return the default one.

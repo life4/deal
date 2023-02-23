@@ -6,9 +6,13 @@ vars:
   TEST_ENV: .venvs/test
   LINT_ENV: .venvs/lint
   DOCS_ENV: .venvs/docs
+  MAIN_ENV: .venvs/main
+  TEST_NODEPS_ENV: .venvs/test-nodeps
   TEST_PYTHON: "{{.TEST_ENV}}/bin/python3"
   LINT_PYTHON: "{{.LINT_ENV}}/bin/python3"
   DOCS_PYTHON: "{{.DOCS_ENV}}/bin/python3"
+  MAIN_PYTHON: "{{.MAIN_ENV}}/bin/python3"
+  TEST_NODEPS_PYTHON: "{{.TEST_NODEPS_ENV}}/bin/python3"
 
 env:
   FLIT_ROOT_INSTALL: "1"
@@ -24,6 +28,11 @@ tasks:
       - test -d {{.TEST_ENV}}
     cmds:
       - "{{.PYTHON}} -m venv {{.TEST_ENV}}"
+  venv:test-nodeps:
+    status:
+      - test -d {{.TEST_NODEPS_ENV}}
+    cmds:
+      - "{{.PYTHON}} -m venv {{.TEST_NODEPS_ENV}}"
   venv:lint:
     status:
       - test -d {{.LINT_ENV}}
@@ -34,6 +43,11 @@ tasks:
       - test -d {{.DOCS_ENV}}
     cmds:
       - "{{.PYTHON}} -m venv {{.DOCS_ENV}}"
+  venv:main:
+    status:
+      - test -d {{.MAIN_ENV}}
+    cmds:
+      - "{{.PYTHON}} -m venv {{.MAIN_ENV}}"
   install:test:
     sources:
       - pyproject.toml
@@ -44,7 +58,20 @@ tasks:
       - >
         flit install
         --python {{.TEST_PYTHON}}
-        --extras=test,integrations
+        --extras=test,all
+        --deps=production
+        --symlink
+  install:test-nodeps:
+    sources:
+      - pyproject.toml
+    deps:
+      - install:flit
+      - venv:test-nodeps
+    cmds:
+      - >
+        flit install
+        --python {{.TEST_NODEPS_PYTHON}}
+        --extras=test
         --deps=production
         --symlink
   install:lint:
@@ -73,6 +100,18 @@ tasks:
         --extras=docs
         --deps=production
         --symlink
+  install:main:
+    sources:
+      - pyproject.toml
+    deps:
+      - install:flit
+      - venv:main
+    cmds:
+      - >
+        flit install
+        --python {{.MAIN_PYTHON}}
+        --deps=production
+        --symlink
 
   release:
     cmds:
@@ -92,15 +131,21 @@ tasks:
     deps:
       - install:main
     cmds:
-      - "{{.FLITENV}} main run python3 -c 'import deal'"
-      - "{{.FLITENV}} main run python3 -c 'import deal._cli'"
-      - "{{.FLITENV}} main run python3 -c 'import deal.linter'"
+      - "{{.MAIN_PYTHON}} -c 'import deal'"
+      - "{{.MAIN_PYTHON}} -c 'import deal._cli'"
+      - "{{.MAIN_PYTHON}} -c 'import deal.linter'"
   pytest:
     desc: "run Python tests"
     deps:
       - install:test
     cmds:
       - "{{.TEST_PYTHON}} -m pytest {{.CLI_ARGS}}"
+  pytest-nodeps:
+    desc: "run Python tests"
+    deps:
+      - install:test-nodeps
+    cmds:
+      - "{{.TEST_NODEPS_PYTHON}} -m pytest --cov-fail-under=70 {{.CLI_ARGS}}"
   flake8:
     desc: "lint Python code"
     deps:
@@ -163,6 +208,7 @@ tasks:
     cmds:
       - task: test_import
       - task: pytest
+      - task: pytest-nodeps
       - task: mypy_test
   all:
     desc: "run all code formatters, linters, and tests"

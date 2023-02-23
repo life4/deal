@@ -100,7 +100,7 @@ class Transformer(NamedTuple):
 
     def transform(self) -> str:
         if astroid is None:
-            raise ImportError('astroid is required for geenrating stubs')
+            raise ImportError('astroid is required for generating stubs')
         self.mutations.clear()
         tree = astroid.parse(self.content, path=self.path)
         for func in Func.from_astroid(tree):

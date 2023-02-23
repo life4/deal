@@ -8,6 +8,13 @@ from deal.linter._contract import Category
 from deal.linter._stub import StubFile, StubsManager, _get_funcs, generate_stub
 
 
+try:
+    import astroid
+except ImportError:
+    astroid = None
+
+
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_generate_stub_exceptions(tmp_path: Path):
     root = tmp_path / 'project'
     root.mkdir()
@@ -21,6 +28,7 @@ def test_generate_stub_exceptions(tmp_path: Path):
     assert content == {'func': {'raises': ['ZeroDivisionError']}}
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_generate_stub_markers(tmp_path: Path):
     root = tmp_path / 'project'
     root.mkdir()
@@ -34,12 +42,14 @@ def test_generate_stub_markers(tmp_path: Path):
     assert content == {'func': {'has': ['stdout']}}
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_generate_stub_bad_ext(tmp_path: Path):
     path = tmp_path / 'example.com'
     with pytest.raises(ValueError, match='invalid.* file extension.*'):
         generate_stub(path=path)
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_do_not_dump_empty_stub(tmp_path: Path):
     root = tmp_path / 'project'
     root.mkdir()
@@ -52,6 +62,7 @@ def test_do_not_dump_empty_stub(tmp_path: Path):
     assert stub_path.parent == root
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_stub_file(tmp_path: Path):
     path = tmp_path / 'example.json'
     stub = StubFile(path=path)
@@ -91,6 +102,7 @@ def test_stub_file(tmp_path: Path):
     ('class A:\n class B:\n  def f(): pass', ['A.B.f']),
     ('nothing\n1\na = 3', []),
 ])
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_get_funcs(tmp_path: Path, given: str, expected):
     path = tmp_path / 'example.py'
     path.write_text(given)
@@ -98,6 +110,7 @@ def test_get_funcs(tmp_path: Path, given: str, expected):
     assert names == expected
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_get_module_name(tmp_path: Path):
     root = tmp_path / 'project'
     root.mkdir()
@@ -116,12 +129,14 @@ def test_get_module_name(tmp_path: Path):
     ('json', 'json.__init__'),
     ('typing', 'typing'),
 ])
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_get_module_name_for_real_modules(tmp_path: Path, given, expected):
     module = import_module(given)
     path = Path(module.__file__)
     assert StubsManager._get_module_name(path=path) == expected
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_stubs_manager(tmp_path: Path):
     stubs = StubsManager()
     root = tmp_path / 'project'
@@ -168,6 +183,7 @@ def test_stubs_manager(tmp_path: Path):
         stubs.read(path=path.with_suffix('.cpp'))
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 def test_marshmallow_get_stubs():
     stubs = StubsManager()
     stub = stubs.get('marshmallow.utils')

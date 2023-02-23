@@ -11,6 +11,12 @@ import deal._testing
 from deal._state import state
 
 
+try:
+    import astroid
+except ImportError:
+    astroid = None
+
+
 rex = re.compile(r'deal\.(\w*Error)')
 
 
@@ -29,6 +35,7 @@ class Checker(doctest.OutputChecker):
 finder = doctest.DocTestFinder(exclude_empty=True)
 
 
+@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
 @pytest.mark.parametrize('test', chain(
     finder.find(deal._runtime),
     finder.find(deal._testing),
