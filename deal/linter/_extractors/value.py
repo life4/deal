@@ -19,7 +19,7 @@ def get_value(expr: ast.AST | astroid.NodeNG, allow_inference: bool = True) -> o
         with suppress(ValueError, SyntaxError):
             return ast.literal_eval(expr)
         return UNKNOWN
-    if astroid is None:
+    if astroid is None:  # pragma: no-astroid
         return UNKNOWN
 
     if isinstance(expr, astroid.NodeNG):

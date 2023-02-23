@@ -1,3 +1,5 @@
+from typing import Iterator
+
 import pytest
 import urllib3
 
@@ -22,7 +24,7 @@ def test_raises_exception():
 def test_raises_specified_exception():
 
     @deal.has(exception=KeyError)
-    def func(do):
+    def func(do: bool) -> None:
         if do:
             http = urllib3.PoolManager()
             http.request('GET', 'http://httpbin.org/robots.txt')
@@ -35,7 +37,7 @@ def test_raises_specified_exception():
 def test_allow_network():
 
     @deal.has('network')
-    def func(do):
+    def func(do: bool) -> None:
         if do:
             http = urllib3.PoolManager()
             http.request('GET', 'http://httpbin.org/robots.txt')
@@ -51,6 +53,7 @@ def test_decorating_async_function():
             return 1
         http = urllib3.PoolManager()
         http.request('GET', 'http://httpbin.org/robots.txt')
+        return 0
 
     assert run_sync(func(False)) == 1
     with pytest.raises(deal.OfflineContractError):
@@ -59,7 +62,7 @@ def test_decorating_async_function():
 
 def test_decorating_generator():
     @deal.has()
-    def func(do):
+    def func(do) -> Iterator[int]:
         if not do:
             yield 1
             return

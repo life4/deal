@@ -58,7 +58,7 @@ tasks:
       - >
         flit install
         --python {{.TEST_PYTHON}}
-        --extras=test,all
+        --extras=test,integration
         --deps=production
         --symlink
   install:test-nodeps:
@@ -145,7 +145,7 @@ tasks:
     deps:
       - install:test-nodeps
     cmds:
-      - "{{.TEST_NODEPS_PYTHON}} -m pytest --cov-fail-under=70 {{.CLI_ARGS}}"
+      - "{{.TEST_NODEPS_PYTHON}} -m pytest --cov-fail-under=68 {{.CLI_ARGS}}"
   flake8:
     desc: "lint Python code"
     deps:

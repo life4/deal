@@ -41,12 +41,12 @@ class Func(NamedTuple):
 
     @classmethod
     def from_text(cls, text: str) -> list[Func]:
-        if astroid is None:
+        if astroid is None:   # pragma: no-astroid
             tree = ast.parse(text)
             return cls.from_ast(tree)
         try:
             tree = astroid.parse(text)
-        except astroid.AstroidSyntaxError:
+        except astroid.AstroidSyntaxError:  # pragma: no-astroid
             tree = ast.parse(text)
             return cls.from_ast(tree)
         return cls.from_astroid(tree)

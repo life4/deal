@@ -23,10 +23,10 @@ Handler = Callable[..., 'Token | Iterator[Token] | None']
 
 def _get_type(name: str) -> tuple[type, type]:
     ast_type = getattr(ast, name)
-    if astroid is not None:
+    if astroid is not None:         # pragma: has-astroid
         astroid_type = getattr(astroid, name)
         return (ast_type, astroid_type)
-    return (ast_type, ast_type)
+    return (ast_type, ast_type)     # pragma: no-astroid
 
 
 class TOKENS:
@@ -191,7 +191,7 @@ class Extractor:
                 continue
             try:
                 yield t()
-            except (NameError, AttributeError):
+            except (NameError, AttributeError):  # pragma: no-astroid
                 pass
 
     def _register(self, types: Tuple[type], handler: Handler) -> Handler:

@@ -174,7 +174,7 @@ def handle_call(expr, dive: bool = True, stubs: StubsManager | None = None) -> I
 def _infer_markers(expr, dive: bool, stubs: StubsManager | None = None) -> Iterator[Token]:
     inferred = infer(expr=expr.func)
     stubs_found = False
-    if astroid is not None:
+    if astroid is not None:  # pragma: no-astroid
         if isinstance(expr, astroid.Call) and stubs is not None:
             for token in _markers_from_stubs(expr=expr, inferred=inferred, stubs=stubs):
                 stubs_found = True
@@ -213,7 +213,7 @@ def _markers_from_inferred(expr: astroid.NodeNG, inferred: tuple) -> Iterator[To
 
 def _is_open_to_write(expr) -> bool:
     for arg in expr.args:
-        if astroid is not None:
+        if astroid is not None:  # pragma: no-astroid
             if isinstance(arg, astroid.Const) and arg.value == 'w':
                 return True
         if isinstance(arg, ast.Str) and 'w' in arg.s:
@@ -224,7 +224,7 @@ def _is_open_to_write(expr) -> bool:
     for arg in expr.keywords:
         if arg.arg != 'mode':
             continue
-        if astroid is not None:
+        if astroid is not None:  # pragma: no-astroid
             if isinstance(arg.value, astroid.Const) and 'w' in arg.value.value:
                 return True
         if isinstance(arg.value, ast.Str) and 'w' in arg.value.s:
@@ -233,7 +233,7 @@ def _is_open_to_write(expr) -> bool:
 
 
 def _is_pathlib_write(expr) -> bool:
-    if astroid is None:
+    if astroid is None:  # pragma: no-astroid
         return False
     if not isinstance(expr, astroid.Call):
         return False
@@ -255,7 +255,7 @@ def _is_pathlib_write(expr) -> bool:
 
 
 def _markers_from_stubs(expr: astroid.Call, inferred, stubs: StubsManager) -> Iterator[Token]:
-    if astroid is None:
+    if astroid is None:  # pragma: no-astroid
         return
     for value in inferred:
         if type(value) is not astroid.FunctionDef:
@@ -270,7 +270,7 @@ def _markers_from_stubs(expr: astroid.Call, inferred, stubs: StubsManager) -> It
 
 
 def _markers_from_func(expr: astroid.NodeNG, inferred: tuple) -> Iterator[Token]:
-    if astroid is None:
+    if astroid is None:  # pragma: no-astroid
         return
     for value in inferred:
         if not isinstance(value, (astroid.FunctionDef, astroid.UnboundMethod)):

@@ -32,15 +32,23 @@ all = [
     "typeguard",
     "vaa>=0.2.1",
 ]
+integration = [  # integration tests
+    "astroid>=2.11.0",
+    "deal-solver",
+    "hypothesis",
+    "pygments",
+    "typeguard",
+    "vaa>=0.2.1",
+    "sphinx>=4.5.0",
+    "flake8",
+    "marshmallow",
+]
 test = [
     "coverage[toml]",
     "coverage-conditional-plugin",
     "docstring-parser",
-    "marshmallow",
-    "flake8",
     "pytest-cov",
     "pytest",
-    "sphinx",
     "urllib3",
 ]
 lint = [
@@ -83,6 +91,9 @@ omit = [
     "deal/linter/_template.py",
     "deal/mypy.py",
 ]
+plugins = [
+    "coverage_conditional_plugin",
+]
 
 [tool.coverage.report]
 exclude_lines = [
@@ -93,6 +104,10 @@ exclude_lines = [
     "if TYPE_CHECKING:",
     "raise RuntimeError.+unreachable.+",
 ]
+
+[tool.coverage.coverage_conditional_plugin.rules]
+no-astroid = "is_installed('astroid')"
+has-astroid = "not is_installed('astroid')"
 
 [tool.mypy]
 files = ["deal"]

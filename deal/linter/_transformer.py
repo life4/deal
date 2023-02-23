@@ -99,7 +99,7 @@ class Transformer(NamedTuple):
     quote: str = "'"
 
     def transform(self) -> str:
-        if astroid is None:
+        if astroid is None:  # pragma: no-astroid
             raise ImportError('astroid is required for generating stubs')
         self.mutations.clear()
         tree = astroid.parse(self.content, path=self.path)

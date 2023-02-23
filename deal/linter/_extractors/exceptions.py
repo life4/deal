@@ -107,7 +107,7 @@ def _exceptions_from_stubs(expr: astroid.Call, stubs: StubsManager) -> Iterator[
 
 
 def _exceptions_from_func(expr: ast.Call | astroid.Call) -> Iterator[Token]:
-    if astroid is None:
+    if astroid is None:  # pragma: no-astroid
         return
     for value in infer(expr.func):
         if type(value) is not astroid.FunctionDef:
