@@ -16,7 +16,7 @@ except ImportError:
     astroid = None
 
 
-T = TypeVar('T', bound=Type)
+T = TypeVar('T')
 N = Tuple[Type[T], Type[T]]
 Handler = Callable[..., 'Token | Iterator[Token] | None']
 
