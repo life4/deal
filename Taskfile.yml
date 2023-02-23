@@ -181,7 +181,7 @@ tasks:
     deps:
       - install-lint
     cmds:
-      - "{{.LINT_PYTHON}} -m mypy-test {{.CLI_ARGS}} ./types/"
+      - "{{.LINT_PYTHON}} -m mypy_test {{.CLI_ARGS}} ./types/"
 
   sphinx:
     desc: "generate documentation"
