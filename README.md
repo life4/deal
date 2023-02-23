@@ -23,6 +23,7 @@ A Python library for [design by contract](https://en.wikipedia.org/wiki/Design_b
 * DRY: test discovery, error messages generation.
 * Partial execution: linter executes contracts to statically check possible values.
 * [Formal verification][verification]: prove that your code works for all input (or find out when it doesn't).
+* Zero-dependency runtime: there are some dependencies for analysis tools, but nothing of it is required on the production.
 * Fast: each code change is benchmarked and profiled.
 * Reliable: the library has 100% test coverage, partially verified, and runs on production by multiple companies since 2018.
 
