@@ -66,9 +66,10 @@ class TestCase(NamedTuple):
             func=self.func,  # type: ignore[arg-type]
             frame_locals=self.kwargs,
         )
-        from typeguard._functions import check_return_type
+        from typeguard._functions import check_argument_types, check_return_type
 
-        # check_argument_types(memo=memo)
+        if not self.args and self.kwargs:
+            check_argument_types(memo=memo)
         check_return_type(result, memo=memo)
 
 

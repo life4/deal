@@ -182,6 +182,22 @@ def test_return_type():
 
 
 @pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
+@pytest.mark.skipif(typeguard is None, reason='typeguard is not installed')
+def test_typecheck_explicit_kwargs():
+    def identity(a: int) -> str:
+        return 'ok'
+
+    kwargs: dict = dict(args=(), func=identity, exceptions=(), check_types=True)
+    case = deal.TestCase(kwargs={'a': 13}, **kwargs)
+    case()
+
+    case = deal.TestCase(kwargs={'a': 'hi'}, **kwargs)
+    msg = re.escape('argument "a" (str) is not an instance of int')
+    with pytest.raises(typeguard.TypeCheckError, match=msg):
+        case()
+
+
+@pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
 def test_type_var():
     T = TypeVar('T')  # noqa: N806
 
