@@ -37,7 +37,7 @@ integration = [  # integration tests
     "deal-solver",
     "hypothesis",
     "pygments",
-    "typeguard",
+    "typeguard<=2.13.3",
     "vaa>=0.2.1",
     "sphinx>=4.5.0",
     "flake8",
