@@ -1,3 +1,4 @@
+import re
 from typing import NoReturn, TypeVar
 
 import pytest
@@ -12,6 +13,11 @@ except ImportError:
 else:
     import hypothesis.errors
     import hypothesis.strategies
+
+try:
+    import typeguard
+except ImportError:
+    typeguard = None
 
 
 @deal.raises(ZeroDivisionError)
@@ -37,11 +43,11 @@ if hypothesis is not None:
 
 
 @pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
-def test_short_version_is_discoverable():
+def test_short_version_is_discoverable(monkeypatch):
     from _pytest.python import PyCollector
 
     collector = PyCollector.__new__(PyCollector)
-    collector._matches_prefix_or_glob_option = lambda *args: True
+    monkeypatch.setattr(collector, '_matches_prefix_or_glob_option', lambda *args: True)
     test = deal.cases(div1)
     assert collector.istestfunction(test, 'test_div') is True
 
@@ -104,7 +110,8 @@ def test_return_type_checks():
     def div(a: int, b: int) -> str:  # type: ignore[no-redef]
         return 1  # type: ignore[return-value]
 
-    with pytest.raises(TypeError):
+    msg = re.escape('the return value (int) is not an instance of str')
+    with pytest.raises(typeguard.TypeCheckError, match=msg):
         case = next(iter(deal.cases(div, count=20)))
         case()
 
@@ -140,8 +147,8 @@ def test_disable_type_checks():
     # type is wrong and checked
     cases = deal.cases(bad, count=1)
     case = next(iter(cases))
-    msg = 'type of the return value must be str; got int instead'
-    with pytest.raises(TypeError, match=msg):
+    msg = re.escape('the return value (int) is not an instance of str')
+    with pytest.raises(typeguard.TypeCheckError, match=msg):
         case()
 
     # type is wrong and ignored
@@ -159,6 +166,7 @@ def test_disable_type_checks():
 
 
 @pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
+@pytest.mark.skipif(typeguard is None, reason='typeguard is not installed')
 def test_return_type():
     def identity(a) -> int:
         return a
@@ -168,8 +176,8 @@ def test_return_type():
     case()
 
     case = deal.TestCase(args=('hi', ), **kwargs)
-    msg = 'type of the return value must be int; got str instead'
-    with pytest.raises(TypeError, match=msg):
+    msg = re.escape('the return value (str) is not an instance of int')
+    with pytest.raises(typeguard.TypeCheckError, match=msg):
         case()
 
 

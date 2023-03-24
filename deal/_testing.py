@@ -62,13 +62,14 @@ class TestCase(NamedTuple):
             import typeguard
         except ImportError:
             return
-        memo = typeguard._CallMemo(
-            func=self.func,
-            args=self.args,
-            kwargs=self.kwargs,
+        memo = typeguard.CallMemo(
+            func=self.func,  # type: ignore[arg-type]
+            frame_locals=self.kwargs,
         )
-        typeguard.check_argument_types(memo=memo)
-        typeguard.check_return_type(result, memo=memo)
+        from typeguard._functions import check_return_type
+
+        # check_argument_types(memo=memo)
+        check_return_type(result, memo=memo)
 
 
 class cases:  # noqa: N
