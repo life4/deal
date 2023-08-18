@@ -9,10 +9,10 @@ author = "Gram"
 author-email = "gram@orsinium.dev"
 home-page = "https://github.com/life4/deal"
 description-file = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 keywords = "deal,contracts,pre,post,invariant,decorators,validation,pythonic,functional"
 requires = []
-classifiers=[
+classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Plugins",
     "Intended Audience :: Developers",
@@ -25,19 +25,19 @@ classifiers=[
 
 [tool.flit.metadata.requires-extra]
 all = [
-    "astroid>=2.11.0",
-    "deal-solver",
-    "hypothesis",
-    "pygments",
-    "typeguard>=3.0.0",
-    "vaa>=0.2.1",
+    "astroid>=2.11.0",  # for tyupe inference in linter
+    "deal-solver",      # for formal verification
+    "hypothesis",       # for test generation
+    "pygments",         # for syntax highlighting in exceptions
+    "typeguard>=3.0.0", # for runtime type checking in tests
+    "vaa>=0.2.1",       # for supporting schemes (like marshmallow) as validators
 ]
-integration = [  # integration tests
+integration = [ # integration tests
     "astroid>=2.11.0",
     "deal-solver",
     "hypothesis",
     "pygments",
-    "typeguard",
+    "typeguard<4.0.0",
     "vaa>=0.2.1",
     "sphinx>=4.5.0",
     "flake8",
@@ -64,12 +64,12 @@ lint = [
     "deal-solver",
     "hypothesis",
     "pygments",
-    "typeguard",
+    "typeguard<4.0.0",
 ]
 docs = [
-    "m2r2",
-    "myst-parser",
-    "sphinx==3.5.*",
+    "m2r2",                    # markdown support in docstrings for sphinx
+    "myst-parser",             # markdown support for dcs in sphinx
+    "sphinx==3.5.*",           # documentation
     "sphinx-rtd-theme==0.5.*",
 ]
 
@@ -87,13 +87,8 @@ addopts = [
 
 [tool.coverage.run]
 branch = true
-omit = [
-    "deal/linter/_template.py",
-    "deal/mypy.py",
-]
-plugins = [
-    "coverage_conditional_plugin",
-]
+omit = ["deal/linter/_template.py", "deal/mypy.py"]
+plugins = ["coverage_conditional_plugin"]
 
 [tool.coverage.report]
 exclude_lines = [
@@ -111,7 +106,7 @@ has-astroid = "not is_installed('astroid')"
 
 [tool.mypy]
 files = ["deal"]
-python_version = 3.7
+python_version = 3.8
 plugins = ["deal.mypy"]
 ignore_missing_imports = true
 show_error_codes = true
@@ -136,4 +131,3 @@ lines_after_imports = 2
 skip = ".venvs/"
 multi_line_output = 5
 include_trailing_comma = true
-
