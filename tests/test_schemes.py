@@ -10,8 +10,10 @@ try:
 except ImportError:
     vaa = None
 
-MarshMallowScheme = None
-if vaa is not None:
+MarshMallowScheme: object | None
+if vaa is None:
+    MarshMallowScheme = None
+else:
     import marshmallow
 
     @vaa.marshmallow
