@@ -130,3 +130,25 @@ def test_div(case):
         # if no exceptions was raised, print the result
         print(f"index of {case.kwargs['item']} in {case.kwargs['items']} is {result}")
 ```
+
+## Python 3.7 limitations
+
+You may see unexpected errors when using `from __future__ import annotations` in Python 3.7. For example:
+
+```python3
+from __future__ import annotations
+import deal
+from typing import List
+
+
+@deal.has()
+def append_one(x: List[int]) -> List[int]:
+    x.append(1)
+    return x
+```
+
+When running `python3 -m deal test the_file_shown_above.py`, you'll get this error:
+
+`TypeError: append_one() missing 1 required positional argument: 'x'`
+
+Unfortunately, for now, you'll have to remove the `from __future__ import annotations`.
