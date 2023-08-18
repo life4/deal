@@ -9,7 +9,7 @@ author = "Gram"
 author-email = "gram@orsinium.dev"
 home-page = "https://github.com/life4/deal"
 description-file = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 keywords = "deal,contracts,pre,post,invariant,decorators,validation,pythonic,functional"
 requires = []
 classifiers = [
