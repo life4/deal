@@ -25,16 +25,16 @@ classifiers = [
 
 [tool.flit.metadata.requires-extra]
 all = [
-    "astroid>=2.11.0",  # for tyupe inference in linter
-    "deal-solver",      # for formal verification
-    "hypothesis",       # for test generation
-    "pygments",         # for syntax highlighting in exceptions
-    "typeguard>=3.0.0", # for runtime type checking in tests
-    "vaa>=0.2.1",       # for supporting schemes (like marshmallow) as validators
+    "astroid>=2.11.0",    # for tyupe inference in linter
+    "deal-solver>=0.1.2", # for formal verification
+    "hypothesis",         # for test generation
+    "pygments",           # for syntax highlighting in exceptions
+    "typeguard>=3.0.0",   # for runtime type checking in tests
+    "vaa>=0.2.1",         # for supporting schemes (like marshmallow) as validators
 ]
 integration = [ # integration tests
     "astroid>=2.11.0",
-    "deal-solver",
+    "deal-solver>=0.1.2",
     "hypothesis",
     "pygments",
     "typeguard<4.0.0",
@@ -61,7 +61,7 @@ lint = [
     "unify",
 
     # copy-pasted "all" extra
-    "deal-solver",
+    "deal-solver>=0.1.2",
     "hypothesis",
     "pygments",
     "typeguard<4.0.0",
