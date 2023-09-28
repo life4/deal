@@ -81,10 +81,11 @@ def _traverse_astroid(node: astroid.NodeNG) -> Iterator[astroid.NodeNG]:
     todo: deque[astroid.NodeNG] = deque([node])
     while todo:
         node = todo.popleft()
-        if isinstance(node, astroid.TryExcept):
+        if isinstance(node, astroid.Try):
             for h in node.handlers:
                 todo.extend(h.body)
             todo.extend(node.orelse)
+            todo.extend(node.finalbody)
         else:
             todo.extend(node.get_children())
             yield node
