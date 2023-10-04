@@ -39,6 +39,4 @@ def divide(a, b):
 
 ## Motivation
 
-Exceptions are the most implicit part of Python. Any code can raise any exception. None of the tools can say you which exceptions can be raised in some function. However, sometimes you can infer it yourself and say it to other people. And `@deal.raises` will remain you if function has raised something that you forgot to specify.
-
-Also, it's an important decorator for autotesting. Deal won't fail tests for exceptions that were marked as allowed with `@deal.raises`.
+Exceptions in Python are often implicit. Any part of the code has the potential to raise any exception, and none of the available tools can definitively identify which exceptions might be raised by a particular function. Nevertheless, sometimes you might be able to determine this yourself, and use the `@deal.raises` decorator to communicate it. The decorator also serves as a reminder if a function raises an exception that hasn't been explicitly specified. Furthermore, this decorator is valuable for auto-testing: `deal` won't flag tests as failures if exceptions are raised that have been permitted using `@deal.raises`.
