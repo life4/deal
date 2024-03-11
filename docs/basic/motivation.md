@@ -1,6 +1,6 @@
 # Contract-Driven Development
 
-Let's take for example an incredibly simple code and imagine that it's incredibly complicated logic.
+Let's take for example an incredibly simple code and imagine that its incredibly complicated logic.
 
 ```python run
 def cat(left, right):
