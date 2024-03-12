@@ -29,7 +29,7 @@ urls = {Documentation= "https://github.com/life4/deal"}
 
 [project.optional-dependencies]
 all = [
-    "astroid>=2.11.0",
+    "astroid>=3.1.0",
     "deal-solver>=0.1.2",
     "hypothesis",
     "pygments",
@@ -37,7 +37,7 @@ all = [
     "vaa>=0.2.1",
 ]
 integration = [
-    "astroid>=2.11.0",
+    "astroid>=3.1.0",
     "deal-solver>=0.1.2",
     "hypothesis",
     "pygments",
@@ -80,11 +80,6 @@ DEL = "deal.linter:Checker"
 
 [project.entry-points."flake8.extension"]
 DEL = "deal.linter:Checker"
-
-[tool]
-rye = { dev-dependencies = [
-    "flit>=3.9.0",
-] }
 
 [tool.pytest.ini_options]
 python_classes = ""
