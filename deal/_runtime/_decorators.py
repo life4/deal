@@ -62,7 +62,7 @@ def pre(
         exception=exception or _exceptions.PreContractError,
     )
     func = partial(Contracts.attach, 'pres', contract)
-    return func  # type: ignore[return-value]
+    return func
 
 
 def post(
@@ -107,7 +107,7 @@ def post(
         exception=exception or _exceptions.PostContractError,
     )
     func = partial(Contracts.attach, 'posts', contract)
-    return func  # type: ignore[return-value]
+    return func
 
 
 def ensure(
@@ -155,7 +155,7 @@ def ensure(
         exception=exception or _exceptions.PostContractError,
     )
     func = partial(Contracts.attach, 'ensures', contract)
-    return func  # type: ignore[return-value]
+    return func
 
 
 def raises(
@@ -204,7 +204,7 @@ def raises(
         exception=exception or _exceptions.RaisesContractError,
     )
     func = partial(Contracts.attach, 'raises', contract)
-    return func  # type: ignore[return-value]
+    return func
 
 
 def has(
@@ -248,7 +248,7 @@ def has(
         exception=exception,
     )
     func = partial(Contracts.attach_has, patcher)
-    return func  # type: ignore[return-value]
+    return func
 
 
 def reason(
@@ -303,7 +303,7 @@ def reason(
         exception=exception or _exceptions.ReasonContractError,
     )
     func = partial(Contracts.attach, 'reasons', contract)
-    return func  # type: ignore[return-value]
+    return func
 
 
 def inv(
@@ -394,7 +394,7 @@ def example(validator: Callable[[], bool]) -> Callable[[C], C]:
         exception=_exceptions.ExampleContractError,
     )
     func = partial(Contracts.attach, 'examples', contract)
-    return func  # type: ignore[return-value]
+    return func
 
 
 @overload
