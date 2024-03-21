@@ -4,14 +4,22 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "deal"
-authors = [
-    { name = "Gram", email = "gram@orsinium.dev" },
-]
-license = {text="MIT"}
+authors = [{ name = "Gram", email = "gram@orsinium.dev" }]
+license = { text = "MIT" }
 readme = "README.md"
 dynamic = ["version", "description"]
 requires-python = ">=3.8"
-keywords = ["deal", "contracts", "pre", "post", "invariant", "decorators", "validation", "pythonic", "functional"]
+keywords = [
+    "deal",
+    "contracts",
+    "pre",
+    "post",
+    "invariant",
+    "decorators",
+    "validation",
+    "pythonic",
+    "functional",
+]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Plugins",
@@ -22,10 +30,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Software Development :: Quality Assurance",
 ]
-dependencies = [
-    "flit>=3.9.0",
-]
-urls = {Documentation= "https://github.com/life4/deal"}
+urls = { Documentation = "https://github.com/life4/deal" }
 
 [project.optional-dependencies]
 all = [
@@ -68,15 +73,7 @@ lint = [
     "pygments",
     "typeguard<4.0.0",
 ]
-docs = [
-    "m2r2",
-    "myst-parser",
-    "sphinx>=4.5.0",
-    "sphinx-rtd-theme==0.5.*",
-]
-
-[project.scripts]
-DEL = "deal.linter:Checker"
+docs = ["m2r2", "myst-parser", "sphinx>=4.5.0", "sphinx-rtd-theme==0.5.*"]
 
 [project.entry-points."flake8.extension"]
 DEL = "deal.linter:Checker"
