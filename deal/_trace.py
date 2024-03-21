@@ -56,6 +56,8 @@ def _collect_trace_results(t: Trace, func, file_name: str, func_result) -> Trace
     last_line = max(all_lines)
 
     covered_lines: set[int] = set()
+    fname: str
+    lineno: int
     for fname, lineno in t.counts:  # type: ignore
         assert fname == file_name
         if lineno < first_line:

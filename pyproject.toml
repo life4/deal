@@ -111,7 +111,7 @@ has-astroid = "not is_installed('astroid')"
 
 [tool.mypy]
 files = ["deal"]
-python_version = 3.8
+python_version = "3.9"
 plugins = ["deal.mypy"]
 ignore_missing_imports = true
 show_error_codes = true

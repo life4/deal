@@ -15,8 +15,8 @@ except ImportError:
 
 
 if TYPE_CHECKING:
-    Args = tuple[object, ...]   # type: ignore[misc]
-    Kwargs = dict[str, object]  # type: ignore[misc]
+    Args = tuple[object, ...]
+    Kwargs = dict[str, object]
 
 
 @lru_cache(maxsize=16)
