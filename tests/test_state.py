@@ -1,4 +1,5 @@
 import os
+import warnings
 
 import pytest
 
@@ -138,18 +139,19 @@ def set_env_vars():
 def test_enable__warnings(restore_state, env_vars, set_env_vars, expected):
     os.environ.clear()
     set_env_vars(env_vars)
-    ewarn = RuntimeWarning if expected else None
-    with pytest.warns(ewarn) as warns:
-        deal.enable()
     if expected:
+        with pytest.warns(RuntimeWarning) as warns:
+            deal.enable()
         assert len(warns) == 1
         assert str(warns[0].message) == f'{expected}. Is it intentional?'
     else:
-        assert len(warns) == 0
+        with warnings.catch_warnings():
+            warnings.simplefilter('error')
+            deal.enable()
 
-    with pytest.warns(None) as warns:
+    with warnings.catch_warnings():
+        warnings.simplefilter('error')
         deal.enable(warn=False)
-    assert len(warns) == 0
 
 
 @pytest.mark.parametrize('env_vars, expected', [
@@ -162,15 +164,16 @@ def test_enable__warnings(restore_state, env_vars, set_env_vars, expected):
 def test_disable__warnings(restore_state, env_vars, set_env_vars, expected):
     os.environ.clear()
     set_env_vars(env_vars)
-    ewarn = RuntimeWarning if expected else None
-    with pytest.warns(ewarn) as warns:
-        deal.disable()
     if expected:
+        with pytest.warns(RuntimeWarning) as warns:
+            deal.disable()
         assert len(warns) == 1
         assert str(warns[0].message) == f'{expected}. Is it intentional?'
     else:
-        assert len(warns) == 0
+        with warnings.catch_warnings():
+            warnings.simplefilter('error')
+            deal.disable()
 
-    with pytest.warns(None) as warns:
+    with warnings.catch_warnings():
+        warnings.simplefilter('error')
         deal.disable(warn=False)
-    assert len(warns) == 0
