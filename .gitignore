@@ -5,6 +5,9 @@ __pycache__/
 dist/
 /venvs/
 /.venvs/
+.venv
+.venvs
+venv/
 
 # coverage
 .coverage

@@ -1,17 +1,25 @@
 [build-system]
-requires = ["flit_core >=2,<4"]
+requires = ["flit_core >=3.2,<4"]
 build-backend = "flit_core.buildapi"
 
-[tool.flit.metadata]
-module = "deal"
-license = "MIT"
-author = "Gram"
-author-email = "gram@orsinium.dev"
-home-page = "https://github.com/life4/deal"
-description-file = "README.md"
+[project]
+name = "deal"
+authors = [{ name = "Gram", email = "gram@orsinium.dev" }]
+license = { text = "MIT" }
+readme = "README.md"
+dynamic = ["version", "description"]
 requires-python = ">=3.8"
-keywords = "deal,contracts,pre,post,invariant,decorators,validation,pythonic,functional"
-requires = []
+keywords = [
+    "deal",
+    "contracts",
+    "pre",
+    "post",
+    "invariant",
+    "decorators",
+    "validation",
+    "pythonic",
+    "functional",
+]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Plugins",
@@ -23,16 +31,20 @@ classifiers = [
     "Topic :: Software Development :: Quality Assurance",
 ]
 
-[tool.flit.metadata.requires-extra]
+[project.urls]
+Repository = "https://github.com/life4/deal"
+Documentation = "https://deal.readthedocs.io/"
+
+[project.optional-dependencies]
 all = [
-    "astroid>=2.11.0",    # for tyupe inference in linter
+    "astroid>=2.11.0",    # for type inference in linter
     "deal-solver>=0.1.2", # for formal verification
-    "hypothesis",         # for test generation
+    "hypothesis",         # for property based testing
     "pygments",           # for syntax highlighting in exceptions
     "typeguard>=3.0.0",   # for runtime type checking in tests
     "vaa>=0.2.1",         # for supporting schemes (like marshmallow) as validators
 ]
-integration = [ # integration tests
+integration = [ # for integration testing
     "astroid>=2.11.0",
     "deal-solver>=0.1.2",
     "hypothesis",
@@ -70,10 +82,10 @@ docs = [
     "m2r2",                    # markdown support in docstrings for sphinx
     "myst-parser",             # markdown support for dcs in sphinx
     "sphinx==3.5.*",           # documentation
-    "sphinx-rtd-theme==0.5.*",
+    "sphinx-rtd-theme==0.5.*", # theme for documentation
 ]
 
-[tool.flit.entrypoints."flake8.extension"]
+[project.entry-points."flake8.extension"]
 DEL = "deal.linter:Checker"
 
 [tool.pytest.ini_options]
@@ -113,10 +125,8 @@ show_error_codes = true
 
 allow_redefinition = true
 check_untyped_defs = true
-# no_implicit_optional = true
 strict_equality = true
 warn_redundant_casts = true
-# warn_unreachable = true
 warn_unused_ignores = true
 
 [[tool.mypy.overrides]]
