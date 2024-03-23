@@ -34,7 +34,7 @@ author = 'Gram (@orsinium)'
 version = ''
 release = ''
 
-language = None
+language = 'en'
 exclude_patterns: list = []
 todo_include_todos = True
 

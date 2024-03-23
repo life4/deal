@@ -79,10 +79,10 @@ lint = [
     "typeguard<4.0.0",
 ]
 docs = [
-    "m2r2",                    # markdown support in docstrings for sphinx
-    "myst-parser",             # markdown support for dcs in sphinx
-    "sphinx==3.5.*",           # documentation
-    "sphinx-rtd-theme==0.5.*", # theme for documentation
+    "m2r2>=0.3.3.post2",     # markdown support in docstrings for sphinx
+    "myst-parser",           # markdown support for dcs in sphinx
+    "sphinx==7.*",           # documentation
+    "sphinx-rtd-theme==2.*", # theme for documentation
 ]
 
 [project.entry-points."flake8.extension"]
