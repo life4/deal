@@ -34,21 +34,20 @@ urls = { Documentation = "https://github.com/life4/deal" }
 
 [project.optional-dependencies]
 all = [
-    "astroid>=3.1.0",
-    "deal-solver>=0.1.2",
-    "hypothesis",
-    "pygments",
-    "typeguard>=3.0.0",
-    "vaa>=0.2.1",
+    "astroid>=3.1.0", # for type inference in linter
+    "deal-solver>=0.1.2", # for formal verification
+    "hypothesis", # for property based testing
+    "pygments", # for syntax highlighting in exceptions
+    "typeguard>=3.0.0", # for runtime type checking in tests
+    "vaa>=0.2.1", # for supporting schemes (like marshmallow) as validators
 ]
-integration = [
+integration = [ # for integration testing
     "astroid>=3.1.0",
     "deal-solver>=0.1.2",
     "hypothesis",
     "pygments",
     "typeguard<4.0.0",
     "vaa>=0.2.1",
-    "sphinx>=4.5.0",
     "flake8",
     "marshmallow",
 ]
@@ -73,7 +72,14 @@ lint = [
     "pygments",
     "typeguard<4.0.0",
 ]
-docs = ["m2r2", "myst-parser", "sphinx>=4.5.0", "sphinx-rtd-theme==0.5.*"]
+docs = [
+    "m2r2",                    # markdown support in docstrings for sphinx
+    "Jinja2<3.1",              # jinja2 is not supported in sphinx 3
+    "docutils==0.17.*",       # docutils above 0.17.x is not supported in sphinx 3.5
+    "myst-parser",             # markdown support for dcs in sphinx
+    "sphinx==3.5.*",           # documentation
+    "sphinx-rtd-theme==0.5.*",  # theme for documentation
+]
 
 [project.entry-points."flake8.extension"]
 DEL = "deal.linter:Checker"
