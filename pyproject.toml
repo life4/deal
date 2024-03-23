@@ -30,24 +30,28 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Software Development :: Quality Assurance",
 ]
-urls = { Documentation = "https://github.com/life4/deal" }
+
+[project.urls]
+Repository = "https://github.com/life4/deal"
+Documentation = "https://deal.readthedocs.io/"
 
 [project.optional-dependencies]
 all = [
-    "astroid>=3.1.0", # for type inference in linter
+    "astroid>=2.11.0",    # for type inference in linter
     "deal-solver>=0.1.2", # for formal verification
-    "hypothesis", # for property based testing
-    "pygments", # for syntax highlighting in exceptions
-    "typeguard>=3.0.0", # for runtime type checking in tests
-    "vaa>=0.2.1", # for supporting schemes (like marshmallow) as validators
+    "hypothesis",         # for property based testing
+    "pygments",           # for syntax highlighting in exceptions
+    "typeguard>=3.0.0",   # for runtime type checking in tests
+    "vaa>=0.2.1",         # for supporting schemes (like marshmallow) as validators
 ]
 integration = [ # for integration testing
-    "astroid>=3.1.0",
+    "astroid>=2.11.0",
     "deal-solver>=0.1.2",
     "hypothesis",
     "pygments",
     "typeguard<4.0.0",
     "vaa>=0.2.1",
+    "sphinx>=4.5.0",
     "flake8",
     "marshmallow",
 ]
@@ -67,6 +71,8 @@ lint = [
     "mypy_test>=0.1.1",
     "isort",
     "unify",
+
+    # copy-pasted "all" extra
     "deal-solver>=0.1.2",
     "hypothesis",
     "pygments",
@@ -74,11 +80,9 @@ lint = [
 ]
 docs = [
     "m2r2",                    # markdown support in docstrings for sphinx
-    "Jinja2<3.1",              # jinja2 is not supported in sphinx 3
-    "docutils==0.17.*",       # docutils above 0.17.x is not supported in sphinx 3.5
     "myst-parser",             # markdown support for dcs in sphinx
     "sphinx==3.5.*",           # documentation
-    "sphinx-rtd-theme==0.5.*",  # theme for documentation
+    "sphinx-rtd-theme==0.5.*", # theme for documentation
 ]
 
 [project.entry-points."flake8.extension"]
