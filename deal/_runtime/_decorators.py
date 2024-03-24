@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 
 
 def pre(
-    validator,
+    validator: Callable[..., bool],
     *,
     message: str | None = None,
     exception: ExceptionType | None = None,
@@ -66,7 +66,7 @@ def pre(
 
 
 def post(
-    validator,
+    validator: Callable[..., bool],
     *,
     message: str | None = None,
     exception: ExceptionType | None = None,
@@ -111,7 +111,7 @@ def post(
 
 
 def ensure(
-    validator,
+    validator: Callable[..., bool],
     *,
     message: str | None = None,
     exception: ExceptionType | None = None,
@@ -253,7 +253,7 @@ def has(
 
 def reason(
     event: type[Exception],
-    validator,
+    validator: Callable[..., bool],
     *,
     message: str | None = None,
     exception: ExceptionType | None = None,
@@ -307,7 +307,7 @@ def reason(
 
 
 def inv(
-    validator,
+    validator: Callable[..., bool],
     *,
     message: str | None = None,
     exception: ExceptionType | None = None,
