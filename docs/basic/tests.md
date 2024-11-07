@@ -123,7 +123,7 @@ And tests, after all, the easiest part. Let's make it a little bit interesting a
 ```python
 # test and make examples
 @deal.cases(index_of, count=1000)
-def test_div(case):
+def test_index_of(case):
     # run test case
     result = case()
     if result is not NoReturn:
