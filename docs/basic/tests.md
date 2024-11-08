@@ -96,7 +96,7 @@ contract_for_index_of = deal.chain(
     ),
     # element at this position is the first match
     deal.ensure(
-        lambda items, item, result: not any(el == item for el in items[:result]),
+        lambda items, item, result: item not in items[:result],
         message='not the first match',
     ),
     # LookupError will be raised if no elements found
@@ -123,7 +123,7 @@ And tests, after all, the easiest part. Let's make it a little bit interesting a
 ```python
 # test and make examples
 @deal.cases(index_of, count=1000)
-def test_div(case):
+def test_index_of(case):
     # run test case
     result = case()
     if result is not NoReturn:
