@@ -30,10 +30,12 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Software Development :: Quality Assurance",
 ]
+dependencies = ["typing_extensions>=4.12.2"]
 
 [project.urls]
 Repository = "https://github.com/life4/deal"
 Documentation = "https://deal.readthedocs.io/"
+
 
 [project.optional-dependencies]
 all = [

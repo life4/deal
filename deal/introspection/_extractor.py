@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from typing import Callable, Iterator, TypeVar
+from typing import Callable, Iterator, Protocol, TypeVar
+
+from typing_extensions import TypeGuard
 
 from .._runtime import Contracts, Inherit
 from . import _wrappers
@@ -9,6 +11,14 @@ from ._wrappers import Contract, ValidatedContract
 
 ATTR = '__deal_contract'
 F = TypeVar('F', bound=Callable)
+
+
+class WithWrappedSpecial(Protocol):
+    __wrapped__: Callable
+
+
+def has_wrapped(cobj: Callable) -> TypeGuard[WithWrappedSpecial]:
+    return hasattr(cobj, '__wrapped__')
 
 
 def unwrap(func: F) -> F:
@@ -52,6 +62,6 @@ def get_contracts(func: Callable) -> Iterator[Contract]:
             if contracts.patcher:
                 yield _wrappers.Has(contracts.patcher)
 
-        if not hasattr(func, '__wrapped__'):
+        if not has_wrapped(func):
             return
         func = func.__wrapped__

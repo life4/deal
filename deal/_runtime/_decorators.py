@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from functools import partial
-from typing import TYPE_CHECKING, Callable, TypeVar, overload
+from typing import Callable, TypeVar, cast, overload
 
 from .. import _exceptions
 from .._types import ExceptionType
@@ -13,11 +13,10 @@ from ._invariant import invariant
 from ._validators import InvariantValidator, RaisesValidator, ReasonValidator, Validator
 
 
-if TYPE_CHECKING:
-    C = TypeVar('C', bound=Callable)
-    F = TypeVar('F', bound=Callable)
-    T = TypeVar('T')
-    TF = TypeVar('TF', bound='Callable | type')
+C = TypeVar('C', bound=Callable)
+F = TypeVar('F', bound=Callable)
+T = TypeVar('T')
+TF = TypeVar('TF', bound='Callable | type')
 
 
 def pre(
@@ -61,7 +60,7 @@ def pre(
         message=message,
         exception=exception or _exceptions.PreContractError,
     )
-    func = partial(Contracts.attach, 'pres', contract)
+    func = cast(Callable[[C], C], partial(Contracts.attach, 'pres', contract))
     return func
 
 
@@ -106,7 +105,7 @@ def post(
         message=message,
         exception=exception or _exceptions.PostContractError,
     )
-    func = partial(Contracts.attach, 'posts', contract)
+    func = cast(Callable[[C], C], partial(Contracts.attach, 'posts', contract))
     return func
 
 
@@ -155,7 +154,7 @@ def ensure(
         exception=exception or _exceptions.PostContractError,
     )
     func = partial(Contracts.attach, 'ensures', contract)
-    return func
+    return cast(Callable[[C], C], func)
 
 
 def raises(
@@ -204,7 +203,7 @@ def raises(
         exception=exception or _exceptions.RaisesContractError,
     )
     func = partial(Contracts.attach, 'raises', contract)
-    return func
+    return cast(Callable[[C], C], func)
 
 
 def has(
@@ -248,7 +247,7 @@ def has(
         exception=exception,
     )
     func = partial(Contracts.attach_has, patcher)
-    return func
+    return cast(Callable[[C], C], func)
 
 
 def reason(
@@ -303,7 +302,7 @@ def reason(
         exception=exception or _exceptions.ReasonContractError,
     )
     func = partial(Contracts.attach, 'reasons', contract)
-    return func
+    return cast(Callable[[C], C], func)
 
 
 def inv(
@@ -367,7 +366,7 @@ def inv(
         message=message,
         exception=exception or _exceptions.InvContractError,
     )
-    return partial(invariant, contract)
+    return cast(Callable[[T], T], partial(invariant, contract))
 
 
 def example(validator: Callable[[], bool]) -> Callable[[C], C]:
@@ -393,7 +392,7 @@ def example(validator: Callable[[], bool]) -> Callable[[C], C]:
         message=None,
         exception=_exceptions.ExampleContractError,
     )
-    func = partial(Contracts.attach, 'examples', contract)
+    func = cast(Callable[[C], C], partial(Contracts.attach, 'examples', contract))
     return func
 
 

@@ -5,7 +5,9 @@ from collections import deque
 from contextlib import suppress
 from functools import partial
 from pathlib import Path
-from typing import Callable, Iterator, NamedTuple, Tuple, Type, TypeVar
+from typing import Callable, Iterator, NamedTuple, Protocol, Tuple, Type, TypeVar
+
+from typing_extensions import TypeGuard
 
 from .._stub import EXTENSION, StubFile, StubsManager
 
@@ -19,6 +21,15 @@ except ImportError:
 T = TypeVar('T')
 N = Tuple[Type[T], Type[T]]
 Handler = Callable[..., 'Token | Iterator[Token] | None']
+
+
+class LocationProvider(Protocol):
+    lineno: int
+    col_offset: int
+
+
+def has_location(node: ast.AST | astroid.NodeNG) -> TypeGuard[LocationProvider]:
+    return hasattr(node, 'lineno') and hasattr(node, 'col_offset')
 
 
 def _get_type(name: str) -> tuple[type, type]:
@@ -195,7 +206,7 @@ class Extractor:
             except (NameError, AttributeError):  # pragma: no-astroid
                 pass
 
-    def _register(self, types: Tuple[type], handler: Handler) -> Handler:
+    def _register(self, types: Tuple[type, ...], handler: Handler) -> Handler:
         for tp in types:
             # it's here to have `getattr` to get nodes from `ast` module
             # that are available only in some Python versions.
@@ -223,6 +234,7 @@ class Extractor:
 
     @staticmethod
     def _ensure_node_info(token: Token, expr: ast.AST | astroid.NodeNG) -> Token:
+        assert has_location(expr), 'Provided expression must have `lineno`, `col_offset` attrs'
         if token.line == DEFAULT_LINE:
             token = token._replace(line=expr.lineno)
         if token.col == DEFAULT_COL:
