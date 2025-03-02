@@ -93,8 +93,10 @@ def _get_func_body_statements(func: Callable) -> set[int]:
             if not isinstance(node, ast.stmt):
                 continue
             # skip docstring
-            if isinstance(node, ast.Expr) and isinstance(node.value, ast.Str):
-                continue
+            if isinstance(node, ast.Expr):
+                inner = node.value
+                if isinstance(inner, ast.Constant) and isinstance(inner.value, str):
+                    continue
             result.add(node.lineno)
     return result
 

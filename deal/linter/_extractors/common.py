@@ -195,7 +195,7 @@ class Extractor:
             except (NameError, AttributeError):  # pragma: no-astroid
                 pass
 
-    def _register(self, types: Tuple[type], handler: Handler) -> Handler:
+    def _register(self, types: Tuple[type, ...], handler: Handler) -> Handler:
         for tp in types:
             # it's here to have `getattr` to get nodes from `ast` module
             # that are available only in some Python versions.
@@ -223,6 +223,9 @@ class Extractor:
 
     @staticmethod
     def _ensure_node_info(token: Token, expr: ast.AST | astroid.NodeNG) -> Token:
+        if isinstance(expr, ast.AST):
+            if not isinstance(expr, (ast.stmt, ast.expr)):  # pragma: no cover
+                return token
         if token.line == DEFAULT_LINE:
             token = token._replace(line=expr.lineno)
         if token.col == DEFAULT_COL:
