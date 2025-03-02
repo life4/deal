@@ -52,6 +52,7 @@ def get_contracts(func: Callable) -> Iterator[Contract]:
             if contracts.patcher:
                 yield _wrappers.Has(contracts.patcher)
 
-        if not hasattr(func, '__wrapped__'):
+        if hasattr(func, '__wrapped__'):
+            func = func.__wrapped__
+        else:
             return
-        func = func.__wrapped__

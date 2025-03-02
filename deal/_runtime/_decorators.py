@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from functools import partial
 from typing import TYPE_CHECKING, Callable, TypeVar, overload
 
 from .. import _exceptions
@@ -16,7 +15,8 @@ from ._validators import InvariantValidator, RaisesValidator, ReasonValidator, V
 if TYPE_CHECKING:
     C = TypeVar('C', bound=Callable)
     F = TypeVar('F', bound=Callable)
-    T = TypeVar('T')
+    T = TypeVar('T', bound=type)
+    E = TypeVar('E')
     TF = TypeVar('TF', bound='Callable | type')
 
 
@@ -61,8 +61,10 @@ def pre(
         message=message,
         exception=exception or _exceptions.PreContractError,
     )
-    func = partial(Contracts.attach, 'pres', contract)
-    return func
+
+    def wrapper(f: C) -> C:
+        return Contracts.attach('pres', contract, f)
+    return wrapper
 
 
 def post(
@@ -106,8 +108,10 @@ def post(
         message=message,
         exception=exception or _exceptions.PostContractError,
     )
-    func = partial(Contracts.attach, 'posts', contract)
-    return func
+
+    def wrapper(f: C) -> C:
+        return Contracts.attach('posts', contract, f)
+    return wrapper
 
 
 def ensure(
@@ -154,8 +158,10 @@ def ensure(
         message=message,
         exception=exception or _exceptions.PostContractError,
     )
-    func = partial(Contracts.attach, 'ensures', contract)
-    return func
+
+    def wrapper(f: C) -> C:
+        return Contracts.attach('ensures', contract, f)
+    return wrapper
 
 
 def raises(
@@ -203,8 +209,10 @@ def raises(
         message=message,
         exception=exception or _exceptions.RaisesContractError,
     )
-    func = partial(Contracts.attach, 'raises', contract)
-    return func
+
+    def wrapper(f: C) -> C:
+        return Contracts.attach('raises', contract, f)
+    return wrapper
 
 
 def has(
@@ -247,8 +255,10 @@ def has(
         message=message,
         exception=exception,
     )
-    func = partial(Contracts.attach_has, patcher)
-    return func
+
+    def wrapper(f: C) -> C:
+        return Contracts.attach_has(patcher, f)
+    return wrapper
 
 
 def reason(
@@ -302,8 +312,10 @@ def reason(
         message=message,
         exception=exception or _exceptions.ReasonContractError,
     )
-    func = partial(Contracts.attach, 'reasons', contract)
-    return func
+
+    def wrapper(f: C) -> C:
+        return Contracts.attach('reasons', contract, f)
+    return wrapper
 
 
 def inv(
@@ -367,7 +379,10 @@ def inv(
         message=message,
         exception=exception or _exceptions.InvContractError,
     )
-    return partial(invariant, contract)
+
+    def wrapper(f: T) -> T:
+        return invariant(contract, f)
+    return wrapper
 
 
 def example(validator: Callable[[], bool]) -> Callable[[C], C]:
@@ -393,8 +408,10 @@ def example(validator: Callable[[], bool]) -> Callable[[C], C]:
         message=None,
         exception=_exceptions.ExampleContractError,
     )
-    func = partial(Contracts.attach, 'examples', contract)
-    return func
+
+    def wrapper(f: C) -> C:
+        return Contracts.attach('examples', contract, f)
+    return wrapper
 
 
 @overload
@@ -516,7 +533,7 @@ def pure(_func: C) -> C:
     return chain(has(), safe)(_func)
 
 
-def implies(test, then: T) -> bool | T:
+def implies(test, then: E) -> bool | E:
     """Check `then` only if `test` is true.
 
     A convenient helper for contracts that must be checked only for some cases.

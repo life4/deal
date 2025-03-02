@@ -59,7 +59,7 @@ def handle_bin_op(expr: ast.BinOp | astroid.BinOp, **kwargs) -> Token | None:
                 if type(guess) is not astroid.Const:
                     continue
                 return Token(value=ZeroDivisionError, col=expr.right.col_offset)
-        if isinstance(expr.right, ast.Num) and expr.right.n == 0:
+        if isinstance(expr.right, ast.Constant) and str(expr.right.value) == '0':
             return Token(value=ZeroDivisionError, col=expr.right.col_offset)
     return None
 

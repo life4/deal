@@ -84,9 +84,18 @@ def big_test_func(cond):
     return 42
 
 
+def empty_test_func(cond):
+    13
+
+
 def test_get_func_body_statements():
     stmts = _get_func_body_statements(big_test_func)
     assert len(stmts) == 3
+
+
+def test_include_non_docstring_expr():
+    stmts = _get_func_body_statements(empty_test_func)
+    assert len(stmts) == 1
 
 
 def test_get_func_body_statements_no_func():
