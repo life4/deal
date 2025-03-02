@@ -282,7 +282,7 @@ def test_fuzz_propagate():
 
     cases = deal.cases(div, seed=1)
     with pytest.raises(deal.RaisesContractError):
-        cases(b'g`\xf8\xb07\xf8\xea9')
+        cases(b'g`\x00\x00\x00\x00\x00\x00\x00\x00')
 
 
 @pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
