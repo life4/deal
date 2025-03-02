@@ -41,8 +41,6 @@ def get_validator_source(validator) -> str:
     # transform back to text
     lines = tokenize.untokenize(tokens).split('\n')
     lines = _clear_lines(lines)
-    if len(lines) > 1:
-        return ''
     return ' '.join(lines).replace('_.', '').lstrip()
 
 

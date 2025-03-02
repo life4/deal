@@ -79,7 +79,7 @@ class ContractError(AssertionError):
         source = get_validator_source(self.validator)
         if source:
             return source
-        if hasattr(self.validator, '__name__'):
+        if hasattr(self.validator, '__name__'):  # pragma: no cover
             return self.validator.__name__
         return repr(self.validator)
 

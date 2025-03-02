@@ -96,6 +96,7 @@ def test_source_get_lambda_multiline_splitted_dec():
         f(-2)
     src = exc_info.value.source
     if src != '<lambda>':
+        assert '\n' not in src
         assert ' '.join(src.split()) == 'x > 0 and x < 10'
 
 
