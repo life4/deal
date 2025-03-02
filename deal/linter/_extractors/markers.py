@@ -214,9 +214,9 @@ def _markers_from_inferred(expr: astroid.NodeNG, inferred: tuple) -> Iterator[To
 def _is_open_to_write(expr) -> bool:
     for arg in expr.args:
         if astroid is not None:  # pragma: no-astroid
-            if isinstance(arg, astroid.Const) and arg.value == 'w':
+            if isinstance(arg, astroid.Const) and 'w' in arg.value:
                 return True
-        if isinstance(arg, ast.Str) and 'w' in arg.s:
+        if isinstance(arg, ast.Constant) and 'w' in str(arg.value):
             return True
 
     if not expr.keywords:
@@ -224,10 +224,11 @@ def _is_open_to_write(expr) -> bool:
     for arg in expr.keywords:
         if arg.arg != 'mode':
             continue
+        inner = arg.value
         if astroid is not None:  # pragma: no-astroid
-            if isinstance(arg.value, astroid.Const) and 'w' in arg.value.value:
+            if isinstance(inner, astroid.Const) and 'w' in inner.value:
                 return True
-        if isinstance(arg.value, ast.Str) and 'w' in arg.value.s:
+        if isinstance(inner, ast.Constant) and 'w' in str(inner.value):
             return True
     return False
 
