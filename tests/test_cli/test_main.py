@@ -23,7 +23,7 @@ def test_unknown_command(capsys):
     result = main(argv=['unknown', 'a1', 'a2'], commands=dict(fake=FakeCommand))
     assert result == 2
     captured = capsys.readouterr()
-    exp = "invalid choice: 'unknown' (choose from 'fake')"
+    exp = "invalid choice: 'unknown' (choose from fake)"
     assert exp in captured.err
 
 
