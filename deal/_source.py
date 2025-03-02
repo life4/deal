@@ -7,10 +7,11 @@ from typing import Callable, List
 
 
 TokensType = List[tokenize.TokenInfo]
+Processor = Callable[[TokensType], TokensType]
 processors = []
 
 
-def processor(func: Callable[[TokensType], TokensType]) -> Callable[[TokensType], TokensType]:
+def processor(func: Processor) -> Processor:
     processors.append(func)
     return func
 
@@ -104,6 +105,8 @@ def _extract_decorator_args(tokens: TokensType) -> TokensType:
 
     end = 0
     for index, token in enumerate(tokens):
+        if token.type == tokenize.NAME and token.string == 'def':
+            break
         if token.string == ')':
             end = index
     return tokens[start:end]
