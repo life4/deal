@@ -29,7 +29,6 @@ def _extract_defs_ast(tree: ast.Module) -> DefsType:
                     names=[name_node],
                     lineno=1,
                     col_offset=1,
-                    ctx=ast.Load(),
                 )
             continue
 
@@ -41,9 +40,9 @@ def _extract_defs_ast(tree: ast.Module) -> DefsType:
                 result[name] = ast.ImportFrom(
                     module=node.module,
                     names=[name_node],
+                    level=0,
                     lineno=1,
                     col_offset=1,
-                    ctx=ast.Load(),
                 )
             continue
 
@@ -64,7 +63,6 @@ def _extract_defs_astroid(tree: astroid.Module) -> DefsType:
                     names=[ast.alias(name=name, asname=alias)],
                     lineno=1,
                     col_offset=1,
-                    ctx=ast.Load(),
                 )
             continue
 
@@ -75,9 +73,9 @@ def _extract_defs_astroid(tree: astroid.Module) -> DefsType:
                 result[alias or name] = ast.ImportFrom(
                     module=node.modname,
                     names=[ast.alias(name=name, asname=alias)],
+                    level=0,
                     lineno=1,
                     col_offset=1,
-                    ctx=ast.Load(),
                 )
             continue
 

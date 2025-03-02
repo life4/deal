@@ -162,8 +162,7 @@ class Contract:
         # inject function signature
         func = ast.Lambda(
             args=self.func_args,
-            body=ast.Set(elts=[], ctx=ast.Load()),
-            ctx=ast.Load(),
+            body=ast.Set(elts=[]),
         )
         module.body[FUNC_INDEX].value = func  # type: ignore
 
@@ -198,7 +197,6 @@ class Contract:
             body = list(deps)
             return_node = ast.Return(
                 value=contract.body,
-                ctx=ast.Load(),
             )
             body.append(return_node)
             module.body[CONTRACT_INDEX] = ast.FunctionDef(
@@ -206,7 +204,6 @@ class Contract:
                 args=contract.args,
                 body=body,
                 decorator_list=[],
-                ctx=ast.Load(),
             )
             return module
 
