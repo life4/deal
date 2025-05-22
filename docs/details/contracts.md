@@ -51,7 +51,7 @@ This allows you to reuse contracts among multiple functions. Also, it keeps the 
 
 ## deal.inherit
 
-The {py:func}`deal.chain` decorator makes a method to inherit contracts from the base class.
+The {py:func}`deal.inherit` decorator makes a method to inherit contracts from the base class.
 
 It can be applied to a separate method:
 
