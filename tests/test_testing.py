@@ -100,6 +100,7 @@ def test_no_bad_examples():
 
 
 @pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
+@pytest.mark.skipif(typeguard is None, reason='typeguard is not installed')
 def test_return_type_checks():
     def div(a: int, b: int) -> int:
         return 1
@@ -140,6 +141,7 @@ def test_explicit_strategy():
 
 
 @pytest.mark.skipif(hypothesis is None, reason='hypothesis is not installed')
+@pytest.mark.skipif(typeguard is None, reason='typeguard is not installed')
 def test_disable_type_checks():
     def bad(a: int) -> str:
         return a  # type: ignore[return-value]
