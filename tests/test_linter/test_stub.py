@@ -184,7 +184,7 @@ def test_stubs_manager(tmp_path: Path):
 
 
 @pytest.mark.skipif(astroid is None, reason='astroid is not installed')
-def test_marshmallow_get_stubs():
+def test_numpy_get_stubs():
     stubs = StubsManager()
-    stub = stubs.get('marshmallow.utils')
+    stub = stubs.get('numpy.dual')
     assert stub is not None

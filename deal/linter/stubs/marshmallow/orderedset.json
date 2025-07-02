@@ -1,7 +1,0 @@
-{
-  "OrderedSet.pop": {
-    "raises": [
-      "KeyError"
-    ]
-  }
-}
