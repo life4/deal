@@ -124,21 +124,3 @@ def test_infer_junk():
     func_tree = tree.body[-1].body
     returns = tuple(r.value for r in get_exceptions(body=func_tree, stubs=stubs))
     assert returns == ()
-
-
-@pytest.mark.skipif(astroid is None, reason='astroid is not installed')
-def test_marhsmallow_stubs():
-    stubs = StubsManager()
-
-    text = """
-        from marshmallow.utils import from_iso_datetime
-
-        @deal.raises()
-        def child():
-            return from_iso_datetime('example')
-    """
-    tree = astroid.parse(dedent(text))
-    print(tree.repr_tree())
-    func_tree = tree.body[-1].body
-    returns = tuple(r.value for r in get_exceptions(body=func_tree, stubs=stubs))
-    assert returns == (ValueError,)

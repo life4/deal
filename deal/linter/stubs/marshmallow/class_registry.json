@@ -1,7 +1,0 @@
-{
-  "get_class": {
-    "raises": [
-      "RegistryError"
-    ]
-  }
-}
