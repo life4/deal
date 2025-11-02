@@ -259,8 +259,9 @@ class RaisesValidator(Validator):
     def _validate(self, args: Args, kwargs: Kwargs, exc: Exception | None = None) -> None:
         assert exc is not None
         exc_type = type(exc)
-        if exc_type in self.exceptions:
-            return
+        for exception in self.exceptions:
+            if issubclass(exc_type, exception):
+                return
         raise self._exception() from exc_type
 
 
