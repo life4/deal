@@ -172,10 +172,10 @@ def raises(
     """Decorator listing the exceptions which the function can raise.
 
     Implements [exception] contract.
-    If the function raises an exception not listed in the decorator,
+    If the function raises an exception not a subclass of the ones listed in the decorator,
     `RaisesContractError` will be raised.
 
-    :param exceptions: exceptions which the function can raise.
+    :param exceptions: exceptions which the function can raise, including their subclasses.
     :param message: error message for the exception raised on contract violation.
         No error message by default.
     :param exception: exception type to raise on the contract violation.
