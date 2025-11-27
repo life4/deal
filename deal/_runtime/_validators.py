@@ -261,7 +261,7 @@ class RaisesValidator(Validator):
         exc_type = type(exc)
         if exc_type in self.exceptions:
             return
-        raise self._exception() from exc_type
+        raise self._exception() from exc
 
 
 class ReasonValidator(Validator):
