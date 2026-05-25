@@ -3,8 +3,9 @@ from __future__ import annotations
 import ast
 import sys
 from types import ModuleType
-from typing import Callable
+from typing import Any, Callable
 
+from importlib.machinery import ModuleSpec
 from _frozen_importlib_external import PathFinder  # pyright: reportMissingImports=false
 
 import deal
@@ -25,7 +26,7 @@ def get_name(expr) -> str | None:
 
 class DealFinder(PathFinder):
     @classmethod
-    def find_spec(cls, *args, **kwargs):
+    def find_spec(cls, *args, **kwargs) -> ModuleSpec | None:
         spec = super().find_spec(*args, **kwargs)
         if spec is not None:  # pragma: no cover
             spec.loader = DealLoader(spec.loader)
@@ -38,7 +39,7 @@ class DealLoader:
     def __init__(self, loader) -> None:
         self._loader = loader
 
-    def __getattr__(self, name: str):
+    def __getattr__(self, name: str) -> Any:
         return getattr(self._loader, name)
 
     def exec_module(self, module: ModuleType) -> None:
