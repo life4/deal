@@ -85,3 +85,37 @@ def test_patch_class_with_slots():
     assert a.x == 4
     with pytest.raises(deal.InvContractError):
         a.x = -2
+
+
+def test_slots_class_method_call():
+    @deal.inv(lambda obj: obj.x > 0)
+    class A:
+        __slots__ = ['x']
+
+        def __init__(self) -> None:
+            self.x = 2
+
+        def set_x(self, value):
+            self.x = value
+
+    a = A()
+    a.set_x(4)
+    assert a.x == 4
+    with pytest.raises(deal.InvContractError):
+        a.set_x(-2)
+
+
+def test_subclass_overrides_init():
+    @deal.inv(lambda obj: obj.x > 0)
+    class A:
+        x = 2
+
+    class B(A):
+        def __init__(self):
+            super().__init__()
+            self.x = 5
+
+    b = B()
+    assert b.x == 5
+    with pytest.raises(deal.InvContractError):
+        b.x = -2
