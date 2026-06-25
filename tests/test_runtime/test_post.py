@@ -33,3 +33,20 @@ def test_decorating_generator():
     assert list(double(2)) == [2, 4, 8]
     with pytest.raises(deal.PostContractError):
         list(double(4))
+
+
+def test_decorating_async_generator():
+    import asyncio
+
+    @deal.post(lambda x: x <= 8)
+    async def double(x):
+        yield x
+        yield x * 2
+        yield x * 4
+
+    async def collect(x):
+        return [v async for v in double(x)]
+
+    assert run_sync(collect(2)) == [2, 4, 8]
+    with pytest.raises(deal.PostContractError):
+        run_sync(collect(4))

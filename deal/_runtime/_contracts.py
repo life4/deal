@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from functools import update_wrapper
-from inspect import iscoroutinefunction, isgeneratorfunction
+from inspect import isasyncgenfunction, iscoroutinefunction, isgeneratorfunction
 from typing import TYPE_CHECKING, Callable, Generic, TypeVar
 
 from .._exceptions import ContractError
@@ -79,6 +79,10 @@ class Contracts(Generic[F]):
         if iscoroutinefunction(func):
             async def wrapper(*args, **kwargs):
                 return await contracts._run_async(args, kwargs)
+        elif isasyncgenfunction(func):
+            async def wrapper(*args, **kwargs):
+                async for result in contracts._run_async_iter(args, kwargs):
+                    yield result
         elif isgeneratorfunction(func):
             def wrapper(*args, **kwargs):
                 yield from contracts._run_iter(args, kwargs)
@@ -230,6 +234,32 @@ class Contracts(Generic[F]):
                 if self.patcher is not None:
                     self.patcher.unpatch()
 
+            # post-validation
+            state.debug = False
+            try:
+                for validator in self.posts:
+                    validator.validate((result,), {})
+                for validator in self.ensures:
+                    validator.validate(args, dict(kwargs, result=result))
+            finally:
+                state.debug = True
+            yield result
+
+    async def _run_async_iter(self, args: tuple[object, ...], kwargs: dict[str, object]):
+        if not state.debug:
+            async for result in self.func(*args, **kwargs):
+                yield result
+            return
+
+        # pre-validation
+        state.debug = False
+        try:
+            for validator in self.pres:
+                validator.validate(args, kwargs)
+        finally:
+            state.debug = True
+
+        async for result in self.func(*args, **kwargs):
             # post-validation
             state.debug = False
             try:

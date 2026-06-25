@@ -75,3 +75,18 @@ def test_recursive_contracts_ok():
 
     assert sub(5, 3) == 2
     assert add(2, 3) == 5
+
+
+def test_decorating_async_generator():
+    @deal.ensure(lambda x, y, result: result > y ** 2)
+    async def multiply(x, y):
+        yield x * y
+        yield x * y * 2
+        yield x * y * 4
+
+    async def collect(x, y):
+        return [v async for v in multiply(x, y)]
+
+    assert run_sync(collect(2, 1)) == [2, 4, 8]
+    with pytest.raises(deal.PostContractError):
+        run_sync(collect(2, 2))
