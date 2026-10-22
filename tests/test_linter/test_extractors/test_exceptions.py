@@ -293,6 +293,8 @@ def get_docstring_parser_tests():
     tests_found = 0
     if astroid is None:
         return
+    if not root.exists():
+        return
     for path in root.iterdir():
         if path.suffix != '.py':
             continue
