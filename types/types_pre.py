@@ -13,3 +13,10 @@ def infer_validator_type() -> None:
     @deal.pre(lambda a, b: a.hi)
     def f(a: int, b: int) -> bool:
         return a > b
+
+
+def validator_must_be_callable() -> None:
+    # E: Argument 1 to "pre" has incompatible type "int"; expected "Callable[..., Any]"
+    @deal.pre(1)
+    def f() -> None:
+        pass
