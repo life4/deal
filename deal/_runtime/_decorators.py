@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Callable, TypeVar, overload
+from typing import TYPE_CHECKING, Any, Callable, TypeVar, overload
 
 from .. import _exceptions
-from .._types import ExceptionType
+from .._types import ExceptionType, ValidatorType
 from ._contracts import Contracts
 from ._dispatch import Dispatch
 from ._has_patcher import HasPatcher
@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 
 
 def pre(
-    validator,
+    validator: ValidatorType,
     *,
     message: str | None = None,
     exception: ExceptionType | None = None,
@@ -68,7 +68,7 @@ def pre(
 
 
 def post(
-    validator,
+    validator: ValidatorType,
     *,
     message: str | None = None,
     exception: ExceptionType | None = None,
@@ -115,7 +115,7 @@ def post(
 
 
 def ensure(
-    validator,
+    validator: ValidatorType,
     *,
     message: str | None = None,
     exception: ExceptionType | None = None,
@@ -263,7 +263,7 @@ def has(
 
 def reason(
     event: type[Exception],
-    validator,
+    validator: ValidatorType,
     *,
     message: str | None = None,
     exception: ExceptionType | None = None,
@@ -319,7 +319,7 @@ def reason(
 
 
 def inv(
-    validator,
+    validator: ValidatorType,
     *,
     message: str | None = None,
     exception: ExceptionType | None = None,
@@ -533,7 +533,7 @@ def pure(_func: C) -> C:
     return chain(has(), safe)(_func)
 
 
-def implies(test, then: E) -> bool | E:
+def implies(test: object, then: E) -> bool | E:
     """Check `then` only if `test` is true.
 
     A convenient helper for contracts that must be checked only for some cases.
@@ -557,7 +557,7 @@ def implies(test, then: E) -> bool | E:
     return not test or then
 
 
-def catch(func: Callable, *args, **kwargs) -> type[Exception] | None:
+def catch(func: Callable[..., Any], *args: Any, **kwargs: Any) -> type[Exception] | None:
     """Call the function with the given arguments, catching any exception.
 
     The catched exception is returned.
